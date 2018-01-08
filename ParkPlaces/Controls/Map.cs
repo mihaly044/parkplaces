@@ -225,10 +225,15 @@ namespace ParkPlaces.Controls
             base.OnMouseUp(e);
         }
 
-        protected override void OnDoubleClick(MouseEventArgs e)
+        protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
-            if(e.)
+
+            if(CurrentPolygon != null && CurrentPolygon.IsMouseOver)
+            {
+                EditZoneForm editForm = new EditZoneForm((PolyZone)CurrentPolygon.Tag);
+                editForm.Show();
+            }
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
