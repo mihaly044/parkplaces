@@ -29,44 +29,19 @@ namespace ParkPlaces
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ParkPlacesForm));
-            this.onPolyRectCtxMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deletePointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Map = new ParkPlaces.Controls.Map();
-            this.lblMouse = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.drawPolygonButton = new System.Windows.Forms.ToolStripButton();
+            this.SelectMapProviderButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.googleMapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openStreetMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblZoom = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.drawPolygonButton = new System.Windows.Forms.ToolStripButton();
-            this.onPolyRectCtxMenu.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
+            this.lblMouse = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // onPolyRectCtxMenu
-            // 
-            this.onPolyRectCtxMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deletePointToolStripMenuItem,
-            this.addPointToolStripMenuItem});
-            this.onPolyRectCtxMenu.Name = "onPolyRectCtxMenu";
-            this.onPolyRectCtxMenu.Size = new System.Drawing.Size(139, 48);
-            // 
-            // deletePointToolStripMenuItem
-            // 
-            this.deletePointToolStripMenuItem.Name = "deletePointToolStripMenuItem";
-            this.deletePointToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.deletePointToolStripMenuItem.Text = "Delete point";
-            // 
-            // addPointToolStripMenuItem
-            // 
-            this.addPointToolStripMenuItem.Name = "addPointToolStripMenuItem";
-            this.addPointToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.addPointToolStripMenuItem.Text = "Add point";
             // 
             // Map
             // 
@@ -102,36 +77,37 @@ namespace ParkPlaces
             this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
             this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
             // 
-            // lblMouse
+            // toolStrip1
             // 
-            this.lblMouse.Name = "lblMouse";
-            this.lblMouse.Size = new System.Drawing.Size(52, 17);
-            this.lblMouse.Text = "               ";
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.drawPolygonButton});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(1029, 25);
+            this.toolStrip1.TabIndex = 4;
+            this.toolStrip1.Text = "toolStrip1";
             // 
-            // statusStrip1
+            // drawPolygonButton
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripDropDownButton1,
-            this.lblZoom,
-            this.lblMouse});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 604);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.statusStrip1.Size = new System.Drawing.Size(1029, 22);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
+            this.drawPolygonButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.drawPolygonButton.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygonButton.Image")));
+            this.drawPolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.drawPolygonButton.Name = "drawPolygonButton";
+            this.drawPolygonButton.Size = new System.Drawing.Size(23, 22);
+            this.drawPolygonButton.Text = "Add polygon";
+            this.drawPolygonButton.Click += new System.EventHandler(this.drawPolygonButton_Click);
             // 
-            // toolStripDropDownButton1
+            // SelectMapProviderButton
             // 
-            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SelectMapProviderButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.SelectMapProviderButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.googleMapsToolStripMenuItem,
             this.openStreetMapToolStripMenuItem});
-            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
-            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 20);
-            this.toolStripDropDownButton1.Text = "Select map provider";
+            this.SelectMapProviderButton.Image = ((System.Drawing.Image)(resources.GetObject("SelectMapProviderButton.Image")));
+            this.SelectMapProviderButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.SelectMapProviderButton.Name = "SelectMapProviderButton";
+            this.SelectMapProviderButton.Size = new System.Drawing.Size(29, 20);
+            this.SelectMapProviderButton.Text = "Select map provider";
             // 
             // googleMapsToolStripMenuItem
             // 
@@ -153,25 +129,24 @@ namespace ParkPlaces
             this.lblZoom.Size = new System.Drawing.Size(52, 17);
             this.lblZoom.Text = "               ";
             // 
-            // toolStrip1
+            // lblMouse
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.drawPolygonButton});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1029, 25);
-            this.toolStrip1.TabIndex = 4;
-            this.toolStrip1.Text = "toolStrip1";
+            this.lblMouse.Name = "lblMouse";
+            this.lblMouse.Size = new System.Drawing.Size(52, 17);
+            this.lblMouse.Text = "               ";
             // 
-            // drawPolygonButton
+            // statusStrip1
             // 
-            this.drawPolygonButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.drawPolygonButton.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygonButton.Image")));
-            this.drawPolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.drawPolygonButton.Name = "drawPolygonButton";
-            this.drawPolygonButton.Size = new System.Drawing.Size(23, 22);
-            this.drawPolygonButton.Text = "Add polygon";
-            this.drawPolygonButton.Click += new System.EventHandler(this.drawPolygonButton_Click);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SelectMapProviderButton,
+            this.lblZoom,
+            this.lblMouse});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 604);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.statusStrip1.Size = new System.Drawing.Size(1029, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
             // 
             // ParkPlacesForm
             // 
@@ -186,11 +161,10 @@ namespace ParkPlaces
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ParkPlaces";
             this.Load += new System.EventHandler(this.ParkPlacesForm_Load);
-            this.onPolyRectCtxMenu.ResumeLayout(false);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -198,17 +172,14 @@ namespace ParkPlaces
 
         #endregion
         private Map Map;
-        private System.Windows.Forms.ContextMenuStrip onPolyRectCtxMenu;
-        private System.Windows.Forms.ToolStripMenuItem deletePointToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addPointToolStripMenuItem;
-        private System.Windows.Forms.ToolStripStatusLabel lblMouse;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel lblZoom;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
-        private System.Windows.Forms.ToolStripMenuItem googleMapsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openStreetMapToolStripMenuItem;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton drawPolygonButton;
+        private System.Windows.Forms.ToolStripDropDownButton SelectMapProviderButton;
+        private System.Windows.Forms.ToolStripMenuItem googleMapsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openStreetMapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel lblZoom;
+        private System.Windows.Forms.ToolStripStatusLabel lblMouse;
+        private System.Windows.Forms.StatusStrip statusStrip1;
     }
 }
 
