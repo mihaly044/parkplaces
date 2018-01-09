@@ -323,7 +323,9 @@ namespace ParkPlaces.Controls
 
         public void RemovePolygon(Polygon p)
         {
-            if(p != null)
+            if (IsDrawingPolygon)
+                EndDrawPolygon(false);
+            else if(p != null)
             {
                 int iPolygon = Polygons.Polygons.IndexOf(p);
 
