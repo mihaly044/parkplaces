@@ -26,13 +26,21 @@ namespace ParkPlaces.Controls
         private bool IsDrawingPolygon;
         private GMapMarker Pointer;
         private RectMarker CurrentRectMaker;
-        private Polygon CurrentPolygon;
+        public Polygon CurrentPolygon;
         private Polygon CurrentDrawingPolygon;
         private Dto2Object FromJSONData;
         private Point PreviousMouseLocation;
 
         [Category("Map Extension")]
         public bool HasGradientSide { get; set; }
+
+        [Category("Map Extension")]
+        [DefaultValue(false)]
+        public bool DisplayVersionInfo { get; set; }
+
+        [Category("Map Extension")]
+        [DefaultValue(false)]
+        public bool DisplayCopyright { get; set; }
 
         [Category("Map Extension")]
         [DefaultValue(100)]
@@ -81,29 +89,8 @@ namespace ParkPlaces.Controls
         {
             if (IsDrawingPolygon)
                 return;
-
-            if (CurrentPolygon != null)
-            {
-                Color polygonColor = ColorTranslator.FromHtml(((PolyZone)CurrentPolygon.Tag).Color);
-                CurrentPolygon.Stroke = new Pen(polygonColor);
-                CurrentPolygon.Stroke.Width = 2;
-                CurrentPolygon.Fill = new SolidBrush(Color.FromArgb(60, polygonColor));
-                CurrentPolygon.IsSelected = false;
-
-                PolygonRects.Markers.Clear();
-            }
-
-            item.Stroke = MouseEnterStrokeClr;
-            item.Fill = MouseEnterFillClr;
-            CurrentPolygon = (Polygon)item;
-            CurrentPolygon.IsSelected = true;
-
-            for (int i = 0; i < item.Points.Count; i++)
-            {
-                RectMarker mBorders = new RectMarker(CurrentPolygon.Points[i]);
-                mBorders.Tag = i;
-                PolygonRects.Markers.Add(mBorders);
-            }
+            if(Zoom >= 12)
+                SelectPolygon((Polygon)item);
         }
 
         private void Map_OnMarkerEnter(GMapMarker item)
@@ -134,16 +121,19 @@ namespace ParkPlaces.Controls
         {
             base.OnPaint(e);
 
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            string version = "";
+            if(DisplayVersionInfo)
+            {
+                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                string version = "";
 
 #if DEBUG
-            version = string.Format("Debug version {0}, OS: {1}, .NET v{2}", fvi.FileVersion, Environment.OSVersion, Environment.Version);
+                version = string.Format("Debug version {0}, OS: {1}, .NET v{2}", fvi.FileVersion, Environment.OSVersion, Environment.Version);
 #else
             version = string.Format("Release version {0}, OS: {1}, .NET v{2}", fvi.FileVersion, Environment.OSVersion, Environment.Version);
 #endif
-            e.Graphics.DrawString(version, BlueFont, Brushes.Blue, new Point(5, 5));
+                e.Graphics.DrawString(version, BlueFont, Brushes.Blue, new Point(5, 5));
+            }
 
             if (HasGradientSide)
             {
@@ -158,6 +148,8 @@ namespace ParkPlaces.Controls
 
                 e.Graphics.FillRectangle(linGrBrush, r);
             }
+
+            // TODO: implement displaying copyrigt switch
         }
 
         protected override void OnLoad(EventArgs e)
@@ -311,6 +303,51 @@ namespace ParkPlaces.Controls
             OnDrawPolygonEnd?.Invoke(CurrentDrawingPolygon);
 
             CurrentDrawingPolygon = null;
+        }
+
+        public void RemovePolygon(Polygon p)
+        {
+            if(p != null)
+            {
+                int iPolygon = Polygons.Polygons.IndexOf(p);
+
+                if (iPolygon > -1)
+                {
+                    Polygons.Polygons.Remove(p);
+                    ClearSelection();
+                }
+            }
+        }
+
+        private void ClearSelection()
+        {
+            if (CurrentPolygon != null)
+            {
+                Color polygonColor = ColorTranslator.FromHtml(((PolyZone)CurrentPolygon.Tag).Color);
+                CurrentPolygon.Stroke = new Pen(polygonColor);
+                CurrentPolygon.Stroke.Width = 2;
+                CurrentPolygon.Fill = new SolidBrush(Color.FromArgb(60, polygonColor));
+                CurrentPolygon.IsSelected = false;
+
+                PolygonRects.Markers.Clear();
+            }
+        }
+
+        private void SelectPolygon(Polygon p)
+        {
+            ClearSelection();
+
+            p.Stroke = MouseEnterStrokeClr;
+            p.Fill = MouseEnterFillClr;
+            CurrentPolygon = p;
+            CurrentPolygon.IsSelected = true;
+
+            for (int i = 0; i < p.Points.Count; i++)
+            {
+                RectMarker mBorders = new RectMarker(CurrentPolygon.Points[i]);
+                mBorders.Tag = i;
+                PolygonRects.Markers.Add(mBorders);
+            }
         }
 
         public void loadPolygons()

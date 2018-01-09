@@ -51,7 +51,7 @@ namespace ParkPlaces
 
         private void RemovePolygonButton_Click(object sender, EventArgs e)
         {
-
+            Map.RemovePolygon(Map.CurrentPolygon);
         }
     }
 }
