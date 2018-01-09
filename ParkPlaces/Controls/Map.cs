@@ -213,7 +213,7 @@ namespace ParkPlaces.Controls
                     if (pIndex.HasValue && pIndex < CurrentPolygon.Points.Count)
                     {
                         CurrentPolygon.Points[pIndex.Value] = pnew;
-                        ((PolyZone)CurrentPolygon.Tag).Geometry[pIndex.Value] = new Geometry(pnew);
+                        ((PolyZone)CurrentPolygon.Tag).Geometry[pIndex.Value] = pnew.ToGeometry();
 
                         UpdatePolygonLocalPosition(CurrentPolygon);
                     }

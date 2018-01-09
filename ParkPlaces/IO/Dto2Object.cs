@@ -81,6 +81,11 @@ namespace ParkPlaces.IO
         {
             _internalPoint = input;
         }
+
+        public static Geometry FromLatLng(PointLatLng input)
+        {
+            return new Geometry(input);
+        }
     }
 
     public partial class Dto2Object
@@ -91,6 +96,11 @@ namespace ParkPlaces.IO
     public static class Serialize
     {
         public static string ToJson(this Dto2Object self) => JsonConvert.SerializeObject(self, Converter.Settings);
+
+        public static Geometry ToGeometry(this PointLatLng input)
+        {
+            return new Geometry(input);
+        }
     }
 
     public class Converter
