@@ -1,30 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
-using GMap.NET.WindowsForms;
-using GMap.NET;
-using GMap.NET.WindowsForms.Markers;
-using GMap.NET.MapProviders;
-using ParkPlaces.IO;
-using System.Drawing.Drawing2D;
 using System.Diagnostics;
-using ParkPlaces.Forms;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Reflection;
+using System.Windows.Forms;
+using GMap.NET;
+using GMap.NET.MapProviders;
+using GMap.NET.WindowsForms;
+using GMap.NET.WindowsForms.Markers;
+using ParkPlaces.Forms;
+using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
+using ParkPlaces.Properties;
 
 namespace ParkPlaces.Controls
 {
     // TODO: Documentate code
     public partial class Map : GMapControl
     {
+        #region Delegates
+
+        public delegate void DrawPolygonEnd(Polygon polygon);
+
+        #endregion Delegates
+
+        #region Constructors
+
+        public Map()
+        {
+            InitializeComponent();
+            DisableFocusOnMouseEnter = true;
+
+            _mouseEnterStrokeClr = new Pen(Brushes.Blue) { Width = 2 };
+            _mouseEnterFillClr = new SolidBrush(Color.FromArgb(90, Color.Blue));
+            _isMouseDown = false;
+            GetIsDrawingPolygon = false;
+            ShowCenter = false;
+
+            _pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
+            TopLayer.Markers.Add(_pointer);
+        }
+
+        #endregion Constructors
+
+        #region Events
+
+        /// <summary>
+        ///     Occurs when polygon drawing has finished
+        /// </summary>
+        public event DrawPolygonEnd OnDrawPolygonEnd;
+
+        #endregion Events
+
         #region Fields
 
         private readonly Pen _mouseEnterStrokeClr;
         private readonly Brush _mouseEnterFillClr;
         private bool _isMouseDown;
-        private bool _isDrawingPolygon;
         private readonly GMapMarker _pointer;
         private RectMarker _currentRectMaker;
         public Polygon CurrentPolygon;
@@ -47,24 +82,9 @@ namespace ParkPlaces.Controls
         [DefaultValue(100)]
         public int GradientWidth { get; set; }
 
-        public bool GetIsDrawingPolygon { get => _isDrawingPolygon; set => _isDrawingPolygon = value; }
+        public bool GetIsDrawingPolygon { get; set; }
 
         #endregion Fields
-
-        #region Delegates
-
-        public delegate void DrawPolygonEnd(Polygon polygon);
-
-        #endregion Delegates
-
-        #region Events
-
-        /// <summary>
-        /// Occurs when polygon drawing has finished
-        /// </summary>
-        public event DrawPolygonEnd OnDrawPolygonEnd;
-
-        #endregion Events
 
         #region Internals
 
@@ -75,31 +95,11 @@ namespace ParkPlaces.Controls
 
         #endregion Internals
 
-        #region Constructors
-
-        public Map()
-        {
-            InitializeComponent();
-            DisableFocusOnMouseEnter = true;
-
-            _mouseEnterStrokeClr = new Pen(Brushes.Blue);
-            _mouseEnterStrokeClr.Width = 2;
-            _mouseEnterFillClr = new SolidBrush(Color.FromArgb(90, Color.Blue));
-            _isMouseDown = false;
-            _isDrawingPolygon = false;
-            ShowCenter = false;
-
-            _pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
-            TopLayer.Markers.Add(_pointer);
-        }
-
-        #endregion Constructors
-
         #region GMap events
 
         private void Map_OnPolygonClick(GMapPolygon item, MouseEventArgs e)
         {
-            if (_isDrawingPolygon)
+            if (GetIsDrawingPolygon)
                 return;
             if (Zoom >= 12)
                 SelectPolygon((Polygon)item);
@@ -118,11 +118,10 @@ namespace ParkPlaces.Controls
 
         private void Map_OnMarkerLeave(GMapMarker item)
         {
-            if (item is RectMarker)
+            if (item is RectMarker marker)
             {
                 _currentRectMaker = null;
-                var rc = item as RectMarker;
-                rc.Pen.Color = Color.Blue;
+                marker.Pen.Color = Color.Blue;
             }
         }
 
@@ -150,14 +149,15 @@ namespace ParkPlaces.Controls
 
             if (DisplayVersionInfo)
             {
-                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                var assembly = Assembly.GetExecutingAssembly();
                 var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
                 var version = "";
 
 #if DEBUG
-                version = string.Format("Debug version {0}, OS: {1}, .NET v{2}", fvi.FileVersion, Environment.OSVersion, Environment.Version);
+                version = $"Debug version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
 #else
-                version = string.Format("Release version {0}, OS: {1}, .NET v{2}", fvi.FileVersion, Environment.OSVersion, Environment.Version);
+                version =
+ $"Release version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
 #endif
                 e.Graphics.DrawString(version, BlueFont, Brushes.Blue, new Point(5, 5));
             }
@@ -165,13 +165,12 @@ namespace ParkPlaces.Controls
             if (HasGradientSide)
             {
                 var linGrBrush = new LinearGradientBrush(
-                   new Point(0, 0),
-                   new Point(GradientWidth, 0),
-                   Color.FromArgb(95, 0, 0, 0),
-                   Color.FromArgb(0, 0, 0, 0));
+                    new Point(0, 0),
+                    new Point(GradientWidth, 0),
+                    Color.FromArgb(95, 0, 0, 0),
+                    Color.FromArgb(0, 0, 0, 0));
 
-                var r = new Rectangle(ClientRectangle.Location, ClientRectangle.Size);
-                r.Width = GradientWidth;
+                var r = new Rectangle(ClientRectangle.Location, ClientRectangle.Size) { Width = GradientWidth };
 
                 e.Graphics.FillRectangle(linGrBrush, r);
             }
@@ -192,7 +191,6 @@ namespace ParkPlaces.Controls
         protected override void OnMouseMove(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && _isMouseDown)
-            {
                 if (_currentRectMaker == null)
                 {
                     _pointer.Position = FromLocalToLatLng(e.X, e.Y);
@@ -215,7 +213,6 @@ namespace ParkPlaces.Controls
 
                     var pIndex = (int?)_currentRectMaker.Tag;
                     if (pIndex.HasValue)
-                    {
                         if (pIndex < CurrentPolygon.Points.Count)
                         {
                             CurrentPolygon.Points[pIndex.Value] = pnew;
@@ -224,13 +221,12 @@ namespace ParkPlaces.Controls
 
                             UpdatePolygonLocalPosition(CurrentPolygon);
                         }
-                    }
 
                     CurrentPolygon.PointsHasChanged();
                     _pointer.Position = pnew;
                     _currentRectMaker.Position = pnew;
                 }
-            }
+
             _previousMouseLocation = e.Location;
             base.OnMouseMove(e);
         }
@@ -250,16 +246,17 @@ namespace ParkPlaces.Controls
                 _pointer.Position = FromLocalToLatLng(e.X, e.Y);
                 _isMouseDown = true;
 
-                if (_isDrawingPolygon)
+                if (GetIsDrawingPolygon)
                     DrawNewPolygonPoint();
 
                 if (!IsMouseOverPolygon && !IsMouseOverMarker)
                     ClearSelection();
             }
-            else if (_isDrawingPolygon && e.Button == MouseButtons.Right)
+            else if (GetIsDrawingPolygon && e.Button == MouseButtons.Right)
             {
                 drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
             }
+
             base.OnMouseDown(e);
         }
 
@@ -278,14 +275,17 @@ namespace ParkPlaces.Controls
         {
             base.OnKeyDown(e);
 
-            if (_isDrawingPolygon)
-            {
+            if (GetIsDrawingPolygon)
                 switch (e.KeyCode)
                 {
-                    case Keys.Escape: EndDrawPolygon(false); break;
-                    case Keys.Enter: EndDrawPolygon(true); break;
+                    case Keys.Escape:
+                        EndDrawPolygon(false);
+                        break;
+
+                    case Keys.Enter:
+                        EndDrawPolygon(true);
+                        break;
                 }
-            }
         }
 
         #endregion Overrides
@@ -296,7 +296,7 @@ namespace ParkPlaces.Controls
         {
             if (_currentDrawingPolygon == null)
             {
-                var points = new List<PointLatLng>() { _pointer.Position };
+                var points = new List<PointLatLng> { _pointer.Position };
                 _currentDrawingPolygon = new Polygon(points, "New polygon") { IsHitTestVisible = true };
                 Polygons.Polygons.Add(_currentDrawingPolygon);
             }
@@ -310,16 +310,16 @@ namespace ParkPlaces.Controls
 
         public void BeginDrawPolygon()
         {
-            _isDrawingPolygon = true;
+            GetIsDrawingPolygon = true;
         }
 
         private void EndDrawPolygon(bool save)
         {
-            _isDrawingPolygon = false;
+            GetIsDrawingPolygon = false;
 
             if (save)
             {
-                _currentDrawingPolygon.Tag = new PolyZone()
+                _currentDrawingPolygon.Tag = new PolyZone
                 {
                     Geometry = new List<Geometry>(),
                     Id = "",
@@ -327,14 +327,17 @@ namespace ParkPlaces.Controls
                     Color = ColorTranslator.ToHtml((_currentDrawingPolygon.Fill as SolidBrush).Color)
                 };
                 ((PolyZone)_currentDrawingPolygon.Tag).Geometry.AddRange(
-                        _currentDrawingPolygon.Points.Select(
-                            polygon => new Geometry() { Lat = polygon.Lat, Lng = polygon.Lng }
-                        ).ToList()
+                    _currentDrawingPolygon.Points.Select(
+                        polygon => new Geometry { Lat = polygon.Lat, Lng = polygon.Lng }
+                    ).ToList()
                 );
-                Map_OnPolygonClick(Polygons.Polygons.Where(polygon => (Polygon)polygon == _currentDrawingPolygon).First(), null);
+                Map_OnPolygonClick(
+                    Polygons.Polygons.First(polygon => (Polygon)polygon == _currentDrawingPolygon), null);
             }
             else
+            {
                 Polygons.Polygons.Remove(_currentDrawingPolygon);
+            }
 
             OnDrawPolygonEnd?.Invoke(_currentDrawingPolygon);
 
@@ -343,8 +346,10 @@ namespace ParkPlaces.Controls
 
         public void RemovePolygon(Polygon p)
         {
-            if (_isDrawingPolygon)
+            if (GetIsDrawingPolygon)
+            {
                 EndDrawPolygon(false);
+            }
             else if (p != null)
             {
                 var iPolygon = Polygons.Polygons.IndexOf(p);
@@ -390,7 +395,7 @@ namespace ParkPlaces.Controls
 
         public void LoadPolygons()
         {
-            _fromJsonData = Dto2Object.FromJson(Properties.Resources.data);
+            _fromJsonData = Dto2Object.FromJson(Resources.data);
 
             foreach (var zone in _fromJsonData.Zones)
             {
@@ -399,10 +404,7 @@ namespace ParkPlaces.Controls
                 //    continue;
 
                 var polygonPoints = new List<PointLatLng>();
-                foreach (var geometry in zone.Geometry)
-                {
-                    polygonPoints.Add(new PointLatLng(geometry.Lat, geometry.Lng));
-                }
+                foreach (var geometry in zone.Geometry) polygonPoints.Add(new PointLatLng(geometry.Lat, geometry.Lng));
 
                 var polygonColor = ColorTranslator.FromHtml(zone.Color);
                 Polygons.Polygons.Add(new Polygon(polygonPoints, zone.Description)
