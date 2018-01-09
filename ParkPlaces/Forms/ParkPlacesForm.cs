@@ -59,7 +59,13 @@ namespace ParkPlaces
 
         private void statisticsButton_Click(object sender, EventArgs e)
         {
+            // TODO: implement statistics module
+            throw new NotImplementedException();
+        }
 
+        private void Map_OnPolygonClick(GMap.NET.WindowsForms.GMapPolygon item, MouseEventArgs e)
+        {
+            propertyGrid1.SelectedObject = (IO.PolyZone)Map.CurrentPolygon.Tag;
         }
     }
 }
