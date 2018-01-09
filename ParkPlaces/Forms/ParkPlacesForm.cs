@@ -51,7 +51,16 @@ namespace ParkPlaces
 
         private void RemovePolygonButton_Click(object sender, EventArgs e)
         {
-            Map.RemovePolygon(Map.CurrentPolygon);
+            if (Map.CurrentPolygon == null)
+                MessageBox.Show("No polygon has been selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else
+                Map.RemovePolygon(Map.CurrentPolygon);
+        }
+
+        private void statisticsButton_Click(object sender, EventArgs e)
+        {
+            // TODO: implement statistics module
+            throw new NotImplementedException();
         }
     }
 }

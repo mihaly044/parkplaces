@@ -236,6 +236,9 @@ namespace ParkPlaces.Controls
 
                 if (IsDrawingPolygon)
                     DrawNewPolygonPoint();
+
+                if (!IsMouseOverPolygon && !IsMouseOverMarker)
+                    ClearSelection();
             }
             else if(IsDrawingPolygon && e.Button == MouseButtons.Right)
             {
