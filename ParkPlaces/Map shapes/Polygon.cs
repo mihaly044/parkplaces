@@ -53,10 +53,11 @@ namespace ParkPlaces.Extensions
             if(!inSquareMetres)
             {
                 format += "km2";
-                return (GetArea() / 1000).ToString(format);
+                return (GetArea() / 1000000).ToString(format);
             }
             else
             {
+                format += "m2";
                 return GetArea().ToString(format);
             }
         }
@@ -81,8 +82,11 @@ namespace ParkPlaces.Extensions
             else
                 g.DrawString(((PolyZone)Tag).Zoneid, new Font("Arial", (int)Overlay.Control.Zoom), Fill, centroid);
 
-            centroid.Y += (int)Overlay.Control.Zoom + 5;
-            g.DrawString(GetAreaAsString(2, false), new Font("Arial", (int)Overlay.Control.Zoom / 2), Brushes.Black, centroid);
+           if(Overlay.Control.Zoom >= 15)
+           {
+                centroid.Y += (int)Overlay.Control.Zoom + 5;
+                g.DrawString(GetAreaAsString(4, true), new Font("Arial", (int)Overlay.Control.Zoom/2), Brushes.Black, centroid);
+           }
         }
     }
 }
