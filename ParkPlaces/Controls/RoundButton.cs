@@ -16,23 +16,24 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private Container _components = null;
+        private readonly Container _components = null;
 
-        private Pen _pen = null;
-        private SolidBrush _brushText = null, _brushInside = null;
+        private readonly Pen _pen = null;
+        private readonly SolidBrush _brushText = null;
+        private readonly SolidBrush _brushInside = null;
         private byte _colorgradient = 2;        // fading effect
         private Point _textStartPoint = new Point(0, 0);
         private byte _colorStepGradient = 2;    // in pixels
         private bool _fadeOut = false;
         private bool _bDrawOutline = false;
-        private Pen _dashedPen = null;
-        private Pen _blackPen = null;
+        private readonly Pen _dashedPen = null;
+        private readonly Pen _blackPen = null;
 
         // These are for drawing when you hover over the button
         private Color _hoverColor = Color.FromKnownColor(KnownColor.ControlDark);
 
-        private Pen _hoverPen = null;
-        private SolidBrush _hoverBrushInside = null;
+        private readonly Pen _hoverPen = null;
+        private readonly SolidBrush _hoverBrushInside = null;
 
         [
         Category("Button step-in color"),

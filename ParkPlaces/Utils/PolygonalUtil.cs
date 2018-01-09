@@ -13,10 +13,7 @@ namespace ParkPlaces.Utils
     {
         private const double EarthRadius = 6378137;
 
-        public static double ToRadians(double d)
-        {
-            return (d * Math.PI) / 180;
-        }
+        public static double ToRadians(double d) => (d * Math.PI) / 180;
 
         private static double PolarTriangleArea(double tan1, double lng1, double tan2, double lng2)
         {

@@ -21,11 +21,11 @@ namespace ParkPlaces.Controls
     {
         #region Fields
 
-        private Pen _mouseEnterStrokeClr;
-        private Brush _mouseEnterFillClr;
+        private readonly Pen _mouseEnterStrokeClr;
+        private readonly Brush _mouseEnterFillClr;
         private bool _isMouseDown;
         private bool _isDrawingPolygon;
-        private GMapMarker _pointer;
+        private readonly GMapMarker _pointer;
         private RectMarker _currentRectMaker;
         public Polygon CurrentPolygon;
         private Polygon _currentDrawingPolygon;
