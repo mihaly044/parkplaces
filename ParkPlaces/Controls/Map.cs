@@ -65,7 +65,7 @@ namespace ParkPlaces.Controls
         public Polygon CurrentPolygon;
         private Polygon _currentDrawingPolygon;
         private Dto2Object _fromJsonData;
-        private Point _previousMouseLocation;
+        private Point _previousMouseLocation; //Never used, just assigned
 
         [Category("Map Extension")]
         public bool HasGradientSide { get; set; }
@@ -107,12 +107,10 @@ namespace ParkPlaces.Controls
 
         private void Map_OnMarkerEnter(GMapMarker item)
         {
-            if (item is RectMarker && !_isMouseDown)
+            if (item is RectMarker marker && !_isMouseDown)
             {
-                var rc = item as RectMarker;
-                rc.Pen.Color = Color.Red;
-
-                _currentRectMaker = rc;
+                marker.Pen.Color = Color.Red;
+                _currentRectMaker = marker;
             }
         }
 
@@ -120,8 +118,8 @@ namespace ParkPlaces.Controls
         {
             if (item is RectMarker marker)
             {
-                _currentRectMaker = null;
                 marker.Pen.Color = Color.Blue;
+                _currentRectMaker = null;
             }
         }
 
@@ -151,14 +149,13 @@ namespace ParkPlaces.Controls
             {
                 var assembly = Assembly.GetExecutingAssembly();
                 var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-                var version = "";
 
 #if DEBUG
-                version = $"Debug version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
+                var version = $"Debug version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
 #else
-                version =
- $"Release version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
+                var  version = $"Release version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
 #endif
+
                 e.Graphics.DrawString(version, BlueFont, Brushes.Blue, new Point(5, 5));
             }
 
@@ -212,17 +209,17 @@ namespace ParkPlaces.Controls
                     var pnew = FromLocalToLatLng(e.X, e.Y);
 
                     var pIndex = (int?)_currentRectMaker.Tag;
-                    if (pIndex.HasValue)
-                        if (pIndex < CurrentPolygon.Points.Count)
-                        {
-                            CurrentPolygon.Points[pIndex.Value] = pnew;
-                            ((PolyZone)CurrentPolygon.Tag).Geometry[pIndex.Value].Lat = pnew.Lat;
-                            ((PolyZone)CurrentPolygon.Tag).Geometry[pIndex.Value].Lng = pnew.Lng;
 
-                            UpdatePolygonLocalPosition(CurrentPolygon);
-                        }
+                    if (pIndex.HasValue && pIndex < CurrentPolygon.Points.Count)
+                    {
+                        CurrentPolygon.Points[pIndex.Value] = pnew;
+                        ((PolyZone)CurrentPolygon.Tag).Geometry[pIndex.Value] = pnew.ToGeometry();
+
+                        UpdatePolygonLocalPosition(CurrentPolygon);
+                    }
 
                     CurrentPolygon.PointsHasChanged();
+
                     _pointer.Position = pnew;
                     _currentRectMaker.Position = pnew;
                 }
@@ -266,8 +263,7 @@ namespace ParkPlaces.Controls
 
             if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
             {
-                var editForm = new EditZoneForm((PolyZone)CurrentPolygon.Tag);
-                editForm.Show();
+                new EditZoneForm((PolyZone)CurrentPolygon.Tag).Show();
             }
         }
 
@@ -275,17 +271,18 @@ namespace ParkPlaces.Controls
         {
             base.OnKeyDown(e);
 
-            if (GetIsDrawingPolygon)
-                switch (e.KeyCode)
-                {
-                    case Keys.Escape:
-                        EndDrawPolygon(false);
-                        break;
+            if (!GetIsDrawingPolygon) return;
 
-                    case Keys.Enter:
-                        EndDrawPolygon(true);
-                        break;
-                }
+            switch (e.KeyCode)
+            {
+                case Keys.Escape:
+                    EndDrawPolygon(false);
+                    break;
+
+                case Keys.Enter:
+                    EndDrawPolygon(true);
+                    break;
+            }
         }
 
         #endregion Overrides
@@ -364,15 +361,14 @@ namespace ParkPlaces.Controls
 
         private void ClearSelection()
         {
-            if (CurrentPolygon != null)
-            {
-                var polygonColor = ColorTranslator.FromHtml(((PolyZone)CurrentPolygon.Tag).Color);
-                CurrentPolygon.Stroke = new Pen(polygonColor) { Width = 2 };
-                CurrentPolygon.Fill = new SolidBrush(Color.FromArgb(60, polygonColor));
-                CurrentPolygon.IsSelected = false;
+            if (CurrentPolygon == null) return;
 
-                PolygonRects.Markers.Clear();
-            }
+            var polygonColor = ColorTranslator.FromHtml(((PolyZone)CurrentPolygon.Tag).Color);
+            CurrentPolygon.Stroke = new Pen(polygonColor) { Width = 2 };
+            CurrentPolygon.Fill = new SolidBrush(Color.FromArgb(60, polygonColor));
+            CurrentPolygon.IsSelected = false;
+
+            PolygonRects.Markers.Clear();
         }
 
         private void SelectPolygon(Polygon p)
@@ -381,12 +377,13 @@ namespace ParkPlaces.Controls
 
             p.Stroke = _mouseEnterStrokeClr;
             p.Fill = _mouseEnterFillClr;
+
             CurrentPolygon = p;
             CurrentPolygon.IsSelected = true;
 
             for (var i = 0; i < p.Points.Count; i++)
             {
-                var mBorders = new RectMarker(CurrentPolygon.Points[i]) { Tag = i };
+                var mBorders = new RectMarker(p.Points[i]) { Tag = i };
                 PolygonRects.Markers.Add(mBorders);
             }
         }

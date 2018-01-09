@@ -1,6 +1,6 @@
 ﻿namespace ParkPlaces.Controls
 {
-    partial class RoundButton
+    sealed partial class RoundButton
     {
 
     }
