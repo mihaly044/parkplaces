@@ -46,6 +46,8 @@ namespace ParkPlaces.Controls
         [DefaultValue(100)]
         public int GradientWidth { get; set; }
 
+        public bool getIsDrawingPolygon { get => IsDrawingPolygon; set => IsDrawingPolygon = value; }
+
         #endregion
 
         #region Delegates

@@ -51,7 +51,7 @@ namespace ParkPlaces
 
         private void RemovePolygonButton_Click(object sender, EventArgs e)
         {
-            if (Map.CurrentPolygon == null)
+            if (Map.CurrentPolygon == null && !Map.getIsDrawingPolygon)
                 MessageBox.Show("No polygon has been selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
                 Map.RemovePolygon(Map.CurrentPolygon);
@@ -65,7 +65,8 @@ namespace ParkPlaces
 
         private void Map_OnPolygonClick(GMap.NET.WindowsForms.GMapPolygon item, MouseEventArgs e)
         {
-            propertyGrid1.SelectedObject = (IO.PolyZone)Map.CurrentPolygon.Tag;
+            if (Map.CurrentPolygon != null)
+                propertyGrid1.SelectedObject = (IO.PolyZone)Map.CurrentPolygon.Tag;
         }
     }
 }
