@@ -99,7 +99,7 @@ namespace ParkPlaces.Controls
 
         private void Map_OnPolygonClick(GMapPolygon item, MouseEventArgs e)
         {
-            if (GetIsDrawingPolygon)
+            if (GetIsDrawingPolygon || item == null)
                 return;
             if (Zoom >= 12)
                 SelectPolygon((Polygon)item);
@@ -151,9 +151,11 @@ namespace ParkPlaces.Controls
                 var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
 #if DEBUG
-                var version = $"Debug version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
+                var version =
+                    $"Debug version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
 #else
-                var  version = $"Release version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
+                var  version =
+ $"Release version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
 #endif
 
                 e.Graphics.DrawString(version, BlueFont, Brushes.Blue, new Point(5, 5));
@@ -262,9 +264,7 @@ namespace ParkPlaces.Controls
             base.OnDoubleClick(e);
 
             if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
-            {
                 new EditZoneForm((PolyZone)CurrentPolygon.Tag).Show();
-            }
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -324,12 +324,9 @@ namespace ParkPlaces.Controls
                     Color = ColorTranslator.ToHtml((_currentDrawingPolygon.Fill as SolidBrush)?.Color ?? Color.Black)
                 };
                 ((PolyZone)_currentDrawingPolygon.Tag).Geometry.AddRange(
-                    _currentDrawingPolygon.Points.Select(
-                        polygon => new Geometry { Lat = polygon.Lat, Lng = polygon.Lng }
-                    ).ToList()
+                    _currentDrawingPolygon.Points.Select(x => x.ToGeometry()).ToList()
                 );
-                Map_OnPolygonClick(
-                    Polygons.Polygons.First(polygon => (Polygon)polygon == _currentDrawingPolygon), null);
+                Map_OnPolygonClick(Polygons.Polygons.FirstOrDefault(polygon => (Polygon)polygon == _currentDrawingPolygon), null);
             }
             else
             {
