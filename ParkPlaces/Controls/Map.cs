@@ -328,9 +328,11 @@ namespace ParkPlaces.Controls
                     Zoneid = "",
                     Color = ColorTranslator.ToHtml((_currentDrawingPolygon.Fill as SolidBrush)?.Color ?? Color.Black)
                 };
+
                 ((PolyZone)_currentDrawingPolygon.Tag).Geometry.AddRange(
-                    _currentDrawingPolygon.Points.Select(x => x.ToGeometry()).ToList()
+                    _currentDrawingPolygon.Points.Select(x => x.ToGeometry())
                 );
+
                 Map_OnPolygonClick(Polygons.Polygons.FirstOrDefault(polygon => polygon == _currentDrawingPolygon), null);
             }
             else
@@ -355,7 +357,7 @@ namespace ParkPlaces.Controls
 
                 if (iPolygon > -1)
                 {
-                    Polygons.Polygons.Remove(p);
+                    Polygons.Polygons.RemoveAt(iPolygon);
                     ClearSelection();
                 }
             }

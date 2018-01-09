@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Text;
 using GMap.NET;
 using GMap.NET.WindowsForms;
 using ParkPlaces.IO;
@@ -21,17 +23,9 @@ namespace ParkPlaces.Map_shapes
 
         public Point GetCentroid()
         {
-            var centroidX = 0.0;
-            var centroidY = 0.0;
-
-            for (var i = 0; i < LocalPoints.Count - 1; i++)
-            {
-                centroidX += LocalPoints[i].X;
-                centroidY += LocalPoints[i].Y;
-            }
-
-            centroidX /= LocalPoints.Count - 1;
-            centroidY /= LocalPoints.Count - 1;
+            var count = LocalPoints.Count - 1;
+            var centroidX = LocalPoints.Sum(m => m.X) / count;
+            var centroidY = LocalPoints.Sum(m => m.Y) / count;
 
             return (new Point((int)centroidX, (int)centroidY));
         }
@@ -45,21 +39,22 @@ namespace ParkPlaces.Map_shapes
             return _area;
         }
 
-        public string GetAreaAsString(int decimalPlaces, bool inSquareMetres = true)
+        public string GetAreaAsString1(int decimalPlaces, bool inSquareMetres = true)
         {
-            var format = "0.";
+            var sb = new StringBuilder("0.");
+
             for (var i = 0; i < decimalPlaces; i++)
-                format += "#";
+                sb.Append("#");
 
             if (!inSquareMetres)
             {
-                format += "km2";
-                return (GetArea() / 1000000).ToString(format);
+                sb.Append("km2");
+                return (GetArea() / 1000000).ToString(sb.ToString());
             }
             else
             {
-                format += "m2";
-                return GetArea().ToString(format);
+                sb.Append("m2");
+                return GetArea().ToString(sb.ToString());
             }
         }
 
