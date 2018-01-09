@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GMap.NET;
 using Newtonsoft.Json;
 
