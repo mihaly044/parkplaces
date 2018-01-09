@@ -20,25 +20,25 @@ namespace ParkPlaces.Utils
 
         private static double PolarTriangleArea(double tan1, double lng1, double tan2, double lng2)
         {
-            double deltaLng = lng1 - lng2;
-            double t = tan1 * tan2;
+            var deltaLng = lng1 - lng2;
+            var t = tan1 * tan2;
             return 2 * Math.Atan2(t * Math.Sin(deltaLng), 1 + t * Math.Cos(deltaLng));
         }
 
         public static double ComputeSignedArea(List<PointLatLng> path, double radius = EarthRadius)
         {
-            int size = path.Count;
+            var size = path.Count;
             if (size < 3) { return 0; }
             double total = 0;
-            PointLatLng prev = path[size - 1];
-            double prevTanLat = Math.Tan((Math.PI / 2 - ToRadians(prev.Lat)) / 2);
-            double prevLng = ToRadians(prev.Lng);
+            var prev = path[size - 1];
+            var prevTanLat = Math.Tan((Math.PI / 2 - ToRadians(prev.Lat)) / 2);
+            var prevLng = ToRadians(prev.Lng);
             // For each edge, accumulate the signed area of the triangle formed by the North Pole
             // and that edge ("polar triangle").
-            foreach (PointLatLng point in path)
+            foreach (var point in path)
             {
-                double tanLat = Math.Tan((Math.PI / 2 - ToRadians(point.Lat)) / 2);
-                double lng = ToRadians(point.Lng);
+                var tanLat = Math.Tan((Math.PI / 2 - ToRadians(point.Lat)) / 2);
+                var lng = ToRadians(point.Lng);
                 total += PolarTriangleArea(tanLat, lng, prevTanLat, prevLng);
                 prevTanLat = tanLat;
                 prevLng = lng;

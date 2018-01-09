@@ -24,7 +24,7 @@ namespace ParkPlaces.Map_shapes
             var centroidX = 0.0;
             var centroidY = 0.0;
 
-            for (int i = 0; i < LocalPoints.Count - 1; i++)
+            for (var i = 0; i < LocalPoints.Count - 1; i++)
             {
                 centroidX += LocalPoints[i].X;
                 centroidY += LocalPoints[i].Y;

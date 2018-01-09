@@ -169,10 +169,10 @@ namespace ParkPlaces.Controls
 
         protected override void OnPaint(PaintEventArgs pe)
         {
-            Graphics g = pe.Graphics;
+            var g = pe.Graphics;
             ColorButton(g);
 
-            GraphicsPath path = new GraphicsPath();
+            var path = new GraphicsPath();
             path.AddEllipse(0, 0, ClientSize.Width, ClientSize.Height);
             Region = new Region(path);
         }
@@ -193,19 +193,19 @@ namespace ParkPlaces.Controls
         private void ColorButton2(Graphics g)
         {
             int x = 0, y = 0;
-            Color origPenColor = _pen.Color;
-            Color origBrushColor = _brushInside.Color;
+            var origPenColor = _pen.Color;
+            var origBrushColor = _brushInside.Color;
 
             for (; x <= ClientSize.Width / 2 && y <= ClientSize.Height / 2; x += _colorStepGradient, y += _colorStepGradient)
             {
                 g.DrawEllipse(_pen, x, y, ClientSize.Width, ClientSize.Height);
                 g.FillEllipse(_brushInside, x, y, ClientSize.Width, ClientSize.Height);
 
-                byte newR = ((byte)(_pen.Color.R - _colorgradient) > 0 ? (byte)(_pen.Color.R - _colorgradient) : _pen.Color.R);
-                byte newG = ((byte)(_pen.Color.G - _colorgradient) > 0 ? (byte)(_pen.Color.G - _colorgradient) : _pen.Color.G);
-                byte newB = ((byte)(_pen.Color.B - _colorgradient) > 0 ? (byte)(_pen.Color.B - _colorgradient) : _pen.Color.B);
+                var newR = ((byte)(_pen.Color.R - _colorgradient) > 0 ? (byte)(_pen.Color.R - _colorgradient) : _pen.Color.R);
+                var newG = ((byte)(_pen.Color.G - _colorgradient) > 0 ? (byte)(_pen.Color.G - _colorgradient) : _pen.Color.G);
+                var newB = ((byte)(_pen.Color.B - _colorgradient) > 0 ? (byte)(_pen.Color.B - _colorgradient) : _pen.Color.B);
 
-                Color newcolor = Color.FromArgb(newR, newG, newB);
+                var newcolor = Color.FromArgb(newR, newG, newB);
                 _pen.Color = newcolor;
                 _brushInside.Color = newcolor;
             }
@@ -221,8 +221,8 @@ namespace ParkPlaces.Controls
         private void ColorButton3(Graphics g)
         {
             int x = 0, y = 0;
-            Color origPenColor = _pen.Color;
-            Color origBrushColor = _brushInside.Color;
+            var origPenColor = _pen.Color;
+            var origBrushColor = _brushInside.Color;
             int width = ClientSize.Width, height = ClientSize.Height;
 
             for (; x <= width / 2 && y <= height / 2; x += _colorStepGradient, y += _colorStepGradient, width -= 2 * _colorStepGradient, height -= 2 * _colorStepGradient)
@@ -230,11 +230,11 @@ namespace ParkPlaces.Controls
                 g.DrawEllipse(_pen, x, y, width, height);
                 g.FillEllipse(_brushInside, x, y, width, height);
 
-                byte newR = ((byte)(_pen.Color.R - _colorgradient) > 0 ? (byte)(_pen.Color.R - _colorgradient) : _pen.Color.R);
-                byte newG = ((byte)(_pen.Color.G - _colorgradient) > 0 ? (byte)(_pen.Color.G - _colorgradient) : _pen.Color.G);
-                byte newB = ((byte)(_pen.Color.B - _colorgradient) > 0 ? (byte)(_pen.Color.B - _colorgradient) : _pen.Color.B);
+                var newR = ((byte)(_pen.Color.R - _colorgradient) > 0 ? (byte)(_pen.Color.R - _colorgradient) : _pen.Color.R);
+                var newG = ((byte)(_pen.Color.G - _colorgradient) > 0 ? (byte)(_pen.Color.G - _colorgradient) : _pen.Color.G);
+                var newB = ((byte)(_pen.Color.B - _colorgradient) > 0 ? (byte)(_pen.Color.B - _colorgradient) : _pen.Color.B);
 
-                Color newcolor = Color.FromArgb(newR, newG, newB);
+                var newcolor = Color.FromArgb(newR, newG, newB);
                 _pen.Color = newcolor;
                 _brushInside.Color = newcolor;
             }
@@ -250,8 +250,8 @@ namespace ParkPlaces.Controls
         private void ColorButton4(Graphics g)
         {
             int x = 0, y = 0;
-            Color origPenColor = _pen.Color;
-            Color origBrushColor = _brushInside.Color;
+            var origPenColor = _pen.Color;
+            var origBrushColor = _brushInside.Color;
             int width = ClientSize.Width, height = ClientSize.Height;
 
             for (; x <= width / 2 && y <= height / 2; x += _colorStepGradient, y += _colorStepGradient, width -= 2 * _colorStepGradient, height -= 2 * _colorStepGradient)
@@ -259,9 +259,9 @@ namespace ParkPlaces.Controls
                 g.DrawEllipse(_pen, x, y, width, height);
                 g.FillEllipse(_brushInside, x, y, width, height);
 
-                byte newR = _pen.Color.R;
-                byte newG = _pen.Color.G;
-                byte newB = _pen.Color.B;
+                var newR = _pen.Color.R;
+                var newG = _pen.Color.G;
+                var newB = _pen.Color.B;
 
                 if (_fadeOut)
                 {
@@ -286,7 +286,7 @@ namespace ParkPlaces.Controls
                         newB = (byte)(_pen.Color.B - _colorgradient);
                 }
 
-                Color newcolor = Color.FromArgb(newR, newG, newB);
+                var newcolor = Color.FromArgb(newR, newG, newB);
                 _pen.Color = newcolor;
                 _brushInside.Color = newcolor;
             }
@@ -303,8 +303,8 @@ namespace ParkPlaces.Controls
         private void ColorButton5(Graphics g, Pen pen, SolidBrush brush)
         {
             int x = 0, y = 0;
-            Color origPenColor = pen.Color;
-            Color origBrushColor = brush.Color;
+            var origPenColor = pen.Color;
+            var origBrushColor = brush.Color;
             int width = ClientSize.Width, height = ClientSize.Height;
 
             for (; x <= width / 2 && y <= height / 2; x += _colorStepGradient, y += _colorStepGradient, width -= 2 * _colorStepGradient, height -= 2 * _colorStepGradient)
@@ -333,9 +333,9 @@ namespace ParkPlaces.Controls
 
                 g.FillEllipse(brush, x, y, width, height);
 
-                byte newR = pen.Color.R;
-                byte newG = pen.Color.G;
-                byte newB = pen.Color.B;
+                var newR = pen.Color.R;
+                var newG = pen.Color.G;
+                var newB = pen.Color.B;
 
                 if (_fadeOut)
                 // outer rim -> darker color
@@ -362,7 +362,7 @@ namespace ParkPlaces.Controls
                         newB = (byte)(pen.Color.B - _colorgradient);
                 }
 
-                Color newcolor = Color.FromArgb(newR, newG, newB);
+                var newcolor = Color.FromArgb(newR, newG, newB);
                 pen.Color = newcolor;
                 brush.Color = newcolor;
             }
@@ -385,7 +385,7 @@ namespace ParkPlaces.Controls
             // depends on ImageAlign
             if (Image != null)
             {
-                Rectangle rc = new Rectangle(new Point((Width - Image.Width) / 2, (Height - Image.Height) / 2), new Size(Image.Width, Image.Height));
+                var rc = new Rectangle(new Point((Width - Image.Width) / 2, (Height - Image.Height) / 2), new Size(Image.Width, Image.Height));
                 g.DrawImage(Image, rc);
             }
         }

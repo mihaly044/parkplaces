@@ -109,7 +109,7 @@ namespace ParkPlaces.Controls
         {
             if (item is RectMarker && !_isMouseDown)
             {
-                RectMarker rc = item as RectMarker;
+                var rc = item as RectMarker;
                 rc.Pen.Color = Color.Red;
 
                 _currentRectMaker = rc;
@@ -121,7 +121,7 @@ namespace ParkPlaces.Controls
             if (item is RectMarker)
             {
                 _currentRectMaker = null;
-                RectMarker rc = item as RectMarker;
+                var rc = item as RectMarker;
                 rc.Pen.Color = Color.Blue;
             }
         }
@@ -150,9 +150,9 @@ namespace ParkPlaces.Controls
 
             if (DisplayVersionInfo)
             {
-                System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-                string version = "";
+                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                var version = "";
 
 #if DEBUG
                 version = string.Format("Debug version {0}, OS: {1}, .NET v{2}", fvi.FileVersion, Environment.OSVersion, Environment.Version);
@@ -164,13 +164,13 @@ namespace ParkPlaces.Controls
 
             if (HasGradientSide)
             {
-                LinearGradientBrush linGrBrush = new LinearGradientBrush(
+                var linGrBrush = new LinearGradientBrush(
                    new Point(0, 0),
                    new Point(GradientWidth, 0),
                    Color.FromArgb(95, 0, 0, 0),
                    Color.FromArgb(0, 0, 0, 0));
 
-                Rectangle r = new Rectangle(ClientRectangle.Location, ClientRectangle.Size);
+                var r = new Rectangle(ClientRectangle.Location, ClientRectangle.Size);
                 r.Width = GradientWidth;
 
                 e.Graphics.FillRectangle(linGrBrush, r);
@@ -211,9 +211,9 @@ namespace ParkPlaces.Controls
                 }
                 else
                 {
-                    PointLatLng pnew = FromLocalToLatLng(e.X, e.Y);
+                    var pnew = FromLocalToLatLng(e.X, e.Y);
 
-                    int? pIndex = (int?)_currentRectMaker.Tag;
+                    var pIndex = (int?)_currentRectMaker.Tag;
                     if (pIndex.HasValue)
                     {
                         if (pIndex < CurrentPolygon.Points.Count)
@@ -269,7 +269,7 @@ namespace ParkPlaces.Controls
 
             if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
             {
-                EditZoneForm editForm = new EditZoneForm((PolyZone)CurrentPolygon.Tag);
+                var editForm = new EditZoneForm((PolyZone)CurrentPolygon.Tag);
                 editForm.Show();
             }
         }
@@ -296,7 +296,7 @@ namespace ParkPlaces.Controls
         {
             if (_currentDrawingPolygon == null)
             {
-                List<PointLatLng> points = new List<PointLatLng>() { _pointer.Position };
+                var points = new List<PointLatLng>() { _pointer.Position };
                 _currentDrawingPolygon = new Polygon(points, "New polygon") { IsHitTestVisible = true };
                 Polygons.Polygons.Add(_currentDrawingPolygon);
             }
@@ -347,7 +347,7 @@ namespace ParkPlaces.Controls
                 EndDrawPolygon(false);
             else if (p != null)
             {
-                int iPolygon = Polygons.Polygons.IndexOf(p);
+                var iPolygon = Polygons.Polygons.IndexOf(p);
 
                 if (iPolygon > -1)
                 {
@@ -361,7 +361,7 @@ namespace ParkPlaces.Controls
         {
             if (CurrentPolygon != null)
             {
-                Color polygonColor = ColorTranslator.FromHtml(((PolyZone)CurrentPolygon.Tag).Color);
+                var polygonColor = ColorTranslator.FromHtml(((PolyZone)CurrentPolygon.Tag).Color);
                 CurrentPolygon.Stroke = new Pen(polygonColor);
                 CurrentPolygon.Stroke.Width = 2;
                 CurrentPolygon.Fill = new SolidBrush(Color.FromArgb(60, polygonColor));
@@ -380,9 +380,9 @@ namespace ParkPlaces.Controls
             CurrentPolygon = p;
             CurrentPolygon.IsSelected = true;
 
-            for (int i = 0; i < p.Points.Count; i++)
+            for (var i = 0; i < p.Points.Count; i++)
             {
-                RectMarker mBorders = new RectMarker(CurrentPolygon.Points[i]);
+                var mBorders = new RectMarker(CurrentPolygon.Points[i]);
                 mBorders.Tag = i;
                 PolygonRects.Markers.Add(mBorders);
             }
@@ -392,19 +392,19 @@ namespace ParkPlaces.Controls
         {
             _fromJsonData = Dto2Object.FromJson(Properties.Resources.data);
 
-            foreach (PolyZone zone in _fromJsonData.Zones)
+            foreach (var zone in _fromJsonData.Zones)
             {
                 // TODO: Avoid too much data being shown on the map
                 //if (!zone.Id.Contains("BUDAPEST"))
                 //    continue;
 
-                List<PointLatLng> polygonPoints = new List<PointLatLng>();
-                foreach (Geometry geometry in zone.Geometry)
+                var polygonPoints = new List<PointLatLng>();
+                foreach (var geometry in zone.Geometry)
                 {
                     polygonPoints.Add(new PointLatLng(geometry.Lat, geometry.Lng));
                 }
 
-                Color polygonColor = ColorTranslator.FromHtml(zone.Color);
+                var polygonColor = ColorTranslator.FromHtml(zone.Color);
                 Polygons.Polygons.Add(new Polygon(polygonPoints, zone.Description)
                 {
                     Tag = zone,
