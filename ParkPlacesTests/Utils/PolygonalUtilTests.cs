@@ -14,8 +14,7 @@ namespace ParkPlacesTests.Utils
     [TestClass()]
     public class PolygonalUtilTests
     {
-
-        readonly List<PointLatLng> _path = new List<PointLatLng>(4)
+        private readonly List<PointLatLng> _path = new List<PointLatLng>(4)
         {
             new PointLatLng(47.454921311932566d, 19.03005838394165d),
             new PointLatLng(47.455240509746986d, 19.032289981842041d),
