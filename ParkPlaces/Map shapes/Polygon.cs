@@ -10,44 +10,45 @@ namespace ParkPlaces.Map_shapes
     public class Polygon : GMapPolygon
     {
         public bool IsSelected { get; set; }
-        private bool AreaNeedsUpdate;
-        private double Area;
-        private Font NameFont;
+        private bool _areaNeedsUpdate;
+        private double _area;
+        // private Font _nameFont; //never used
 
         public Polygon(List<PointLatLng> points, string description) : base(points, description)
         {
-            AreaNeedsUpdate = true;
+            _areaNeedsUpdate = true;
         }
 
-        public System.Drawing.Point GetCentroid()
+        public Point GetCentroid()
         {
-            double centroidX = 0.0;
-            double centroidY = 0.0;
+            var centroidX = 0.0;
+            var centroidY = 0.0;
 
             for (int i = 0; i < LocalPoints.Count - 1; i++)
             {
                 centroidX += LocalPoints[i].X;
                 centroidY += LocalPoints[i].Y;
             }
+
             centroidX /= LocalPoints.Count - 1;
             centroidY /= LocalPoints.Count - 1;
 
-            return (new System.Drawing.Point((int)centroidX, (int)centroidY));
+            return (new Point((int)centroidX, (int)centroidY));
         }
 
         public double GetArea()
         {
-            if (AreaNeedsUpdate)
-                Area = PolygonalUtil.computeArea(Points);
+            if (_areaNeedsUpdate)
+                _area = PolygonalUtil.computeArea(Points);
 
-            AreaNeedsUpdate = false;
-            return Area;
+            _areaNeedsUpdate = false;
+            return _area;
         }
 
         public string GetAreaAsString(int decimalPlaces, bool inSquareMetres = true)
         {
-            string format = "0.";
-            for (int i = 0; i < decimalPlaces; i++)
+            var format = "0.";
+            for (var i = 0; i < decimalPlaces; i++)
                 format += "#";
 
             if (!inSquareMetres)
@@ -64,7 +65,7 @@ namespace ParkPlaces.Map_shapes
 
         public void PointsHasChanged()
         {
-            AreaNeedsUpdate = true;
+            _areaNeedsUpdate = true;
         }
 
         public override void OnRender(Graphics g)
@@ -74,7 +75,7 @@ namespace ParkPlaces.Map_shapes
             if (Tag == null)
                 return;
 
-            System.Drawing.Point centroid = GetCentroid();
+            var centroid = GetCentroid();
             centroid.X -= (((PolyZone)Tag).Zoneid.Length * 10) / 2;
 
             if (IsSelected)
@@ -85,7 +86,7 @@ namespace ParkPlaces.Map_shapes
             if (Overlay.Control.Zoom >= 15)
             {
                 centroid.Y += (int)Overlay.Control.Zoom + 5;
-                g.DrawString(GetAreaAsString(4, true), new Font("Arial", (int)Overlay.Control.Zoom / 2), Brushes.Black, centroid);
+                g.DrawString(GetAreaAsString(4), new Font("Arial", (int)(Overlay.Control.Zoom / 2)), Brushes.Black, centroid);
             }
         }
     }
