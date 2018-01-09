@@ -11,7 +11,7 @@ namespace ParkPlaces.Controls
     /// <summary>
     /// Summary description for RoundButton.
     /// </summary>
-    public partial class RoundButton : Button
+    public sealed partial class RoundButton : Button
     {
         /// <summary>
         /// Required designer variable.
@@ -130,8 +130,7 @@ namespace ParkPlaces.Controls
             _hoverBrushInside = new SolidBrush(_hoverColor);
 
             _blackPen = new Pen(Color.FromKnownColor(KnownColor.Black), 2);
-            _dashedPen = new Pen(Color.FromKnownColor(KnownColor.Black), 1);
-            _dashedPen.DashStyle = DashStyle.Dot;
+            _dashedPen = new Pen(Color.FromKnownColor(KnownColor.Black), 1) { DashStyle = DashStyle.Dot };
         }
 
         /// <summary>
@@ -141,8 +140,7 @@ namespace ParkPlaces.Controls
         {
             if (disposing)
             {
-                if (_components != null)
-                    _components.Dispose();
+                _components?.Dispose();
             }
             base.Dispose(disposing);
         }

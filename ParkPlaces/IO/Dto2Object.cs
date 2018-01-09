@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Collections.Generic;
+using GMap.NET;
 using Newtonsoft.Json;
 
 // To parse this JSON data, add NuGet 'Newtonsoft.Json' then do:
@@ -56,10 +57,30 @@ namespace ParkPlaces.IO
     public partial class Geometry
     {
         [JsonProperty("lat")]
-        public double Lat { get; set; }
+        public double Lat
+        {
+            get => _internalPoint.Lat;
+            set => _internalPoint.Lat = value;
+        }
 
         [JsonProperty("lng")]
-        public double Lng { get; set; }
+        public double Lng
+        {
+            get => _internalPoint.Lng;
+            set => _internalPoint.Lng = value;
+        }
+
+        private PointLatLng _internalPoint;
+
+        public Geometry()
+        {
+            _internalPoint = new PointLatLng();
+        }
+
+        public Geometry(PointLatLng input)
+        {
+            _internalPoint = input;
+        }
     }
 
     public partial class Dto2Object
