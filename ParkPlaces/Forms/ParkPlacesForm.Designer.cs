@@ -53,7 +53,7 @@ namespace ParkPlaces
             this.statisticsButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(1008, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1029, 25);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -119,10 +119,10 @@ namespace ParkPlaces
             this.SelectMapProviderButton,
             this.lblZoom,
             this.lblMouse});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 707);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 604);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.statusStrip1.Size = new System.Drawing.Size(1008, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1029, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -142,7 +142,7 @@ namespace ParkPlaces
             this.Map.HasGradientSide = false;
             this.Map.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             this.Map.LevelsKeepInMemmory = 5;
-            this.Map.Location = new System.Drawing.Point(-2, 0);
+            this.Map.Location = new System.Drawing.Point(-2, 22);
             this.Map.MarkersEnabled = true;
             this.Map.MaxZoom = 20;
             this.Map.MinZoom = 8;
@@ -156,7 +156,7 @@ namespace ParkPlaces
             this.Map.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.Map.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.Map.ShowTileGridLines = false;
-            this.Map.Size = new System.Drawing.Size(1010, 704);
+            this.Map.Size = new System.Drawing.Size(1031, 580);
             this.Map.TabIndex = 0;
             this.Map.Zoom = 15D;
             this.Map.OnDrawPolygonEnd += new ParkPlaces.Controls.Map.DrawPolygonEnd(this.Map_DrawPolygonEnd);
@@ -170,13 +170,12 @@ namespace ParkPlaces
             this.statisticsButton.Name = "statisticsButton";
             this.statisticsButton.Size = new System.Drawing.Size(73, 22);
             this.statisticsButton.Text = "Statistics";
-            this.statisticsButton.Click += new System.EventHandler(this.statisticsButton_Click);
             // 
             // ParkPlacesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 729);
+            this.ClientSize = new System.Drawing.Size(1029, 626);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.Map);

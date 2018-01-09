@@ -59,8 +59,7 @@ namespace ParkPlaces
 
         private void statisticsButton_Click(object sender, EventArgs e)
         {
-            // TODO: implement statistics module
-            throw new NotImplementedException();
+
         }
     }
 }
