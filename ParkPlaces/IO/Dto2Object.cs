@@ -19,7 +19,7 @@ namespace ParkPlaces.IO
         public List<PolyZone> Zones { get; set; }
     }
 
-    public partial class PolyZone
+    public class PolyZone
     {
         [JsonProperty("color")]
         public string Color { get; set; }
@@ -52,7 +52,7 @@ namespace ParkPlaces.IO
         public string Timetable { get; set; }
     }
 
-    public partial class Geometry
+    public class Geometry
     {
         [JsonProperty("lat")]
         public double Lat
