@@ -11,21 +11,21 @@ namespace ParkPlaces.Utils
     /// </summary>
     public static class PolygonalUtil
     {
-        private const double EARTH_RADIUS = 6378137;
+        private const double EarthRadius = 6378137;
 
         public static double ToRadians(double d)
         {
             return (d * Math.PI) / 180;
         }
 
-        private static double polarTriangleArea(double tan1, double lng1, double tan2, double lng2)
+        private static double PolarTriangleArea(double tan1, double lng1, double tan2, double lng2)
         {
             double deltaLng = lng1 - lng2;
             double t = tan1 * tan2;
             return 2 * Math.Atan2(t * Math.Sin(deltaLng), 1 + t * Math.Cos(deltaLng));
         }
 
-        public static double computeSignedArea(List<PointLatLng> path, double radius = EARTH_RADIUS)
+        public static double ComputeSignedArea(List<PointLatLng> path, double radius = EarthRadius)
         {
             int size = path.Count;
             if (size < 3) { return 0; }
@@ -39,16 +39,16 @@ namespace ParkPlaces.Utils
             {
                 double tanLat = Math.Tan((Math.PI / 2 - ToRadians(point.Lat)) / 2);
                 double lng = ToRadians(point.Lng);
-                total += polarTriangleArea(tanLat, lng, prevTanLat, prevLng);
+                total += PolarTriangleArea(tanLat, lng, prevTanLat, prevLng);
                 prevTanLat = tanLat;
                 prevLng = lng;
             }
             return total * (radius * radius);
         }
 
-        public static double computeArea(List<PointLatLng> path)
+        public static double ComputeArea(List<PointLatLng> path)
         {
-            return Math.Abs(computeSignedArea(path));
+            return Math.Abs(ComputeSignedArea(path));
         }
     }
 }

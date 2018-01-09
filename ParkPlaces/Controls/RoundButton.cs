@@ -16,7 +16,7 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private Container components = null;
+        private Container _components = null;
 
         private Pen _pen = null;
         private SolidBrush _brushText = null, _brushInside = null;
@@ -140,8 +140,8 @@ namespace ParkPlaces.Controls
         {
             if (disposing)
             {
-                if (components != null)
-                    components.Dispose();
+                if (_components != null)
+                    _components.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -21,16 +21,16 @@ namespace ParkPlaces.Controls
     {
         #region Fields
 
-        private Pen MouseEnterStrokeClr;
-        private Brush MouseEnterFillClr;
-        private bool IsMouseDown;
-        private bool IsDrawingPolygon;
-        private GMapMarker Pointer;
-        private RectMarker CurrentRectMaker;
+        private Pen _mouseEnterStrokeClr;
+        private Brush _mouseEnterFillClr;
+        private bool _isMouseDown;
+        private bool _isDrawingPolygon;
+        private GMapMarker _pointer;
+        private RectMarker _currentRectMaker;
         public Polygon CurrentPolygon;
-        private Polygon CurrentDrawingPolygon;
-        private Dto2Object FromJSONData;
-        private Point PreviousMouseLocation;
+        private Polygon _currentDrawingPolygon;
+        private Dto2Object _fromJsonData;
+        private Point _previousMouseLocation;
 
         [Category("Map Extension")]
         public bool HasGradientSide { get; set; }
@@ -47,7 +47,7 @@ namespace ParkPlaces.Controls
         [DefaultValue(100)]
         public int GradientWidth { get; set; }
 
-        public bool getIsDrawingPolygon { get => IsDrawingPolygon; set => IsDrawingPolygon = value; }
+        public bool GetIsDrawingPolygon { get => _isDrawingPolygon; set => _isDrawingPolygon = value; }
 
         #endregion Fields
 
@@ -82,15 +82,15 @@ namespace ParkPlaces.Controls
             InitializeComponent();
             DisableFocusOnMouseEnter = true;
 
-            MouseEnterStrokeClr = new Pen(Brushes.Blue);
-            MouseEnterStrokeClr.Width = 2;
-            MouseEnterFillClr = new SolidBrush(Color.FromArgb(90, Color.Blue));
-            IsMouseDown = false;
-            IsDrawingPolygon = false;
+            _mouseEnterStrokeClr = new Pen(Brushes.Blue);
+            _mouseEnterStrokeClr.Width = 2;
+            _mouseEnterFillClr = new SolidBrush(Color.FromArgb(90, Color.Blue));
+            _isMouseDown = false;
+            _isDrawingPolygon = false;
             ShowCenter = false;
 
-            Pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
-            TopLayer.Markers.Add(Pointer);
+            _pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
+            TopLayer.Markers.Add(_pointer);
         }
 
         #endregion Constructors
@@ -99,7 +99,7 @@ namespace ParkPlaces.Controls
 
         private void Map_OnPolygonClick(GMapPolygon item, MouseEventArgs e)
         {
-            if (IsDrawingPolygon)
+            if (_isDrawingPolygon)
                 return;
             if (Zoom >= 12)
                 SelectPolygon((Polygon)item);
@@ -107,12 +107,12 @@ namespace ParkPlaces.Controls
 
         private void Map_OnMarkerEnter(GMapMarker item)
         {
-            if (item is RectMarker && !IsMouseDown)
+            if (item is RectMarker && !_isMouseDown)
             {
                 RectMarker rc = item as RectMarker;
                 rc.Pen.Color = Color.Red;
 
-                CurrentRectMaker = rc;
+                _currentRectMaker = rc;
             }
         }
 
@@ -120,7 +120,7 @@ namespace ParkPlaces.Controls
         {
             if (item is RectMarker)
             {
-                CurrentRectMaker = null;
+                _currentRectMaker = null;
                 RectMarker rc = item as RectMarker;
                 rc.Pen.Color = Color.Blue;
             }
@@ -191,11 +191,11 @@ namespace ParkPlaces.Controls
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && IsMouseDown)
+            if (e.Button == MouseButtons.Left && _isMouseDown)
             {
-                if (CurrentRectMaker == null)
+                if (_currentRectMaker == null)
                 {
-                    Pointer.Position = FromLocalToLatLng(e.X, e.Y);
+                    _pointer.Position = FromLocalToLatLng(e.X, e.Y);
 
                     // TODO: Fix polygon dragging
                     /*if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
@@ -213,7 +213,7 @@ namespace ParkPlaces.Controls
                 {
                     PointLatLng pnew = FromLocalToLatLng(e.X, e.Y);
 
-                    int? pIndex = (int?)CurrentRectMaker.Tag;
+                    int? pIndex = (int?)_currentRectMaker.Tag;
                     if (pIndex.HasValue)
                     {
                         if (pIndex < CurrentPolygon.Points.Count)
@@ -227,18 +227,18 @@ namespace ParkPlaces.Controls
                     }
 
                     CurrentPolygon.PointsHasChanged();
-                    Pointer.Position = pnew;
-                    CurrentRectMaker.Position = pnew;
+                    _pointer.Position = pnew;
+                    _currentRectMaker.Position = pnew;
                 }
             }
-            PreviousMouseLocation = e.Location;
+            _previousMouseLocation = e.Location;
             base.OnMouseMove(e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                IsMouseDown = !IsMouseDown;
+                _isMouseDown = !_isMouseDown;
 
             base.OnMouseUp(e);
         }
@@ -247,16 +247,16 @@ namespace ParkPlaces.Controls
         {
             if (e.Button == MouseButtons.Left)
             {
-                Pointer.Position = FromLocalToLatLng(e.X, e.Y);
-                IsMouseDown = true;
+                _pointer.Position = FromLocalToLatLng(e.X, e.Y);
+                _isMouseDown = true;
 
-                if (IsDrawingPolygon)
+                if (_isDrawingPolygon)
                     DrawNewPolygonPoint();
 
                 if (!IsMouseOverPolygon && !IsMouseOverMarker)
                     ClearSelection();
             }
-            else if (IsDrawingPolygon && e.Button == MouseButtons.Right)
+            else if (_isDrawingPolygon && e.Button == MouseButtons.Right)
             {
                 drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
             }
@@ -278,7 +278,7 @@ namespace ParkPlaces.Controls
         {
             base.OnKeyDown(e);
 
-            if (IsDrawingPolygon)
+            if (_isDrawingPolygon)
             {
                 switch (e.KeyCode)
                 {
@@ -294,56 +294,56 @@ namespace ParkPlaces.Controls
 
         private void DrawNewPolygonPoint()
         {
-            if (CurrentDrawingPolygon == null)
+            if (_currentDrawingPolygon == null)
             {
-                List<PointLatLng> points = new List<PointLatLng>() { Pointer.Position };
-                CurrentDrawingPolygon = new Polygon(points, "New polygon") { IsHitTestVisible = true };
-                Polygons.Polygons.Add(CurrentDrawingPolygon);
+                List<PointLatLng> points = new List<PointLatLng>() { _pointer.Position };
+                _currentDrawingPolygon = new Polygon(points, "New polygon") { IsHitTestVisible = true };
+                Polygons.Polygons.Add(_currentDrawingPolygon);
             }
             else
             {
-                CurrentDrawingPolygon.Points.Add(Pointer.Position);
-                UpdatePolygonLocalPosition(CurrentDrawingPolygon);
-                CurrentDrawingPolygon.PointsHasChanged();
+                _currentDrawingPolygon.Points.Add(_pointer.Position);
+                UpdatePolygonLocalPosition(_currentDrawingPolygon);
+                _currentDrawingPolygon.PointsHasChanged();
             }
         }
 
         public void BeginDrawPolygon()
         {
-            IsDrawingPolygon = true;
+            _isDrawingPolygon = true;
         }
 
-        private void EndDrawPolygon(bool Save)
+        private void EndDrawPolygon(bool save)
         {
-            IsDrawingPolygon = false;
+            _isDrawingPolygon = false;
 
-            if (Save)
+            if (save)
             {
-                CurrentDrawingPolygon.Tag = new PolyZone()
+                _currentDrawingPolygon.Tag = new PolyZone()
                 {
                     Geometry = new List<Geometry>(),
                     Id = "",
                     Zoneid = "",
-                    Color = ColorTranslator.ToHtml((CurrentDrawingPolygon.Fill as SolidBrush).Color)
+                    Color = ColorTranslator.ToHtml((_currentDrawingPolygon.Fill as SolidBrush).Color)
                 };
-                ((PolyZone)CurrentDrawingPolygon.Tag).Geometry.AddRange(
-                        CurrentDrawingPolygon.Points.Select(
+                ((PolyZone)_currentDrawingPolygon.Tag).Geometry.AddRange(
+                        _currentDrawingPolygon.Points.Select(
                             polygon => new Geometry() { Lat = polygon.Lat, Lng = polygon.Lng }
                         ).ToList()
                 );
-                Map_OnPolygonClick(Polygons.Polygons.Where(polygon => (Polygon)polygon == CurrentDrawingPolygon).First(), null);
+                Map_OnPolygonClick(Polygons.Polygons.Where(polygon => (Polygon)polygon == _currentDrawingPolygon).First(), null);
             }
             else
-                Polygons.Polygons.Remove(CurrentDrawingPolygon);
+                Polygons.Polygons.Remove(_currentDrawingPolygon);
 
-            OnDrawPolygonEnd?.Invoke(CurrentDrawingPolygon);
+            OnDrawPolygonEnd?.Invoke(_currentDrawingPolygon);
 
-            CurrentDrawingPolygon = null;
+            _currentDrawingPolygon = null;
         }
 
         public void RemovePolygon(Polygon p)
         {
-            if (IsDrawingPolygon)
+            if (_isDrawingPolygon)
                 EndDrawPolygon(false);
             else if (p != null)
             {
@@ -375,8 +375,8 @@ namespace ParkPlaces.Controls
         {
             ClearSelection();
 
-            p.Stroke = MouseEnterStrokeClr;
-            p.Fill = MouseEnterFillClr;
+            p.Stroke = _mouseEnterStrokeClr;
+            p.Fill = _mouseEnterFillClr;
             CurrentPolygon = p;
             CurrentPolygon.IsSelected = true;
 
@@ -388,11 +388,11 @@ namespace ParkPlaces.Controls
             }
         }
 
-        public void loadPolygons()
+        public void LoadPolygons()
         {
-            FromJSONData = Dto2Object.FromJson(Properties.Resources.data);
+            _fromJsonData = Dto2Object.FromJson(Properties.Resources.data);
 
-            foreach (PolyZone zone in FromJSONData.Zones)
+            foreach (PolyZone zone in _fromJsonData.Zones)
             {
                 // TODO: Avoid too much data being shown on the map
                 //if (!zone.Id.Contains("BUDAPEST"))

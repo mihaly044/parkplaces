@@ -39,7 +39,7 @@ namespace ParkPlaces.Map_shapes
         public double GetArea()
         {
             if (_areaNeedsUpdate)
-                _area = PolygonalUtil.computeArea(Points);
+                _area = PolygonalUtil.ComputeArea(Points);
 
             _areaNeedsUpdate = false;
             return _area;

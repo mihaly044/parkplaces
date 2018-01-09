@@ -14,7 +14,7 @@ namespace ParkPlaces.Forms
 
         private void ParkPlacesForm_Load(object sender, EventArgs e)
         {
-            Map.loadPolygons();
+            Map.LoadPolygons();
             lblZoom.Text = $"Zoom: {Map.Zoom}";
         }
 
@@ -51,7 +51,7 @@ namespace ParkPlaces.Forms
 
         private void RemovePolygonButton_Click(object sender, EventArgs e)
         {
-            if (Map.CurrentPolygon == null && !Map.getIsDrawingPolygon)
+            if (Map.CurrentPolygon == null && !Map.GetIsDrawingPolygon)
                 MessageBox.Show("No polygon has been selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
                 Map.RemovePolygon(Map.CurrentPolygon);
