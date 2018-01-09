@@ -115,6 +115,18 @@ namespace ParkPlaces.Controls
         }
         #endregion
 
+        #region Context menu events
+        private void finalizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EndDrawPolygon(true);
+        }
+
+        private void cancelEscToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EndDrawPolygon(false);
+        }
+        #endregion
+
         #region Overrides
 
         protected override void OnPaint(PaintEventArgs e)
@@ -224,6 +236,10 @@ namespace ParkPlaces.Controls
 
                 if (IsDrawingPolygon)
                     DrawNewPolygonPoint();
+            }
+            else if(IsDrawingPolygon && e.Button == MouseButtons.Right)
+            {
+                drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
             }
             base.OnMouseDown(e);
         }

@@ -15,7 +15,7 @@ namespace ParkPlaces
         private void ParkPlacesForm_Load(object sender, EventArgs e)
         {
             Map.loadPolygons();
-            lblZoom.Text = "Zoom: " + Map.Zoom.ToString(); ;
+            lblZoom.Text = "Zoom: " + Map.Zoom.ToString();
         }
 
         private void Map_MouseMove(object sender, MouseEventArgs e)
