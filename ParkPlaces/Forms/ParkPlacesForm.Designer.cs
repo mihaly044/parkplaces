@@ -1,5 +1,6 @@
 ﻿using ParkPlaces.Controls;
-namespace ParkPlaces
+
+namespace ParkPlaces.Forms
 {
     partial class ParkPlacesForm
     {

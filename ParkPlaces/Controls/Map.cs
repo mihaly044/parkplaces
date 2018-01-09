@@ -8,11 +8,11 @@ using GMap.NET;
 using GMap.NET.WindowsForms.Markers;
 using GMap.NET.MapProviders;
 using ParkPlaces.IO;
-using ParkPlaces.Extensions;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
 using ParkPlaces.Forms;
 using System.Linq;
+using ParkPlaces.Map_shapes;
 
 namespace ParkPlaces.Controls
 {
@@ -20,6 +20,7 @@ namespace ParkPlaces.Controls
     public partial class Map : GMapControl
     {
         #region Fields
+
         private Pen MouseEnterStrokeClr;
         private Brush MouseEnterFillClr;
         private bool IsMouseDown;
@@ -48,27 +49,34 @@ namespace ParkPlaces.Controls
 
         public bool getIsDrawingPolygon { get => IsDrawingPolygon; set => IsDrawingPolygon = value; }
 
-        #endregion
+        #endregion Fields
 
         #region Delegates
+
         public delegate void DrawPolygonEnd(Polygon polygon);
-        #endregion
+
+        #endregion Delegates
 
         #region Events
+
         /// <summary>
         /// Occurs when polygon drawing has finished
         /// </summary>
         public event DrawPolygonEnd OnDrawPolygonEnd;
-        #endregion
+
+        #endregion Events
 
         #region Internals
+
         internal readonly GMapOverlay TopLayer = new GMapOverlay("topLayer");
         internal readonly GMapOverlay Polygons = new GMapOverlay("polygons");
         internal readonly GMapOverlay PolygonRects = new GMapOverlay("polygonRects");
         internal readonly Font BlueFont = new Font(FontFamily.GenericSansSerif, 7, FontStyle.Regular);
-        #endregion
+
+        #endregion Internals
 
         #region Constructors
+
         public Map()
         {
             InitializeComponent();
@@ -84,14 +92,16 @@ namespace ParkPlaces.Controls
             Pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
             TopLayer.Markers.Add(Pointer);
         }
-        #endregion
+
+        #endregion Constructors
 
         #region GMap events
+
         private void Map_OnPolygonClick(GMapPolygon item, MouseEventArgs e)
         {
             if (IsDrawingPolygon)
                 return;
-            if(Zoom >= 12)
+            if (Zoom >= 12)
                 SelectPolygon((Polygon)item);
         }
 
@@ -115,9 +125,11 @@ namespace ParkPlaces.Controls
                 rc.Pen.Color = Color.Blue;
             }
         }
-        #endregion
+
+        #endregion GMap events
 
         #region Context menu events
+
         private void finalizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EndDrawPolygon(true);
@@ -127,7 +139,8 @@ namespace ParkPlaces.Controls
         {
             EndDrawPolygon(false);
         }
-        #endregion
+
+        #endregion Context menu events
 
         #region Overrides
 
@@ -135,7 +148,7 @@ namespace ParkPlaces.Controls
         {
             base.OnPaint(e);
 
-            if(DisplayVersionInfo)
+            if (DisplayVersionInfo)
             {
                 System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
                 FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -243,7 +256,7 @@ namespace ParkPlaces.Controls
                 if (!IsMouseOverPolygon && !IsMouseOverMarker)
                     ClearSelection();
             }
-            else if(IsDrawingPolygon && e.Button == MouseButtons.Right)
+            else if (IsDrawingPolygon && e.Button == MouseButtons.Right)
             {
                 drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
             }
@@ -254,7 +267,7 @@ namespace ParkPlaces.Controls
         {
             base.OnDoubleClick(e);
 
-            if(CurrentPolygon != null && CurrentPolygon.IsMouseOver)
+            if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
             {
                 EditZoneForm editForm = new EditZoneForm((PolyZone)CurrentPolygon.Tag);
                 editForm.Show();
@@ -264,17 +277,18 @@ namespace ParkPlaces.Controls
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
-            
-            if(IsDrawingPolygon)
+
+            if (IsDrawingPolygon)
             {
-                switch(e.KeyCode)
+                switch (e.KeyCode)
                 {
                     case Keys.Escape: EndDrawPolygon(false); break;
                     case Keys.Enter: EndDrawPolygon(true); break;
                 }
             }
         }
-        #endregion
+
+        #endregion Overrides
 
         #region App logic
 
@@ -331,7 +345,7 @@ namespace ParkPlaces.Controls
         {
             if (IsDrawingPolygon)
                 EndDrawPolygon(false);
-            else if(p != null)
+            else if (p != null)
             {
                 int iPolygon = Polygons.Polygons.IndexOf(p);
 
@@ -409,6 +423,6 @@ namespace ParkPlaces.Controls
             return new Point((int)p.X, (int)p.Y);
         }
 
-        #endregion
+        #endregion App logic
     }
 }

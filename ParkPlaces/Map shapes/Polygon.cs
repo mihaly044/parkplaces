@@ -5,7 +5,7 @@ using GMap.NET.WindowsForms;
 using ParkPlaces.IO;
 using ParkPlaces.Utils;
 
-namespace ParkPlaces.Extensions
+namespace ParkPlaces.Map_shapes
 {
     public class Polygon : GMapPolygon
     {
@@ -24,20 +24,20 @@ namespace ParkPlaces.Extensions
             double centroidX = 0.0;
             double centroidY = 0.0;
 
-            for (int i = 0; i < LocalPoints.Count-1; i++)
+            for (int i = 0; i < LocalPoints.Count - 1; i++)
             {
                 centroidX += LocalPoints[i].X;
                 centroidY += LocalPoints[i].Y;
             }
-            centroidX /= LocalPoints.Count-1;
-            centroidY /= LocalPoints.Count-1;
+            centroidX /= LocalPoints.Count - 1;
+            centroidY /= LocalPoints.Count - 1;
 
             return (new System.Drawing.Point((int)centroidX, (int)centroidY));
         }
 
         public double GetArea()
         {
-            if(AreaNeedsUpdate)
+            if (AreaNeedsUpdate)
                 Area = PolygonalUtil.computeArea(Points);
 
             AreaNeedsUpdate = false;
@@ -50,7 +50,7 @@ namespace ParkPlaces.Extensions
             for (int i = 0; i < decimalPlaces; i++)
                 format += "#";
 
-            if(!inSquareMetres)
+            if (!inSquareMetres)
             {
                 format += "km2";
                 return (GetArea() / 1000000).ToString(format);
@@ -82,11 +82,11 @@ namespace ParkPlaces.Extensions
             else
                 g.DrawString(((PolyZone)Tag).Zoneid, new Font("Arial", (int)Overlay.Control.Zoom), Fill, centroid);
 
-           if(Overlay.Control.Zoom >= 15)
-           {
+            if (Overlay.Control.Zoom >= 15)
+            {
                 centroid.Y += (int)Overlay.Control.Zoom + 5;
-                g.DrawString(GetAreaAsString(4, true), new Font("Arial", (int)Overlay.Control.Zoom/2), Brushes.Black, centroid);
-           }
+                g.DrawString(GetAreaAsString(4, true), new Font("Arial", (int)Overlay.Control.Zoom / 2), Brushes.Black, centroid);
+            }
         }
     }
 }

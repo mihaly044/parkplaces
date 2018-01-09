@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using GMap.NET;
 using GMap.NET.MapProviders;
+using ParkPlaces.Map_shapes;
 
-namespace ParkPlaces
+namespace ParkPlaces.Forms
 {
     public partial class ParkPlacesForm : Form
     {
@@ -15,7 +15,7 @@ namespace ParkPlaces
         private void ParkPlacesForm_Load(object sender, EventArgs e)
         {
             Map.loadPolygons();
-            lblZoom.Text = "Zoom: " + Map.Zoom.ToString();
+            lblZoom.Text = $"Zoom: {Map.Zoom}";
         }
 
         private void Map_MouseMove(object sender, MouseEventArgs e)
@@ -23,14 +23,14 @@ namespace ParkPlaces
             lblMouse.Text = Map.FromLocalToLatLng(e.X, e.Y).ToString();
         }
 
-        private void Map_DrawPolygonEnd(Extensions.Polygon polygon)
+        private void Map_DrawPolygonEnd(Polygon polygon)
         {
             drawPolygonButton.Checked = false;
         }
 
         private void Map_OnMapZoomChanged()
         {
-            lblZoom.Text = "Zoom: " + Map.Zoom.ToString(); ;
+            lblZoom.Text = $"Zoom: {Map.Zoom}";
         }
 
         private void googleMapsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -66,7 +66,7 @@ namespace ParkPlaces
         private void Map_OnPolygonClick(GMap.NET.WindowsForms.GMapPolygon item, MouseEventArgs e)
         {
             if (Map.CurrentPolygon != null)
-                propertyGrid1.SelectedObject = (IO.PolyZone)Map.CurrentPolygon.Tag;
+                propertyGrid1.SelectedObject = Map.CurrentPolygon.Tag;
         }
     }
 }

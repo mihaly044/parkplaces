@@ -1,12 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Runtime.Serialization;
+using GMap.NET;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
-using GMap.NET;
-using System;
-using System.Runtime.Serialization;
-using System.Drawing.Drawing2D;
 
-namespace ParkPlaces.Extensions
+namespace ParkPlaces.Map_shapes
 {
     [Serializable]
     public class RectMarker : GMapMarker, ISerializable
@@ -85,7 +84,6 @@ namespace ParkPlaces.Extensions
         {
         }
 
-        #endregion
+        #endregion ISerializable Members
     }
 }
-
