@@ -324,7 +324,7 @@ namespace ParkPlaces.Controls
                     Geometry = new List<Geometry>(),
                     Id = "",
                     Zoneid = "",
-                    Color = ColorTranslator.ToHtml((_currentDrawingPolygon.Fill as SolidBrush).Color)
+                    Color = ColorTranslator.ToHtml((_currentDrawingPolygon.Fill as SolidBrush)?.Color ?? Color.Black)
                 };
                 ((PolyZone)_currentDrawingPolygon.Tag).Geometry.AddRange(
                     _currentDrawingPolygon.Points.Select(
