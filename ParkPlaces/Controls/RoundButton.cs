@@ -16,9 +16,10 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.Container components = null;
+        private Container components = null;
+
         private Pen _pen = null;
-        SolidBrush _brushText = null, _brushInside = null;
+        private SolidBrush _brushText = null, _brushInside = null;
         private byte _colorgradient = 2;        // fading effect
         private Point _textStartPoint = new Point(0, 0);
         private byte _colorStepGradient = 2;    // in pixels
@@ -29,6 +30,7 @@ namespace ParkPlaces.Controls
 
         // These are for drawing when you hover over the button
         private Color _hoverColor = Color.FromKnownColor(KnownColor.ControlDark);
+
         private Pen _hoverPen = null;
         private SolidBrush _hoverBrushInside = null;
 
@@ -145,24 +147,25 @@ namespace ParkPlaces.Controls
         }
 
         #region Component Designer generated code
+
         /// <summary>
-        /// Required method for Designer support - do not modify 
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            // 
+            //
             // RoundButton
-            // 
+            //
             this.ForeColorChanged += new System.EventHandler(this.RoundButton_ForeColorChanged);
             this.Enter += new System.EventHandler(this.RoundButton_Enter);
             this.MouseEnter += new System.EventHandler(this.RoundButton_MouseEnter);
             this.BackColorChanged += new System.EventHandler(this.RoundButton_BackColorChanged);
             this.Leave += new System.EventHandler(this.RoundButton_Leave);
             this.MouseLeave += new System.EventHandler(this.RoundButton_MouseLeave);
-
         }
-        #endregion
+
+        #endregion Component Designer generated code
 
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -171,23 +174,23 @@ namespace ParkPlaces.Controls
 
             GraphicsPath path = new GraphicsPath();
             path.AddEllipse(0, 0, ClientSize.Width, ClientSize.Height);
-            this.Region = new Region(path);
+            Region = new Region(path);
         }
 
-        void ColorButton(Graphics g)
+        private void ColorButton(Graphics g)
         {
             ColorButton5(g, _pen, _brushInside);
         }
 
         // Fills color. No color gradient.
-        void ColorButton1(Graphics g)
+        private void ColorButton1(Graphics g)
         {
             g.DrawEllipse(_pen, 0, 0, ClientSize.Width, ClientSize.Height);
             g.FillEllipse(_brushInside, 0, 0, ClientSize.Width, ClientSize.Height);
         }
 
         // Fills color with color gradient. Color gets darker toward the righthand-bottom corner.
-        void ColorButton2(Graphics g)
+        private void ColorButton2(Graphics g)
         {
             int x = 0, y = 0;
             Color origPenColor = _pen.Color;
@@ -213,9 +216,9 @@ namespace ParkPlaces.Controls
             DrawText(g);
         }
 
-        // Fills color with color gradient. Color gets darker towards the center. Respects the image property set 
+        // Fills color with color gradient. Color gets darker towards the center. Respects the image property set
         // by the user.
-        void ColorButton3(Graphics g)
+        private void ColorButton3(Graphics g)
         {
             int x = 0, y = 0;
             Color origPenColor = _pen.Color;
@@ -244,7 +247,7 @@ namespace ParkPlaces.Controls
         }
 
         // Implements fade out/ in property. Color gets lighter (fade in) or darker (fade out) towards the center.
-        void ColorButton4(Graphics g)
+        private void ColorButton4(Graphics g)
         {
             int x = 0, y = 0;
             Color origPenColor = _pen.Color;
@@ -297,7 +300,7 @@ namespace ParkPlaces.Controls
 
         // ColorButton4 modified to take in pen and brush arguments. Needed for hover-coloring.
         // Draws a focus rectangle when the button has focus.
-        void ColorButton5(Graphics g, Pen pen, SolidBrush brush)
+        private void ColorButton5(Graphics g, Pen pen, SolidBrush brush)
         {
             int x = 0, y = 0;
             Color origPenColor = pen.Color;
@@ -374,7 +377,7 @@ namespace ParkPlaces.Controls
 
         private void DrawText(Graphics g)
         {
-            g.DrawString(this.Text, this.Font, _brushText, new PointF(_textStartPoint.X, _textStartPoint.Y));
+            g.DrawString(Text, Font, _brushText, new PointF(_textStartPoint.X, _textStartPoint.Y));
         }
 
         private void DrawImage(Graphics g)
@@ -382,43 +385,42 @@ namespace ParkPlaces.Controls
             // depends on ImageAlign
             if (Image != null)
             {
-                Rectangle rc = new Rectangle(new Point((this.Width - Image.Width) / 2, (this.Height - Image.Height) / 2), new Size(Image.Width, Image.Height));
-                g.DrawImage(this.Image, rc);
+                Rectangle rc = new Rectangle(new Point((Width - Image.Width) / 2, (Height - Image.Height) / 2), new Size(Image.Width, Image.Height));
+                g.DrawImage(Image, rc);
             }
-
         }
 
-        private void RoundButton_MouseEnter(object sender, System.EventArgs e)
+        private void RoundButton_MouseEnter(object sender, EventArgs e)
         {
             _pen.Color = _hoverColor;
             _brushInside.Color = _hoverColor;
-            this.Invalidate();
+            Invalidate();
         }
 
-        private void RoundButton_MouseLeave(object sender, System.EventArgs e)
+        private void RoundButton_MouseLeave(object sender, EventArgs e)
         {
             _pen.Color = BackColor;
             _brushInside.Color = BackColor;
-            this.Invalidate();
+            Invalidate();
         }
 
-        private void RoundButton_Enter(object sender, System.EventArgs e)
+        private void RoundButton_Enter(object sender, EventArgs e)
         {
             _bDrawOutline = true;
         }
 
-        private void RoundButton_Leave(object sender, System.EventArgs e)
+        private void RoundButton_Leave(object sender, EventArgs e)
         {
             _bDrawOutline = false;
         }
 
-        private void RoundButton_BackColorChanged(object sender, System.EventArgs e)
+        private void RoundButton_BackColorChanged(object sender, EventArgs e)
         {
             _pen.Color = BackColor;
             _brushInside.Color = BackColor;
         }
 
-        private void RoundButton_ForeColorChanged(object sender, System.EventArgs e)
+        private void RoundButton_ForeColorChanged(object sender, EventArgs e)
         {
             _brushText.Color = ForeColor;
         }
