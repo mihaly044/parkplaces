@@ -280,8 +280,7 @@ namespace ParkPlaces.Controls
         {
             if (CurrentDrawingPolygon == null)
             {
-                List<PointLatLng> points = new List<PointLatLng>();
-                points.Add(Pointer.Position);
+                List<PointLatLng> points = new List<PointLatLng>() { Pointer.Position };
                 CurrentDrawingPolygon = new Polygon(points, "New polygon") { IsHitTestVisible = true };
                 Polygons.Polygons.Add(CurrentDrawingPolygon);
             }
