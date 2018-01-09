@@ -39,7 +39,7 @@ namespace ParkPlaces.Map_shapes
             return _area;
         }
 
-        public string GetAreaAsString1(int decimalPlaces, bool inSquareMetres = true)
+        public string GetAreaAsString(int decimalPlaces, bool inSquareMetres = true)
         {
             var sb = new StringBuilder("0.");
 
