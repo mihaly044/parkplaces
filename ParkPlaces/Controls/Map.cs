@@ -142,7 +142,7 @@ namespace ParkPlaces.Controls
 #if DEBUG
                 version = string.Format("Debug version {0}, OS: {1}, .NET v{2}", fvi.FileVersion, Environment.OSVersion, Environment.Version);
 #else
-            version = string.Format("Release version {0}, OS: {1}, .NET v{2}", fvi.FileVersion, Environment.OSVersion, Environment.Version);
+                version = string.Format("Release version {0}, OS: {1}, .NET v{2}", fvi.FileVersion, Environment.OSVersion, Environment.Version);
 #endif
                 e.Graphics.DrawString(version, BlueFont, Brushes.Blue, new Point(5, 5));
             }
@@ -211,6 +211,7 @@ namespace ParkPlaces.Controls
                         }
                     }
 
+                    CurrentPolygon.PointsHasChanged();
                     Pointer.Position = pnew;
                     CurrentRectMaker.Position = pnew;
                 }
@@ -288,6 +289,7 @@ namespace ParkPlaces.Controls
             {
                 CurrentDrawingPolygon.Points.Add(Pointer.Position);
                 UpdatePolygonLocalPosition(CurrentDrawingPolygon);
+                CurrentDrawingPolygon.PointsHasChanged();
             }
         }
 
@@ -378,8 +380,8 @@ namespace ParkPlaces.Controls
             foreach (PolyZone zone in FromJSONData.Zones)
             {
                 // TODO: Avoid too much data being shown on the map
-                if (!zone.Id.Contains("BUDAPEST"))
-                    continue;
+                //if (!zone.Id.Contains("BUDAPEST"))
+                //    continue;
 
                 List<PointLatLng> polygonPoints = new List<PointLatLng>();
                 foreach (Geometry geometry in zone.Geometry)
