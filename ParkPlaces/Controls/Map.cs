@@ -367,8 +367,7 @@ namespace ParkPlaces.Controls
             if (CurrentPolygon != null)
             {
                 var polygonColor = ColorTranslator.FromHtml(((PolyZone)CurrentPolygon.Tag).Color);
-                CurrentPolygon.Stroke = new Pen(polygonColor);
-                CurrentPolygon.Stroke.Width = 2;
+                CurrentPolygon.Stroke = new Pen(polygonColor) { Width = 2 };
                 CurrentPolygon.Fill = new SolidBrush(Color.FromArgb(60, polygonColor));
                 CurrentPolygon.IsSelected = false;
 
@@ -387,8 +386,7 @@ namespace ParkPlaces.Controls
 
             for (var i = 0; i < p.Points.Count; i++)
             {
-                var mBorders = new RectMarker(CurrentPolygon.Points[i]);
-                mBorders.Tag = i;
+                var mBorders = new RectMarker(CurrentPolygon.Points[i]) { Tag = i };
                 PolygonRects.Markers.Add(mBorders);
             }
         }
@@ -403,19 +401,15 @@ namespace ParkPlaces.Controls
                 //if (!zone.Id.Contains("BUDAPEST"))
                 //    continue;
 
-                var polygonPoints = new List<PointLatLng>();
-                foreach (var geometry in zone.Geometry) polygonPoints.Add(new PointLatLng(geometry.Lat, geometry.Lng));
-
+                var polygonPoints = zone.Geometry.Select(m => new PointLatLng(m.Lat, m.Lng)).ToList();
                 var polygonColor = ColorTranslator.FromHtml(zone.Color);
+
                 Polygons.Polygons.Add(new Polygon(polygonPoints, zone.Description)
                 {
                     Tag = zone,
                     IsHitTestVisible = true,
                     Fill = new SolidBrush(Color.FromArgb(60, polygonColor)),
-                    Stroke = new Pen(polygonColor)
-                    {
-                        Width = 2
-                    }
+                    Stroke = new Pen(polygonColor) { Width = 2 }
                 });
             }
         }
