@@ -326,7 +326,7 @@ namespace ParkPlaces.Controls
                 ((PolyZone)_currentDrawingPolygon.Tag).Geometry.AddRange(
                     _currentDrawingPolygon.Points.Select(x => x.ToGeometry()).ToList()
                 );
-                Map_OnPolygonClick(Polygons.Polygons.FirstOrDefault(polygon => (Polygon)polygon == _currentDrawingPolygon), null);
+                Map_OnPolygonClick(Polygons.Polygons.FirstOrDefault(polygon => polygon == _currentDrawingPolygon), null);
             }
             else
             {
