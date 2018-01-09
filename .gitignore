@@ -7,3 +7,5 @@
 /packages
 /ParkPlaces/bin/Debug
 /ParkPlaces/bin/Release
+/ParkPlacesTests/bin/Debug
+/ParkPlacesTests/obj
