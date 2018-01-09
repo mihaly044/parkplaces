@@ -42,6 +42,10 @@ namespace ParkPlaces.Controls
 
             _pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
             TopLayer.Markers.Add(_pointer);
+
+            deleteCacheDate = DateTime.Now;
+            deleteCacheDate = deleteCacheDate.AddDays(-10);
+            Manager.PrimaryCache.DeleteOlderThan(deleteCacheDate, null);
         }
 
         #endregion Constructors
@@ -59,6 +63,7 @@ namespace ParkPlaces.Controls
 
         private readonly Pen _mouseEnterStrokeClr;
         private readonly Brush _mouseEnterFillClr;
+        private readonly DateTime deleteCacheDate;
         private bool _isMouseDown;
         private readonly GMapMarker _pointer;
         private RectMarker _currentRectMaker;
