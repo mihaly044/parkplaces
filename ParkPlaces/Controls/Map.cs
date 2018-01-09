@@ -40,6 +40,17 @@ namespace ParkPlaces.Controls
 
         #endregion
 
+        #region Delegates
+        public delegate void DrawPolygonEnd(Polygon polygon);
+        #endregion
+
+        #region Events
+        /// <summary>
+        /// Occurs when polygon drawing has finished
+        /// </summary>
+        public event DrawPolygonEnd OnDrawPolygonEnd;
+        #endregion
+
         #region Internals
         internal readonly GMapOverlay TopLayer = new GMapOverlay("topLayer");
         internal readonly GMapOverlay Polygons = new GMapOverlay("polygons");
@@ -60,7 +71,7 @@ namespace ParkPlaces.Controls
             IsDrawingPolygon = false;
             ShowCenter = false;
 
-            Pointer = new GMarkerGoogle(this.Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
+            Pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
             TopLayer.Markers.Add(Pointer);
         }
         #endregion
@@ -159,19 +170,6 @@ namespace ParkPlaces.Controls
             Overlays.Add(TopLayer);
         }
 
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                Pointer.Position = FromLocalToLatLng(e.X, e.Y);
-                IsMouseDown = true;
-
-                if (IsDrawingPolygon)
-                    DrawNewPolygonPoint();
-            }
-            base.OnMouseDown(e);
-        }
-
         protected override void OnMouseMove(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && IsMouseDown)
@@ -225,6 +223,19 @@ namespace ParkPlaces.Controls
             base.OnMouseUp(e);
         }
 
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                Pointer.Position = FromLocalToLatLng(e.X, e.Y);
+                IsMouseDown = true;
+
+                if (IsDrawingPolygon)
+                    DrawNewPolygonPoint();
+            }
+            base.OnMouseDown(e);
+        }
+
         protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
@@ -251,7 +262,7 @@ namespace ParkPlaces.Controls
         }
         #endregion
 
-        #region Business logic
+        #region App logic
 
         private void DrawNewPolygonPoint()
         {
@@ -296,7 +307,9 @@ namespace ParkPlaces.Controls
             }
             else
                 Polygons.Polygons.Remove(CurrentDrawingPolygon);
-  
+
+            OnDrawPolygonEnd?.Invoke(CurrentDrawingPolygon);
+
             CurrentDrawingPolygon = null;
         }
 

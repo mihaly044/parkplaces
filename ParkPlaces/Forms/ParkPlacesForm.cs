@@ -23,6 +23,11 @@ namespace ParkPlaces
             lblMouse.Text = Map.FromLocalToLatLng(e.X, e.Y).ToString();
         }
 
+        private void Map_DrawPolygonEnd(Extensions.Polygon polygon)
+        {
+            drawPolygonButton.Checked = false;
+        }
+
         private void Map_OnMapZoomChanged()
         {
             lblZoom.Text = "Zoom: " + Map.Zoom.ToString(); ;
@@ -40,7 +45,13 @@ namespace ParkPlaces
 
         private void drawPolygonButton_Click(object sender, EventArgs e)
         {
+            drawPolygonButton.Checked = true;
             Map.BeginDrawPolygon();
+        }
+
+        private void RemovePolygonButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

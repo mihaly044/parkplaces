@@ -86,13 +86,21 @@ namespace ParkPlaces.Properties {
         ///        },
         ///        {
         ///          &quot;lat&quot;: &quot;47.10476&quot;,
-        ///          &quot;lng&quot;: &quot;17.56161&quot;
-        ///        },
-        ///   [rest of string was truncated]&quot;;.
+        ///          &quot;lng&quot;: [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string data {
             get {
                 return ResourceManager.GetString("data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_f_cross_256_282471 {
+            get {
+                object obj = ResourceManager.GetObject("if_f-cross_256_282471", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

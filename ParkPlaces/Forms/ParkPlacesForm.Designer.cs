@@ -33,6 +33,7 @@ namespace ParkPlaces
             this.Map = new ParkPlaces.Controls.Map();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.drawPolygonButton = new System.Windows.Forms.ToolStripButton();
+            this.RemovePolygonButton = new System.Windows.Forms.ToolStripButton();
             this.SelectMapProviderButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.googleMapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openStreetMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,13 +75,15 @@ namespace ParkPlaces
             this.Map.Size = new System.Drawing.Size(1031, 604);
             this.Map.TabIndex = 0;
             this.Map.Zoom = 15D;
+            this.Map.OnDrawPolygonEnd += new ParkPlaces.Controls.Map.DrawPolygonEnd(this.Map_DrawPolygonEnd);
             this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
             this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.drawPolygonButton});
+            this.drawPolygonButton,
+            this.RemovePolygonButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1029, 25);
@@ -89,13 +92,21 @@ namespace ParkPlaces
             // 
             // drawPolygonButton
             // 
-            this.drawPolygonButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.drawPolygonButton.Image = ((System.Drawing.Image)(resources.GetObject("drawPolygonButton.Image")));
             this.drawPolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawPolygonButton.Name = "drawPolygonButton";
-            this.drawPolygonButton.Size = new System.Drawing.Size(23, 22);
+            this.drawPolygonButton.Size = new System.Drawing.Size(96, 22);
             this.drawPolygonButton.Text = "Add polygon";
             this.drawPolygonButton.Click += new System.EventHandler(this.drawPolygonButton_Click);
+            // 
+            // RemovePolygonButton
+            // 
+            this.RemovePolygonButton.Image = global::ParkPlaces.Properties.Resources.if_f_cross_256_282471;
+            this.RemovePolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.RemovePolygonButton.Name = "RemovePolygonButton";
+            this.RemovePolygonButton.Size = new System.Drawing.Size(117, 22);
+            this.RemovePolygonButton.Text = "Remove polygon";
+            this.RemovePolygonButton.Click += new System.EventHandler(this.RemovePolygonButton_Click);
             // 
             // SelectMapProviderButton
             // 
@@ -180,6 +191,7 @@ namespace ParkPlaces
         private System.Windows.Forms.ToolStripStatusLabel lblZoom;
         private System.Windows.Forms.ToolStripStatusLabel lblMouse;
         private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripButton RemovePolygonButton;
     }
 }
 
