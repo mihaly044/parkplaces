@@ -28,10 +28,19 @@ namespace ParkPlaces.DotUtils.Net
         {
         }
 
-        public static async Task<NemApi> CreateApi()
+        public static async Task<NemApi> CreateApi(List<string> cities = null)
         {
             var res = new NemApi();
-            await res.Initialize();
+
+            if (cities == null)
+            {
+                await res.Initialize();
+            }
+            else
+            {
+                res.Cities = cities.ToList();//creating a copy
+            }
+
             return res;
         }
 
