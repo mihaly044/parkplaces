@@ -12,7 +12,6 @@ namespace ParkPlaces.IO
 {
     public class IoHandler
     {
-
         private NemApi _api;
         public static IoHandler Instance => _instance ?? (_instance = new IoHandler());
         private static IoHandler _instance;
@@ -56,17 +55,19 @@ namespace ParkPlaces.IO
             var dto = new Dto2Object()
             {
                 Type = "ZoneCollection",
-                Zones = new List<PolyZone>()
+                // Zones = new List<PolyZone>()
             };
 
             var api = await _instance.GetApiAsync();
             var cities = await api.Cities
                 .ParallelForEachTaskAsync(async x => await api.GetCityPlan<List<PolyZone>>(x));
 
-            foreach (var city in cities)
-            {
-                dto.Zones.AddRange(city);
-            }
+            //foreach (var city in cities)
+            //{
+            //    dto.Zones.AddRange(city);
+            //}
+
+            dto.Zones = cities.SelectMany(m => m).ToList();
 
             _instance._lastUpdate = DateTime.Now;
             ConfigurationManager.AppSettings["LastUpdate"] = _instance._lastUpdate.ToLongTimeString();

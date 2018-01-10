@@ -23,6 +23,7 @@ namespace ParkPlaces.Controls
     public partial class Map : GMapControl
     {
         #region Delegates
+
         /// <summary>
         /// Delegate function for OnDrawPolygonEnd
         /// </summary>
@@ -143,7 +144,7 @@ namespace ParkPlaces.Controls
         public bool DisplayCopyright { get; set; }
 
         /// <summary>
-        /// Indicates whether a polygon is currently drawing 
+        /// Indicates whether a polygon is currently drawing
         /// </summary>
         public bool IsDrawingPolygon { get; set; }
 
@@ -202,7 +203,7 @@ namespace ParkPlaces.Controls
         }
 
         /// <summary>
-        /// Occurs when the cursor leaves a Rectangle marker 
+        /// Occurs when the cursor leaves a Rectangle marker
         /// </summary>
         /// <param name="item"></param>
         private void Map_OnMarkerLeave(GMapMarker item)
