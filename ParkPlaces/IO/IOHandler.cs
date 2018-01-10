@@ -21,6 +21,8 @@ namespace ParkPlaces.IO
         private int _updateInterval;
         private bool _needUpdate => DateTime.Now >= _nextUpdate;
 
+        private async Task<NemApi> GetApiAsync() => _api ?? await NemApi.CreateApi();
+
         private IoHandler()
         {
             if (!int.TryParse(ConfigurationManager.AppSettings["UpdateInterval"], out var updateInterval))
@@ -40,14 +42,9 @@ namespace ParkPlaces.IO
             }
         }
 
-        private async Task<NemApi> GetApiAsync()
-        {
-            return _api ?? await NemApi.CreateApi();
-        }
-
         public async Task<bool> UpdateAsync(bool saveToDisk = false, bool forceUpdate = false)
         {
-            if (!_instance._needUpdate && !forceUpdate)
+            if (!_needUpdate && !forceUpdate)
             {
                 return false;
             }
@@ -57,7 +54,7 @@ namespace ParkPlaces.IO
                 Zones = new List<PolyZone>()
             };
 
-            var api = await _instance.GetApiAsync();
+            var api = await GetApiAsync();
             var cityTasks = api.Cities.Select(x => api.GetCityPlan<List<PolyZone>>(x)).ToList();
 
             while (cityTasks.Count > 0)
@@ -68,8 +65,8 @@ namespace ParkPlaces.IO
                 //Put in response how many have been downloaded so far....
             }
 
-            _instance._lastUpdate = DateTime.Now;
-            ConfigurationManager.AppSettings["LastUpdate"] = _instance._lastUpdate.ToLongTimeString();
+            _lastUpdate = DateTime.Now;
+            ConfigurationManager.AppSettings["LastUpdate"] = _lastUpdate.ToLongTimeString();
 
             if (saveToDisk)
             {
