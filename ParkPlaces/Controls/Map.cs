@@ -540,6 +540,8 @@ namespace ParkPlaces.Controls
         public void LoadPolygons()
         {
             _fromJsonData = Dto2Object.FromJson(Resources.data);
+            if (Polygons.Polygons.Count > 0)
+                Polygons.Clear();
 
             foreach (var zone in _fromJsonData.Zones)
             {
