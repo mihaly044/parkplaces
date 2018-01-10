@@ -18,7 +18,7 @@ namespace ParkPlaces.DotUtils.Net
         private const string BaseUri = "https://www.nemzetimobilfizetes.hu/parking_purchases";
         private const string ContentUri = BaseUri + "/zonainfo/content";
         private const string CityInfoUri = BaseUri + "/geocode/?search={0}";
-        private const string ParkingApiUri = BaseUri + "/search_parking_zones/?search={0}&time={1}";//BUDAPEST - 2018-01-10 15:56:07
+        private const string ParkingApiUri = BaseUri + "/search_parking_zones/?search={0}&time={1}";    //BUDAPEST - 2018-01-10 15:56:07
 
         private static Regex _regexCity = new Regex("option value=\"\\d+\">(.*?)<", RegexOptions.Compiled | RegexOptions.ECMAScript);
 
@@ -28,6 +28,11 @@ namespace ParkPlaces.DotUtils.Net
         {
         }
 
+        /// <summary>
+        /// Creates an instance of NemApi
+        /// </summary>
+        /// <param name="cities">Allows you to bypass initialisation. May be faster</param>
+        /// <returns></returns>
         public static async Task<NemApi> CreateApi(List<string> cities = null)
         {
             var res = new NemApi();
@@ -47,6 +52,7 @@ namespace ParkPlaces.DotUtils.Net
         private async Task Initialize()
         {
             var content = await DownloadString(ContentUri);
+
             Cities = _regexCity.Matches(content).Cast<Match>()
                 .Where(m => m.Groups.Count >= 2)
                 .Select(m => m.Groups[1].Value)
