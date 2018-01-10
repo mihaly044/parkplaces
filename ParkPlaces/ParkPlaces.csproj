@@ -110,6 +110,7 @@
     <Compile Include="Controls\RoundButton.Designer.cs">
       <DependentUpon>RoundButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="IO\IOHandler.cs" />
     <Compile Include="Map shapes\Polygon.cs" />
     <Compile Include="Forms\EditZoneForm.cs">
       <SubType>Form</SubType>
