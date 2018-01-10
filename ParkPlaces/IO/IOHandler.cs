@@ -52,29 +52,22 @@ namespace ParkPlaces.IO
                 return false;
             }
 
-            var dto = new Dto2Object()
-            {
-                Type = "ZoneCollection",
-                // Zones = new List<PolyZone>()
-            };
-
             var api = await _instance.GetApiAsync();
             var cities = await api.Cities
                 .ParallelForEachTaskAsync(async x => await api.GetCityPlan<List<PolyZone>>(x));
 
-            //foreach (var city in cities)
-            //{
-            //    dto.Zones.AddRange(city);
-            //}
-
-            dto.Zones = cities.SelectMany(m => m).ToList();
+            var dto = new Dto2Object
+            {
+                Type = "ZoneCollection",
+                Zones = cities.SelectMany(m => m).ToList()
+            };
 
             _instance._lastUpdate = DateTime.Now;
             ConfigurationManager.AppSettings["LastUpdate"] = _instance._lastUpdate.ToLongTimeString();
 
             if (saveToDisk)
             {
-                File.WriteAllText("data", Serialize.ToJson(dto));
+                File.WriteAllText("data", dto.ToJson());
             }
 
             return true;
