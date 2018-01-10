@@ -51,7 +51,7 @@ namespace ParkPlaces.Forms
 
         private void RemovePolygonButton_Click(object sender, EventArgs e)
         {
-            if (Map.CurrentPolygon == null && !Map.GetIsDrawingPolygon)
+            if (Map.CurrentPolygon == null && !Map.IsDrawingPolygon)
                 MessageBox.Show("No polygon has been selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
                 Map.RemovePolygon(Map.CurrentPolygon);

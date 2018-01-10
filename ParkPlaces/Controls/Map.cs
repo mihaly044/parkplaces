@@ -22,7 +22,10 @@ namespace ParkPlaces.Controls
     public partial class Map : GMapControl
     {
         #region Delegates
-
+        /// <summary>
+        /// Delegate function for OnDrawPolygonEnd
+        /// </summary>
+        /// <param name="polygon">The polygon that the user has finished drawing</param>
         public delegate void DrawPolygonEnd(Polygon polygon);
 
         #endregion Delegates
@@ -34,10 +37,10 @@ namespace ParkPlaces.Controls
             InitializeComponent();
             DisableFocusOnMouseEnter = true;
 
-            _mouseEnterStrokeClr = new Pen(Brushes.Blue) { Width = 2 };
-            _mouseEnterFillClr = new SolidBrush(Color.FromArgb(90, Color.Blue));
+            _selectedStrokeClr = new Pen(Brushes.Blue) { Width = 2 };
+            _selecteFillClr = new SolidBrush(Color.FromArgb(90, Color.Blue));
             _isMouseDown = false;
-            GetIsDrawingPolygon = false;
+            IsDrawingPolygon = false;
             ShowCenter = false;
 
             _pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
@@ -53,7 +56,7 @@ namespace ParkPlaces.Controls
         #region Events
 
         /// <summary>
-        ///     Occurs when polygon drawing has finished
+        /// Occurs when polygon drawing gets finished by the user
         /// </summary>
         public event DrawPolygonEnd OnDrawPolygonEnd;
 
@@ -61,55 +64,133 @@ namespace ParkPlaces.Controls
 
         #region Fields
 
-        private readonly Pen _mouseEnterStrokeClr;
-        private readonly Brush _mouseEnterFillClr;
+        /// <summary>
+        /// Defines the stroke colour of map shapes in selected state
+        /// </summary>
+        private readonly Pen _selectedStrokeClr;
+
+        /// <summary>
+        /// Defines the fill colour of map shapes in selected state
+        /// </summary>
+        private readonly Brush _selecteFillClr;
+
+        /// <summary>
+        /// Downloaded and cached map tile images gets deleted on this date
+        /// </summary>
         private readonly DateTime deleteCacheDate;
+
+        /// <summary>
+        /// Indicates whether the left mouse button is down at a given moment
+        /// </summary>
         private bool _isMouseDown;
+
+        /// <summary>
+        /// Represents a green pointer on the map
+        /// </summary>
         private readonly GMapMarker _pointer;
+
+        /// <summary>
+        /// Indicates the current point selected of currentSelPolygon
+        /// </summary>
         private RectMarker _currentRectMaker;
+
+        /// <summary>
+        /// The current selected polygon. Null if nothing is selected
+        /// </summary>
         public Polygon CurrentPolygon;
+
+        /// <summary>
+        /// Represents a polygon that is currently in the process of drawing on the GUI
+        /// </summary>
         private Polygon _currentDrawingPolygon;
+
+        /// <summary>
+        /// Represents the current data transfer object in use
+        /// </summary>
         private Dto2Object _fromJsonData;
+
+        /// <summary>
+        /// Can be used to get the previous mouse location on every OnMouseMove call
+        /// </summary>
         private Point _previousMouseLocation; //Never used, just assigned
 
+        /// <summary>
+        /// Indicates whether the map has a black-transparent gradient on its left side
+        /// </summary>
         [Category("Map Extension")]
         public bool HasGradientSide { get; set; }
 
-        [Category("Map Extension")]
-        [DefaultValue(false)]
-        public bool DisplayVersionInfo { get; set; }
-
-        [Category("Map Extension")]
-        [DefaultValue(false)]
-        public bool DisplayCopyright { get; set; }
-
+        /// <summary>
+        /// Gradient width
+        /// </summary>
         [Category("Map Extension")]
         [DefaultValue(100)]
         public int GradientWidth { get; set; }
 
-        public bool GetIsDrawingPolygon { get; set; }
+        /// <summary>
+        /// Indicates if the version info string should get rendered at the left top corner of the map
+        /// </summary>
+        [Category("Map Extension")]
+        [DefaultValue(false)]
+        public bool DisplayVersionInfo { get; set; }
+
+        /// <summary>
+        /// Indicates wheether the copyright info string should get rendered at the left bottom corner of the map
+        /// </summary>
+        [Category("Map Extension")]
+        [DefaultValue(false)]
+        public bool DisplayCopyright { get; set; }
+
+        /// <summary>
+        /// Indicates whether a polygon is currently drawing 
+        /// </summary>
+        public bool IsDrawingPolygon { get; set; }
 
         #endregion Fields
 
         #region Internals
 
+        /// <summary>
+        /// The very upper overlayof the map
+        /// </summary>
         internal readonly GMapOverlay TopLayer = new GMapOverlay("topLayer");
+
+        /// <summary>
+        /// Map layer that contains polygons
+        /// </summary>
         internal readonly GMapOverlay Polygons = new GMapOverlay("polygons");
+
+        /// <summary>
+        /// Map layer that contains rectangle markers
+        /// </summary>
         internal readonly GMapOverlay PolygonRects = new GMapOverlay("polygonRects");
+
+        /// <summary>
+        /// Version info gets rendered using this font
+        /// </summary>
         internal readonly Font BlueFont = new Font(FontFamily.GenericSansSerif, 7, FontStyle.Regular);
 
         #endregion Internals
 
         #region GMap events
 
+        /// <summary>
+        /// Occurs when the user clicks on a polygon
+        /// </summary>
+        /// <param name="item">The polygon item that has been cliked on</param>
+        /// <param name="e"></param>
         private void Map_OnPolygonClick(GMapPolygon item, MouseEventArgs e)
         {
-            if (GetIsDrawingPolygon || item == null)
+            if (IsDrawingPolygon || item == null)
                 return;
             if (Zoom >= 12)
                 SelectPolygon((Polygon)item);
         }
 
+        /// <summary>
+        /// Occurs when the cursor moves over a Rectangle marker
+        /// </summary>
+        /// <param name="item"></param>
         private void Map_OnMarkerEnter(GMapMarker item)
         {
             if (item is RectMarker marker && !_isMouseDown)
@@ -119,6 +200,10 @@ namespace ParkPlaces.Controls
             }
         }
 
+        /// <summary>
+        /// Occurs when the cursor leaves a Rectangle marker 
+        /// </summary>
+        /// <param name="item"></param>
         private void Map_OnMarkerLeave(GMapMarker item)
         {
             if (item is RectMarker marker)
@@ -132,12 +217,18 @@ namespace ParkPlaces.Controls
 
         #region Context menu events
 
+        /// <summary>
+        /// Occurs when Finalize gets clicked on the context menu that appears in drawing mode
+        /// </summary>
         private void finalizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EndDrawPolygon(true);
         }
 
-        private void cancelEscToolStripMenuItem_Click(object sender, EventArgs e)
+        // <summary>
+        /// Occurs when Cancel gets clicked on the context menu that appears in drawing mode
+        /// </summary>
+        private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EndDrawPolygon(false);
         }
@@ -146,6 +237,10 @@ namespace ParkPlaces.Controls
 
         #region Overrides
 
+        /// <summary>
+        /// Gets called when the map gets painted
+        /// </summary>
+        /// <param name="e">Graphics context</param>
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -179,9 +274,12 @@ namespace ParkPlaces.Controls
                 e.Graphics.FillRectangle(linGrBrush, r);
             }
 
-            // TODO: implement displaying copyrigt switch
+            // TODO: implement displaying copyright switch
         }
 
+        /// <summary>
+        /// Gets called when the control gets loaded
+        /// </summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -192,6 +290,10 @@ namespace ParkPlaces.Controls
             Overlays.Add(TopLayer);
         }
 
+        /// <summary>
+        /// Gets called when the cursor moves on the map
+        /// </summary>
+        /// <param name="e">Mouse event arguments</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && _isMouseDown)
@@ -235,6 +337,10 @@ namespace ParkPlaces.Controls
             base.OnMouseMove(e);
         }
 
+        /// <summary>
+        /// Gets called when any button on the mouse gets released
+        /// </summary>
+        /// <param name="e">Mouse event arguments</param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -243,6 +349,10 @@ namespace ParkPlaces.Controls
             base.OnMouseUp(e);
         }
 
+        /// <summary>
+        /// Gets called when any button on the mouse gets held down
+        /// </summary>
+        /// <param name="e">Mouse event arguments</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -250,13 +360,13 @@ namespace ParkPlaces.Controls
                 _pointer.Position = FromLocalToLatLng(e.X, e.Y);
                 _isMouseDown = true;
 
-                if (GetIsDrawingPolygon)
+                if (IsDrawingPolygon)
                     DrawNewPolygonPoint();
 
                 if (!IsMouseOverPolygon && !IsMouseOverMarker)
                     ClearSelection();
             }
-            else if (GetIsDrawingPolygon && e.Button == MouseButtons.Right)
+            else if (IsDrawingPolygon && e.Button == MouseButtons.Right)
             {
                 drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
             }
@@ -264,6 +374,10 @@ namespace ParkPlaces.Controls
             base.OnMouseDown(e);
         }
 
+        /// <summary>
+        /// Gets called on double click on the map
+        /// </summary>
+        /// <param name="e">Mouse event arguments</param>
         protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
@@ -272,11 +386,15 @@ namespace ParkPlaces.Controls
                 new EditZoneForm((PolyZone)CurrentPolygon.Tag).Show();
         }
 
+        /// <summary>
+        /// Gets called when the user presses any key while the map being in focus
+        /// </summary>
+        /// <param name="e">K/B event arguments</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
 
-            if (!GetIsDrawingPolygon) return;
+            if (!IsDrawingPolygon) return;
 
             switch (e.KeyCode)
             {
@@ -294,6 +412,9 @@ namespace ParkPlaces.Controls
 
         #region App logic
 
+        /// <summary>
+        /// Gets called when both draw mode and ismousedown conditions meet
+        /// </summary>
         private void DrawNewPolygonPoint()
         {
             if (_currentDrawingPolygon == null)
@@ -310,14 +431,23 @@ namespace ParkPlaces.Controls
             }
         }
 
+        /// <summary>
+        /// Gets called when a new polygon is about to be drawn on the GUI
+        /// Aka. Draw mode start
+        /// </summary>
         public void BeginDrawPolygon()
         {
-            GetIsDrawingPolygon = true;
+            IsDrawingPolygon = true;
         }
 
+        /// <summary>
+        /// Gets called when a new polygon has been drawn or discarded
+        /// Aka. Draw mode end
+        /// <param name="save">Indicates whether to save or discard the current drawing polygon</param>
+        /// </summary>
         private void EndDrawPolygon(bool save)
         {
-            GetIsDrawingPolygon = false;
+            IsDrawingPolygon = false;
 
             if (save)
             {
@@ -345,9 +475,13 @@ namespace ParkPlaces.Controls
             _currentDrawingPolygon = null;
         }
 
+        /// <summary>
+        /// Removes a polygon from the map
+        /// </summary>
+        /// <param name="p">The polygon to be removed</param>
         public void RemovePolygon(Polygon p)
         {
-            if (GetIsDrawingPolygon)
+            if (IsDrawingPolygon)
             {
                 EndDrawPolygon(false);
             }
@@ -363,6 +497,9 @@ namespace ParkPlaces.Controls
             }
         }
 
+        /// <summary>
+        /// Clears the selected polygon on the map
+        /// </summary>
         private void ClearSelection()
         {
             if (CurrentPolygon == null) return;
@@ -375,12 +512,16 @@ namespace ParkPlaces.Controls
             PolygonRects.Markers.Clear();
         }
 
+        /// <summary>
+        /// Selects a polygon on the map
+        /// </summary>
+        /// <param name="p"></param>
         private void SelectPolygon(Polygon p)
         {
             ClearSelection();
 
-            p.Stroke = _mouseEnterStrokeClr;
-            p.Fill = _mouseEnterFillClr;
+            p.Stroke = _selectedStrokeClr;
+            p.Fill = _selecteFillClr;
 
             CurrentPolygon = p;
             CurrentPolygon.IsSelected = true;
@@ -392,6 +533,10 @@ namespace ParkPlaces.Controls
             }
         }
 
+        /// <summary>
+        /// Loads polygon data and constructs Polygon objects that GMap.NET will use
+        /// to display and draw the map control
+        /// </summary>
         public void LoadPolygons()
         {
             _fromJsonData = Dto2Object.FromJson(Resources.data);
@@ -415,6 +560,11 @@ namespace ParkPlaces.Controls
             }
         }
 
+        /// <summary>
+        /// Converts a GPoint type object to a Point type one
+        /// </summary>
+        /// <param name="p">GPoint type object</param>
+        /// <returns></returns>
         public Point ConvertGPointToPoint(GPoint p)
         {
             return new Point((int)p.X, (int)p.Y);
