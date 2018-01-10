@@ -44,8 +44,6 @@ namespace ParkPlacesTests.Utils
             var lel = await napi.Cities
                 .ParallelForEachTaskAsync(async x => await napi.GetCityPlan<List<PolyZone>>(x));
 
-            var polyData = await napi.GetCityPlan<List<PolyZone>>(napi.Cities[0]);
-
             Assert.AreEqual(true, true);
         }
 
