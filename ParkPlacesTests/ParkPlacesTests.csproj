@@ -60,13 +60,19 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\NemApiTest.cs" />
     <Compile Include="Utils\NetUtilTests.cs" />
     <Compile Include="Utils\PolygonalUtilTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ParkPlaces.DotUtils\ParkPlaces.DotUtils.csproj">
+      <Project>{51feef46-427a-4a07-81df-aaf2904f8828}</Project>
+      <Name>ParkPlaces.DotUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ParkPlaces\ParkPlaces.csproj">
       <Project>{F2D858F7-B4A6-4F8C-8DB5-CB1A5D982762}</Project>
       <Name>ParkPlaces</Name>

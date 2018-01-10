@@ -1,0 +1,8 @@
+C:\Users\Weirdo\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\bin\Debug\ParkPlaces.DotUtils.dll
+C:\Users\Weirdo\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\bin\Debug\ParkPlaces.DotUtils.pdb
+C:\Users\Weirdo\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.csprojResolveAssemblyReference.cache
+C:\Users\Weirdo\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.csproj.CoreCompileInputs.cache
+C:\Users\Weirdo\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.dll
+C:\Users\Weirdo\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.pdb
+C:\Users\Weirdo\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Weirdo\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\bin\Debug\Newtonsoft.Json.xml
