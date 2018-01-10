@@ -41,11 +41,8 @@ namespace ParkPlacesTests.Utils
         {
             var napi = await GetNem();
 
-            var lel = await napi.Cities.ParallelForEachTaskAsync(async x =>
-            {
-                var res = await napi.GetCityPlan<List<PolyZone>>(x);
-                return res;
-            });
+            var lel = await napi.Cities
+                .ParallelForEachTaskAsync(async x => await napi.GetCityPlan<List<PolyZone>>(x));
 
             var polyData = await napi.GetCityPlan<List<PolyZone>>(napi.Cities[0]);
 
