@@ -176,6 +176,12 @@
   <ItemGroup>
     <None Include="Resources\if_f-cross_256_282471.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ParkPlaces.DotUtils\ParkPlaces.DotUtils.csproj">
+      <Project>{51feef46-427a-4a07-81df-aaf2904f8828}</Project>
+      <Name>ParkPlaces.DotUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.106.0\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.106.0\build\net40\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
