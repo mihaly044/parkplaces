@@ -126,6 +126,7 @@
     <Compile Include="IO\Dto2Object.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\NetUtil.cs" />
     <Compile Include="Utils\PolygonalUtil.cs" />
     <EmbeddedResource Include="Controls\Map.resx">
       <DependentUpon>Map.cs</DependentUpon>

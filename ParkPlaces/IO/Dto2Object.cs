@@ -19,7 +19,7 @@ namespace ParkPlaces.IO
         public List<PolyZone> Zones { get; set; }
     }
 
-    public class PolyZone
+    public partial class PolyZone
     {
         [JsonProperty("color")]
         public string Color { get; set; }
@@ -89,6 +89,11 @@ namespace ParkPlaces.IO
     public partial class Dto2Object
     {
         public static Dto2Object FromJson(string json) => JsonConvert.DeserializeObject<Dto2Object>(json, Converter.Settings);
+    }
+
+    public partial class PolyZone
+    {
+        public static PolyZone FromURI(string uri) => JsonConvert.DeserializeObject<PolyZone>(Utils.NetUtil.GetStringFromUrl(uri));
     }
 
     public static class Serialize
