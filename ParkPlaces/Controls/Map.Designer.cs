@@ -55,7 +55,7 @@
             this.cancelEscToolStripMenuItem.Name = "cancelEscToolStripMenuItem";
             this.cancelEscToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cancelEscToolStripMenuItem.Text = "Cancel (&Esc)";
-            this.cancelEscToolStripMenuItem.Click += new System.EventHandler(this.cancelEscToolStripMenuItem_Click);
+            this.cancelEscToolStripMenuItem.Click += new System.EventHandler(this.cancelToolStripMenuItem_Click);
             // 
             // Map
             // 
