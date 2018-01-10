@@ -23,6 +23,8 @@ namespace ParkPlaces.IO
 
         private async Task<NemApi> GetApiAsync() => _api ?? await NemApi.CreateApi();
 
+        public EventHandler<UpdateProcessChangedArgs> OnUpdateChangedEventHandler;
+
         private IoHandler()
         {
             if (int.TryParse(ConfigurationManager.AppSettings["UpdateInterval"], out var updateInterval))
@@ -56,13 +58,18 @@ namespace ParkPlaces.IO
 
             var api = await GetApiAsync();
             var cityTasks = api.Cities.Select(x => api.GetCityPlan<List<PolyZone>>(x)).ToList();
+            var cProcess = new UpdateProcessChangedArgs(cityTasks.Count);
 
             while (cityTasks.Count > 0)
             {
                 var res = await Task.WhenAny(cityTasks);
                 cityTasks.Remove(res);
+
+                cProcess.UpdateChunks(cProcess.TotalChunks - cityTasks.Count);
+
                 dto.Zones.AddRange(await res);
                 //Put in response how many have been downloaded so far....
+                OnUpdateChangedEventHandler?.Invoke(this, cProcess);
             }
 
             _lastUpdate = DateTime.Now;
