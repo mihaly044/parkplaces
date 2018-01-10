@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -538,15 +539,13 @@ namespace ParkPlaces.Controls
         /// Loads polygon data and constructs Polygon objects that GMap.NET will use
         /// to display and draw the map control
         /// </summary>
-        public void LoadPolygons()
+        public async void LoadPolygons()
         {
-            /* var updateWasSuccessfull = await IoHandler.Instance.UpdateAsync(true, true);
-             if(!updateWasSuccessfull)
-                 Debug.Write("Well, you f**ked up smth.");
-             else
-                 Debug.Write("Successfull update");*/
 
-            _fromJsonData = Dto2Object.FromJson("data");
+            var updateWasSuccessfull = await IoHandler.Instance.UpdateAsync(true, true);
+            Debug.Write(!updateWasSuccessfull ? "Update failed\n" : "Successfull update\n");
+
+            _fromJsonData = Dto2Object.FromJson(File.ReadAllText("data"));
 
             if (Polygons.Polygons.Count > 0)
                 Polygons.Clear();
