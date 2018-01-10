@@ -94,6 +94,7 @@ namespace ParkPlaces.DotUtils.Net
         {
             using (var wc = WebClientFactory.GetClient())
             {
+                wc.Headers.Add("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1");
                 var content = await wc.DownloadStringTaskAsync(uri);
                 return content;
             }
