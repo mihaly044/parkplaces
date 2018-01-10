@@ -21,7 +21,7 @@ namespace ParkPlacesTests.Utils
         public async Task TestMethod1()
         {
             var napi = await NemApi.CreateApi();
-            var uri = await napi.GetCityPlan<List<PolyZone>>(napi.Cities[0]);
+            var polyData = await napi.GetCityPlan<List<PolyZone>>(napi.Cities[0]);
 
             Assert.AreEqual(true, true);
         }
