@@ -61,7 +61,7 @@ namespace ParkPlaces.IO
             set => _internalPoint.Lat = value;
         }
 
-        [JsonProperty("lng")]
+        [JsonProperty("long")]
         public double Lng
         {
             get => _internalPoint.Lng;
