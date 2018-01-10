@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using GMap.NET;
 using Newtonsoft.Json;
+using System.Text;
+using System.Diagnostics;
 
 // To parse this JSON data, add NuGet 'Newtonsoft.Json' then do:
 //
@@ -89,11 +91,23 @@ namespace ParkPlaces.IO
     public partial class Dto2Object
     {
         public static Dto2Object FromJson(string json) => JsonConvert.DeserializeObject<Dto2Object>(json, Converter.Settings);
-    }
 
-    public partial class PolyZone
-    {
-        public static PolyZone FromURI(string uri) => JsonConvert.DeserializeObject<PolyZone>(Utils.NetUtil.GetStringFromUrl(uri));
+        public static Dto2Object FromURISync(string uri)
+        {
+
+            return null;
+
+            string json = Utils.NetUtil.GetStringFromUrl(uri);
+
+            StringBuilder bldr = new StringBuilder();
+            bldr.Append("{\"type\": \"ZoneCollection\",\"zones\": [");
+            bldr.Append(json);
+            bldr.Append("]}");
+
+            Debug.WriteLine(bldr.ToString());
+
+            return Dto2Object.FromJson(bldr.ToString());
+        }
     }
 
     public static class Serialize
