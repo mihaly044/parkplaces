@@ -30,16 +30,16 @@ namespace ParkPlaces.DotUtils.Extensions
             return iterations;
         }
 
-        public static async Task<List<X>> ParallelForEachTaskAsync<T, X>(this IEnumerable<T> input, Func<T, Task<X>> toRunAct)
+        public static async Task<List<TX>> ParallelForEachTaskAsync<T, TX>(this IEnumerable<T> input, Func<T, Task<TX>> toRunAct)
         {
-            var lst = new List<Task<X>>();
-            var res = new List<X>();
+            var lst = new List<Task<TX>>();
+            var res = new List<TX>();
 
             if (input == null) return res;
 
             foreach (var put in input)
             {
-                if (!put.Equals(default(X)))
+                if (!put.Equals(default(TX)))
                     lst.Add(toRunAct(put));
             }
 

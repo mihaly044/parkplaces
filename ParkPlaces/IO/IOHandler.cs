@@ -51,16 +51,22 @@ namespace ParkPlaces.IO
             {
                 return false;
             }
-
-            var api = await _instance.GetApiAsync();
-            var cities = await api.Cities
-                .ParallelForEachTaskAsync(async x => await api.GetCityPlan<List<PolyZone>>(x));
-
             var dto = new Dto2Object
             {
                 Type = "ZoneCollection",
-                Zones = cities.SelectMany(m => m).ToList()
+                Zones = new List<PolyZone>()
             };
+
+            var api = await _instance.GetApiAsync();
+            var cityTasks = api.Cities.Select(x => api.GetCityPlan<List<PolyZone>>(x)).ToList();
+
+            while (cityTasks.Count > 0)
+            {
+                var res = await Task.WhenAny(cityTasks);
+                cityTasks.Remove(res);
+                dto.Zones.AddRange(await res);
+                //Put in response how many have been downloaded so far....
+            }
 
             _instance._lastUpdate = DateTime.Now;
             ConfigurationManager.AppSettings["LastUpdate"] = _instance._lastUpdate.ToLongTimeString();
