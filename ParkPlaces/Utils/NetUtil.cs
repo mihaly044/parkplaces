@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ParkPlaces.Utils
 {
+    [Obsolete("This class is obsolete. Use DotUtils instead ", false)]
     public static class NetUtil
     {
         // TODO: Make it async so that it wont block the calling thread
