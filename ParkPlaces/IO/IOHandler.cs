@@ -25,7 +25,7 @@ namespace ParkPlaces.IO
 
         private IoHandler()
         {
-            if (!int.TryParse(ConfigurationManager.AppSettings["UpdateInterval"], out var updateInterval))
+            if (int.TryParse(ConfigurationManager.AppSettings["UpdateInterval"], out var updateInterval))
             {
                 _updateInterval = updateInterval;
             }
