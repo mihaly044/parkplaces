@@ -15,7 +15,6 @@ using GMap.NET.WindowsForms.Markers;
 using ParkPlaces.Forms;
 using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
-using ParkPlaces.Properties;
 
 namespace ParkPlaces.Controls
 {
@@ -541,13 +540,11 @@ namespace ParkPlaces.Controls
         /// </summary>
         public async void LoadPolygons()
         {
-
             _fromJsonData = await IoHandler.Instance.UpdateAsync(true, false);
             if(_fromJsonData == null)
             {
                 _fromJsonData = Dto2Object.FromJson(File.ReadAllText("data"));
             }
-
 
             if (Polygons.Polygons.Count > 0)
                 Polygons.Clear();
