@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using GMap.NET.MapProviders;
 using ParkPlaces.Map_shapes;
+using ParkPlaces.IO;
 
 namespace ParkPlaces.Forms
 {
@@ -14,6 +15,13 @@ namespace ParkPlaces.Forms
 
         private void ParkPlacesForm_Load(object sender, EventArgs e)
         {
+            if (IoHandler.Instance.NeedUpdate)
+            {
+                UpdateForm f = new UpdateForm();
+                f.Show();
+                f.Focus();
+            }
+
             Map.LoadPolygons();
             lblZoom.Text = $"Zoom: {Map.Zoom}";
         }
