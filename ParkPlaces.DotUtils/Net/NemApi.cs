@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using ParkPlaces.DotUtils.Extensions;
@@ -78,7 +73,7 @@ namespace ParkPlaces.DotUtils.Net
             return JsonConvert.DeserializeObject<T>(cPlan, new JsonSerializerSettings
             {
                 MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-                DateParseHandling = DateParseHandling.None,
+                DateParseHandling = DateParseHandling.None
             });
         }
 
@@ -90,7 +85,7 @@ namespace ParkPlaces.DotUtils.Net
             return await DownloadString(rUri);
         }
 
-        private async Task<string> DownloadString(string uri)
+        private static async Task<string> DownloadString(string uri)
         {
             using (var wc = WebClientFactory.GetClient())
             {

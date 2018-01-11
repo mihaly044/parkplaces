@@ -1,4 +1,6 @@
-﻿using ParkPlaces.Controls;
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+using ParkPlaces.Controls;
 
 namespace ParkPlaces.Forms
 {
@@ -7,7 +9,7 @@ namespace ParkPlaces.Forms
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -336,32 +338,32 @@ namespace ParkPlaces.Forms
 
         #endregion
         private Map Map;
-        private System.Windows.Forms.ToolStrip toolStrip;
-        private System.Windows.Forms.ToolStripButton drawPolygonButton;
-        private System.Windows.Forms.ToolStripDropDownButton SelectMapProviderButton;
-        private System.Windows.Forms.ToolStripMenuItem googleMapsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openStreetMapToolStripMenuItem;
-        private System.Windows.Forms.ToolStripStatusLabel lblZoom;
-        private System.Windows.Forms.ToolStripStatusLabel lblMouse;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripButton RemovePolygonButton;
-        private System.Windows.Forms.PropertyGrid propertyGrid1;
-        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openRemoteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveFileAsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem polyzoneUpdatesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem updateManagerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem forceUpdateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private ToolStrip toolStrip;
+        private ToolStripButton drawPolygonButton;
+        private ToolStripDropDownButton SelectMapProviderButton;
+        private ToolStripMenuItem googleMapsToolStripMenuItem;
+        private ToolStripMenuItem openStreetMapToolStripMenuItem;
+        private ToolStripStatusLabel lblZoom;
+        private ToolStripStatusLabel lblMouse;
+        private StatusStrip statusStrip1;
+        private ToolStripButton RemovePolygonButton;
+        private PropertyGrid propertyGrid1;
+        private ToolStripProgressBar toolStripProgressBar;
+        private ToolStripStatusLabel toolStripStatusLabel;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem openToolStripMenuItem;
+        private ToolStripMenuItem openRemoteToolStripMenuItem;
+        private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem saveFileAsToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem toolsToolStripMenuItem;
+        private ToolStripMenuItem polyzoneUpdatesToolStripMenuItem;
+        private ToolStripMenuItem updateManagerToolStripMenuItem;
+        private ToolStripMenuItem forceUpdateToolStripMenuItem;
+        private ToolStripMenuItem helpToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 

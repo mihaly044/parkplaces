@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 using GMap.NET;
 using Newtonsoft.Json;
-using System.Text;
-using System.Diagnostics;
+using ParkPlaces.Utils;
 
 // To parse this JSON data, add NuGet 'Newtonsoft.Json' then do:
 //
@@ -21,7 +22,7 @@ namespace ParkPlaces.IO
         public List<PolyZone> Zones { get; set; }
     }
 
-    public partial class PolyZone
+    public class PolyZone
     {
         [JsonProperty("color")]
         public string Color { get; set; }
@@ -92,12 +93,12 @@ namespace ParkPlaces.IO
     {
         public static Dto2Object FromJson(string json) => JsonConvert.DeserializeObject<Dto2Object>(json, Converter.Settings);
 
-        public static Dto2Object FromURISync(string uri)
+        public static Dto2Object FromUriSync(string uri)
         {
 
             return null;
 
-            string json = Utils.NetUtil.GetStringFromUrl(uri);
+            string json = NetUtil.GetStringFromUrl(uri);
 
             StringBuilder bldr = new StringBuilder();
             bldr.Append("{\"type\": \"ZoneCollection\",\"zones\": [");
@@ -106,7 +107,7 @@ namespace ParkPlaces.IO
 
             Debug.WriteLine(bldr.ToString());
 
-            return Dto2Object.FromJson(bldr.ToString());
+            return FromJson(bldr.ToString());
         }
     }
 
@@ -125,7 +126,7 @@ namespace ParkPlaces.IO
         public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {
             MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            DateParseHandling = DateParseHandling.None,
+            DateParseHandling = DateParseHandling.None
         };
     }
 }

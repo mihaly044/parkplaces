@@ -51,11 +51,9 @@ namespace ParkPlaces.Map_shapes
                 sb.Append("km2");
                 return (GetArea() / 1000000).ToString(sb.ToString());
             }
-            else
-            {
-                sb.Append("m2");
-                return GetArea().ToString(sb.ToString());
-            }
+
+            sb.Append("m2");
+            return GetArea().ToString(sb.ToString());
         }
 
         public void PointsHasChanged()

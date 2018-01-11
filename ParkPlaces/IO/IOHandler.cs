@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
 using System.IO;
-using ParkPlaces.DotUtils.Extensions;
+using System.Linq;
+using System.Threading.Tasks;
 using ParkPlaces.DotUtils.Net;
 
 namespace ParkPlaces.IO
@@ -14,14 +12,18 @@ namespace ParkPlaces.IO
     {
         private NemApi _api;
         public static IoHandler Instance => _instance ?? (_instance = new IoHandler());
-        public bool NeedUpdate => _needUpdate;
+        public bool NeedUpdate => Get_needUpdate();
 
         private static IoHandler _instance;
 
         private DateTime _lastUpdate;
         private DateTime _nextUpdate;
         private int _updateInterval;
-        private bool _needUpdate => DateTime.Now >= _nextUpdate;
+
+        private bool Get_needUpdate()
+        {
+            return DateTime.Now >= _nextUpdate;
+        }
 
         private async Task<NemApi> GetApiAsync() => _api ?? await NemApi.CreateApi();
 
@@ -48,7 +50,7 @@ namespace ParkPlaces.IO
 
         public async Task<Dto2Object> UpdateAsync(bool saveToDisk = false, bool forceUpdate = false)
         {
-            if (!_needUpdate && !forceUpdate)
+            if (!Get_needUpdate() && !forceUpdate)
             {
                 return null;
             }

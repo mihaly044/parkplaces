@@ -1,11 +1,14 @@
-﻿namespace ParkPlaces.Controls
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace ParkPlaces.Controls
 {
     partial class Map
     {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -72,8 +75,8 @@
 
         #endregion
 
-        private System.Windows.Forms.ContextMenuStrip drawPolygonCtxMenu;
-        private System.Windows.Forms.ToolStripMenuItem finalizeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cancelEscToolStripMenuItem;
+        private ContextMenuStrip drawPolygonCtxMenu;
+        private ToolStripMenuItem finalizeToolStripMenuItem;
+        private ToolStripMenuItem cancelEscToolStripMenuItem;
     }
 }

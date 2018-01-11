@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using GMap.NET.MapProviders;
-using ParkPlaces.Map_shapes;
+using GMap.NET.WindowsForms;
 using ParkPlaces.IO;
+using ParkPlaces.Map_shapes;
 
 namespace ParkPlaces.Forms
 {
@@ -52,7 +53,7 @@ namespace ParkPlaces.Forms
                 Map.RemovePolygon(Map.CurrentPolygon);
         }
 
-        private void Map_OnPolygonClick(GMap.NET.WindowsForms.GMapPolygon item, MouseEventArgs e)
+        private void Map_OnPolygonClick(GMapPolygon item, MouseEventArgs e)
         {
             if (Map.CurrentPolygon != null)
                 propertyGrid1.SelectedObject = Map.CurrentPolygon.Tag;
