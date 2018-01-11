@@ -76,10 +76,7 @@ namespace ParkPlaces.IO
 
             _lastUpdate = DateTime.Now;
 
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["LastUpdate"].Value = _lastUpdate.ToBinary().ToString();
-            config.Save();
-            ConfigurationManager.RefreshSection("appSettings");
+            //UpdateConfig();
 
             if (saveToDisk)
             {
@@ -87,6 +84,14 @@ namespace ParkPlaces.IO
             }
 
             return dto;
+        }
+
+        private void UpdateConfig()
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings["LastUpdate"].Value = _lastUpdate.ToBinary().ToString();
+            config.Save();
+            ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }

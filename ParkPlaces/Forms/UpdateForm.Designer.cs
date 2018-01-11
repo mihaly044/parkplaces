@@ -61,7 +61,7 @@
             this.MinimizeBox = false;
             this.Name = "UpdateForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "UpdateForm";
+            this.Text = "Please wait";
             this.ResumeLayout(false);
             this.PerformLayout();
 

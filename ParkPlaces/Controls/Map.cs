@@ -540,14 +540,16 @@ namespace ParkPlaces.Controls
         /// </summary>
         public async void LoadPolygons()
         {
-            _fromJsonData = await IoHandler.Instance.UpdateAsync(true, false);
-            if(_fromJsonData == null)
-            {
+            _fromJsonData = await IoHandler.Instance.UpdateAsync(true);
+
+            //Statements below will only execute after UpdateAsync returns with a result, right?
+            if (_fromJsonData == null)
                 _fromJsonData = Dto2Object.FromJson(File.ReadAllText("data"));
-            }
 
             if (Polygons.Polygons.Count > 0)
+            {
                 Polygons.Clear();
+            }
 
             foreach (var zone in _fromJsonData.Zones)
             {
