@@ -10,3 +10,6 @@
 /ParkPlacesTests/bin/Debug
 /ParkPlacesTests/obj
 /ParkPlaces.sln.DotSettings.user
+/ParkPlaces.DotUtils/bin/Debug
+/ParkPlaces.DotUtils/bin/Release
+/ParkPlaces.DotUtils/obj
