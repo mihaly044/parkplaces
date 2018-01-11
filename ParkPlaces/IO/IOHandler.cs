@@ -14,6 +14,8 @@ namespace ParkPlaces.IO
     {
         private NemApi _api;
         public static IoHandler Instance => _instance ?? (_instance = new IoHandler());
+        public bool NeedUpdate => _needUpdate;
+
         private static IoHandler _instance;
 
         private DateTime _lastUpdate;
