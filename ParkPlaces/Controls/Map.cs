@@ -542,10 +542,12 @@ namespace ParkPlaces.Controls
         public async void LoadPolygons()
         {
 
-            var updateWasSuccessfull = await IoHandler.Instance.UpdateAsync(true, true);
-            Debug.Write(!updateWasSuccessfull ? "Update failed\n" : "Successfull update\n");
+            _fromJsonData = await IoHandler.Instance.UpdateAsync(true, false);
+            if(_fromJsonData == null)
+            {
+                _fromJsonData = Dto2Object.FromJson(File.ReadAllText("data"));
+            }
 
-            _fromJsonData = Dto2Object.FromJson(File.ReadAllText("data"));
 
             if (Polygons.Polygons.Count > 0)
                 Polygons.Clear();

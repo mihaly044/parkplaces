@@ -34,7 +34,7 @@ namespace ParkPlaces.IO
 
             if (long.TryParse(ConfigurationManager.AppSettings["LastUpdate"], out var lastUpdate))
             {
-                _lastUpdate = new DateTime(lastUpdate);
+                _lastUpdate = DateTime.FromBinary(lastUpdate);
                 _nextUpdate = _lastUpdate.AddDays(_updateInterval);
             }
             else
@@ -44,11 +44,11 @@ namespace ParkPlaces.IO
             }
         }
 
-        public async Task<bool> UpdateAsync(bool saveToDisk = false, bool forceUpdate = false)
+        public async Task<Dto2Object> UpdateAsync(bool saveToDisk = false, bool forceUpdate = false)
         {
             if (!_needUpdate && !forceUpdate)
             {
-                return false;
+                return null;
             }
             var dto = new Dto2Object
             {
@@ -73,14 +73,18 @@ namespace ParkPlaces.IO
             }
 
             _lastUpdate = DateTime.Now;
-            ConfigurationManager.AppSettings["LastUpdate"] = _lastUpdate.ToLongTimeString();
+
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings["LastUpdate"].Value = _lastUpdate.ToBinary().ToString();
+            config.Save();
+            ConfigurationManager.RefreshSection("appSettings");
 
             if (saveToDisk)
             {
                 File.WriteAllText("data", dto.ToJson());
             }
 
-            return true;
+            return dto;
         }
     }
 }
