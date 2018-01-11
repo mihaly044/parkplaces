@@ -92,23 +92,6 @@ namespace ParkPlaces.IO
     public partial class Dto2Object
     {
         public static Dto2Object FromJson(string json) => JsonConvert.DeserializeObject<Dto2Object>(json, Converter.Settings);
-
-        public static Dto2Object FromUriSync(string uri)
-        {
-
-            return null;
-
-            string json = NetUtil.GetStringFromUrl(uri);
-
-            StringBuilder bldr = new StringBuilder();
-            bldr.Append("{\"type\": \"ZoneCollection\",\"zones\": [");
-            bldr.Append(json);
-            bldr.Append("]}");
-
-            Debug.WriteLine(bldr.ToString());
-
-            return FromJson(bldr.ToString());
-        }
     }
 
     public static class Serialize
