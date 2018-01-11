@@ -47,7 +47,7 @@ namespace ParkPlaces.Controls
             _pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
             TopLayer.Markers.Add(_pointer);
 
-            deleteCacheDate = DateTime.Now;
+            var deleteCacheDate = DateTime.Now;
             deleteCacheDate = deleteCacheDate.AddDays(-10);
             Manager.PrimaryCache.DeleteOlderThan(deleteCacheDate, null);
         }
@@ -74,11 +74,6 @@ namespace ParkPlaces.Controls
         /// Defines the fill colour of map shapes in selected state
         /// </summary>
         private readonly Brush _selecteFillClr;
-
-        /// <summary>
-        /// Downloaded and cached map tile images gets deleted on this date
-        /// </summary>
-        private readonly DateTime deleteCacheDate;
 
         /// <summary>
         /// Indicates whether the left mouse button is down at a given moment
@@ -113,7 +108,7 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// Can be used to get the previous mouse location on every OnMouseMove call
         /// </summary>
-        private Point _previousMouseLocation; //Never used, just assigned
+        //private Point _previousMouseLocation; //Never used, just assigned
 
         /// <summary>
         /// Indicates whether the map has a black-transparent gradient on its left side
@@ -226,13 +221,10 @@ namespace ParkPlaces.Controls
             EndDrawPolygon(true);
         }
 
-        // <summary>
+        /// <summary>
         /// Occurs when Cancel gets clicked on the context menu that appears in drawing mode
         /// </summary>
-        private void cancelToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            EndDrawPolygon(false);
-        }
+        private void cancelToolStripMenuItem_Click(object sender, EventArgs e) => EndDrawPolygon(false);
 
         #endregion Context menu events
 
@@ -334,7 +326,7 @@ namespace ParkPlaces.Controls
                     _currentRectMaker.Position = pnew;
                 }
 
-            _previousMouseLocation = e.Location;
+            //_previousMouseLocation = e.Location;
             base.OnMouseMove(e);
         }
 
