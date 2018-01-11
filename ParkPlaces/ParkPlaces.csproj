@@ -110,12 +110,6 @@
     <Compile Include="Controls\RoundButton.Designer.cs">
       <DependentUpon>RoundButton.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\UpdateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\UpdateForm.Designer.cs">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="IO\IOHandler.cs" />
     <Compile Include="IO\UpdateProcessChanged.cs" />
     <Compile Include="Map shapes\Polygon.cs" />
@@ -145,9 +139,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ParkPlacesForm.resx">
       <DependentUpon>ParkPlacesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\UpdateForm.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

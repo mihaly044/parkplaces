@@ -13,19 +13,6 @@ namespace ParkPlaces.Forms
             InitializeComponent();
         }
 
-        private void ParkPlacesForm_Load(object sender, EventArgs e)
-        {
-            if (IoHandler.Instance.NeedUpdate)
-            {
-                UpdateForm f = new UpdateForm();
-                f.Show();
-                f.Focus();
-            }
-
-            Map.LoadPolygons();
-            lblZoom.Text = $"Zoom: {Map.Zoom}";
-        }
-
         private void Map_MouseMove(object sender, MouseEventArgs e)
         {
             lblMouse.Text = Map.FromLocalToLatLng(e.X, e.Y).ToString();
@@ -65,16 +52,42 @@ namespace ParkPlaces.Forms
                 Map.RemovePolygon(Map.CurrentPolygon);
         }
 
-        private void statisticsButton_Click(object sender, EventArgs e)
-        {
-            // TODO: implement statistics module
-            throw new NotImplementedException();
-        }
-
         private void Map_OnPolygonClick(GMap.NET.WindowsForms.GMapPolygon item, MouseEventArgs e)
         {
             if (Map.CurrentPolygon != null)
                 propertyGrid1.SelectedObject = Map.CurrentPolygon.Tag;
+        }
+
+        private void ParkPlacesForm_Shown(object sender, EventArgs e)
+        {
+            if (IoHandler.Instance.NeedUpdate)
+            {
+                if (MessageBox.Show("New polygon data is available. Do you wish start the update process?",
+                        "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    toolStripStatusLabel.Text = "Started update...";
+                    toolStripProgressBar.Visible = true;
+                    IoHandler.Instance.OnUpdateChangedEventHandler += (s, updateProcessChangedArgs) =>
+                    {
+                        toolStripProgressBar.Maximum = updateProcessChangedArgs.TotalChunks;
+                        toolStripProgressBar.Value = updateProcessChangedArgs.CurrentChunks;
+
+                        toolStripStatusLabel.Text = $"Downloaded {updateProcessChangedArgs.CurrentChunks} items of {updateProcessChangedArgs.TotalChunks}";
+
+                        if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
+                        toolStripProgressBar.Visible = false;
+                        toolStripStatusLabel.Text = "Ready";
+                    };
+                }
+            }
+
+            Map.LoadPolygons();
+            lblZoom.Text = $"Zoom: {Map.Zoom}";
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }
