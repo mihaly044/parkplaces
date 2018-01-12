@@ -149,17 +149,17 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// The very upper overlayof the map
         /// </summary>
-        internal readonly GMapOverlay TopLayer = new GMapOverlay("topLayer");
+        internal readonly Layer TopLayer = new Layer("topLayer");
 
         /// <summary>
         /// Map layer that contains polygons
         /// </summary>
-        internal readonly GMapOverlay Polygons = new GMapOverlay("polygons");
+        internal readonly Layer Polygons = new Layer("polygons");
 
         /// <summary>
         /// Map layer that contains rectangle markers
         /// </summary>
-        internal readonly GMapOverlay PolygonRects = new GMapOverlay("polygonRects");
+        internal readonly Layer PolygonRects = new Layer("polygonRects");
 
         /// <summary>
         /// Version info gets rendered using this font

@@ -114,6 +114,7 @@
     <Compile Include="Extensions\PrivateObjectEx.cs" />
     <Compile Include="IO\IOHandler.cs" />
     <Compile Include="IO\UpdateProcessChanged.cs" />
+    <Compile Include="Map shapes\Layer.cs" />
     <Compile Include="Map shapes\Polygon.cs" />
     <Compile Include="Forms\EditZoneForm.cs">
       <SubType>Form</SubType>
