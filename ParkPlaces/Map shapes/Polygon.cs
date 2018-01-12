@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using GMap.NET;
 using GMap.NET.WindowsForms;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ParkPlaces.Extensions;
 using ParkPlaces.IO;
 using ParkPlaces.Utils;
 
@@ -14,11 +18,14 @@ namespace ParkPlaces.Map_shapes
         public bool IsSelected { get; set; }
         private bool _areaNeedsUpdate;
         private double _area;
+
+        private PrivateObject _privateObject;
         // private Font _nameFont; //never used
 
         public Polygon(List<PointLatLng> points, string description) : base(points, description)
         {
             _areaNeedsUpdate = true;
+            _privateObject = new PrivateObject(this);
         }
 
         public Point GetCentroid()
@@ -63,6 +70,15 @@ namespace ParkPlaces.Map_shapes
 
         public override void OnRender(Graphics g)
         {
+            _privateObject.TryFindField("graphicsPath",
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                out GraphicsPath graphicsPath);
+
+            if (graphicsPath != null)
+            {
+                IsVisible = Overlay.Control.ClientRectangle.IntersectsWith(Rectangle.Round(graphicsPath.GetBounds()));
+            }
+
             base.OnRender(g);
 
             if (Tag == null)
