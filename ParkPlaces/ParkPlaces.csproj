@@ -105,12 +105,6 @@
     <Compile Include="Controls\Map.Designer.cs">
       <DependentUpon>Map.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RoundButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\RoundButton.Designer.cs">
-      <DependentUpon>RoundButton.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\PrivateObjectEx.cs" />
     <Compile Include="IO\IOHandler.cs" />
     <Compile Include="IO\UpdateProcessChanged.cs" />
