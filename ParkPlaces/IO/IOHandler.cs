@@ -17,7 +17,7 @@ namespace ParkPlaces.IO
         private static IoHandler _instance;
 
         private DateTime _lastUpdate;
-        private DateTime _nextUpdate;
+        private readonly DateTime _nextUpdate;
         private int _updateInterval;
 
         private bool Get_needUpdate()
@@ -25,7 +25,7 @@ namespace ParkPlaces.IO
             return DateTime.Now >= _nextUpdate || !File.Exists("data");
         }
 
-        private async Task<NemApi> GetApiAsync() => _api ?? await NemApi.CreateApi();
+        private async Task<NemApi> GetApiAsync() => _api ?? (_api = await GetApiAsync());
 
         public EventHandler<UpdateProcessChangedArgs> OnUpdateChangedEventHandler;
 

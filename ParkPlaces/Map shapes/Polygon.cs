@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using GMap.NET;
 using GMap.NET.WindowsForms;

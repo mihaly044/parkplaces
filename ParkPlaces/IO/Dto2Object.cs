@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using GMap.NET;
 using Newtonsoft.Json;
-using ParkPlaces.Utils;
 
 // To parse this JSON data, add NuGet 'Newtonsoft.Json' then do:
 //
