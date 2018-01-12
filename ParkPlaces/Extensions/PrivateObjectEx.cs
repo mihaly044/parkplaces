@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ParkPlaces.Map_shapes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ParkPlaces.Extensions
 {
+    // Reference: https://www.codeproject.com/Articles/696524/Accessing-Private-Fields-in-Inherited-Classes
     public static class PrivateObjectEx
     {
         public static bool TryFindField<T>
             (this PrivateObject po, string name, out T value)
         {
-            return po.TryFindField<T>
+            return po.TryFindField
                 (name, System.Reflection.BindingFlags.Default, out value);
         }
 
