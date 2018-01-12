@@ -22,7 +22,7 @@ namespace ParkPlaces.IO
 
         private bool Get_needUpdate()
         {
-            return DateTime.Now >= _nextUpdate;
+            return DateTime.Now >= _nextUpdate || !File.Exists("data");
         }
 
         private async Task<NemApi> GetApiAsync() => _api ?? await NemApi.CreateApi();
