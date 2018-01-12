@@ -18,7 +18,7 @@ namespace ParkPlaces.Utils.Tests
             string expected = "test";
 
             string actual = NetUtil.GetStringFromUrl(url);
-            Assert.AreEqual(expected, actual, actual);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

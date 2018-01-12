@@ -23,13 +23,16 @@ namespace ParkPlacesTests.Utils
         {
         }
 
+        /// <summary>
+        /// Get results for a city
+        /// </summary>
+        /// <returns></returns>
         [TestMethod]
-        public async Task TestMethod1()
+        public async Task TestGetCityPlan()
         {
             var napi = await GetNem();
             var polyData = await napi.GetCityPlan<List<PolyZone>>(napi.Cities[0]);
-
-            Assert.AreEqual(true, true);
+            Assert.IsInstanceOfType(polyData, typeof(List<PolyZone>));
         }
 
         /// <summary>
@@ -37,14 +40,14 @@ namespace ParkPlacesTests.Utils
         /// </summary>
         /// <returns></returns>
         [TestMethod]
-        public async Task TestMethod2()
+        public async Task TestGetAllResults()
         {
             var napi = await GetNem();
 
-            var lel = await napi.Cities
+            var polyData = await napi.Cities
                 .ParallelForEachTaskAsync(async x => await napi.GetCityPlan<List<PolyZone>>(x));
 
-            Assert.AreEqual(true, true);
+            Assert.IsInstanceOfType(polyData, typeof(List<List<PolyZone>>));
         }
 
         private async Task<NemApi> GetNem()
