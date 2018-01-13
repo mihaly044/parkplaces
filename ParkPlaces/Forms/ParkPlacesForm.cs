@@ -65,34 +65,46 @@ namespace ParkPlaces.Forms
             {
                 if (MessageBox.Show("New polygon data is available. Do you wish start the update process?",
                         "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    toolStripStatusLabel.Text = "Started update...";
-                    toolStripProgressBar.Visible = true;
-                    IoHandler.Instance.OnUpdateChangedEventHandler += (s, updateProcessChangedArgs) =>
-                    {
-                        toolStripProgressBar.Maximum = updateProcessChangedArgs.TotalChunks;
-                        toolStripProgressBar.Value = updateProcessChangedArgs.CurrentChunks;
-
-                        toolStripStatusLabel.Text =
-                            $"Downloaded {updateProcessChangedArgs.CurrentChunks} items of {updateProcessChangedArgs.TotalChunks}";
-
-                        if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
-                        toolStripProgressBar.Visible = false;
-                        toolStripStatusLabel.Text = "Ready";
-                    };
-                    Map.UpdateHint = true;
-                }
+                    GetRemote();
                 else
                     Map.UpdateHint = false;
             }
-
-            Map.LoadPolygons();
             lblZoom.Text = $"Zoom: {Map.Zoom}";
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void openRemoteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GetRemote();
+        }
+
+        private void GetRemote()
+        {
+            toolStripStatusLabel.Text = "Started update...";
+            toolStripProgressBar.Visible = true;
+            IoHandler.Instance.OnUpdateChangedEventHandler += (s, updateProcessChangedArgs) =>
+            {
+                toolStripProgressBar.Maximum = updateProcessChangedArgs.TotalChunks;
+                toolStripProgressBar.Value = updateProcessChangedArgs.CurrentChunks;
+
+                toolStripStatusLabel.Text =
+                    $"Downloaded {updateProcessChangedArgs.CurrentChunks} items of {updateProcessChangedArgs.TotalChunks}";
+
+                if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
+                toolStripProgressBar.Visible = false;
+                toolStripStatusLabel.Text = "Ready";
+            };
+            Map.UpdateHint = true;
+            Map.LoadPolygons();
+        }
+
+        private void closeCurrentSessionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Map.UnloadSession();
         }
     }
 }
