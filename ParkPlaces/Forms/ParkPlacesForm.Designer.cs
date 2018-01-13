@@ -47,19 +47,15 @@ namespace ParkPlaces.Forms
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openRemoteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.closeCurrentSessionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.polyzoneUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.updateManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.forceUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeCurrentSessionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.Map = new ParkPlaces.Controls.Map();
+            this.forceUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -77,8 +73,6 @@ namespace ParkPlaces.Forms
             this.RemovePolygonButton});
             this.toolStrip.Location = new System.Drawing.Point(3, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolStrip.Renderer = new TsRenderer();
             this.toolStrip.Size = new System.Drawing.Size(225, 25);
             this.toolStrip.TabIndex = 4;
             this.toolStrip.Text = "toolStrip1";
@@ -150,11 +144,9 @@ namespace ParkPlaces.Forms
             this.lblMouse});
             this.statusStrip.Location = new System.Drawing.Point(0, 0);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.statusStrip.Size = new System.Drawing.Size(1029, 22);
             this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "statusStrip1";
-            this.statusStrip.Renderer = new TsRenderer();
             // 
             // toolStripProgressBar
             // 
@@ -174,12 +166,9 @@ namespace ParkPlaces.Forms
             this.menuStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.toolsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.menuStrip.Renderer = new TsRenderer();
             this.menuStrip.Size = new System.Drawing.Size(1029, 24);
             this.menuStrip.TabIndex = 5;
             this.menuStrip.Text = "menuStrip1";
@@ -188,7 +177,7 @@ namespace ParkPlaces.Forms
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
-            this.openRemoteToolStripMenuItem,
+            this.forceUpdateToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.toolStripSeparator1,
             this.closeCurrentSessionToolStripMenuItem,
@@ -202,14 +191,6 @@ namespace ParkPlaces.Forms
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
-            // openRemoteToolStripMenuItem
-            // 
-            this.openRemoteToolStripMenuItem.Name = "openRemoteToolStripMenuItem";
-            this.openRemoteToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.openRemoteToolStripMenuItem.Text = "Open remote";
-            this.openRemoteToolStripMenuItem.Click += new System.EventHandler(this.openRemoteToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
@@ -222,41 +203,19 @@ namespace ParkPlaces.Forms
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(182, 6);
             // 
+            // closeCurrentSessionToolStripMenuItem
+            // 
+            this.closeCurrentSessionToolStripMenuItem.Name = "closeCurrentSessionToolStripMenuItem";
+            this.closeCurrentSessionToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.closeCurrentSessionToolStripMenuItem.Text = "Close current session";
+            this.closeCurrentSessionToolStripMenuItem.Click += new System.EventHandler(this.closeCurrentSessionToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.polyzoneUpdatesToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.toolsToolStripMenuItem.Text = "Tools";
-            // 
-            // polyzoneUpdatesToolStripMenuItem
-            // 
-            this.polyzoneUpdatesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.updateManagerToolStripMenuItem,
-            this.forceUpdateToolStripMenuItem});
-            this.polyzoneUpdatesToolStripMenuItem.Name = "polyzoneUpdatesToolStripMenuItem";
-            this.polyzoneUpdatesToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
-            this.polyzoneUpdatesToolStripMenuItem.Text = "Polyzone updates";
-            // 
-            // updateManagerToolStripMenuItem
-            // 
-            this.updateManagerToolStripMenuItem.Name = "updateManagerToolStripMenuItem";
-            this.updateManagerToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.updateManagerToolStripMenuItem.Text = "Update manager";
-            // 
-            // forceUpdateToolStripMenuItem
-            // 
-            this.forceUpdateToolStripMenuItem.Name = "forceUpdateToolStripMenuItem";
-            this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.forceUpdateToolStripMenuItem.Text = "Force update";
             // 
             // helpToolStripMenuItem
             // 
@@ -271,13 +230,6 @@ namespace ParkPlaces.Forms
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
-            // 
-            // closeCurrentSessionToolStripMenuItem
-            // 
-            this.closeCurrentSessionToolStripMenuItem.Name = "closeCurrentSessionToolStripMenuItem";
-            this.closeCurrentSessionToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.closeCurrentSessionToolStripMenuItem.Text = "Close current session";
-            this.closeCurrentSessionToolStripMenuItem.Click += new System.EventHandler(this.closeCurrentSessionToolStripMenuItem_Click);
             // 
             // toolStripContainer
             // 
@@ -299,8 +251,8 @@ namespace ParkPlaces.Forms
             // 
             // toolStripContainer.TopToolStripPanel
             // 
-            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.toolStrip);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.menuStrip);
+            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.toolStrip);
             // 
             // Map
             // 
@@ -335,11 +287,17 @@ namespace ParkPlaces.Forms
             this.Map.ShowTileGridLines = false;
             this.Map.Size = new System.Drawing.Size(1029, 555);
             this.Map.TabIndex = 0;
-            this.Map.UpdateHint = false;
             this.Map.Zoom = 15D;
             this.Map.OnDrawPolygonEnd += new ParkPlaces.Controls.Map.DrawPolygonEnd(this.Map_DrawPolygonEnd);
             this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
             this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
+            // 
+            // forceUpdateToolStripMenuItem
+            // 
+            this.forceUpdateToolStripMenuItem.Name = "forceUpdateToolStripMenuItem";
+            this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.forceUpdateToolStripMenuItem.Text = "Force update";
+            this.forceUpdateToolStripMenuItem.Click += new System.EventHandler(this.forceUpdateToolStripMenuItem_Click);
             // 
             // ParkPlacesForm
             // 
@@ -386,18 +344,14 @@ namespace ParkPlaces.Forms
         private MenuStrip menuStrip;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem openToolStripMenuItem;
-        private ToolStripMenuItem openRemoteToolStripMenuItem;
         private ToolStripMenuItem saveToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem exitToolStripMenuItem;
-        private ToolStripMenuItem toolsToolStripMenuItem;
-        private ToolStripMenuItem polyzoneUpdatesToolStripMenuItem;
-        private ToolStripMenuItem updateManagerToolStripMenuItem;
-        private ToolStripMenuItem forceUpdateToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem closeCurrentSessionToolStripMenuItem;
         private ToolStripContainer toolStripContainer;
+        private ToolStripMenuItem forceUpdateToolStripMenuItem;
     }
 }
 

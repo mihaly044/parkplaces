@@ -142,11 +142,6 @@ namespace ParkPlaces.Controls
         /// </summary>
         public bool IsDrawingPolygon { get; set; }
 
-        /// <summary>
-        /// Indicates whether the user decided to request updates
-        /// </summary>
-        public bool UpdateHint { get; set; }
-
         #endregion Fields
 
         #region Internals
@@ -535,25 +530,19 @@ namespace ParkPlaces.Controls
         /// Loads polygon data and constructs Polygon objects that GMap.NET will use
         /// to display and draw the map control
         /// </summary>
-        public async void LoadPolygons()
+        public async void LoadPolygons(bool forceUpdate = false)
         {
-            if (!UpdateHint)
-                try
-                {
-                    _fromJsonData = Dto2Object.FromJson(File.ReadAllText("data"));
-                }
-                catch (IOException)
-                {
-                    return;
-                }
-            else
-                _fromJsonData = await IoHandler.Instance.UpdateAsync(true, UpdateHint) ??
-                                Dto2Object.FromJson(File.ReadAllText("data"));
-
-            if (Polygons.Polygons.Count > 0)
+            if (forceUpdate)
             {
-                Polygons.Clear();
+                _fromJsonData = await IoHandler.Instance.UpdateAsync(true, true);
             }
+            else
+            {
+                _fromJsonData = await IoHandler.Instance.UpdateAsync(true) ??
+                                Dto2Object.FromJson(File.ReadAllText("data"));
+            }
+
+            UnloadSession();
 
             foreach (var zone in _fromJsonData.Zones)
             {

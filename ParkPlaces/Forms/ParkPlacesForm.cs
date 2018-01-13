@@ -12,6 +12,31 @@ namespace ParkPlaces.Forms
         public ParkPlacesForm()
         {
             InitializeComponent();
+
+            IoHandler.Instance.OnUpdateChangedEventHandler += (s, updateProcessChangedArgs) =>
+            {
+                toolStripProgressBar.Visible = true;
+
+                if (updateProcessChangedArgs.TotalChunks == 1)
+                {
+                    toolStripProgressBar.Value = 0;
+                    toolStripProgressBar.Minimum = 0;
+                    toolStripProgressBar.Maximum = 100;
+                    toolStripStatusLabel.Text = "Starting update ...";
+                    return;
+                }
+
+                toolStripProgressBar.Maximum = updateProcessChangedArgs.TotalChunks;
+                toolStripProgressBar.Value = updateProcessChangedArgs.CurrentChunks;
+
+                toolStripStatusLabel.Text =
+                    $"Downloaded {updateProcessChangedArgs.CurrentChunks} items of {updateProcessChangedArgs.TotalChunks}";
+
+                if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
+
+                toolStripProgressBar.Visible = false;
+                toolStripStatusLabel.Text = "Ready";
+            };
         }
 
         private void Map_MouseMove(object sender, MouseEventArgs e)
@@ -55,14 +80,7 @@ namespace ParkPlaces.Forms
 
         private void ParkPlacesForm_Shown(object sender, EventArgs e)
         {
-            if (IoHandler.Instance.NeedUpdate)
-            {
-                if (MessageBox.Show("New polygon data is available. Do you wish start the update process?",
-                        "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    GetRemote();
-                else
-                    Map.UpdateHint = false;
-            }
+            Map.LoadPolygons();
             lblZoom.Text = $"Zoom: {Map.Zoom}";
         }
 
@@ -70,40 +88,15 @@ namespace ParkPlaces.Forms
         {
             Application.Exit();
         }
-
-        private void openRemoteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            GetRemote();
-        }
-
-        private void GetRemote()
-        {
-            toolStripStatusLabel.Text = "Started update...";
-            toolStripProgressBar.Visible = true;
-            IoHandler.Instance.OnUpdateChangedEventHandler += (s, updateProcessChangedArgs) =>
-            {
-                toolStripProgressBar.Maximum = updateProcessChangedArgs.TotalChunks;
-                toolStripProgressBar.Value = updateProcessChangedArgs.CurrentChunks;
-
-                toolStripStatusLabel.Text =
-                    $"Downloaded {updateProcessChangedArgs.CurrentChunks} items of {updateProcessChangedArgs.TotalChunks}";
-
-                if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
-                toolStripProgressBar.Visible = false;
-                toolStripStatusLabel.Text = "Ready";
-            };
-            Map.UpdateHint = true;
-            Map.LoadPolygons();
-        }
-
+        
         private void closeCurrentSessionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Map.UnloadSession();
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Map.LoadPolygons(true);
         }
     }
 }
