@@ -53,12 +53,6 @@ namespace ParkPlaces.Forms
                 Map.RemovePolygon(Map.CurrentPolygon);
         }
 
-        private void Map_OnPolygonClick(GMapPolygon item, MouseEventArgs e)
-        {
-            if (Map.CurrentPolygon != null)
-                propertyGrid1.SelectedObject = Map.CurrentPolygon.Tag;
-        }
-
         private void ParkPlacesForm_Shown(object sender, EventArgs e)
         {
             if (IoHandler.Instance.NeedUpdate)
@@ -105,6 +99,11 @@ namespace ParkPlaces.Forms
         private void closeCurrentSessionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Map.UnloadSession();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

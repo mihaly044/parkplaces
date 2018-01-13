@@ -105,6 +105,7 @@
     <Compile Include="Controls\Map.Designer.cs">
       <DependentUpon>Map.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TSRenderer.cs" />
     <Compile Include="Extensions\PrivateObjectEx.cs" />
     <Compile Include="IO\IOHandler.cs" />
     <Compile Include="IO\UpdateProcessChanged.cs" />
