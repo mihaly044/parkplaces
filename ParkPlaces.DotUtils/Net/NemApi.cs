@@ -15,7 +15,7 @@ namespace ParkPlaces.DotUtils.Net
         private const string CityInfoUri = BaseUri + "/geocode/?search={0}";
         private const string ParkingApiUri = BaseUri + "/search_parking_zones/?search={0}&time={1}";    //BUDAPEST - 2018-01-10 15:56:07
 
-        private static Regex _regexCity = new Regex("option value=\"\\d+\">(.*?)<", RegexOptions.Compiled | RegexOptions.ECMAScript);
+        private static readonly Regex _regexCity = new Regex("option value=\"\\d+\">(.*?)<", RegexOptions.Compiled | RegexOptions.ECMAScript);
 
         public List<string> Cities { get; private set; }
 

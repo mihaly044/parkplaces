@@ -1,12 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ParkPlaces.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ParkPlaces.Utils.Tests
+namespace ParkPlacesTests.Utils
 {
     [TestClass()]
     public class NetUtilTests
