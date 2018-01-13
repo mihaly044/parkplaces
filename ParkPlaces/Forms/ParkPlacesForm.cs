@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using GMap.NET.MapProviders;
-using GMap.NET.WindowsForms;
 using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
 
@@ -80,7 +79,6 @@ namespace ParkPlaces.Forms
 
         private void ParkPlacesForm_Shown(object sender, EventArgs e)
         {
-            Map.LoadPolygons();
             lblZoom.Text = $"Zoom: {Map.Zoom}";
         }
 
@@ -97,6 +95,32 @@ namespace ParkPlaces.Forms
         private void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Map.LoadPolygons(true);
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dlg = new OpenFileDialog()
+            {
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
+            };
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Map.LoadPolygons(false, dlg.FileName);
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dlg = new SaveFileDialog()
+            {
+                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
+            };
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Map.SavePolygons();
+            }
         }
     }
 }

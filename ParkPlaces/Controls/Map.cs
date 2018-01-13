@@ -526,13 +526,20 @@ namespace ParkPlaces.Controls
             }
         }
 
+        public void SavePolygons(string file)
+        {
+            IoHandler.WriteDtoToJson(file, _fromJsonData);
+        }
+
         /// <summary>
         /// Loads polygon data and constructs Polygon objects that GMap.NET will use
         /// to display and draw the map control
         /// </summary>
-        public async void LoadPolygons(bool forceUpdate = false)
+        public async void LoadPolygons(bool forceUpdate = false, string file = "")
         {
-            if (forceUpdate)
+            if (file != string.Empty)
+                _fromJsonData = IoHandler.ReadDtoFromJson(file);
+            else if (forceUpdate)
             {
                 _fromJsonData = await IoHandler.Instance.UpdateAsync(true, true);
             }

@@ -74,7 +74,6 @@ namespace ParkPlaces.IO
                 cProcess.UpdateChunks(cProcess.TotalChunks - cityTasks.Count);
 
                 dto.Zones.AddRange(await res);
-                //Put in response how many have been downloaded so far....
                 OnUpdateChangedEventHandler?.Invoke(this, cProcess);
             }
 
@@ -87,10 +86,31 @@ namespace ParkPlaces.IO
                 config.Save();
                 ConfigurationManager.RefreshSection("appSettings");
 
-                File.WriteAllText("data", dto.ToJson());
+                WriteDtoToJson("data", dto);
             }
 
             return dto;
+        }
+
+        public static Dto2Object ReadDtoFromJson(string file)
+        {
+            try
+            {
+                return Dto2Object.FromJson(File.ReadAllText(file));
+            }
+            catch (Exception e)
+            {
+                if (e is FileNotFoundException || e is IOException)
+                {
+                    throw;
+                }
+                return null;
+            }
+        }
+
+        public static void WriteDtoToJson(string file, Dto2Object dto)
+        {
+            File.WriteAllText(file, dto.ToJson());
         }
     }
 }
