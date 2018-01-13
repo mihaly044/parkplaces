@@ -547,7 +547,7 @@ namespace ParkPlaces.Controls
                     return;
                 }
             else
-                _fromJsonData = await IoHandler.Instance.UpdateAsync(true) ??
+                _fromJsonData = await IoHandler.Instance.UpdateAsync(true, UpdateHint) ??
                                 Dto2Object.FromJson(File.ReadAllText("data"));
 
             if (Polygons.Polygons.Count > 0)
@@ -582,6 +582,16 @@ namespace ParkPlaces.Controls
         public Point ConvertGPointToPoint(GPoint p)
         {
             return new Point((int)p.X, (int)p.Y);
+        }
+
+
+        /// <summary>
+        /// Reset the map to its initial state with no 
+        /// shapes and markers present
+        /// </summary>
+        public void UnloadSession()
+        {
+            Overlays.Clear();
         }
 
         #endregion App logic
