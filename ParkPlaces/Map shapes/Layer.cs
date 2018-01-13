@@ -17,7 +17,7 @@ namespace ParkPlaces.Map_shapes
 
         public override void OnRender(Graphics g)
         {
-            if (Control.PolygonsEnabled)
+            if (Control?.PolygonsEnabled == true)
             {
                 foreach (GMapPolygon r in Polygons)
                 {
