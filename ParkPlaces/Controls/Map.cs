@@ -591,7 +591,12 @@ namespace ParkPlaces.Controls
         /// </summary>
         public void UnloadSession()
         {
-            Overlays.Clear();
+            Polygons.Polygons.Clear();
+            TopLayer.Markers.Clear();
+            PolygonRects.Markers.Clear();
+
+            MapProvider = GMapProviders.GoogleMap;
+            Position = new PointLatLng(47.49801, 19.03991);
         }
 
         #endregion App logic
