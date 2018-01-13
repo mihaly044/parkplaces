@@ -60,6 +60,8 @@ namespace ParkPlaces.IO
                 Zones = new List<PolyZone>()
             };
 
+            OnUpdateChangedEventHandler?.Invoke(this, new UpdateProcessChangedArgs(0));
+
             var api = await GetApiAsync();
             var cityTasks = api.Cities.Select(x => api.GetCityPlan<List<PolyZone>>(x)).ToList();
             var cProcess = new UpdateProcessChangedArgs(cityTasks.Count);
