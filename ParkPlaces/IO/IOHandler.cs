@@ -78,13 +78,13 @@ namespace ParkPlaces.IO
 
             _lastUpdate = DateTime.Now;
 
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["LastUpdate"].Value = _lastUpdate.ToBinary().ToString();
-            config.Save();
-            ConfigurationManager.RefreshSection("appSettings");
-
             if (saveToDisk)
             {
+                var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config.AppSettings.Settings["LastUpdate"].Value = _lastUpdate.ToBinary().ToString();
+                config.Save();
+                ConfigurationManager.RefreshSection("appSettings");
+
                 File.WriteAllText("data", dto.ToJson());
             }
 
