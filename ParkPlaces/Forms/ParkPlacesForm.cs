@@ -119,7 +119,7 @@ namespace ParkPlaces.Forms
 
             if (dlg.ShowDialog() == DialogResult.OK)
             {
-                Map.SavePolygons();
+                Map.SavePolygons(dlg.FileName);
             }
         }
     }
