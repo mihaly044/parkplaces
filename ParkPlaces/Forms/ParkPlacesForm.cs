@@ -73,13 +73,17 @@ namespace ParkPlaces.Forms
                         toolStripProgressBar.Maximum = updateProcessChangedArgs.TotalChunks;
                         toolStripProgressBar.Value = updateProcessChangedArgs.CurrentChunks;
 
-                        toolStripStatusLabel.Text = $"Downloaded {updateProcessChangedArgs.CurrentChunks} items of {updateProcessChangedArgs.TotalChunks}";
+                        toolStripStatusLabel.Text =
+                            $"Downloaded {updateProcessChangedArgs.CurrentChunks} items of {updateProcessChangedArgs.TotalChunks}";
 
                         if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
                         toolStripProgressBar.Visible = false;
                         toolStripStatusLabel.Text = "Ready";
                     };
+                    Map.UpdateHint = true;
                 }
+                else
+                    Map.UpdateHint = false;
             }
 
             Map.LoadPolygons();

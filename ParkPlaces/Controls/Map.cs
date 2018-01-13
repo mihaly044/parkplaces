@@ -142,6 +142,11 @@ namespace ParkPlaces.Controls
         /// </summary>
         public bool IsDrawingPolygon { get; set; }
 
+        /// <summary>
+        /// Indicates whether the user decided to request updates
+        /// </summary>
+        public bool UpdateHint { get; set; }
+
         #endregion Fields
 
         #region Internals
@@ -532,7 +537,18 @@ namespace ParkPlaces.Controls
         /// </summary>
         public async void LoadPolygons()
         {
-            _fromJsonData = await IoHandler.Instance.UpdateAsync(true) ?? Dto2Object.FromJson(File.ReadAllText("data"));
+            if (!UpdateHint)
+                try
+                {
+                    _fromJsonData = Dto2Object.FromJson(File.ReadAllText("data"));
+                }
+                catch (IOException)
+                {
+                    return;
+                }
+            else
+                _fromJsonData = await IoHandler.Instance.UpdateAsync(true) ??
+                                Dto2Object.FromJson(File.ReadAllText("data"));
 
             if (Polygons.Polygons.Count > 0)
             {
