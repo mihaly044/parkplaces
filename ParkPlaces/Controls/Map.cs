@@ -528,7 +528,15 @@ namespace ParkPlaces.Controls
 
         public void SavePolygons(string file)
         {
-            IoHandler.WriteDtoToJson(file, _fromJsonData);
+            var data = new Dto2Object()
+            {
+                Type = "ZoneCollection",
+                Zones = new List<PolyZone>()
+            };
+
+            data.Zones.AddRange(Polygons.Polygons.Select(x => (PolyZone)x.Tag));
+
+            IoHandler.WriteDtoToJson(file, data);
         }
 
         /// <summary>
