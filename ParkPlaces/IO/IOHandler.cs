@@ -86,7 +86,7 @@ namespace ParkPlaces.IO
                 config.Save();
                 ConfigurationManager.RefreshSection("appSettings");
 
-                WriteDtoToJson("data", dto);
+                WriteDtoToJson($"data-{_lastUpdate.ToBinary()}", dto);
             }
 
             return dto;
