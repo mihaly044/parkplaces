@@ -15,7 +15,7 @@ namespace ParkPlaces.DotUtils.Extensions
             return input.Equals(default(T));
         }
 
-        public static int ForEach<T>(this IEnumerable<T> input, Action<T> toRunAct)
+        public static int ForEach<T>(this IEnumerable<T> input, Action<T> action)
         {
             int iterations = 0;
             if (input == null) return iterations;
@@ -23,14 +23,14 @@ namespace ParkPlaces.DotUtils.Extensions
             {
                 if (!put.Equals(default(T)))
                 {
-                    toRunAct(put);
+                    action(put);
                     iterations++;
                 }
             }
             return iterations;
         }
 
-        public static async Task<List<TX>> ParallelForEachTaskAsync<T, TX>(this IEnumerable<T> input, Func<T, Task<TX>> toRunAct)
+        public static async Task<List<TX>> ParallelForEachTaskAsync<T, TX>(this IEnumerable<T> input, Func<T, Task<TX>> function)
         {
             var lst = new List<Task<TX>>();
             var res = new List<TX>();
@@ -40,7 +40,7 @@ namespace ParkPlaces.DotUtils.Extensions
             foreach (var put in input)
             {
                 if (!put.Equals(default(TX)))
-                    lst.Add(toRunAct(put));
+                    lst.Add(function(put));
             }
 
             if (lst.Count > 0)
