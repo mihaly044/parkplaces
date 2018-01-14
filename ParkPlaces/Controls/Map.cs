@@ -108,7 +108,7 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// Can be used to get the previous mouse location on every OnMouseMove call
         /// </summary>
-        //private Point _previousMouseLocation; //Never used, just assigned
+        private PointLatLng _previousMouseLocation;
 
         /// <summary>
         /// Indicates whether the map has a black-transparent gradient on its left side
@@ -295,16 +295,21 @@ namespace ParkPlaces.Controls
                     _pointer.Position = FromLocalToLatLng(e.X, e.Y);
 
                     // TODO: Fix polygon dragging
-                    /*if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
+                    if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
                     {
-                        for (int i = 0; i < CurrentPolygon.LocalPoints.Count; i++)
+                        for (int i = 0; i < CurrentPolygon.Points.Count; i++)
                         {
-                            CurrentPolygon.LocalPoints[i] = new GPoint
-                               (CurrentPolygon.LocalPoints[i].X - e.X - PreviousMouseLocation.X,
-                                CurrentPolygon.LocalPoints[i].Y - e.Y - PreviousMouseLocation.Y);
+                            var pnew = new PointLatLng(
+                                CurrentPolygon.Points[i].Lat + _pointer.Position.Lat - _previousMouseLocation.Lat,
+                                CurrentPolygon.Points[i].Lng + _pointer.Position.Lng - _previousMouseLocation.Lng
+                            );
+                            CurrentPolygon.Points[i] = pnew;
+
+                            ((PolyZone)CurrentPolygon.Tag).Geometry[i] = pnew.ToGeometry();
                         }
+
                         UpdatePolygonLocalPosition(CurrentPolygon);
-                    }*/
+                    }
                 }
                 else
                 {
@@ -326,7 +331,7 @@ namespace ParkPlaces.Controls
                     _currentRectMaker.Position = pnew;
                 }
 
-            //_previousMouseLocation = e.Location;
+            _previousMouseLocation = FromLocalToLatLng(e.X, e.Y);
             base.OnMouseMove(e);
         }
 
@@ -561,10 +566,6 @@ namespace ParkPlaces.Controls
 
             foreach (var zone in _fromJsonData.Zones)
             {
-                // TODO: Avoid too much data being shown on the map
-                //if (!zone.Id.Contains("BUDAPEST"))
-                //    continue;
-
                 var polygonPoints = zone.Geometry.Select(m => new PointLatLng(m.Lat, m.Lng)).ToList();
                 var polygonColor = ColorTranslator.FromHtml(zone.Color);
 
