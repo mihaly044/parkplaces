@@ -75,7 +75,8 @@ namespace ParkPlaces.Forms
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(225, 25);
             this.toolStrip.TabIndex = 4;
-            this.toolStrip.Text = "toolStrip1";
+            this.toolStrip.Text = "toolStrip";
+            this.toolStrip.Renderer = new TsRenderer();
             // 
             // drawPolygonButton
             // 
@@ -147,6 +148,7 @@ namespace ParkPlaces.Forms
             this.statusStrip.Size = new System.Drawing.Size(1029, 22);
             this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "statusStrip1";
+            this.statusStrip.Renderer = new TsRenderer();
             // 
             // toolStripProgressBar
             // 
@@ -172,6 +174,7 @@ namespace ParkPlaces.Forms
             this.menuStrip.Size = new System.Drawing.Size(1029, 24);
             this.menuStrip.TabIndex = 5;
             this.menuStrip.Text = "menuStrip1";
+            this.menuStrip.Renderer = new TsRenderer();
             // 
             // fileToolStripMenuItem
             // 
