@@ -122,7 +122,6 @@ namespace ParkPlaces.Forms
             this.placeToolStripMenuItem.Name = "placeToolStripMenuItem";
             this.placeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.placeToolStripMenuItem.Text = "Place";
-            this.placeToolStripMenuItem.Click += new System.EventHandler(this.placeToolStripMenuItem_Click);
             // 
             // SelectMapProviderButton
             // 
