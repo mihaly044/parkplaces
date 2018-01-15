@@ -69,6 +69,7 @@ namespace ParkPlaces.Controls
 
         /// <summary>
         /// Represents the initial center point of the map
+        /// This remains the same even if the map gets dragged
         /// </summary>
         private readonly PointLatLng _centerOfTheMap;
 
