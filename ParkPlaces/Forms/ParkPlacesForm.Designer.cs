@@ -35,7 +35,10 @@ namespace ParkPlaces.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ParkPlacesForm));
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.drawPolygonButton = new System.Windows.Forms.ToolStripButton();
-            this.RemovePolygonButton = new System.Windows.Forms.ToolStripButton();
+            this.removePolygonButton = new System.Windows.Forms.ToolStripButton();
+            this.gotoButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.coordinateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.placeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectMapProviderButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.googleMapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openStreetMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,13 +73,13 @@ namespace ParkPlaces.Forms
             this.toolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.drawPolygonButton,
-            this.RemovePolygonButton});
+            this.removePolygonButton,
+            this.gotoButton});
             this.toolStrip.Location = new System.Drawing.Point(3, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(225, 25);
+            this.toolStrip.Size = new System.Drawing.Size(285, 25);
             this.toolStrip.TabIndex = 4;
             this.toolStrip.Text = "toolStrip";
-            this.toolStrip.Renderer = new TsRenderer();
             // 
             // drawPolygonButton
             // 
@@ -87,14 +90,38 @@ namespace ParkPlaces.Forms
             this.drawPolygonButton.Text = "Add polygon";
             this.drawPolygonButton.Click += new System.EventHandler(this.drawPolygonButton_Click);
             // 
-            // RemovePolygonButton
+            // removePolygonButton
             // 
-            this.RemovePolygonButton.Image = global::ParkPlaces.Properties.Resources.if_f_cross_256_282471;
-            this.RemovePolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.RemovePolygonButton.Name = "RemovePolygonButton";
-            this.RemovePolygonButton.Size = new System.Drawing.Size(117, 22);
-            this.RemovePolygonButton.Text = "Remove polygon";
-            this.RemovePolygonButton.Click += new System.EventHandler(this.RemovePolygonButton_Click);
+            this.removePolygonButton.Image = global::ParkPlaces.Properties.Resources.if_f_cross_256_282471;
+            this.removePolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.removePolygonButton.Name = "removePolygonButton";
+            this.removePolygonButton.Size = new System.Drawing.Size(117, 22);
+            this.removePolygonButton.Text = "Remove polygon";
+            this.removePolygonButton.Click += new System.EventHandler(this.RemovePolygonButton_Click);
+            // 
+            // gotoButton
+            // 
+            this.gotoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.gotoButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.coordinateToolStripMenuItem,
+            this.placeToolStripMenuItem});
+            this.gotoButton.Image = ((System.Drawing.Image)(resources.GetObject("gotoButton.Image")));
+            this.gotoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.gotoButton.Name = "gotoButton";
+            this.gotoButton.Size = new System.Drawing.Size(29, 22);
+            this.gotoButton.Text = "toolStripDropDownButton1";
+            // 
+            // coordinateToolStripMenuItem
+            // 
+            this.coordinateToolStripMenuItem.Name = "coordinateToolStripMenuItem";
+            this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.coordinateToolStripMenuItem.Text = "Coordinate";
+            // 
+            // placeToolStripMenuItem
+            // 
+            this.placeToolStripMenuItem.Name = "placeToolStripMenuItem";
+            this.placeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.placeToolStripMenuItem.Text = "Place";
             // 
             // SelectMapProviderButton
             // 
@@ -147,8 +174,7 @@ namespace ParkPlaces.Forms
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(1029, 22);
             this.statusStrip.TabIndex = 3;
-            this.statusStrip.Text = "statusStrip1";
-            this.statusStrip.Renderer = new TsRenderer();
+            this.statusStrip.Text = "statusStrip";
             // 
             // toolStripProgressBar
             // 
@@ -174,7 +200,6 @@ namespace ParkPlaces.Forms
             this.menuStrip.Size = new System.Drawing.Size(1029, 24);
             this.menuStrip.TabIndex = 5;
             this.menuStrip.Text = "menuStrip1";
-            this.menuStrip.Renderer = new TsRenderer();
             // 
             // fileToolStripMenuItem
             // 
@@ -240,7 +265,7 @@ namespace ParkPlaces.Forms
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // toolStripContainer
@@ -343,7 +368,7 @@ namespace ParkPlaces.Forms
         private ToolStripStatusLabel lblZoom;
         private ToolStripStatusLabel lblMouse;
         private StatusStrip statusStrip;
-        private ToolStripButton RemovePolygonButton;
+        private ToolStripButton removePolygonButton;
         private ToolStripProgressBar toolStripProgressBar;
         private ToolStripStatusLabel toolStripStatusLabel;
         private MenuStrip menuStrip;
@@ -357,6 +382,9 @@ namespace ParkPlaces.Forms
         private ToolStripMenuItem closeCurrentSessionToolStripMenuItem;
         private ToolStripContainer toolStripContainer;
         private ToolStripMenuItem forceUpdateToolStripMenuItem;
+        private ToolStripDropDownButton gotoButton;
+        private ToolStripMenuItem coordinateToolStripMenuItem;
+        private ToolStripMenuItem placeToolStripMenuItem;
     }
 }
 

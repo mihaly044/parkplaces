@@ -3,14 +3,23 @@ using System.Windows.Forms;
 using GMap.NET.MapProviders;
 using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
+using ParkPlaces.Controls;
 
 namespace ParkPlaces.Forms
 {
     public partial class ParkPlacesForm : Form
     {
+        private readonly TsRenderer _tsRenderer;
+
         public ParkPlacesForm()
         {
             InitializeComponent();
+
+            _tsRenderer = new TsRenderer();
+            menuStrip.Renderer = _tsRenderer;
+            toolStrip.Renderer = _tsRenderer;
+            statusStrip.Renderer = _tsRenderer;
+
 
             IoHandler.Instance.OnUpdateChangedEventHandler += (s, updateProcessChangedArgs) =>
             {
