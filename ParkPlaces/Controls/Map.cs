@@ -639,6 +639,25 @@ namespace ParkPlaces.Controls
             Position = _centerOfTheMap;
         }
 
+        /// <summary>
+        /// Sets the pointer to a given position
+        /// </summary>
+        /// <param name="pos"></param>
+        public void SetPointerPosition(PointLatLng pos)
+        {
+            _pointer.Position = pos;
+        }
+
+
+        /// <summary>
+        /// Drags the center of the map to a given position
+        /// </summary>
+        /// <param name="pos"></param>
+        public void SetMapPosition(PointLatLng pos)
+        {
+            Position = pos;
+        }
+
         #endregion App logic
     }
 }
