@@ -50,6 +50,8 @@ namespace ParkPlaces.Controls
             var deleteCacheDate = DateTime.Now;
             deleteCacheDate = deleteCacheDate.AddDays(-10);
             Manager.PrimaryCache.DeleteOlderThan(deleteCacheDate, null);
+
+            _centerOfTheMap = new PointLatLng(47.49801, 19.03991);
         }
 
         #endregion Constructors
@@ -64,6 +66,11 @@ namespace ParkPlaces.Controls
         #endregion Events
 
         #region Fields
+
+        /// <summary>
+        /// Represents the initial center point of the map
+        /// </summary>
+        private readonly PointLatLng _centerOfTheMap;
 
         /// <summary>
         /// Defines the stroke colour of map shapes in selected state
@@ -266,8 +273,6 @@ namespace ParkPlaces.Controls
 
                 e.Graphics.FillRectangle(linGrBrush, r);
             }
-
-            // TODO: implement displaying copyright switch
         }
 
         /// <summary>
@@ -277,7 +282,7 @@ namespace ParkPlaces.Controls
         {
             base.OnLoad(e);
             MapProvider = GMapProviders.GoogleMap;
-            Position = new PointLatLng(47.49801, 19.03991);
+            Position = _centerOfTheMap;
             Overlays.Add(Polygons);
             Overlays.Add(PolygonRects);
             Overlays.Add(TopLayer);
@@ -294,7 +299,6 @@ namespace ParkPlaces.Controls
                 {
                     _pointer.Position = FromLocalToLatLng(e.X, e.Y);
 
-                    // TODO: Fix polygon dragging
                     if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
                     {
                         for (int i = 0; i < CurrentPolygon.Points.Count; i++)
@@ -600,7 +604,16 @@ namespace ParkPlaces.Controls
             PolygonRects.Markers.Clear();
 
             MapProvider = GMapProviders.GoogleMap;
-            Position = new PointLatLng(47.49801, 19.03991);
+            Position = _centerOfTheMap;
+        }
+
+        /// <summary>
+        /// Resets the map to the original center point
+        /// defined by _centerOfTheMap
+        /// </summary>
+        public void ResetCenter()
+        {
+            Position = _centerOfTheMap;
         }
 
         #endregion App logic
