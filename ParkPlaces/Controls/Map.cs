@@ -150,6 +150,22 @@ namespace ParkPlaces.Controls
         /// </summary>
         public bool IsDrawingPolygon { get; set; }
 
+        /// <summary>
+        /// Represents the time when rendering starts
+        /// </summary>
+        private DateTime _renderStart;
+
+        /// <summary>
+        /// Represents time when rendering stops
+        /// </summary>
+        private DateTime _renderEnd;
+
+        /// <summary>
+        /// The time elapsed between _renderStart and _renderStop
+        /// in milliseconds
+        /// </summary>
+        private int _renderDelta;
+
         #endregion Fields
 
         #region Internals
@@ -244,7 +260,13 @@ namespace ParkPlaces.Controls
         /// <param name="e">Graphics context</param>
         protected override void OnPaint(PaintEventArgs e)
         {
+            _renderStart = DateTime.Now;
+
             base.OnPaint(e);
+
+            _renderEnd = DateTime.Now;
+            _renderDelta = (int)(_renderEnd - _renderStart).TotalMilliseconds;
+
 
             if (DisplayVersionInfo)
             {
@@ -253,10 +275,10 @@ namespace ParkPlaces.Controls
 
 #if DEBUG
                 var version =
-                    $"Debug version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
+                    $"Debug version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}, Render: {_renderDelta} ms";
 #else
-                var  version =
- $"Release version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}";
+                var version =
+                    $"Release version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}, Render: {_renderDelta} ms";
 #endif
 
                 e.Graphics.DrawString(version, BlueFont, Brushes.Blue, new Point(5, 5));
