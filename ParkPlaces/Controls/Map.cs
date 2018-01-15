@@ -597,7 +597,6 @@ namespace ParkPlaces.Controls
         public void UnloadSession()
         {
             Polygons.Polygons.Clear();
-            TopLayer.Markers.Clear();
             PolygonRects.Markers.Clear();
 
             MapProvider = GMapProviders.GoogleMap;
