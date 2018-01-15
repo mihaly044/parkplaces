@@ -107,6 +107,12 @@
     </Compile>
     <Compile Include="Controls\TSRenderer.cs" />
     <Compile Include="Extensions\PrivateObjectEx.cs" />
+    <Compile Include="Forms\GotoCoordinatesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GotoCoordinatesForm.Designer.cs">
+      <DependentUpon>GotoCoordinatesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="IO\IOHandler.cs" />
     <Compile Include="IO\UpdateProcessChanged.cs" />
     <Compile Include="Map shapes\Layer.cs" />
@@ -134,6 +140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditZoneForm.resx">
       <DependentUpon>EditZoneForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GotoCoordinatesForm.resx">
+      <DependentUpon>GotoCoordinatesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ParkPlacesForm.resx">
       <DependentUpon>ParkPlacesForm.cs</DependentUpon>
