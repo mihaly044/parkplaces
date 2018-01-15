@@ -77,7 +77,7 @@ namespace ParkPlaces.Forms
             this.gotoButton});
             this.toolStrip.Location = new System.Drawing.Point(3, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(285, 25);
+            this.toolStrip.Size = new System.Drawing.Size(296, 25);
             this.toolStrip.TabIndex = 4;
             this.toolStrip.Text = "toolStrip";
             // 
@@ -101,27 +101,28 @@ namespace ParkPlaces.Forms
             // 
             // gotoButton
             // 
-            this.gotoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.gotoButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.coordinateToolStripMenuItem,
             this.placeToolStripMenuItem});
             this.gotoButton.Image = ((System.Drawing.Image)(resources.GetObject("gotoButton.Image")));
             this.gotoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.gotoButton.Name = "gotoButton";
-            this.gotoButton.Size = new System.Drawing.Size(29, 22);
-            this.gotoButton.Text = "toolStripDropDownButton1";
+            this.gotoButton.Size = new System.Drawing.Size(71, 22);
+            this.gotoButton.Text = "Goto...";
             // 
             // coordinateToolStripMenuItem
             // 
             this.coordinateToolStripMenuItem.Name = "coordinateToolStripMenuItem";
             this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.coordinateToolStripMenuItem.Text = "Coordinate";
+            this.coordinateToolStripMenuItem.Click += new System.EventHandler(this.coordinateToolStripMenuItem_Click);
             // 
             // placeToolStripMenuItem
             // 
             this.placeToolStripMenuItem.Name = "placeToolStripMenuItem";
             this.placeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.placeToolStripMenuItem.Text = "Place";
+            this.placeToolStripMenuItem.Click += new System.EventHandler(this.placeToolStripMenuItem_Click);
             // 
             // SelectMapProviderButton
             // 
@@ -265,7 +266,7 @@ namespace ParkPlaces.Forms
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // toolStripContainer
@@ -338,8 +339,8 @@ namespace ParkPlaces.Forms
             this.MainMenuStrip = this.menuStrip;
             this.Name = "ParkPlacesForm";
             this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ParkPlaces Editor";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.ParkPlacesForm_Shown);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();

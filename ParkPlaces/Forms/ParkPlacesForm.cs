@@ -108,27 +108,44 @@ namespace ParkPlaces.Forms
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var dlg = new OpenFileDialog()
+            using (
+                    var dlg = new OpenFileDialog()
+                    {
+                        Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
+                    }
+                )
             {
-                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
-            };
-
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                Map.LoadPolygons(false, dlg.FileName);
+                if(dlg.ShowDialog() == DialogResult.OK)
+                {
+                    Map.LoadPolygons(false, dlg.FileName);
+                }
             }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var dlg = new SaveFileDialog()
+            using (
+                    var dlg = new SaveFileDialog()
+                    {
+                        Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
+                    }
+                )
             {
-                Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
-            };
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    Map.SavePolygons(dlg.FileName);
+                }
+            }     
+        }
 
-            if (dlg.ShowDialog() == DialogResult.OK)
+        private void coordinateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using(var dlg = new GotoCoordinatesForm())
             {
-                Map.SavePolygons(dlg.FileName);
+                if(dlg.ShowDialog() == DialogResult.OK)
+                {
+                    Map.Position = dlg.LatLng;
+                }
             }
         }
     }
