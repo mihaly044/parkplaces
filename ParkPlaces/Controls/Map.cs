@@ -245,7 +245,15 @@ namespace ParkPlaces.Controls
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+        }
 
+        /// <summary>
+        /// Called when map overlays gets painted
+        /// any custom drawing shall be done here
+        /// </summary>
+        /// <param name="g"></param>
+        protected override void OnPaintOverlays(Graphics g)
+        {
             if (DisplayVersionInfo)
             {
                 var assembly = Assembly.GetExecutingAssembly();
