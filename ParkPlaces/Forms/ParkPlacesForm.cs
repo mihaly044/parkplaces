@@ -144,7 +144,20 @@ namespace ParkPlaces.Forms
             {
                 if(dlg.ShowDialog() == DialogResult.OK)
                 {
-                    Map.Position = dlg.LatLng;
+                    Map.SetMapPosition(dlg.LatLng);
+                    Map.SetPointerPosition(dlg.LatLng);
+                }
+            }
+        }
+
+        private void addressToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new GotoAddressForm())
+            {
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    Map.SetMapPosition(dlg.LatLng);
+                    Map.SetPointerPosition(dlg.LatLng);
                 }
             }
         }

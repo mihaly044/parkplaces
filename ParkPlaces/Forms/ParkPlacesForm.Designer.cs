@@ -38,7 +38,6 @@ namespace ParkPlaces.Forms
             this.removePolygonButton = new System.Windows.Forms.ToolStripButton();
             this.gotoButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.coordinateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.placeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectMapProviderButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.googleMapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openStreetMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,6 +58,7 @@ namespace ParkPlaces.Forms
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.Map = new ParkPlaces.Controls.Map();
+            this.addressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -77,7 +77,7 @@ namespace ParkPlaces.Forms
             this.gotoButton});
             this.toolStrip.Location = new System.Drawing.Point(3, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(296, 25);
+            this.toolStrip.Size = new System.Drawing.Size(327, 25);
             this.toolStrip.TabIndex = 4;
             this.toolStrip.Text = "toolStrip";
             // 
@@ -103,7 +103,7 @@ namespace ParkPlaces.Forms
             // 
             this.gotoButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.coordinateToolStripMenuItem,
-            this.placeToolStripMenuItem});
+            this.addressToolStripMenuItem});
             this.gotoButton.Image = ((System.Drawing.Image)(resources.GetObject("gotoButton.Image")));
             this.gotoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.gotoButton.Name = "gotoButton";
@@ -116,12 +116,6 @@ namespace ParkPlaces.Forms
             this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.coordinateToolStripMenuItem.Text = "Coordinate";
             this.coordinateToolStripMenuItem.Click += new System.EventHandler(this.coordinateToolStripMenuItem_Click);
-            // 
-            // placeToolStripMenuItem
-            // 
-            this.placeToolStripMenuItem.Name = "placeToolStripMenuItem";
-            this.placeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.placeToolStripMenuItem.Text = "Place";
             // 
             // SelectMapProviderButton
             // 
@@ -265,7 +259,7 @@ namespace ParkPlaces.Forms
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // toolStripContainer
@@ -329,6 +323,13 @@ namespace ParkPlaces.Forms
             this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
             this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
             // 
+            // addressToolStripMenuItem
+            // 
+            this.addressToolStripMenuItem.Name = "addressToolStripMenuItem";
+            this.addressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addressToolStripMenuItem.Text = "Address";
+            this.addressToolStripMenuItem.Click += new System.EventHandler(this.addressToolStripMenuItem_Click);
+            // 
             // ParkPlacesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -384,7 +385,7 @@ namespace ParkPlaces.Forms
         private ToolStripMenuItem forceUpdateToolStripMenuItem;
         private ToolStripDropDownButton gotoButton;
         private ToolStripMenuItem coordinateToolStripMenuItem;
-        private ToolStripMenuItem placeToolStripMenuItem;
+        private ToolStripMenuItem addressToolStripMenuItem;
     }
 }
 
