@@ -501,6 +501,7 @@ namespace ParkPlaces.Controls
 
             if (save && _currentDrawingPolygon.Points.Count > 1)
             {
+                // Remove "ghost" point marker
                 _currentDrawingPolygon.Points.Remove(_currentNewRectMaker.Position);
                 UpdatePolygonLocalPosition(_currentDrawingPolygon);
 
@@ -565,6 +566,7 @@ namespace ParkPlaces.Controls
             CurrentPolygon.Fill = new SolidBrush(Color.FromArgb(60, polygonColor));
             CurrentPolygon.IsSelected = false;
 
+            // Clear rect markers
             PolygonRects.Markers.Clear();
         }
 
@@ -582,6 +584,7 @@ namespace ParkPlaces.Controls
             CurrentPolygon = p;
             CurrentPolygon.IsSelected = true;
 
+            // Create rect markers
             for (var i = 0; i < p.Points.Count; i++)
             {
                 var mBorders = new RectMarker(p.Points[i]) { Tag = i };
