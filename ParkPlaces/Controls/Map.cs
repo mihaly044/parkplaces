@@ -520,7 +520,7 @@ namespace ParkPlaces.Controls
         {
             IsDrawingPolygon = false;
 
-            if (save && _currentDrawingPolygon.LocalPoints.Count - 1 > 1)
+            if (save && _currentDrawingPolygon.LocalPoints.Count - 1 > 1 && _currentDrawingPolygon.GetArea(true) > 0d)
             {
                 // Remove "ghost" point marker
                 _currentDrawingPolygon.Points.Remove(_currentNewRectMaker.Position);

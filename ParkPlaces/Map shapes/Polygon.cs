@@ -30,10 +30,12 @@ namespace ParkPlaces.Map_shapes
             return (new Point((int)centroidX, (int)centroidY));
         }
 
-        public double GetArea()
+        public double GetArea(bool isDrawing = false)
         {
             if (_areaNeedsUpdate)
-                _area = PolygonalUtil.ComputeArea(Points);
+                // If the polygon is currently being drawn, it is not
+                // part of the polygon therefore it needs to be ignored
+                _area = PolygonalUtil.ComputeArea(!isDrawing ? Points : Points.Take(Points.Count - 1).ToList());
 
             _areaNeedsUpdate = false;
             return _area;
