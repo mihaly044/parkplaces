@@ -218,6 +218,8 @@ namespace ParkPlaces.Controls
         /// <param name="item"></param>
         private void Map_OnMarkerEnter(GMapMarker item)
         {
+            if (IsDrawingPolygon) return;
+
             if (item is RectMarker marker && !_isMouseDown)
             {
                 marker.Pen.Color = Color.Red;
@@ -231,6 +233,8 @@ namespace ParkPlaces.Controls
         /// <param name="item"></param>
         private void Map_OnMarkerLeave(GMapMarker item)
         {
+            if (IsDrawingPolygon) return;
+
             if (item is RectMarker marker)
             {
                 marker.Pen.Color = Color.Blue;
