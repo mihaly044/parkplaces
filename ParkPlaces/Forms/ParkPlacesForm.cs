@@ -9,16 +9,14 @@ namespace ParkPlaces.Forms
 {
     public partial class ParkPlacesForm : Form
     {
-        private readonly TsRenderer _tsRenderer;
-
         public ParkPlacesForm()
         {
             InitializeComponent();
 
-            _tsRenderer = new TsRenderer();
-            menuStrip.Renderer = _tsRenderer;
-            toolStrip.Renderer = _tsRenderer;
-            statusStrip.Renderer = _tsRenderer;
+            var tsRenderer = new TsRenderer();
+            menuStrip.Renderer = tsRenderer;
+            toolStrip.Renderer = tsRenderer;
+            statusStrip.Renderer = tsRenderer;
 
 
             IoHandler.Instance.OnUpdateChangedEventHandler += (s, updateProcessChangedArgs) =>

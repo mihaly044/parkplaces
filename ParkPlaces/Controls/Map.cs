@@ -53,8 +53,8 @@ namespace ParkPlaces.Controls
 
             _centerOfTheMap = new PointLatLng(47.49801, 19.03991);
 
-            drawPolygonCtxMenu.Renderer = _tsRenderer;
-            polygonPointCtxMenu.Renderer = _tsRenderer;
+            drawPolygonCtxMenu.Renderer = TsRenderer;
+            polygonPointCtxMenu.Renderer = TsRenderer;
         }
 
         #endregion Constructors
@@ -202,7 +202,7 @@ namespace ParkPlaces.Controls
         /// Workaround for a bug that causes a white line to be rendered
         /// around menus and toolstrips
         /// </summary>
-        internal readonly TsRenderer _tsRenderer = new TsRenderer();
+        internal readonly TsRenderer TsRenderer = new TsRenderer();
         #endregion Internals
 
         #region GMap events
@@ -555,18 +555,14 @@ namespace ParkPlaces.Controls
 
         public void DeleteCurrentPolygonPoint()
         {
-            if (_currentRectMaker == null) return;
-
-            // Delete from zone data
-            var pIndex = (int?)_currentRectMaker.Tag;
+            var pIndex = (int?) _currentRectMaker?.Tag;
             if(pIndex.HasValue)
             {
+                // Delete from zone data
                 ((PolyZone)CurrentPolygon.Tag).Geometry.RemoveAt(pIndex.Value);
+                // Delete from local data
+                CurrentPolygon.Points.RemoveAt(pIndex.Value);
             }
-
-            // Delete from local data
-            CurrentPolygon.Points.RemoveAt(pIndex.Value);
-
         }
 
         /// <summary>
