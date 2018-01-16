@@ -344,7 +344,7 @@ namespace ParkPlaces.Controls
         /// <param name="e">Mouse event arguments</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && _isMouseDown)
+            if (e.Button == MouseButtons.Left)
             {
                 if (_currentRectMaker == null)
                 {
