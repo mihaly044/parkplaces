@@ -658,7 +658,8 @@ namespace ParkPlaces.Controls
             PolygonRects.Markers.Clear();
 
             MapProvider = GMapProviders.GoogleMap;
-            Position = _centerOfTheMap;
+
+            ResetCenter();
         }
 
         /// <summary>
@@ -668,6 +669,7 @@ namespace ParkPlaces.Controls
         public void ResetCenter()
         {
             Position = _centerOfTheMap;
+            _pointer.Position = _centerOfTheMap;
         }
 
         #endregion App logic
