@@ -118,10 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="if_f-cross_256_282471" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\if_f-cross_256_282471.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="data" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\data.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="if_f-cross_256_282471" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\if_f-cross_256_282471.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="if_stock_draw-polygon-filled_21579" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\if_stock_draw-polygon-filled_21579.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="if_map-marker_299087" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\if_map-marker_299087.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
