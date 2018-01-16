@@ -52,6 +52,9 @@ namespace ParkPlaces.Controls
             Manager.PrimaryCache.DeleteOlderThan(deleteCacheDate, null);
 
             _centerOfTheMap = new PointLatLng(47.49801, 19.03991);
+
+            drawPolygonCtxMenu.Renderer = _tsRenderer;
+            polygonPointCtxMenu.Renderer = _tsRenderer;
         }
 
         #endregion Constructors
@@ -195,6 +198,11 @@ namespace ParkPlaces.Controls
         /// </summary>
         internal readonly Font BlueFont = new Font(FontFamily.GenericSansSerif, 7, FontStyle.Regular);
 
+        /// <summary>
+        /// Workaround for a bug that causes a white line to be rendered
+        /// around menus and toolstrips
+        /// </summary>
+        internal readonly TsRenderer _tsRenderer = new TsRenderer();
         #endregion Internals
 
         #region GMap events
@@ -258,6 +266,16 @@ namespace ParkPlaces.Controls
         /// Occurs when Cancel gets clicked on the context menu that appears in drawing mode
         /// </summary>
         private void cancelToolStripMenuItem_Click(object sender, EventArgs e) => EndDrawPolygon(false);
+
+        /// <summary>
+        /// Called when the user clicks on "Delete" ctx menu
+        /// </summary>
+        private void deletePointToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
 
         #endregion Context menu events
 
@@ -409,9 +427,12 @@ namespace ParkPlaces.Controls
                 if (!IsMouseOverPolygon && !IsMouseOverMarker)
                     ClearSelection();
             }
-            else if (IsDrawingPolygon && e.Button == MouseButtons.Right)
+            else if(e.Button == MouseButtons.Right)
             {
-                drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
+                if (IsDrawingPolygon)
+                    drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
+                else if(_currentRectMaker != null)
+                    polygonPointCtxMenu.Show(this, new Point(e.X, e.Y));
             }
 
             base.OnMouseDown(e);
@@ -530,6 +551,22 @@ namespace ParkPlaces.Controls
 
             TopLayer.Markers.Remove(_currentNewRectMaker);
             _currentNewRectMaker = null;
+        }
+
+        public void DeleteCurrentPolygonPoint()
+        {
+            if (_currentRectMaker == null) return;
+
+            // Delete from zone data
+            var pIndex = (int?)_currentRectMaker.Tag;
+            if(pIndex.HasValue)
+            {
+                ((PolyZone)CurrentPolygon.Tag).Geometry.RemoveAt(pIndex.Value);
+            }
+
+            // Delete from local data
+            CurrentPolygon.Points.RemoveAt(pIndex.Value);
+
         }
 
         /// <summary>
