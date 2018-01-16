@@ -104,6 +104,11 @@ namespace ParkPlaces.Controls
         public Polygon CurrentPolygon;
 
         /// <summary>
+        /// Represents a new point of a polygon that is being drawn
+        /// </summary>
+        private RectMarker _currentNewRectMaker;
+
+        /// <summary>
         /// Represents a polygon that is currently in the process of drawing on the GUI
         /// </summary>
         private Polygon _currentDrawingPolygon;
@@ -318,6 +323,7 @@ namespace ParkPlaces.Controls
         protected override void OnMouseMove(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && _isMouseDown)
+            {
                 if (_currentRectMaker == null)
                 {
                     _pointer.Position = FromLocalToLatLng(e.X, e.Y);
@@ -338,7 +344,7 @@ namespace ParkPlaces.Controls
                         UpdatePolygonLocalPosition(CurrentPolygon);
                     }
                 }
-                else
+                else if(CurrentPolygon != null)
                 {
                     var pnew = FromLocalToLatLng(e.X, e.Y);
 
@@ -357,6 +363,14 @@ namespace ParkPlaces.Controls
                     _pointer.Position = pnew;
                     _currentRectMaker.Position = pnew;
                 }
+            }
+            else if (IsDrawingPolygon)
+            {
+                _currentNewRectMaker.Position = FromLocalToLatLng(e.X, e.Y);
+
+                _currentDrawingPolygon.Points[_currentDrawingPolygon.Points.Count - 1] = _currentNewRectMaker.Position;
+                UpdatePolygonLocalPosition(_currentDrawingPolygon);
+            }
 
             _previousMouseLocation = FromLocalToLatLng(e.X, e.Y);
             base.OnMouseMove(e);
@@ -442,18 +456,19 @@ namespace ParkPlaces.Controls
         /// </summary>
         private void DrawNewPolygonPoint()
         {
-            if (_currentDrawingPolygon == null)
-            {
-                var points = new List<PointLatLng> { _pointer.Position };
-                _currentDrawingPolygon = new Polygon(points, "New polygon") { IsHitTestVisible = true };
-                Polygons.Polygons.Add(_currentDrawingPolygon);
-            }
-            else
-            {
-                _currentDrawingPolygon.Points.Add(_pointer.Position);
-                UpdatePolygonLocalPosition(_currentDrawingPolygon);
-                _currentDrawingPolygon.PointsHasChanged();
-            }
+
+            // Remove "ghost" point marker that is used to show the user
+            // where the next point is going to be
+            _currentDrawingPolygon.Points.Remove(_currentNewRectMaker.Position);
+
+            // Add the actual point to the current polygon
+            _currentDrawingPolygon.Points.Add(_pointer.Position);
+            _currentDrawingPolygon.PointsHasChanged();
+
+            // Add the "ghost" point marker
+            _currentDrawingPolygon.Points.Add(_currentNewRectMaker.Position);
+
+            UpdatePolygonLocalPosition(_currentDrawingPolygon);
         }
 
         /// <summary>
@@ -462,7 +477,13 @@ namespace ParkPlaces.Controls
         /// </summary>
         public void BeginDrawPolygon()
         {
+            var points = new List<PointLatLng> { _pointer.Position };
+            _currentDrawingPolygon = new Polygon(points, "New polygon") { IsHitTestVisible = true };
+            Polygons.Polygons.Add(_currentDrawingPolygon);
+
             IsDrawingPolygon = true;
+            _currentNewRectMaker = new RectMarker(new PointLatLng(0, 0));
+            TopLayer.Markers.Add(_currentNewRectMaker);
         }
 
         /// <summary>
@@ -474,8 +495,11 @@ namespace ParkPlaces.Controls
         {
             IsDrawingPolygon = false;
 
-            if (save)
+            if (save && _currentDrawingPolygon.Points.Count > 1)
             {
+                _currentDrawingPolygon.Points.Remove(_currentNewRectMaker.Position);
+                UpdatePolygonLocalPosition(_currentDrawingPolygon);
+
                 _currentDrawingPolygon.Tag = new PolyZone
                 {
                     Geometry = new List<Geometry>(),
@@ -498,6 +522,9 @@ namespace ParkPlaces.Controls
             OnDrawPolygonEnd?.Invoke(_currentDrawingPolygon);
 
             _currentDrawingPolygon = null;
+
+            TopLayer.Markers.Remove(_currentNewRectMaker);
+            _currentNewRectMaker = null;
         }
 
         /// <summary>
