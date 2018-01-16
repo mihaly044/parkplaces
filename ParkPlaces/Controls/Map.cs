@@ -214,7 +214,7 @@ namespace ParkPlaces.Controls
         /// <param name="e"></param>
         private void Map_OnPolygonClick(GMapPolygon item, MouseEventArgs e)
         {
-            if (IsDrawingPolygon || item == null)
+            if (IsDrawingPolygon || item == null || _currentRectMaker != null)
                 return;
             if (Zoom >= 12)
                 SelectPolygon((Polygon)item);
