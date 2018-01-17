@@ -59,6 +59,7 @@ namespace ParkPlaces.Forms
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.Map = new ParkPlaces.Controls.Map();
+            this.lblShapesCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -170,7 +171,8 @@ namespace ParkPlaces.Forms
             this.toolStripStatusLabel,
             this.SelectMapProviderButton,
             this.lblZoom,
-            this.lblMouse});
+            this.lblMouse,
+            this.lblShapesCount});
             this.statusStrip.Location = new System.Drawing.Point(0, 0);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(1029, 22);
@@ -328,7 +330,14 @@ namespace ParkPlaces.Forms
             this.Map.Zoom = 15D;
             this.Map.OnDrawPolygonEnd += new ParkPlaces.Controls.Map.DrawPolygonEnd(this.Map_DrawPolygonEnd);
             this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
+            this.Map.OnVerticlesChanged += new ParkPlaces.Controls.Map.VerticlesChanged(this.Map_VerticlesChanged);
             this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
+            // 
+            // lblShapesCount
+            // 
+            this.lblShapesCount.Name = "lblShapesCount";
+            this.lblShapesCount.Size = new System.Drawing.Size(52, 17);
+            this.lblShapesCount.Text = "               ";
             // 
             // ParkPlacesForm
             // 
@@ -386,6 +395,7 @@ namespace ParkPlaces.Forms
         private ToolStripDropDownButton gotoButton;
         private ToolStripMenuItem coordinateToolStripMenuItem;
         private ToolStripMenuItem addressToolStripMenuItem;
+        private ToolStripStatusLabel lblShapesCount;
     }
 }
 

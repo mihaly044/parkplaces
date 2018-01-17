@@ -29,6 +29,12 @@ namespace ParkPlaces.Controls
         /// <param name="polygon">The polygon that the user has finished drawing</param>
         public delegate void DrawPolygonEnd(Polygon polygon);
 
+        /// <summary>
+        /// Delegate function for OnVerticlesChanged
+        /// </summary>
+        /// <param name="verticleChangedArg">Contains total verticle and shapes count</param>
+        public delegate void VerticlesChanged(VerticleChangedArg verticleChangedArg);
+
         #endregion Delegates
 
         #region Constructors
@@ -65,6 +71,12 @@ namespace ParkPlaces.Controls
         /// Occurs when polygon drawing gets finished by the user
         /// </summary>
         public event DrawPolygonEnd OnDrawPolygonEnd;
+
+        /// <summary>
+        /// Occurs whenever the total points of polygons or shape count
+        /// changes on the map
+        /// </summary>
+        public event VerticlesChanged OnVerticlesChanged;
 
         #endregion Events
 
@@ -494,6 +506,7 @@ namespace ParkPlaces.Controls
             _currentDrawingPolygon.Points.Add(_currentNewRectMaker.Position);
 
             UpdatePolygonLocalPosition(_currentDrawingPolygon);
+            UpdateVerticlesCount();
         }
 
         /// <summary>
@@ -551,6 +564,8 @@ namespace ParkPlaces.Controls
 
             TopLayer.Markers.Remove(_currentNewRectMaker);
             _currentNewRectMaker = null;
+
+            UpdateVerticlesCount();
         }
 
         public void DeletePolygonPoint(Polygon p)
@@ -574,6 +589,7 @@ namespace ParkPlaces.Controls
                     UpdatePolygonLocalPosition(p);
                 }
             }
+            UpdateVerticlesCount();
         }
 
         /// <summary>
@@ -596,6 +612,7 @@ namespace ParkPlaces.Controls
                     ClearSelection();
                 }
             }
+            UpdateVerticlesCount();
         }
 
         /// <summary>
@@ -685,6 +702,7 @@ namespace ParkPlaces.Controls
                     Stroke = new Pen(polygonColor) { Width = 2 }
                 });
             }
+            UpdateVerticlesCount();
         }
 
         /// <summary>
@@ -704,6 +722,7 @@ namespace ParkPlaces.Controls
         /// </summary>
         public void UnloadSession()
         {
+            UpdateVerticlesCount();
             Polygons.Polygons.Clear();
             PolygonRects.Markers.Clear();
 
@@ -739,6 +758,18 @@ namespace ParkPlaces.Controls
         public void SetMapPosition(PointLatLng pos)
         {
             Position = pos;
+        }
+
+        /// <summary>
+        /// Calculate total verticle count and invoke VerticlesChanged
+        /// invoke 
+        /// </summary>
+        private void UpdateVerticlesCount()
+        {
+            OnVerticlesChanged?.Invoke(new VerticleChangedArg(
+                Polygons.Polygons.Sum(p => p.Points.Count),
+                Polygons.Polygons.Count
+                ));
         }
 
         #endregion App logic

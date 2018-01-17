@@ -55,6 +55,11 @@ namespace ParkPlaces.Forms
             drawPolygonButton.Checked = false;
         }
 
+        private void Map_VerticlesChanged(VerticleChangedArg verticleChangedArg)
+        {
+            lblShapesCount.Text = $"{verticleChangedArg.ShapesCount} shapes and {verticleChangedArg.VerticlesCount} verticles";
+        }
+
         private void Map_OnMapZoomChanged()
         {
             lblZoom.Text = $"Zoom: {Map.Zoom}";
