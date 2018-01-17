@@ -272,7 +272,7 @@ namespace ParkPlaces.Controls
         /// </summary>
         private void deletePointToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            DeletePolygonPoint(CurrentPolygon);
         }
 
 
@@ -553,15 +553,26 @@ namespace ParkPlaces.Controls
             _currentNewRectMaker = null;
         }
 
-        public void DeleteCurrentPolygonPoint()
+        public void DeletePolygonPoint(Polygon p)
         {
             var pIndex = (int?) _currentRectMaker?.Tag;
             if(pIndex.HasValue)
             {
-                // Delete from zone data
-                ((PolyZone)CurrentPolygon.Tag).Geometry.RemoveAt(pIndex.Value);
-                // Delete from local data
-                CurrentPolygon.Points.RemoveAt(pIndex.Value);
+                if(p.Points.Count - 1 < 3)
+                {
+                    if(MessageBox.Show("The resulting shape won't be closed therefore all of its points will get deleted. Continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        RemovePolygon(p);
+                    }
+                }
+                else
+                {
+                    // Delete from zone data
+                    ((PolyZone)p.Tag).Geometry.RemoveAt(pIndex.Value);
+                    // Delete from local data
+                    p.Points.RemoveAt(pIndex.Value);
+                    UpdatePolygonLocalPosition(p);
+                }
             }
         }
 
