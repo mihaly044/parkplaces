@@ -280,14 +280,22 @@ namespace ParkPlaces.Controls
         private void cancelToolStripMenuItem_Click(object sender, EventArgs e) => EndDrawPolygon(false);
 
         /// <summary>
-        /// Called when the user clicks on "Delete" ctx menu
+        /// Called when the user clicks on "Delete point" ctx menu of a RectMarker
         /// </summary>
         private void deletePointToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DeletePolygonPoint(CurrentPolygon);
         }
 
-
+        /// <summary>
+        /// Called when the user clicks on "Add point" ctx menu of a RectMarker 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void addPointToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddPolygonPoint(CurrentPolygon);
+        }
 
         #endregion Context menu events
 
@@ -568,6 +576,20 @@ namespace ParkPlaces.Controls
             UpdateVerticlesCount();
         }
 
+        public void AddPolygonPoint(Polygon p)
+        {
+            var pIndex = (int?)_currentRectMaker?.Tag;
+            if (pIndex.HasValue)
+            {
+                p.Points.Insert(pIndex.Value, _currentRectMaker.Position);
+                ((PolyZone)p.Tag).Geometry.Insert(pIndex.Value, _currentRectMaker.Position.ToGeometry());
+
+                UpdateVerticlesCount();
+                UpdatePolygonLocalPosition(p);
+                SelectPolygon(p);
+            }
+        }
+
         public void DeletePolygonPoint(Polygon p)
         {
             var pIndex = (int?) _currentRectMaker?.Tag;
@@ -588,8 +610,9 @@ namespace ParkPlaces.Controls
                     p.Points.RemoveAt(pIndex.Value);
                     UpdatePolygonLocalPosition(p);
                 }
+                UpdateVerticlesCount();
+                SelectPolygon(p);
             }
-            UpdateVerticlesCount();
         }
 
         /// <summary>
@@ -722,13 +745,11 @@ namespace ParkPlaces.Controls
         /// </summary>
         public void UnloadSession()
         {
-            UpdateVerticlesCount();
             Polygons.Polygons.Clear();
             PolygonRects.Markers.Clear();
 
-            MapProvider = GMapProviders.GoogleMap;
-
             ResetCenter();
+            UpdateVerticlesCount();
         }
 
         /// <summary>
@@ -771,7 +792,6 @@ namespace ParkPlaces.Controls
                 Polygons.Polygons.Count
                 ));
         }
-
         #endregion App logic
     }
 }
