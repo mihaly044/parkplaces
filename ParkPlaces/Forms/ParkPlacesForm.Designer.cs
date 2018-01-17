@@ -47,6 +47,7 @@ namespace ParkPlaces.Forms
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblShapesCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,7 +60,6 @@ namespace ParkPlaces.Forms
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.Map = new ParkPlaces.Controls.Map();
-            this.lblShapesCount = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -114,14 +114,14 @@ namespace ParkPlaces.Forms
             // coordinateToolStripMenuItem
             // 
             this.coordinateToolStripMenuItem.Name = "coordinateToolStripMenuItem";
-            this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.coordinateToolStripMenuItem.Text = "Coordinate";
             this.coordinateToolStripMenuItem.Click += new System.EventHandler(this.coordinateToolStripMenuItem_Click);
             // 
             // addressToolStripMenuItem
             // 
             this.addressToolStripMenuItem.Name = "addressToolStripMenuItem";
-            this.addressToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.addressToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.addressToolStripMenuItem.Text = "Address";
             this.addressToolStripMenuItem.Click += new System.EventHandler(this.addressToolStripMenuItem_Click);
             // 
@@ -162,6 +162,7 @@ namespace ParkPlaces.Forms
             this.lblMouse.Name = "lblMouse";
             this.lblMouse.Size = new System.Drawing.Size(52, 17);
             this.lblMouse.Text = "               ";
+            this.lblMouse.Visible = false;
             // 
             // statusStrip
             // 
@@ -190,6 +191,12 @@ namespace ParkPlaces.Forms
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Ready";
+            // 
+            // lblShapesCount
+            // 
+            this.lblShapesCount.Name = "lblShapesCount";
+            this.lblShapesCount.Size = new System.Drawing.Size(52, 17);
+            this.lblShapesCount.Text = "               ";
             // 
             // menuStrip
             // 
@@ -329,15 +336,9 @@ namespace ParkPlaces.Forms
             this.Map.TabIndex = 0;
             this.Map.Zoom = 15D;
             this.Map.OnDrawPolygonEnd += new ParkPlaces.Controls.Map.DrawPolygonEnd(this.Map_DrawPolygonEnd);
-            this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
             this.Map.OnVerticlesChanged += new ParkPlaces.Controls.Map.VerticlesChanged(this.Map_VerticlesChanged);
+            this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
             this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
-            // 
-            // lblShapesCount
-            // 
-            this.lblShapesCount.Name = "lblShapesCount";
-            this.lblShapesCount.Size = new System.Drawing.Size(52, 17);
-            this.lblShapesCount.Text = "               ";
             // 
             // ParkPlacesForm
             // 

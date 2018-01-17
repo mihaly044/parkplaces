@@ -62,7 +62,8 @@ namespace ParkPlaces.Forms
 
         private void Map_OnMapZoomChanged()
         {
-            lblZoom.Text = $"Zoom: {Map.Zoom}";
+            if(lblZoom.Visible)
+                lblZoom.Text = $"Zoom: {Map.Zoom}";
         }
 
         private void googleMapsToolStripMenuItem_Click(object sender, EventArgs e)
