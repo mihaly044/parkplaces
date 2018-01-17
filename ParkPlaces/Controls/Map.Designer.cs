@@ -68,8 +68,8 @@ namespace ParkPlaces.Controls
             // polygonPointCtxMenu
             // 
             this.polygonPointCtxMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deletePointToolStripMenuItem,
-            this.addPointToolStripMenuItem});
+            this.addPointToolStripMenuItem,
+            this.deletePointToolStripMenuItem});
             this.polygonPointCtxMenu.Name = "polygonPointCtxMenu";
             this.polygonPointCtxMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.polygonPointCtxMenu.Size = new System.Drawing.Size(153, 70);
@@ -86,6 +86,7 @@ namespace ParkPlaces.Controls
             this.addPointToolStripMenuItem.Name = "addPointToolStripMenuItem";
             this.addPointToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.addPointToolStripMenuItem.Text = "Add point";
+            this.addPointToolStripMenuItem.Click += new System.EventHandler(this.addPointToolStripMenuItem_Click);
             // 
             // Map
             // 
