@@ -610,6 +610,9 @@ namespace ParkPlaces.Controls
             CurrentPolygon.Fill = new SolidBrush(Color.FromArgb(60, polygonColor));
             CurrentPolygon.IsSelected = false;
 
+
+            _currentRectMaker = null;
+
             // Clear rect markers
             PolygonRects.Markers.Clear();
         }
