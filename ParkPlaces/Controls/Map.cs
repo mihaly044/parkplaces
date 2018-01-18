@@ -126,6 +126,12 @@ namespace ParkPlaces.Controls
         #endregion Events
 
         /// <summary>
+        /// Indicates whether the map has a black-transparent gradient on its left side
+        /// </summary>
+        [Category("Map Extension")]
+        public bool HasGradientSide { get; set; }
+
+        /// <summary>
         /// Gradient width
         /// </summary>
         [Category("Map Extension")]
@@ -307,6 +313,19 @@ namespace ParkPlaces.Controls
 #endif
 
                 e.Graphics.DrawString(version, BlueFont, Brushes.Blue, new Point(5, 5));
+            }
+
+            if (HasGradientSide)
+            {
+                var linGrBrush = new LinearGradientBrush(
+                    new Point(0, 0),
+                    new Point(GradientWidth, 0),
+                    Color.FromArgb(95, 0, 0, 0),
+                    Color.FromArgb(0, 0, 0, 0));
+
+                var r = new Rectangle(ClientRectangle.Location, ClientRectangle.Size) { Width = GradientWidth };
+
+                e.Graphics.FillRectangle(linGrBrush, r);
             }
         }
 
