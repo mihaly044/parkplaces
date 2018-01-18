@@ -18,24 +18,79 @@ using ParkPlaces.Map_shapes;
 
 namespace ParkPlaces.Controls
 {
-    // TODO: Documentate code
     public partial class Map : GMapControl
     {
-        #region Delegates
+
+        #region Private fields and consts
+         /// <summary>
+        /// Represents the initial center point of the map
+        /// This remains the same even if the map gets dragged
+        /// </summary>
+        private readonly PointLatLng _centerOfTheMap;
 
         /// <summary>
-        /// Delegate function for OnDrawPolygonEnd
+        /// Defines the stroke colour of map shapes in selected state
+        /// </summary>
+        private readonly Pen _selectedStrokeClr;
+
+        /// <summary>
+        /// Defines the fill colour of map shapes in selected state
+        /// </summary>
+        private readonly Brush _selecteFillClr;
+
+        /// <summary>
+        /// Indicates whether the left mouse button is down at a given moment
+        /// </summary>
+        private bool _isMouseDown;
+
+        /// <summary>
+        /// Represents a green marker on the map
+        /// </summary>
+        private readonly GMapMarker _pointer;
+
+        /// <summary>
+        /// Indicates the current point selected of currentSelPolygon
+        /// </summary>
+        private RectMarker _currentRectMaker;
+
+        /// <summary>
+        /// The current selected polygon. Null if nothing is selected
+        /// </summary>
+        public Polygon CurrentPolygon;
+
+        /// <summary>
+        /// Represents a new point of a polygon that is being drawn
+        /// </summary>
+        private RectMarker _currentNewRectMaker;
+
+        /// <summary>
+        /// Represents a polygon that is currently in the process of drawing on the GUI
+        /// </summary>
+        private Polygon _currentDrawingPolygon;
+
+        /// <summary>
+        /// Represents the current data transfer object in use
+        /// </summary>
+        private Dto2Object _fromJsonData;
+
+        /// <summary>
+        /// Used to get the previous mouse location on every OnMouseMove call
+        /// </summary>
+        private PointLatLng _previousMouseLocation;
+        #endregion
+
+        /// <summary>
+        /// Invoked after a new polygon gets drawn on screen
         /// </summary>
         /// <param name="polygon">The polygon that the user has finished drawing</param>
         public delegate void DrawPolygonEnd(Polygon polygon);
 
         /// <summary>
-        /// Delegate function for OnVerticlesChanged
+        /// Invoked when either total shape or its verticles' count changes
         /// </summary>
         /// <param name="verticleChangedArg">Contains total verticle and shapes count</param>
         public delegate void VerticlesChanged(VerticleChangedArg verticleChangedArg);
 
-        #endregion Delegates
 
         #region Constructors
 
@@ -66,77 +121,9 @@ namespace ParkPlaces.Controls
         #endregion Constructors
 
         #region Events
-
-        /// <summary>
-        /// Occurs when polygon drawing gets finished by the user
-        /// </summary>
         public event DrawPolygonEnd OnDrawPolygonEnd;
-
-        /// <summary>
-        /// Occurs whenever the total points of polygons or shape count
-        /// changes on the map
-        /// </summary>
         public event VerticlesChanged OnVerticlesChanged;
-
         #endregion Events
-
-        #region Fields
-
-        /// <summary>
-        /// Represents the initial center point of the map
-        /// This remains the same even if the map gets dragged
-        /// </summary>
-        private readonly PointLatLng _centerOfTheMap;
-
-        /// <summary>
-        /// Defines the stroke colour of map shapes in selected state
-        /// </summary>
-        private readonly Pen _selectedStrokeClr;
-
-        /// <summary>
-        /// Defines the fill colour of map shapes in selected state
-        /// </summary>
-        private readonly Brush _selecteFillClr;
-
-        /// <summary>
-        /// Indicates whether the left mouse button is down at a given moment
-        /// </summary>
-        private bool _isMouseDown;
-
-        /// <summary>
-        /// Represents a green pointer on the map
-        /// </summary>
-        private readonly GMapMarker _pointer;
-
-        /// <summary>
-        /// Indicates the current point selected of currentSelPolygon
-        /// </summary>
-        private RectMarker _currentRectMaker;
-
-        /// <summary>
-        /// The current selected polygon. Null if nothing is selected
-        /// </summary>
-        public Polygon CurrentPolygon;
-
-        /// <summary>
-        /// Represents a new point of a polygon that is being drawn
-        /// </summary>
-        private RectMarker _currentNewRectMaker;
-
-        /// <summary>
-        /// Represents a polygon that is currently in the process of drawing on the GUI
-        /// </summary>
-        private Polygon _currentDrawingPolygon;
-
-        /// <summary>
-        /// Represents the current data transfer object in use
-        /// </summary>
-        private Dto2Object _fromJsonData;
-
-        /// <summary>
-        /// Can be used to get the previous mouse location on every OnMouseMove call
-        /// </summary>
-        private PointLatLng _previousMouseLocation;
 
         /// <summary>
         /// Indicates whether the map has a black-transparent gradient on its left side
@@ -181,12 +168,10 @@ namespace ParkPlaces.Controls
         private DateTime _renderEnd;
 
         /// <summary>
-        /// The time elapsed between _renderStart and _renderStop
+        /// The time it took to render a frame
         /// in milliseconds
         /// </summary>
         private int _renderDelta;
-
-        #endregion Fields
 
         #region Internals
 
@@ -307,10 +292,9 @@ namespace ParkPlaces.Controls
         /// <param name="e">Graphics context</param>
         protected override void OnPaint(PaintEventArgs e)
         {
+            // Calculate render time
             _renderStart = DateTime.Now;
-
             base.OnPaint(e);
-
             _renderEnd = DateTime.Now;
             _renderDelta = (int)(_renderEnd - _renderStart).TotalMilliseconds;
 
@@ -347,6 +331,7 @@ namespace ParkPlaces.Controls
 
         /// <summary>
         /// Gets called when the control gets loaded
+        /// Sets up an initial state
         /// </summary>
         protected override void OnLoad(EventArgs e)
         {
@@ -370,6 +355,7 @@ namespace ParkPlaces.Controls
                 {
                     _pointer.Position = FromLocalToLatLng(e.X, e.Y);
 
+                    /// Handles polygon dragging on the map
                     if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
                     {
                         for (int i = 0; i < CurrentPolygon.Points.Count; i++)
@@ -386,6 +372,7 @@ namespace ParkPlaces.Controls
                         UpdatePolygonLocalPosition(CurrentPolygon);
                     }
                 }
+                // Handles dragging a point of a polygon
                 else if(CurrentPolygon != null)
                 {
                     var pnew = FromLocalToLatLng(e.X, e.Y);
@@ -408,6 +395,7 @@ namespace ParkPlaces.Controls
             }
             else if (IsDrawingPolygon)
             {
+                // Handles dragging a point of a NEW polygon on the map
                 _currentNewRectMaker.Position = FromLocalToLatLng(e.X, e.Y);
 
                 _currentDrawingPolygon.Points[_currentDrawingPolygon.Points.Count - 1] = _currentNewRectMaker.Position;
@@ -419,7 +407,7 @@ namespace ParkPlaces.Controls
         }
 
         /// <summary>
-        /// Gets called when any button on the mouse gets released
+        /// Gets called when any button on the mouse is released
         /// </summary>
         /// <param name="e">Mouse event arguments</param>
         protected override void OnMouseUp(MouseEventArgs e)
@@ -449,6 +437,7 @@ namespace ParkPlaces.Controls
             }
             else if(e.Button == MouseButtons.Right)
             {
+                // Show context menu
                 if (IsDrawingPolygon)
                     drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
                 else if(_currentRectMaker != null)
@@ -576,6 +565,10 @@ namespace ParkPlaces.Controls
             UpdateVerticlesCount();
         }
 
+        /// <summary>
+        /// Add a new verticle to a given polygon
+        /// </summary>
+        /// <param name="p"></param>
         public void AddPolygonPoint(Polygon p)
         {
             var pIndex = (int?)_currentRectMaker?.Tag;
@@ -590,6 +583,10 @@ namespace ParkPlaces.Controls
             }
         }
 
+        /// <summary>
+        /// Delete the current selected point of a polygon
+        /// </summary>
+        /// <param name="p"></param>
         public void DeletePolygonPoint(Polygon p)
         {
             var pIndex = (int?) _currentRectMaker?.Tag;
@@ -679,6 +676,10 @@ namespace ParkPlaces.Controls
             }
         }
 
+        /// <summary>
+        /// Save polygon data to a file
+        /// </summary>
+        /// <param name="file"></param>
         public void SavePolygons(string file)
         {
             var data = new Dto2Object()
