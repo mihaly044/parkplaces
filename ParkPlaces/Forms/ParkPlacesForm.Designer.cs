@@ -309,12 +309,9 @@ namespace ParkPlaces.Forms
             this.Map.BackColor = System.Drawing.Color.Transparent;
             this.Map.Bearing = 0F;
             this.Map.CanDragMap = true;
-            this.Map.DisplayCopyright = true;
             this.Map.DisplayVersionInfo = true;
             this.Map.EmptyTileColor = System.Drawing.Color.Navy;
-            this.Map.GradientWidth = 125;
             this.Map.GrayScaleMode = false;
-            this.Map.HasGradientSide = false;
             this.Map.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             this.Map.IsDrawingPolygon = false;
             this.Map.LevelsKeepInMemmory = 5;
