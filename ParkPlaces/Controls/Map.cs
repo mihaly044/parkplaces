@@ -322,7 +322,7 @@ namespace ParkPlaces.Controls
                 {
                     _pointer.Position = FromLocalToLatLng(e.X, e.Y);
 
-                    /// Handles polygon dragging on the map
+                    // Handles polygon dragging on the map
                     if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
                     {
                         for (int i = 0; i < CurrentPolygon.Points.Count; i++)
