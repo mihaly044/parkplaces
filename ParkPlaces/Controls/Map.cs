@@ -137,6 +137,8 @@ namespace ParkPlaces.Controls
         /// </summary>
         public bool IsDrawingPolygon { get; set; }
 
+        public Dto2Object GetDataObject() => _fromJsonData;
+
         /// <summary>
         /// Represents the time when rendering starts
         /// </summary>

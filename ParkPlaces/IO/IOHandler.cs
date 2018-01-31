@@ -12,7 +12,7 @@ namespace ParkPlaces.IO
     {
         private NemApi _api;
         public static IoHandler Instance => _instance ?? (_instance = new IoHandler());
-        public bool NeedUpdate => Get_needUpdate();
+        public bool NeedUpdate => getUpdateNeeded();
 
         private static IoHandler _instance;
 
@@ -20,7 +20,7 @@ namespace ParkPlaces.IO
         private DateTime _nextUpdate;
         private int _updateInterval;
 
-        private bool Get_needUpdate()
+        private bool getUpdateNeeded()
         {
             return DateTime.Now >= _nextUpdate || !File.Exists("data");
         }
@@ -50,7 +50,7 @@ namespace ParkPlaces.IO
 
         public async Task<Dto2Object> UpdateAsync(bool saveToDisk = false, bool forceUpdate = false)
         {
-            if (!Get_needUpdate() && !forceUpdate)
+            if (!getUpdateNeeded() && !forceUpdate)
             {
                 return null;
             }
@@ -86,7 +86,7 @@ namespace ParkPlaces.IO
                 config.Save();
                 ConfigurationManager.RefreshSection("appSettings");
 
-                WriteDtoToJson($"data-{_lastUpdate.ToBinary()}", dto);
+                WriteDtoToJson($"geo{_lastUpdate.ToBinary()}.json", dto);
             }
 
             return dto;
