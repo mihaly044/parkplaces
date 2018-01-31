@@ -165,5 +165,17 @@ namespace ParkPlaces.Forms
                 }
             }
         }
+
+        private void exportToDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Sql.Server = "localhost";
+            Sql.User = "root";
+            Sql.Password = "";
+            Sql.Database = "parkplaces";
+
+            Map.LoadPolygons(false, "geo-8586842964498054453.json");
+
+            Sql.ExportToMySql(Map.GetDataObject());
+        }
     }
 }
