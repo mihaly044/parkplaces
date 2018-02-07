@@ -173,7 +173,7 @@ namespace ParkPlaces.Forms
             Sql.Password = "";
             Sql.Database = "parkplaces";
 
-            Map.LoadPolygons(false, "geo-8586842964498054453.json");
+            Map.LoadPolygons(false, "geo-8586841913249373671.json");
 
             Sql.ExportToMySql(Map.GetDataObject());
         }
