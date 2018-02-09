@@ -42,19 +42,24 @@ namespace ParkPlaces.IO
             return true;
         }
 
+        public static void Close()
+        {
+            _mysqlConnection?.Close();
+        }
+
         public static void ExportToMySql(Dto2Object dto)
         {
             if (!Connect()) return;
 
             // Flush table
-            new MySqlCommand("DELETE FROM geometry"){Connection =  _mysqlConnection}.ExecuteNonQuery();
-            new MySqlCommand("DELETE FROM zones") { Connection = _mysqlConnection }.ExecuteNonQuery();
-            new MySqlCommand("DELETE FROM cities") { Connection = _mysqlConnection }.ExecuteNonQuery();
-            new MySqlCommand("ALTER TABLE cities AUTO_INCREMENT = 0") { Connection = _mysqlConnection }.ExecuteNonQuery();
-            new MySqlCommand("ALTER TABLE zones AUTO_INCREMENT = 0") { Connection = _mysqlConnection }.ExecuteNonQuery();
-            new MySqlCommand("ALTER TABLE geometry AUTO_INCREMENT = 0") { Connection = _mysqlConnection }.ExecuteNonQuery();
-
-            return;
+            simpleExecQuery("DELETE FROM geometry");
+            simpleExecQuery("DELETE FROM zones");
+            simpleExecQuery("DELETE FROM cities");
+            simpleExecQuery("ALTER TABLE cities AUTO_INCREMENT = 0");
+            simpleExecQuery("ALTER TABLE zones AUTO_INCREMENT = 0");
+            simpleExecQuery("ALTER TABLE geometry AUTO_INCREMENT = 0");
+               
+            //return;
 
             // Insert data
             Dictionary<string, int> cityIds = new Dictionary<string, int>();
@@ -125,7 +130,29 @@ namespace ParkPlaces.IO
                     zoneId++;
                 }
             }
-            _mysqlConnection?.Close();
+
+            Close();
+        }
+
+        /// <summary>
+        /// Executes a query 
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns>-1 if the execution fails. Otherwise the number of affected rows </returns>
+        public static int simpleExecQuery(string query)
+        {
+            if (_mysqlConnection is null)
+                return -1;
+
+            try
+            {
+                return new MySqlCommand(query) { Connection = _mysqlConnection }
+                    .ExecuteNonQuery();
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return -1;
+            }
         }
     }
 }
