@@ -71,7 +71,7 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// Represents the current data transfer object in use
         /// </summary>
-        private Dto2Object _fromJsonData;
+        private Dto2Object _dtoObject;
 
         /// <summary>
         /// Used to get the previous mouse location on every OnMouseMove call
@@ -137,7 +137,7 @@ namespace ParkPlaces.Controls
         /// </summary>
         public bool IsDrawingPolygon { get; set; }
 
-        public Dto2Object GetDataObject() => _fromJsonData;
+        public Dto2Object GetDataObject() => _dtoObject;
 
         /// <summary>
         /// Represents the time when rendering starts
@@ -669,20 +669,24 @@ namespace ParkPlaces.Controls
         public async void LoadPolygons(bool forceUpdate = false, string file = "")
         {
             if (file != string.Empty)
-                _fromJsonData = IoHandler.ReadDtoFromJson(file);
+                _dtoObject = IoHandler.ReadDtoFromJson(file);
             else if (forceUpdate)
             {
-                _fromJsonData = await IoHandler.Instance.UpdateAsync(true, true);
+                _dtoObject = await IoHandler.Instance.UpdateAsync(true, true);
             }
             else
             {
-                _fromJsonData = await IoHandler.Instance.UpdateAsync(true) ??
+                _dtoObject = await IoHandler.Instance.UpdateAsync(true) ??
                                 Dto2Object.FromJson(File.ReadAllText("data"));
             }
 
-            UnloadSession();
+            ConstructGUI();
+        }
 
-            foreach (var zone in _fromJsonData.Zones)
+        public void ConstructGUI()
+        {
+            UnloadSession();
+            foreach (var zone in _dtoObject.Zones)
             {
                 var polygonPoints = zone.Geometry.Select(m => new PointLatLng(m.Lat, m.Lng)).ToList();
                 var polygonColor = ColorTranslator.FromHtml(zone.Color);
@@ -753,7 +757,6 @@ namespace ParkPlaces.Controls
 
         /// <summary>
         /// Calculate total verticle count and invoke VerticlesChanged
-        /// invoke 
         /// </summary>
         private void UpdateVerticlesCount()
         {
