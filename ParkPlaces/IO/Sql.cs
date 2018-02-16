@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
+using System.Data.Common;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using MySql.Data;
+using GMap.NET;
 using MySql.Data.MySqlClient;
 using ParkPlaces.Extensions;
 
@@ -13,44 +11,44 @@ namespace ParkPlaces.IO
 {
     public class Sql
     {
-        private static MySqlConnection _mysqlConnection;
+        public string Server { get; set; }
+        public string Database { get; set; }
+        public string User { get; set; }
+        public string Password { private get; set; }
 
-        public static string Server { get; set; }
-        public static string Database { get; set; }
-        public static string User { get; set; }
-        public static string Password { get; set; }
-
-        public static bool Connect()
+        public Sql()
         {
-            if (_mysqlConnection?.State == System.Data.ConnectionState.Open)
-            {
-                return true;
-            }
 
-            _mysqlConnection = new MySqlConnection(
+        }
+
+        public Sql(string server, string database, string user, string password)
+        {
+            Server = server;
+            Database = database;
+            User = user;
+            Password = password;
+        }
+
+        public MySqlConnection GetConnection()
+        {
+            var mySqlConnection = new MySqlConnection(
                 $@"SERVER={Server};DATABASE={Database};UID={User};PASSWORD={Password}");
 
             try
             {
-                _mysqlConnection.Open();
+                mySqlConnection.Open();
             }
             catch (MySqlException e)
             {
                 Debug.Write("Mysql error: " + e.Message);
-                return false;
+                return null;
             }
-            return true;
+            return mySqlConnection;
         }
 
-        public static void Close()
-        {
-            _mysqlConnection?.Close();
-        }
 
-        public static void ExportToMySql(Dto2Object dto)
+        public void ExportToMySql(Dto2Object dto)
         {
-            if (!Connect()) return;
-
             // Flush table
             simpleExecQuery("DELETE FROM geometry");
             simpleExecQuery("DELETE FROM zones");
@@ -66,7 +64,7 @@ namespace ParkPlaces.IO
 
             var cities = dto.Zones.DistinctBy(zone => zone.Telepules);
 
-            using (var cmd = new MySqlCommand("INSERT INTO cities (city) VALUES (@city)") { Connection = _mysqlConnection })
+            using (var cmd = new MySqlCommand("INSERT INTO cities (city) VALUES (@city)") { Connection = GetConnection() })
             {
                 var cityId = 1;
 
@@ -84,7 +82,7 @@ namespace ParkPlaces.IO
 
             using (var cmd = new MySqlCommand(
                 "INSERT INTO zones (cityid, color, fee, service_na, description, timetable) VALUES" +
-                "(@cityid, @color, @fee, @service_na, @description, @timetable)") { Connection = _mysqlConnection})
+                "(@cityid, @color, @fee, @service_na, @description, @timetable)") { Connection = GetConnection()})
             {
 
                 var zoneId = 1;
@@ -111,7 +109,7 @@ namespace ParkPlaces.IO
                     {
                         using (var cmd1 =
                             new MySqlCommand(
-                                "INSERT INTO geometry (zoneid, lat, lng) VALUES (@zoneid, @lat, @lng)") { Connection = _mysqlConnection })
+                                "INSERT INTO geometry (zoneid, lat, lng) VALUES (@zoneid, @lat, @lng)") { Connection = GetConnection() })
                         {
                             cmd1.Parameters.AddRange(new[]
                             {
@@ -126,12 +124,9 @@ namespace ParkPlaces.IO
                             cmd1.ExecuteNonQuery();
                         }
                     }
-
                     zoneId++;
                 }
             }
-
-            Close();
         }
 
         /// <summary>
@@ -139,20 +134,61 @@ namespace ParkPlaces.IO
         /// </summary>
         /// <param name="query"></param>
         /// <returns>-1 if the execution fails. Otherwise the number of affected rows </returns>
-        public static int simpleExecQuery(string query)
+        public int simpleExecQuery(string query)
         {
-            if (_mysqlConnection is null)
-                return -1;
-
             try
             {
-                return new MySqlCommand(query) { Connection = _mysqlConnection }
+                return new MySqlCommand(query) { Connection =  GetConnection()}
                     .ExecuteNonQuery();
             } catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return -1;
             }
+        }
+
+        public async Task<Dto2Object> LoadFromDb()
+        {
+            var dto = new Dto2Object
+            {
+                Type = "ZoneCollection",
+                Zones = new List<PolyZone>()
+            };
+
+            using (var cmd = new MySqlCommand("SELECT * FROM zones")
+            { Connection = GetConnection() })
+            {
+                var rd = await cmd.ExecuteReaderAsync();
+                while(await rd.ReadAsync())
+                {
+                    var zone = new PolyZone()
+                    {
+                        Geometry = new List<Geometry>(),
+                        Id = rd["id"].ToString(),
+                        Color = rd["color"].ToString(),
+                        Description = rd["description"].ToString(),
+                        ServiceNa = rd["service_na"].ToString(),
+                        Timetable = rd["timetable"].ToString(),
+                        Fee = long.Parse(rd["fee"].ToString()),
+                        Zoneid = "TODO: Fix this"
+                    };
+
+                    using (MySqlCommand cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]}") { Connection = GetConnection() })
+                    {
+                        
+                        var rd1 = await cmd1.ExecuteReaderAsync();
+                        while(await rd1.ReadAsync())
+                        {
+                            zone.Geometry.Add(new Geometry() { Lat = (double)rd1["lat"], Lng = (double)rd1["lng"] });
+                        }
+                        rd1.Close();
+                    }
+
+                    dto.Zones.Add(zone);
+                }
+                rd.Close();
+            }
+            return dto;
         }
     }
 }
