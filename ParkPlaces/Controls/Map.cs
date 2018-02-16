@@ -683,8 +683,11 @@ namespace ParkPlaces.Controls
             ConstructGUI();
         }
 
-        public void ConstructGUI()
+        public void ConstructGUI(Dto2Object dto = null)
         {
+            if (dto != null)
+                _dtoObject = dto;
+
             UnloadSession();
             foreach (var zone in _dtoObject.Zones)
             {
