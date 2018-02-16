@@ -78,25 +78,23 @@ namespace ParkPlaces.Forms
             this.gotoButton});
             this.toolStrip.Location = new System.Drawing.Point(3, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(296, 25);
+            this.toolStrip.Size = new System.Drawing.Size(248, 25);
             this.toolStrip.TabIndex = 4;
             this.toolStrip.Text = "toolStrip";
             // 
             // drawPolygonButton
             // 
-            this.drawPolygonButton.Image = global::ParkPlaces.Properties.Resources.if_stock_draw_polygon_filled_21579;
             this.drawPolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawPolygonButton.Name = "drawPolygonButton";
-            this.drawPolygonButton.Size = new System.Drawing.Size(96, 22);
+            this.drawPolygonButton.Size = new System.Drawing.Size(80, 22);
             this.drawPolygonButton.Text = "Add polygon";
             this.drawPolygonButton.Click += new System.EventHandler(this.drawPolygonButton_Click);
             // 
             // removePolygonButton
             // 
-            this.removePolygonButton.Image = global::ParkPlaces.Properties.Resources.if_f_cross_256_282471;
             this.removePolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.removePolygonButton.Name = "removePolygonButton";
-            this.removePolygonButton.Size = new System.Drawing.Size(117, 22);
+            this.removePolygonButton.Size = new System.Drawing.Size(101, 22);
             this.removePolygonButton.Text = "Remove polygon";
             this.removePolygonButton.Click += new System.EventHandler(this.RemovePolygonButton_Click);
             // 
@@ -105,10 +103,9 @@ namespace ParkPlaces.Forms
             this.gotoButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.coordinateToolStripMenuItem,
             this.addressToolStripMenuItem});
-            this.gotoButton.Image = global::ParkPlaces.Properties.Resources.if_map_marker_299087;
             this.gotoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.gotoButton.Name = "gotoButton";
-            this.gotoButton.Size = new System.Drawing.Size(71, 22);
+            this.gotoButton.Size = new System.Drawing.Size(55, 22);
             this.gotoButton.Text = "Goto...";
             // 
             // coordinateToolStripMenuItem
@@ -275,7 +272,7 @@ namespace ParkPlaces.Forms
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // toolStripContainer
@@ -347,7 +344,7 @@ namespace ParkPlaces.Forms
             this.Name = "ParkPlacesForm";
             this.ShowIcon = false;
             this.Text = "ParkPlaces Editor";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.ParkPlacesForm_Load);
             this.Shown += new System.EventHandler(this.ParkPlacesForm_Shown);
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();

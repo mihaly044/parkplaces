@@ -16,18 +16,21 @@ namespace ParkPlaces.IO
         public string User { get; set; }
         public string Password { private get; set; }
 
+        public EventHandler<UpdateProcessChangedArgs> OnUpdateChangedEventHandler;
+
         public Sql()
         {
 
         }
 
-        public Sql(string server, string database, string user, string password)
+        public Sql(string server="", string database="", string user="", string password="")
         {
             Server = server;
             Database = database;
             User = user;
             Password = password;
         }
+
 
         public MySqlConnection GetConnection()
         {
@@ -155,9 +158,16 @@ namespace ParkPlaces.IO
                 Zones = new List<PolyZone>()
             };
 
+            
+            var zoneCount = await GetZoneCount();
+            var cProcess = new UpdateProcessChangedArgs(zoneCount);
+            var actualCount = 0;
+
             using (var cmd = new MySqlCommand("SELECT * FROM zones")
             { Connection = GetConnection() })
             {
+                var geometryConnection = GetConnection();
+
                 var rd = await cmd.ExecuteReaderAsync();
                 while(await rd.ReadAsync())
                 {
@@ -173,22 +183,36 @@ namespace ParkPlaces.IO
                         Zoneid = "TODO: Fix this"
                     };
 
-                    using (MySqlCommand cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]}") { Connection = GetConnection() })
+                    using (MySqlCommand cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]}") { Connection = geometryConnection })
                     {
-                        
                         var rd1 = await cmd1.ExecuteReaderAsync();
                         while(await rd1.ReadAsync())
                         {
                             zone.Geometry.Add(new Geometry() { Lat = (double)rd1["lat"], Lng = (double)rd1["lng"] });
                         }
                         rd1.Close();
+
+                        actualCount++;
+
+                        cProcess.UpdateChunks(zoneCount - actualCount);
+                        OnUpdateChangedEventHandler?.Invoke(this, cProcess);
                     }
 
                     dto.Zones.Add(zone);
                 }
+                geometryConnection.Close();
                 rd.Close();
             }
             return dto;
+        }
+
+        public async Task<int> GetZoneCount()
+        {
+            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM zones") { Connection = GetConnection() })
+            {
+                var count = await cmd.ExecuteScalarAsync();
+                return int.Parse(count.ToString());
+            }
         }
     }
 }

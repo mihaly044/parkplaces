@@ -18,7 +18,6 @@ namespace ParkPlaces.Forms
             toolStrip.Renderer = tsRenderer;
             statusStrip.Renderer = tsRenderer;
 
-
             IoHandler.Instance.OnUpdateChangedEventHandler += (s, updateProcessChangedArgs) =>
             {
                 toolStripProgressBar.Visible = true;
@@ -164,6 +163,19 @@ namespace ParkPlaces.Forms
                     Map.SetPointerPosition(dlg.LatLng);
                 }
             }
+        }
+
+        private void ParkPlacesForm_Load(object sender, EventArgs e)
+        {
+            var loadingForm = new LoadingForm();
+            loadingForm.Show();
+
+            loadingForm.OnReadyEventHandler += (s, dto) =>
+            {
+                Map.ConstructGUI(dto);
+            };
+
+            loadingForm.LoadDataAsync();
         }
     }
 }
