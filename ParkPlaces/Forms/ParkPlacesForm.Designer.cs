@@ -60,8 +60,6 @@ namespace ParkPlaces.Forms
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.Map = new ParkPlaces.Controls.Map();
-            this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -206,7 +204,6 @@ namespace ParkPlaces.Forms
             this.menuStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.dataToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
@@ -278,7 +275,7 @@ namespace ParkPlaces.Forms
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // toolStripContainer
@@ -340,21 +337,6 @@ namespace ParkPlaces.Forms
             this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
             this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
             // 
-            // dataToolStripMenuItem
-            // 
-            this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exportToDatabaseToolStripMenuItem});
-            this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
-            this.dataToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.dataToolStripMenuItem.Text = "Data";
-            // 
-            // exportToDatabaseToolStripMenuItem
-            // 
-            this.exportToDatabaseToolStripMenuItem.Name = "exportToDatabaseToolStripMenuItem";
-            this.exportToDatabaseToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.exportToDatabaseToolStripMenuItem.Text = "Export to database";
-            this.exportToDatabaseToolStripMenuItem.Click += new System.EventHandler(this.exportToDatabaseToolStripMenuItem_Click);
-            // 
             // ParkPlacesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -412,8 +394,6 @@ namespace ParkPlaces.Forms
         private ToolStripMenuItem coordinateToolStripMenuItem;
         private ToolStripMenuItem addressToolStripMenuItem;
         private ToolStripStatusLabel lblShapesCount;
-        private ToolStripMenuItem dataToolStripMenuItem;
-        private ToolStripMenuItem exportToDatabaseToolStripMenuItem;
     }
 }
 
