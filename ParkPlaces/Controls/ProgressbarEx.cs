@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.ComponentModel;
 
 namespace ParkPlaces.Controls
 {
@@ -9,6 +10,13 @@ namespace ParkPlaces.Controls
     /// </summary>
     public class ProgressBarEx : ProgressBar
     {
+        /// <summary>
+        /// Inner margin of the progressbar from the left, right, top and bottom sides
+        /// </summary>
+        [Category("Design")]
+        [DefaultValue(0)]
+        public int InnerMargin { get; set; }
+
         public ProgressBarEx()
         {
             this.SetStyle(ControlStyles.UserPaint, true);
@@ -24,9 +32,9 @@ namespace ParkPlaces.Controls
                 ProgressBarRenderer.DrawHorizontalBar(e.Graphics, rec);
 
             rec.Width = (int)((rec.Width * scaleFactor) - 4);
-            rec.Height -= 4;
+            rec.Height -= InnerMargin * InnerMargin;
             brush = new LinearGradientBrush(rec, this.ForeColor, this.BackColor, LinearGradientMode.Vertical);
-            e.Graphics.FillRectangle(brush, 2, 2, rec.Width, rec.Height);
+            e.Graphics.FillRectangle(brush, InnerMargin, InnerMargin, rec.Width, rec.Height);
         }
     }
 }
