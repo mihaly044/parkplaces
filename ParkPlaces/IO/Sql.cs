@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Configuration;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using GMap.NET;
 using MySql.Data.MySqlClient;
 using ParkPlaces.Extensions;
+using System.Collections.Specialized;
 
 namespace ParkPlaces.IO
 {
@@ -20,7 +20,7 @@ namespace ParkPlaces.IO
 
         public Sql()
         {
-
+            loadDbCredientals();
         }
 
         public Sql(string server="", string database="", string user="", string password="")
@@ -29,6 +29,15 @@ namespace ParkPlaces.IO
             Database = database;
             User = user;
             Password = password;
+        }
+
+        private void loadDbCredientals()
+        {
+            var dbSect = ConfigurationManager.GetSection("DBConnection") as NameValueCollection;
+            Server = dbSect["server"].ToString();
+            Database = dbSect["database"].ToString();
+            User = dbSect["user"].ToString();
+            Password = dbSect["password"].ToString();
         }
 
 
