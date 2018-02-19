@@ -663,8 +663,7 @@ namespace ParkPlaces.Controls
         }
 
         /// <summary>
-        /// Loads polygon data and constructs Polygon objects that GMap.NET will use
-        /// to display and draw the map control
+        /// Loads polygon data
         /// </summary>
         public async void LoadPolygons(bool forceUpdate = false, string file = "")
         {
@@ -683,10 +682,17 @@ namespace ParkPlaces.Controls
             ConstructGUI();
         }
 
+        /// <summary>
+        /// Constructs Polygon objects that GMap.NET will use
+        /// to display and draw the map control
+        /// </summary>
+        /// <param name="dto">Data transfer object</param>
         public void ConstructGUI(Dto2Object dto = null)
         {
             if (dto != null)
                 _dtoObject = dto;
+            else if (_dtoObject == null) return;
+
 
             UnloadSession();
             foreach (var zone in _dtoObject.Zones)
