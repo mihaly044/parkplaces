@@ -33,24 +33,29 @@ namespace ParkPlaces.Forms
         {
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.progressBar = new ProgressBarEx();
+            this.progressBar = new ParkPlaces.Controls.ProgressBarEx();
             this.SuspendLayout();
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(-1, 229);
+            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.progressBar.ForeColor = System.Drawing.Color.Green;
+            this.progressBar.Location = new System.Drawing.Point(2, 235);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(605, 20);
+            this.progressBar.Size = new System.Drawing.Size(475, 10);
             this.progressBar.TabIndex = 0;
+            this.progressBar.UseWaitCursor = true;
             // 
             // LoadingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(108)))), ((int)(((byte)(255)))));
+            this.BackColor = System.Drawing.Color.Fuchsia;
             this.BackgroundImage = global::ParkPlaces.Properties.Resources.logo;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(604, 247);
+            this.ClientSize = new System.Drawing.Size(480, 247);
             this.Controls.Add(this.progressBar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "LoadingForm";
@@ -58,6 +63,7 @@ namespace ParkPlaces.Forms
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LoadingForm";
+            this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.UseWaitCursor = true;
             this.ResumeLayout(false);
 
