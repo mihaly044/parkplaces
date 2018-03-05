@@ -167,8 +167,15 @@ namespace ParkPlaces.Forms
 
         private void ParkPlacesForm_Load(object sender, EventArgs e)
         {
+            OnFormLoad();
+        }
+
+        private void OnFormLoad()
+        {
+            Map.UnloadSession();
+
             var loginForm = new LoginForm();
-            if(loginForm.ShowDialog() != DialogResult.OK)
+            if (loginForm.ShowDialog() != DialogResult.OK)
             {
                 Environment.Exit(0);
             }
@@ -188,6 +195,12 @@ namespace ParkPlaces.Forms
         {
             var sql = new Sql();
             sql.ExportToMySql(await IoHandler.Instance.UpdateAsync(true, true));
+        }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Hide();
+            OnFormLoad();
         }
     }
 }
