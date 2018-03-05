@@ -97,39 +97,9 @@ namespace ParkPlaces.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap if_f_cross_256_282471 {
-            get {
-                object obj = ResourceManager.GetObject("if_f-cross_256_282471", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap if_lock_285646 {
             get {
                 object obj = ResourceManager.GetObject("if_lock_285646", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap if_map_marker_299087 {
-            get {
-                object obj = ResourceManager.GetObject("if_map-marker_299087", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap if_stock_draw_polygon_filled_21579 {
-            get {
-                object obj = ResourceManager.GetObject("if_stock_draw-polygon-filled_21579", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -141,6 +111,33 @@ namespace ParkPlaces.Properties {
             get {
                 object obj = ResourceManager.GetObject("logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -- phpMyAdmin SQL Dump
+        ///-- version 4.7.4
+        ///-- https://www.phpmyadmin.net/
+        ///--
+        ///-- Gép: 127.0.0.1
+        ///-- Létrehozás ideje: 2018. Már 05. 20:22
+        ///-- Kiszolgáló verziója: 10.1.30-MariaDB
+        ///-- PHP verzió: 7.2.1
+        ///
+        ///SET SQL_MODE = &quot;NO_AUTO_VALUE_ON_ZERO&quot;;
+        ///SET AUTOCOMMIT = 0;
+        ///START TRANSACTION;
+        ///SET time_zone = &quot;+00:00&quot;;
+        ///
+        ///
+        ////*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+        ////*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+        ////*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+        ////*!40101 S [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string parkplaces {
+            get {
+                return ResourceManager.GetString("parkplaces", resourceCulture);
             }
         }
     }

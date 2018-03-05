@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2018. Feb 07. 07:10
+-- Létrehozás ideje: 2018. Már 05. 20:22
 -- Kiszolgáló verziója: 10.1.30-MariaDB
 -- PHP verzió: 7.2.1
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `parkplaces`
 --
+CREATE DATABASE IF NOT EXISTS `parkplaces` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `parkplaces`;
 
 -- --------------------------------------------------------
 
@@ -45,6 +47,26 @@ CREATE TABLE `geometry` (
   `lat` double NOT NULL,
   `lng` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `groupid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- A tábla adatainak kiíratása `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `groupid`) VALUES
+(1, 'admin', '$2y$10$naypQWIa7gb7H8QLIUWa9.I8K3J3fh0SIp3AdOmnYpApBpnrC/KjG', 4);
 
 -- --------------------------------------------------------
 
@@ -80,6 +102,12 @@ ALTER TABLE `geometry`
   ADD PRIMARY KEY (`id`);
 
 --
+-- A tábla indexei `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- A tábla indexei `zones`
 --
 ALTER TABLE `zones`
@@ -94,19 +122,25 @@ ALTER TABLE `zones`
 -- AUTO_INCREMENT a táblához `cities`
 --
 ALTER TABLE `cities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT a táblához `geometry`
 --
 ALTER TABLE `geometry`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25945;
+
+--
+-- AUTO_INCREMENT a táblához `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `zones`
 --
 ALTER TABLE `zones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1129;
 
 --
 -- Megkötések a kiírt táblákhoz
