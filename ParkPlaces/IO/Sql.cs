@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using ParkPlaces.Extensions;
 using System.Collections.Specialized;
+using System.Windows.Forms;
 using CryptSharp;
 using ParkPlaces.Misc;
 
