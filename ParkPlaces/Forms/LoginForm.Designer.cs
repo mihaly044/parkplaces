@@ -72,6 +72,7 @@
             // textBoxUserName
             // 
             this.textBoxUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBoxUserName.ForeColor = System.Drawing.Color.Blue;
             this.textBoxUserName.Location = new System.Drawing.Point(172, 44);
             this.textBoxUserName.Name = "textBoxUserName";
             this.textBoxUserName.Size = new System.Drawing.Size(224, 20);
@@ -82,6 +83,7 @@
             // textBoxPassword
             // 
             this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBoxPassword.ForeColor = System.Drawing.Color.Blue;
             this.textBoxPassword.Location = new System.Drawing.Point(172, 70);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '•';
@@ -103,7 +105,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::ParkPlaces.Properties.Resources.if_lock_285646;
-            this.pictureBox1.Location = new System.Drawing.Point(13, 42);
+            this.pictureBox1.Location = new System.Drawing.Point(13, 37);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(83, 78);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -149,6 +151,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.LoginForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
