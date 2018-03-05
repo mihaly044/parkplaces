@@ -15,6 +15,7 @@ namespace ParkPlaces.IO
         public string Database { get; set; }
         public string User { get; set; }
         public string Password { private get; set; }
+        public string Port { get; set; }
 
         public EventHandler<UpdateProcessChangedArgs> OnUpdateChangedEventHandler;
 
@@ -23,12 +24,13 @@ namespace ParkPlaces.IO
             loadDbCredientals();
         }
 
-        public Sql(string server="", string database="", string user="", string password="")
+        public Sql(string server="", string database="", string user="", string password="", string port="3306")
         {
             Server = server;
             Database = database;
             User = user;
             Password = password;
+            Port = port;
         }
 
         private void loadDbCredientals()
@@ -38,13 +40,14 @@ namespace ParkPlaces.IO
             Database = dbSect["database"].ToString();
             User = dbSect["user"].ToString();
             Password = dbSect["password"].ToString();
+            Port = dbSect["port"];
         }
 
 
         public MySqlConnection GetConnection()
         {
             var mySqlConnection = new MySqlConnection(
-                $@"SERVER={Server};DATABASE={Database};UID={User};PASSWORD={Password}");
+                $@"SERVER={Server};PORT={Port};DATABASE={Database};UID={User};PASSWORD={Password}");
 
             try
             {
