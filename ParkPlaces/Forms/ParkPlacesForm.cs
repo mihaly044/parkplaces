@@ -191,6 +191,7 @@ namespace ParkPlaces.Forms
             loadingForm.OnReadyEventHandler += (s, dto) =>
             {
                 Map.ConstructGui(dto);
+                Show();
             };
 
             loadingForm.LoadDataAsync();
