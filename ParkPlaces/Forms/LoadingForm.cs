@@ -25,7 +25,7 @@ namespace ParkPlaces.Forms
                 }
             };
 
-            IoHandler.Instance.OnUpdateChangedEventHandler = _sql.OnUpdateChangedEventHandler;
+            IoHandler.Instance.OnUpdateChangedEventHandler += _sql.OnUpdateChangedEventHandler;
         }
 
         public async void LoadDataAsync()
