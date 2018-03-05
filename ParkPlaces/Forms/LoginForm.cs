@@ -1,5 +1,4 @@
-﻿using ParkPlaces.IO;
-using System;
+﻿using System;
 using System.Windows.Forms;
 using ParkPlaces.Misc;
 
@@ -7,6 +6,8 @@ namespace ParkPlaces.Forms
 {
     public partial class LoginForm : Form
     {
+        public User User { get; private set; }
+
         public LoginForm()
         {
             InitializeComponent();
@@ -15,13 +16,14 @@ namespace ParkPlaces.Forms
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            var user = User.Login(textBoxUserName.Text, textBoxPassword.Text);
+            User = User.Login(textBoxUserName.Text, textBoxPassword.Text);
 
-            if (user.GroupRole == GroupRole.None)
+            if (User.GroupRole == GroupRole.None)
             {
-                MessageBox.Show("Invalid username or password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Invalid username or password.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-            else if (!user.IsAuthenticated)
+            else if (!User.IsAuthenticated)
             {
                 MessageBox.Show("You do not have the appropriate rights to use this application.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
