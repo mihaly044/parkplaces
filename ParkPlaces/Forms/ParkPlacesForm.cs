@@ -183,7 +183,10 @@ namespace ParkPlaces.Forms
                 Environment.Exit(0);
             }
 
-            Text += $" ({loginForm.User.UserName})";
+            Text += $" / Logged in as {loginForm.User.UserName} with {loginForm.User.GroupRole} access /";
+
+            adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin;
+            Map.SetReadOnly(loginForm.User.GroupRole < GroupRole.Editor);
 
             var loadingForm = new LoadingForm();
             loadingForm.Show();
