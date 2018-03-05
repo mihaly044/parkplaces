@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Windows.Forms;
 using ParkPlaces.Misc;
 
@@ -45,6 +47,16 @@ namespace ParkPlaces.Forms
         {
             if (e.KeyCode == Keys.Enter)
                 btnLogin.PerformClick();
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            // Fill in default credientals if given
+            var dbSect = ConfigurationManager.GetSection("DefaultLogin") as NameValueCollection;
+            if (dbSect == null) return;
+
+            textBoxUserName.Text = dbSect["username"];
+            textBoxPassword.Text = dbSect["password"];
         }
     }
 }
