@@ -107,6 +107,16 @@ namespace ParkPlaces.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap if_lock_285646 {
+            get {
+                object obj = ResourceManager.GetObject("if_lock_285646", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap if_map_marker_299087 {
             get {
                 object obj = ResourceManager.GetObject("if_map-marker_299087", resourceCulture);
