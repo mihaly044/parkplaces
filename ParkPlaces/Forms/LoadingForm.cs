@@ -1,13 +1,12 @@
 ﻿using ParkPlaces.IO;
 using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace ParkPlaces.Forms
 {
     public partial class LoadingForm : Form
     {
-        private Sql _sql;
+        private readonly Sql _sql;
         private Dto2Object _dto;
         public EventHandler<Dto2Object> OnReadyEventHandler;
 

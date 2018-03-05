@@ -6,8 +6,8 @@ namespace ParkPlaces.Forms
 {
     public partial class GotoAddressForm : Form
     {
-        private GMap.NET.PointLatLng _latLng;
-        public GMap.NET.PointLatLng LatLng => _latLng;
+        private PointLatLng _latLng;
+        public PointLatLng LatLng => _latLng;
 
         public GotoAddressForm()
         {

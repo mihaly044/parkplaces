@@ -15,10 +15,6 @@ namespace ParkPlacesTests.Utils
     {
         private NemApi _api;
 
-        public NemApiTest()
-        {
-        }
-
         /// <summary>
         /// Get results for a city
         /// </summary>

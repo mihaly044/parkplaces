@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ParkPlaces.Controls
+﻿namespace ParkPlaces.Controls
 {
     public class VerticleChangedArg
     {
-        public int VerticlesCount { get; private set; }
-        public int ShapesCount { get; private set; }
+        public int VerticlesCount { get; }
+        public int ShapesCount { get; }
 
-        public VerticleChangedArg(int VerticlesCount, int ShapesCount)
+        public VerticleChangedArg(int verticlesCount, int shapesCount)
         {
-            this.VerticlesCount = VerticlesCount;
-            this.ShapesCount = ShapesCount;
+            VerticlesCount = verticlesCount;
+            ShapesCount = shapesCount;
         }
     }
 }

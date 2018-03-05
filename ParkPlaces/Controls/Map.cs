@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -679,7 +678,7 @@ namespace ParkPlaces.Controls
                                 Dto2Object.FromJson(File.ReadAllText("data"));
             }
 
-            ConstructGUI();
+            ConstructGui();
         }
 
         /// <summary>
@@ -687,7 +686,7 @@ namespace ParkPlaces.Controls
         /// to display and draw the map control
         /// </summary>
         /// <param name="dto">Data transfer object</param>
-        public void ConstructGUI(Dto2Object dto = null)
+        public void ConstructGui(Dto2Object dto = null)
         {
             if (dto != null)
                 _dtoObject = dto;

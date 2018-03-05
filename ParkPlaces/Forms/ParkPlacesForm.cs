@@ -170,7 +170,6 @@ namespace ParkPlaces.Forms
             var loginForm = new LoginForm();
             if(loginForm.ShowDialog() != DialogResult.OK)
             {
-                MessageBox.Show("Authentication failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);
             }
 
@@ -179,7 +178,7 @@ namespace ParkPlaces.Forms
 
             loadingForm.OnReadyEventHandler += (s, dto) =>
             {
-                Map.ConstructGUI(dto);
+                Map.ConstructGui(dto);
             };
 
             loadingForm.LoadDataAsync();

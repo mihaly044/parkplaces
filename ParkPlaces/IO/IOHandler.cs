@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ParkPlaces.DotUtils.Net;
+// ReSharper disable FieldCanBeMadeReadOnly.Local
 
 namespace ParkPlaces.IO
 {
@@ -13,7 +14,7 @@ namespace ParkPlaces.IO
         private NemApi _api;
         public static IoHandler Instance => _instance ?? (_instance = new IoHandler());
         public static string DataFile => _dataFile;
-        public bool NeedUpdate => getUpdateNeeded();
+        public bool NeedUpdate => GetUpdateNeeded();
 
         private static IoHandler _instance;
 
@@ -22,7 +23,7 @@ namespace ParkPlaces.IO
         private int _updateInterval;
         private static string _dataFile;
 
-        private bool getUpdateNeeded()
+        private bool GetUpdateNeeded()
         {
             return DateTime.Now >= _nextUpdate || !File.Exists("data");
         }
@@ -53,7 +54,7 @@ namespace ParkPlaces.IO
 
         public async Task<Dto2Object> UpdateAsync(bool saveToDisk = false, bool forceUpdate = false)
         {
-            if (!getUpdateNeeded() && !forceUpdate)
+            if (!GetUpdateNeeded() && !forceUpdate)
             {
                 return null;
             }

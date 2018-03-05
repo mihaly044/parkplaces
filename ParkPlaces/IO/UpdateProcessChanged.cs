@@ -2,7 +2,7 @@
 {
     public struct UpdateProcessChangedArgs
     {
-        public int TotalChunks { get; private set; }
+        public int TotalChunks { get; }
         public int CurrentChunks { get; private set; }
 
         public UpdateProcessChangedArgs(int totalChunks, int currentChunks = 0)

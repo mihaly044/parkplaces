@@ -7,10 +7,6 @@ namespace ParkPlaces.Controls
     /// </summary>
     public class TsRenderer : ToolStripSystemRenderer
     {
-        public TsRenderer()
-        {
-        }
-
         protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
         {
             //base.OnRenderToolStripBorder(e);

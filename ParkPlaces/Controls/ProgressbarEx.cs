@@ -19,21 +19,20 @@ namespace ParkPlaces.Controls
 
         public ProgressBarEx()
         {
-            this.SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.UserPaint, true);
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            LinearGradientBrush brush = null;
-            Rectangle rec = new Rectangle(0, 0, this.Width, this.Height);
-            double scaleFactor = (((double)Value - (double)Minimum) / ((double)Maximum - (double)Minimum));
+            var rec = new Rectangle(0, 0, this.Width, this.Height);
+            var scaleFactor = (Value - (double)Minimum) / (Maximum - (double)Minimum);
 
             if (ProgressBarRenderer.IsSupported)
                 ProgressBarRenderer.DrawHorizontalBar(e.Graphics, rec);
 
             rec.Width = (int)((rec.Width * scaleFactor) - 4);
             rec.Height -= InnerMargin * InnerMargin;
-            brush = new LinearGradientBrush(rec, this.ForeColor, this.BackColor, LinearGradientMode.Vertical);
+            var brush = new LinearGradientBrush(rec, ForeColor, BackColor, LinearGradientMode.Vertical);
             e.Graphics.FillRectangle(brush, InnerMargin, InnerMargin, rec.Width, rec.Height);
         }
     }

@@ -22,7 +22,7 @@ namespace ParkPlaces.IO
 
         public Sql()
         {
-            loadDbCredientals();
+            LoadDbCredientals();
         }
 
         public Sql(string server="", string database="", string user="", string password="", string port="3306")
@@ -34,9 +34,10 @@ namespace ParkPlaces.IO
             Port = port;
         }
 
-        private void loadDbCredientals()
+        private void LoadDbCredientals()
         {
             var dbSect = ConfigurationManager.GetSection("DBConnection") as NameValueCollection;
+            if (dbSect == null) return;
             Server = dbSect["server"].ToString();
             Database = dbSect["database"].ToString();
             User = dbSect["user"].ToString();
@@ -64,6 +65,9 @@ namespace ParkPlaces.IO
 
         public bool AuthenticateUser(string username, string password)
         {
+            if (username == string.Empty || password == string.Empty)
+                return false;
+
             using (var cmd = new MySqlCommand("SELECT * FROM users WHERE username = @username ")
             { Connection = GetConnection() })
             {
@@ -73,7 +77,11 @@ namespace ParkPlaces.IO
                 using(var reader = cmd.ExecuteReader())
                 {
                     reader.Read();
-                    return Crypter.CheckPassword(password, reader["password"].ToString());
+
+                    if (reader.HasRows)
+                        return Crypter.CheckPassword(password, reader["password"].ToString());
+                    else
+                        return false;
                 }
             }
         }
@@ -81,12 +89,12 @@ namespace ParkPlaces.IO
         public void ExportToMySql(Dto2Object dto)
         {
             // Flush table
-            simpleExecQuery("DELETE FROM geometry");
-            simpleExecQuery("DELETE FROM zones");
-            simpleExecQuery("DELETE FROM cities");
-            simpleExecQuery("ALTER TABLE cities AUTO_INCREMENT = 0");
-            simpleExecQuery("ALTER TABLE zones AUTO_INCREMENT = 0");
-            simpleExecQuery("ALTER TABLE geometry AUTO_INCREMENT = 0");
+            SimpleExecQuery("DELETE FROM geometry");
+            SimpleExecQuery("DELETE FROM zones");
+            SimpleExecQuery("DELETE FROM cities");
+            SimpleExecQuery("ALTER TABLE cities AUTO_INCREMENT = 0");
+            SimpleExecQuery("ALTER TABLE zones AUTO_INCREMENT = 0");
+            SimpleExecQuery("ALTER TABLE geometry AUTO_INCREMENT = 0");
                
      
 
@@ -166,7 +174,7 @@ namespace ParkPlaces.IO
         /// </summary>
         /// <param name="query"></param>
         /// <returns>-1 if the execution fails. Otherwise the number of affected rows </returns>
-        public int simpleExecQuery(string query)
+        public int SimpleExecQuery(string query)
         {
             try
             {
