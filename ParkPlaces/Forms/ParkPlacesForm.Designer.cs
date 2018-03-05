@@ -60,6 +60,7 @@ namespace ParkPlaces.Forms
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.Map = new ParkPlaces.Controls.Map();
+            this.aSDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -201,7 +202,8 @@ namespace ParkPlaces.Forms
             this.menuStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.aSDToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1029, 24);
@@ -334,6 +336,13 @@ namespace ParkPlaces.Forms
             this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
             this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
             // 
+            // aSDToolStripMenuItem
+            // 
+            this.aSDToolStripMenuItem.Name = "aSDToolStripMenuItem";
+            this.aSDToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.aSDToolStripMenuItem.Text = "ASD";
+            this.aSDToolStripMenuItem.Click += new System.EventHandler(this.ASDToolStripMenuItem_ClickAsync);
+            // 
             // ParkPlacesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -391,6 +400,7 @@ namespace ParkPlaces.Forms
         private ToolStripMenuItem coordinateToolStripMenuItem;
         private ToolStripMenuItem addressToolStripMenuItem;
         private ToolStripStatusLabel lblShapesCount;
+        private ToolStripMenuItem aSDToolStripMenuItem;
     }
 }
 

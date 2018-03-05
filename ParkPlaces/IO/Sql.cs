@@ -61,6 +61,22 @@ namespace ParkPlaces.IO
             return mySqlConnection;
         }
 
+        public bool AuthenticateUser(string username, string password)
+        {
+            using (var cmd = new MySqlCommand("SELECT * FROM users WHERE username = @username AND password = @password ")
+            { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddRange(new[] {
+                    new MySqlParameter("@username", MySqlDbType.String),
+                    new MySqlParameter("@password", MySqlDbType.String)
+                });
+
+                cmd.Parameters[0].Value = username;
+                cmd.Parameters[1].Value = password;
+
+                return Convert.ToInt32(cmd.ExecuteScalar()) == 1;
+            }
+        }
 
         public void ExportToMySql(Dto2Object dto)
         {
@@ -72,7 +88,7 @@ namespace ParkPlaces.IO
             simpleExecQuery("ALTER TABLE zones AUTO_INCREMENT = 0");
             simpleExecQuery("ALTER TABLE geometry AUTO_INCREMENT = 0");
                
-            //return;
+     
 
             // Insert data
             Dictionary<string, int> cityIds = new Dictionary<string, int>();
@@ -137,6 +153,7 @@ namespace ParkPlaces.IO
                             cmd1.Parameters[1].Value = geometry.Lat;
                             cmd1.Parameters[2].Value = geometry.Lng;
                             cmd1.ExecuteNonQuery();
+                            cmd1.Connection.Close();
                         }
                     }
                     zoneId++;

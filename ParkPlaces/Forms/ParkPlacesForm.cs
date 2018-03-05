@@ -167,6 +167,13 @@ namespace ParkPlaces.Forms
 
         private void ParkPlacesForm_Load(object sender, EventArgs e)
         {
+            var loginForm = new LoginForm();
+            if(loginForm.ShowDialog() != DialogResult.OK)
+            {
+                MessageBox.Show("Authentication failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(0);
+            }
+
             var loadingForm = new LoadingForm();
             loadingForm.Show();
 
@@ -176,6 +183,12 @@ namespace ParkPlaces.Forms
             };
 
             loadingForm.LoadDataAsync();
+        }
+
+        private async void ASDToolStripMenuItem_ClickAsync(object sender, EventArgs e)
+        {
+            var sql = new Sql();
+            sql.ExportToMySql(await IoHandler.Instance.UpdateAsync(true, true));
         }
     }
 }
