@@ -11,7 +11,9 @@ namespace ParkPlaces.IO
 {
     public class IoHandler
     {
+#pragma warning disable 649
         private NemApi _api;
+#pragma warning restore 649
         public static IoHandler Instance => _instance ?? (_instance = new IoHandler());
         public static string DataFile => _dataFile;
         public bool NeedUpdate => GetUpdateNeeded();

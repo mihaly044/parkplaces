@@ -13,7 +13,9 @@ namespace ParkPlacesTests.Utils
     [TestClass]
     public class NemApiTest
     {
+#pragma warning disable 649
         private NemApi _api;
+#pragma warning restore 649
 
         /// <summary>
         /// Get results for a city
