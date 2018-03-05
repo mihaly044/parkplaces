@@ -80,8 +80,7 @@ namespace ParkPlaces.IO
 
                     if (reader.HasRows)
                         return Crypter.CheckPassword(password, reader["password"].ToString());
-                    else
-                        return false;
+                    return false;
                 }
             }
         }
