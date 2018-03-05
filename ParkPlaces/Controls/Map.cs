@@ -21,6 +21,13 @@ namespace ParkPlaces.Controls
     {
 
         #region Private fields and consts
+
+        /// <summary>
+        /// Indicates whether the Zones on the map should be
+        /// editable or not
+        /// </summary>
+        private bool _readOnly;
+
          /// <summary>
         /// Represents the initial center point of the map
         /// This remains the same even if the map gets dragged
@@ -103,6 +110,7 @@ namespace ParkPlaces.Controls
             _isMouseDown = false;
             IsDrawingPolygon = false;
             ShowCenter = false;
+            _readOnly = false;
 
             _pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
             TopLayer.Markers.Add(_pointer);
@@ -237,6 +245,8 @@ namespace ParkPlaces.Controls
         /// </summary>
         private void finalizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (_readOnly) return;
+
             EndDrawPolygon(true);
         }
 
@@ -250,6 +260,8 @@ namespace ParkPlaces.Controls
         /// </summary>
         private void deletePointToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (_readOnly) return;
+
             DeletePolygonPoint(CurrentPolygon);
         }
 
@@ -260,6 +272,8 @@ namespace ParkPlaces.Controls
         /// <param name="e"></param>
         private void addPointToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (_readOnly) return;
+
             AddPolygonPoint(CurrentPolygon);
         }
 
@@ -317,60 +331,68 @@ namespace ParkPlaces.Controls
         /// <param name="e">Mouse event arguments</param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (!_readOnly)
             {
-                if (_currentRectMaker == null)
+                if (e.Button == MouseButtons.Left)
                 {
-                    _pointer.Position = FromLocalToLatLng(e.X, e.Y);
-
-                    // Handles polygon dragging on the map
-                    if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
+                    if (_currentRectMaker == null)
                     {
-                        for (int i = 0; i < CurrentPolygon.Points.Count; i++)
-                        {
-                            var pnew = new PointLatLng(
-                                CurrentPolygon.Points[i].Lat + _pointer.Position.Lat - _previousMouseLocation.Lat,
-                                CurrentPolygon.Points[i].Lng + _pointer.Position.Lng - _previousMouseLocation.Lng
-                            );
-                            CurrentPolygon.Points[i] = pnew;
+                        _pointer.Position = FromLocalToLatLng(e.X, e.Y);
 
-                            ((PolyZone)CurrentPolygon.Tag).Geometry[i] = pnew.ToGeometry();
+                        // Handles polygon dragging on the map
+                        if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
+                        {
+                            for (int i = 0; i < CurrentPolygon.Points.Count; i++)
+                            {
+                                var pnew = new PointLatLng(
+                                    CurrentPolygon.Points[i].Lat + _pointer.Position.Lat - _previousMouseLocation.Lat,
+                                    CurrentPolygon.Points[i].Lng + _pointer.Position.Lng - _previousMouseLocation.Lng
+                                );
+                                CurrentPolygon.Points[i] = pnew;
+
+                                ((PolyZone) CurrentPolygon.Tag).Geometry[i] = pnew.ToGeometry();
+                            }
+
+                            UpdatePolygonLocalPosition(CurrentPolygon);
+                        }
+                    }
+                    // Handles dragging a point of a polygon
+                    else if (CurrentPolygon != null)
+                    {
+                        var pnew = FromLocalToLatLng(e.X, e.Y);
+
+                        var pIndex = (int?) _currentRectMaker.Tag;
+
+                        if (pIndex.HasValue && pIndex < CurrentPolygon.Points.Count)
+                        {
+                            CurrentPolygon.Points[pIndex.Value] = pnew;
+                            ((PolyZone) CurrentPolygon.Tag).Geometry[pIndex.Value] = pnew.ToGeometry();
+
+                            UpdatePolygonLocalPosition(CurrentPolygon);
                         }
 
-                        UpdatePolygonLocalPosition(CurrentPolygon);
+                        CurrentPolygon.PointsHasChanged();
+
+                        _pointer.Position = pnew;
+                        _currentRectMaker.Position = pnew;
                     }
                 }
-                // Handles dragging a point of a polygon
-                else if(CurrentPolygon != null)
+                else if (IsDrawingPolygon)
                 {
-                    var pnew = FromLocalToLatLng(e.X, e.Y);
+                    // Handles dragging a point of a NEW polygon on the map
+                    _currentNewRectMaker.Position = FromLocalToLatLng(e.X, e.Y);
 
-                    var pIndex = (int?)_currentRectMaker.Tag;
-
-                    if (pIndex.HasValue && pIndex < CurrentPolygon.Points.Count)
-                    {
-                        CurrentPolygon.Points[pIndex.Value] = pnew;
-                        ((PolyZone)CurrentPolygon.Tag).Geometry[pIndex.Value] = pnew.ToGeometry();
-
-                        UpdatePolygonLocalPosition(CurrentPolygon);
-                    }
-
-                    CurrentPolygon.PointsHasChanged();
-
-                    _pointer.Position = pnew;
-                    _currentRectMaker.Position = pnew;
+                    _currentDrawingPolygon.Points[_currentDrawingPolygon.Points.Count - 1] =
+                        _currentNewRectMaker.Position;
+                    UpdatePolygonLocalPosition(_currentDrawingPolygon);
                 }
-            }
-            else if (IsDrawingPolygon)
+
+                _previousMouseLocation = FromLocalToLatLng(e.X, e.Y);
+            } else if (e.Button == MouseButtons.Left)
             {
-                // Handles dragging a point of a NEW polygon on the map
-                _currentNewRectMaker.Position = FromLocalToLatLng(e.X, e.Y);
-
-                _currentDrawingPolygon.Points[_currentDrawingPolygon.Points.Count - 1] = _currentNewRectMaker.Position;
-                UpdatePolygonLocalPosition(_currentDrawingPolygon);
+                _pointer.Position = FromLocalToLatLng(e.X, e.Y);
             }
-
-            _previousMouseLocation = FromLocalToLatLng(e.X, e.Y);
+            
             base.OnMouseMove(e);
         }
 
@@ -392,25 +414,30 @@ namespace ParkPlaces.Controls
         /// <param name="e">Mouse event arguments</param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (!_readOnly)
             {
+                switch (e.Button)
+                {
+                    case MouseButtons.Left:
+                        _pointer.Position = FromLocalToLatLng(e.X, e.Y);
+                        _isMouseDown = true;
+
+                        if (IsDrawingPolygon)
+                            DrawNewPolygonPoint();
+
+                        if (!IsMouseOverPolygon && !IsMouseOverMarker)
+                            ClearSelection();
+                        break;
+                    case MouseButtons.Right:
+                        // Show context menu
+                        if (IsDrawingPolygon)
+                            drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
+                        else if (_currentRectMaker != null)
+                            polygonPointCtxMenu.Show(this, new Point(e.X, e.Y));
+                        break;
+                }
+            } else if (e.Button == MouseButtons.Left)
                 _pointer.Position = FromLocalToLatLng(e.X, e.Y);
-                _isMouseDown = true;
-
-                if (IsDrawingPolygon)
-                    DrawNewPolygonPoint();
-
-                if (!IsMouseOverPolygon && !IsMouseOverMarker)
-                    ClearSelection();
-            }
-            else if(e.Button == MouseButtons.Right)
-            {
-                // Show context menu
-                if (IsDrawingPolygon)
-                    drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
-                else if(_currentRectMaker != null)
-                    polygonPointCtxMenu.Show(this, new Point(e.X, e.Y));
-            }
 
             base.OnMouseDown(e);
         }
@@ -421,6 +448,8 @@ namespace ParkPlaces.Controls
         /// <param name="e">Mouse event arguments</param>
         protected override void OnDoubleClick(EventArgs e)
         {
+            if (_readOnly) return;
+
             base.OnDoubleClick(e);
 
             if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
@@ -434,6 +463,7 @@ namespace ParkPlaces.Controls
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
+            if (_readOnly) return;
 
             if (!IsDrawingPolygon) return;
 
@@ -480,6 +510,8 @@ namespace ParkPlaces.Controls
         /// </summary>
         public void BeginDrawPolygon()
         {
+            if (_readOnly) return;
+
             var points = new List<PointLatLng> { _pointer.Position };
             _currentDrawingPolygon = new Polygon(points, "New polygon") { IsHitTestVisible = true };
             Polygons.Polygons.Add(_currentDrawingPolygon);
@@ -636,6 +668,8 @@ namespace ParkPlaces.Controls
             CurrentPolygon = p;
             CurrentPolygon.IsSelected = true;
 
+            if (_readOnly) return;
+
             // Create rect markers
             for (var i = 0; i < p.Points.Count; i++)
             {
@@ -772,6 +806,15 @@ namespace ParkPlaces.Controls
                 Polygons.Polygons.Sum(p => p.Points.Count),
                 Polygons.Polygons.Count
                 ));
+        }
+
+        /// <summary>
+        /// Set whether the map should be readonly
+        /// </summary>
+        /// <param name="bReadOnly"></param>
+        public void SetReadOnly(bool readOnly)
+        {
+            _readOnly = readOnly;
         }
         #endregion App logic
     }
