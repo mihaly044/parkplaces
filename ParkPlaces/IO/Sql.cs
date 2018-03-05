@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using ParkPlaces.Extensions;
 using System.Collections.Specialized;
 using CryptSharp;
+using ParkPlaces.Misc;
 
 namespace ParkPlaces.IO
 {
@@ -63,10 +64,10 @@ namespace ParkPlaces.IO
             return mySqlConnection;
         }
 
-        public bool AuthenticateUser(string username, string password)
+        public GroupRole AuthenticateUser(string username, string password)
         {
             if (username == string.Empty || password == string.Empty)
-                return false;
+                return GroupRole.None;
 
             using (var cmd = new MySqlCommand("SELECT * FROM users WHERE username = @username ")
             { Connection = GetConnection() })
@@ -79,10 +80,12 @@ namespace ParkPlaces.IO
                     reader.Read();
 
                     if (reader.HasRows)
-                        return Crypter.CheckPassword(password, reader["password"].ToString());
-                    return false;
+                        if (Crypter.CheckPassword(password, reader["password"].ToString()))
+                            return (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString());
                 }
             }
+
+            return GroupRole.None;
         }
 
         public void ExportToMySql(Dto2Object dto)

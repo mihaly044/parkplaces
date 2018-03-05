@@ -1,27 +1,31 @@
 ﻿using ParkPlaces.IO;
 using System;
 using System.Windows.Forms;
+using ParkPlaces.Misc;
 
 namespace ParkPlaces.Forms
 {
     public partial class LoginForm : Form
     {
-
-        private readonly Sql _sql;
-
         public LoginForm()
         {
             InitializeComponent();
             DialogResult = DialogResult.Cancel;
-
-            _sql = new Sql();
         }
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            if(!_sql.AuthenticateUser(textBoxUserName.Text, textBoxPassword.Text))
+
+            var user = User.Login(textBoxUserName.Text, textBoxPassword.Text);
+
+            if (user.GroupRole == GroupRole.None)
             {
                 MessageBox.Show("Invalid username or password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else if (!user.IsAuthenticated)
+            {
+                MessageBox.Show("You do not have the appropriate rights to use this application.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {
