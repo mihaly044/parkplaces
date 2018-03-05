@@ -63,6 +63,7 @@ namespace ParkPlaces.Forms
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LoadingForm";
+            this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.UseWaitCursor = true;
             this.ResumeLayout(false);
