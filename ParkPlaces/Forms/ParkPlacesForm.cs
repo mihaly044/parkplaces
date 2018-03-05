@@ -4,6 +4,7 @@ using GMap.NET.MapProviders;
 using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
 using ParkPlaces.Controls;
+using ParkPlaces.Misc;
 
 namespace ParkPlaces.Forms
 {
@@ -172,6 +173,8 @@ namespace ParkPlaces.Forms
 
         private void OnFormLoad()
         {
+            Text = "ParkPlaces Editor";
+
             Map.UnloadSession();
 
             var loginForm = new LoginForm();
@@ -179,6 +182,8 @@ namespace ParkPlaces.Forms
             {
                 Environment.Exit(0);
             }
+
+            Text += $" ({loginForm.User.UserName})";
 
             var loadingForm = new LoadingForm();
             loadingForm.Show();
