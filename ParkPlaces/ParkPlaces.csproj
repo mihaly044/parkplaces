@@ -247,6 +247,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="parkplaces.sql" />
+    <None Include="Resources\if_lock_285646.png" />
     <None Include="Resources\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

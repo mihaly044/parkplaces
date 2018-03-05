@@ -28,7 +28,7 @@ namespace ParkPlaces.Forms
         {
             if(!_sql.AuthenticateUser(textBoxUserName.Text, textBoxPassword.Text))
             {
-                errorProvider.SetError(textBoxUserName, "Bad username or password");
+                MessageBox.Show("Invalid username or password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {

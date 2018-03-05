@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using ParkPlaces.Extensions;
 using System.Collections.Specialized;
+using CryptSharp;
 
 namespace ParkPlaces.IO
 {
@@ -63,18 +64,17 @@ namespace ParkPlaces.IO
 
         public bool AuthenticateUser(string username, string password)
         {
-            using (var cmd = new MySqlCommand("SELECT * FROM users WHERE username = @username AND password = @password ")
+            using (var cmd = new MySqlCommand("SELECT * FROM users WHERE username = @username ")
             { Connection = GetConnection() })
             {
-                cmd.Parameters.AddRange(new[] {
-                    new MySqlParameter("@username", MySqlDbType.String),
-                    new MySqlParameter("@password", MySqlDbType.String)
-                });
-
+                cmd.Parameters.Add("@username", MySqlDbType.String);
                 cmd.Parameters[0].Value = username;
-                cmd.Parameters[1].Value = password;
 
-                return Convert.ToInt32(cmd.ExecuteScalar()) == 1;
+                using(var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+                    return Crypter.CheckPassword(password, reader["password"].ToString());
+                }
             }
         }
 
