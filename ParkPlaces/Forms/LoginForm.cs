@@ -13,9 +13,8 @@ namespace ParkPlaces.Forms
             DialogResult = DialogResult.Cancel;
         }
 
-        private void loginBtn_Click(object sender, EventArgs e)
+        private void btnLogin_Click(object sender, EventArgs e)
         {
-
             var user = User.Login(textBoxUserName.Text, textBoxPassword.Text);
 
             if (user.GroupRole == GroupRole.None)
@@ -38,6 +37,12 @@ namespace ParkPlaces.Forms
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private void textBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                btnLogin.PerformClick();
         }
     }
 }

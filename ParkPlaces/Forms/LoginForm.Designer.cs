@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.loginBtn = new System.Windows.Forms.Button();
+            this.btnLogin = new System.Windows.Forms.Button();
             this.lblUserName = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
             this.textBoxUserName = new System.Windows.Forms.TextBox();
@@ -41,15 +41,15 @@
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // loginBtn
+            // btnLogin
             // 
-            this.loginBtn.Location = new System.Drawing.Point(321, 99);
-            this.loginBtn.Name = "loginBtn";
-            this.loginBtn.Size = new System.Drawing.Size(75, 23);
-            this.loginBtn.TabIndex = 2;
-            this.loginBtn.Text = "Login";
-            this.loginBtn.UseVisualStyleBackColor = true;
-            this.loginBtn.Click += new System.EventHandler(this.loginBtn_Click);
+            this.btnLogin.Location = new System.Drawing.Point(321, 99);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(75, 23);
+            this.btnLogin.TabIndex = 2;
+            this.btnLogin.Text = "Login";
+            this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // lblUserName
             // 
@@ -77,6 +77,7 @@
             this.textBoxUserName.Size = new System.Drawing.Size(224, 20);
             this.textBoxUserName.TabIndex = 0;
             this.textBoxUserName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxUserName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_KeyDown);
             // 
             // textBoxPassword
             // 
@@ -87,6 +88,7 @@
             this.textBoxPassword.Size = new System.Drawing.Size(224, 20);
             this.textBoxPassword.TabIndex = 1;
             this.textBoxPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_KeyDown);
             // 
             // btnExit
             // 
@@ -140,7 +142,7 @@
             this.Controls.Add(this.textBoxUserName);
             this.Controls.Add(this.lblPassword);
             this.Controls.Add(this.lblUserName);
-            this.Controls.Add(this.loginBtn);
+            this.Controls.Add(this.btnLogin);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "LoginForm";
@@ -157,7 +159,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button loginBtn;
+        private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.Label lblPassword;
         private System.Windows.Forms.TextBox textBoxUserName;
