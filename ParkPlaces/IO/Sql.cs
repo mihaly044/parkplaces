@@ -104,11 +104,12 @@ namespace ParkPlaces.IO
             }
             catch (MySqlException e)
             {
+                var error = e.GetExceptionNumber();
 #if DEBUG
-                Debug.WriteLine("Mysql error: " + e.Message);
+                Debug.WriteLine($"Database error {error}");
                 Debugger.Break();
 #else
-                MessageBox.Show("Fatal database error. The application is going to close.", "Error" , MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"MySQL error {error}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(-1);
 #endif
             }
