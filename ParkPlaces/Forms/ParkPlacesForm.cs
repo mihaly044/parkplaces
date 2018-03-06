@@ -200,16 +200,22 @@ namespace ParkPlaces.Forms
             loadingForm.LoadDataAsync();
         }
 
-        private async void ASDToolStripMenuItem_ClickAsync(object sender, EventArgs e)
-        {
-            var sql = new Sql();
-            sql.ExportToMySql(await IoHandler.Instance.UpdateAsync(true, true));
-        }
-
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Hide();
             OnFormLoad();
+        }
+
+        // TODO:
+        // Make method async
+        private async void SaveButton_ClickAsync(object sender, EventArgs e)
+        {
+            var dto = Map.GetDataObject();
+            if (dto == null) return;
+
+            var sql = new Sql();
+            sql.ExportToMySql(dto);
+            MessageBox.Show("Done.");
         }
     }
 }
