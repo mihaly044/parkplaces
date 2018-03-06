@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 
 namespace ParkPlaces.Extensions
@@ -15,6 +16,19 @@ namespace ParkPlaces.Extensions
                 {
                     yield return element;
                 }
+            }
+        }
+
+        public static int GetExceptionNumber(this MySqlException exception)
+        {
+            var innerException = exception.InnerException as MySqlException;
+            if (exception.Number == 0 && innerException != null)
+            {
+                return innerException.Number;
+            }
+            else
+            {
+                return exception.Number;
             }
         }
     }
