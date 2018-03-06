@@ -26,10 +26,7 @@ namespace ParkPlaces.Extensions
             {
                 return innerException.Number;
             }
-            else
-            {
-                return exception.Number;
-            }
+            return exception.Number;
         }
     }
 }
