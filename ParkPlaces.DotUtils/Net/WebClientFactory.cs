@@ -15,8 +15,8 @@ namespace ParkPlaces.DotUtils.Net
                 {
                     ["Cache-Control"] = "max-age=0",
                     ["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                    ["User-agent"] = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0",
-                    ["Accept-Language"] = "en-US,en;q=0.8"
+                    ["User-agent"] = "Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:58.0) Gecko/20100101 Firefox/58.0",
+                    ["Accept-Language"] = "hu-HU,hu;q=0.8"
                 }
             };
         }
