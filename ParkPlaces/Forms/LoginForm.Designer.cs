@@ -105,7 +105,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::ParkPlaces.Properties.Resources.if_lock_285646;
-            this.pictureBox1.Location = new System.Drawing.Point(13, 37);
+            this.pictureBox1.Location = new System.Drawing.Point(13, 30);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(83, 78);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
