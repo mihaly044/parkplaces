@@ -151,10 +151,16 @@
     <Compile Include="Forms\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ManageUsersForm.cs">
+    <Compile Include="Forms\Users management\EditUserForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ManageUsersForm.Designer.cs">
+    <Compile Include="Forms\Users management\EditUserForm.Designer.cs">
+      <DependentUpon>EditUserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Users management\ManageUsersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Users management\ManageUsersForm.Designer.cs">
       <DependentUpon>ManageUsersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IO\IOHandler.cs" />
@@ -199,7 +205,7 @@
     <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ManageUsersForm.resx">
+    <EmbeddedResource Include="Forms\Users management\ManageUsersForm.resx">
       <DependentUpon>ManageUsersForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ParkPlacesForm.resx">
