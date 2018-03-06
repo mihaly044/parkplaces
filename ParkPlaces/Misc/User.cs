@@ -18,6 +18,12 @@ namespace ParkPlaces.Misc
 
     public class User
     {
+
+        /// <summary>
+        /// User id
+        /// </summary>
+        public int Id;
+
         /// <summary>
         /// Indicates which group the user belongs to
         /// </summary>
@@ -43,6 +49,11 @@ namespace ParkPlaces.Misc
         {
             UserName = userName;
             LastLogin = lastLogin;
+        }
+
+        public User()
+        {
+
         }
 
         /// <summary>
