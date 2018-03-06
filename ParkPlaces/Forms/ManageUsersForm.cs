@@ -52,6 +52,11 @@ namespace ParkPlaces.Forms
             refreshUsersListAsync();
         }
 
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            refreshUsersListAsync();
+        }
+
         private async void refreshUsersListAsync()
         {
             listBoxUsers.Items.Clear();
