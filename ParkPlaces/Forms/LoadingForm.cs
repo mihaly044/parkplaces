@@ -32,7 +32,7 @@ namespace ParkPlaces.Forms
             Load:
             try
             {
-                _dto = await _sql.LoadFromDb();
+                _dto = await _sql.LoadZones();
                 OnReadyEventHandler?.Invoke(this, _dto);
                 Close();
 

@@ -10,6 +10,9 @@ namespace ParkPlaces.Forms
 {
     public partial class ParkPlacesForm : Form
     {
+
+        public User LoggedInUser { get; set; }
+
         public ParkPlacesForm()
         {
             InitializeComponent();
@@ -184,6 +187,7 @@ namespace ParkPlaces.Forms
             }
 
             Text += $" / Logged in as {loginForm.User.UserName} with {loginForm.User.GroupRole} access /";
+            LoggedInUser = loginForm.User;
 
             adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin;
             Map.SetReadOnly(loginForm.User.GroupRole < GroupRole.Editor);
@@ -216,6 +220,11 @@ namespace ParkPlaces.Forms
             var sql = new Sql();
             sql.ExportToMySql(dto);
             MessageBox.Show("Done.");
+        }
+
+        private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new ManageUsersForm(LoggedInUser).ShowDialog();
         }
     }
 }

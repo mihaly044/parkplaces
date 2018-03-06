@@ -252,7 +252,7 @@ namespace ParkPlaces.IO
         /// Load polygon data from the database
         /// </summary>
         /// <returns>Data transfer object that holds the data</returns>
-        public async Task<Dto2Object> LoadFromDb()
+        public async Task<Dto2Object> LoadZones()
         {
             var dto = new Dto2Object
             {
@@ -306,6 +306,48 @@ namespace ParkPlaces.IO
                 rd.Close();
             }
             return dto;
+        }
+
+        /// <summary>
+        /// Load users from the database
+        /// </summary>
+        /// <returns>A list consisting of User type objects</returns>
+        public async Task<List<User>> LoadUsers()
+        {
+            var usersList = new List<User>();
+
+            using (var cmd = new MySqlCommand("SELECT * FROM users")
+            { Connection = GetConnection() })
+            {
+                var rd = await cmd.ExecuteReaderAsync();
+                while (await rd.ReadAsync())
+                {
+                    usersList.Add(new User()
+                    {
+                        Id = (int)rd["id"],
+                        UserName = rd["username"].ToString(),
+                        GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), rd["groupid"].ToString())
+                    });
+                }
+            }
+
+            return usersList;
+        }
+
+        /// <summary>
+        /// Remove an user from the database
+        /// </summary>
+        /// <param name="u">The user to be removed</param>
+        public async void RemoveUser(User u)
+        {
+            if (u == null) return;
+
+            using (var cmd = new MySqlCommand("DELETE FROM users WHERE id = @id")
+            { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@id", u.Id);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         /// <summary>
