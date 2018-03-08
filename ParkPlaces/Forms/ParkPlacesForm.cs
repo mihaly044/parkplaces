@@ -216,6 +216,9 @@ namespace ParkPlaces.Forms
             Logout();
         }
 
+        /// <summary>
+        /// Logout process
+        /// </summary>
         private void Logout()
         {
             Hide();
@@ -241,13 +244,17 @@ namespace ParkPlaces.Forms
             new ManageUsersForm(LoggedInUser).ShowDialog(this);
         }
 
+        /// <summary>
+        /// Check user access level in intervals and call UpdateUserAccess
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         private async Task CheckUserPrivileges(CancellationToken cancellationToken)
         {
             await Task.Run( async () =>
             {
                 while (true)
                 {
-                    Debug.WriteLine("asd");
                     UpdateUserAccess(Sql.Instance.GetUserData(LoggedInUser));
 
                     await Task.Delay(1000, cancellationToken);
@@ -257,6 +264,10 @@ namespace ParkPlaces.Forms
             });
         }
 
+        /// <summary>
+        /// Check user access level and log out if necessary
+        /// </summary>
+        /// <param name="user"></param>
         private void UpdateUserAccess(User user)
         {
             if(user.GroupRole != LoggedInUser.GroupRole)
