@@ -228,11 +228,7 @@ namespace ParkPlaces.Forms
         /// </summary>
         private void Logout(bool forcedLogout = false)
         {
-            if (forcedLogout)
-            {
-                _userPrivilegesCtrl.Cancel(); 
-            }
-
+            // Hide open forms
             var fc = Application.OpenForms;
             if (fc.Count > 1)
                 for (var i = fc.Count; i > 1; i--)
@@ -240,6 +236,11 @@ namespace ParkPlaces.Forms
                     var selectedForm = Application.OpenForms[i - 1];
                     selectedForm.Close();
                 }
+
+            if (forcedLogout)
+            {
+                _userPrivilegesCtrl.Cancel(); 
+            }
 
             Hide();
             OnFormLoad();
@@ -261,7 +262,7 @@ namespace ParkPlaces.Forms
 
         private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new ManageUsersForm(LoggedInUser).ShowDialog(this);
+            new ManageUsersForm(LoggedInUser).Show(this);
         }
 
         /// <summary>
