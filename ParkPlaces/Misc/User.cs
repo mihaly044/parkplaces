@@ -93,26 +93,5 @@ namespace ParkPlaces.Misc
         {
             Id = id;
         }
-
-        /// <summary>
-        /// Attempts to log in an user and retuns an User type object.
-        /// The GroupRole field will be None (0) if the user cannot be 
-        /// logged in.
-        /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
-        /// <returns>An User type object</returns>
-        public static User Login(string userName, string password)
-        {
-            var sql = new Sql();
-            var groupRole = sql.AuthenticateUser(userName, password);
-
-            // TODO: Specify an ID for the logged in user
-            return new User(userName, 0)
-            {
-                GroupRole = groupRole,
-                IsAuthenticated = groupRole > GroupRole.Guest
-            };
-        }
     }
 }

@@ -119,16 +119,16 @@ namespace ParkPlaces.IO
         }
 
         /// <summary>
-        /// Database-level authentication. This shall not be called directly.
+        /// Authenticate an user
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        /// <returns>The authenticated user's access level. 0 if either the username
-        /// or the password is wrong</returns>
-        public GroupRole AuthenticateUser(string username, string password)
+        /// <returns>The logged in user object or null if the username
+        /// or the password was wrong</returns>
+        public User AuthenticateUser(string username, string password)
         {
             if (username == string.Empty || password == string.Empty)
-                return GroupRole.None;
+                return null;
 
             using (var cmd = new MySqlCommand("SELECT * FROM users WHERE username = @username ")
             { Connection = GetConnection() })
@@ -138,12 +138,21 @@ namespace ParkPlaces.IO
                 using (var reader = cmd.ExecuteReader())
                 {
                     if (reader.Read() && reader.HasRows)
+                    {
                         if (Crypter.CheckPassword(password, reader["password"].ToString()))
-                            return (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString());
+                        {
+                            var groupRole = (GroupRole) Enum.Parse(typeof(GroupRole), reader["groupid"].ToString());
+                            return new User(reader["UserName"].ToString(), (int)reader["id"])
+                            {
+                                GroupRole = groupRole,
+                                IsAuthenticated = groupRole > GroupRole.Guest
+                            };
+                        }
+                    }
                 }
             }
 
-            return GroupRole.None;
+            return null;
         }
 
         /// <summary>

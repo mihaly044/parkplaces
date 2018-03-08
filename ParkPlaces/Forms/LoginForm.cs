@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Windows.Forms;
+using ParkPlaces.IO;
 using ParkPlaces.Misc;
 
 namespace ParkPlaces.Forms
@@ -18,9 +19,9 @@ namespace ParkPlaces.Forms
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            User = User.Login(textBoxUserName.Text, textBoxPassword.Text);
+            User = Sql.Instance.AuthenticateUser(textBoxUserName.Text, textBoxPassword.Text);
 
-            if (User.GroupRole == GroupRole.None)
+            if (User == null)
             {
                 MessageBox.Show("Invalid username or password.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
