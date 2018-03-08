@@ -371,11 +371,12 @@ namespace ParkPlaces.IO
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public bool IsDuplicateUser(string username)
+        public bool IsDuplicateUser(User u)
         {
-            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM users WHERE username = @username") { Connection = GetConnection() })
+            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM users WHERE username = @username AND id <> @id") { Connection = GetConnection() })
             {
-                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@username", u.UserName);
+                cmd.Parameters.AddWithValue("@id", u.Id);
                 return int.Parse(cmd.ExecuteScalar().ToString()) > 0;
             }
         }
@@ -384,12 +385,24 @@ namespace ParkPlaces.IO
         // Implement method
         public void UpdateUser(User user)
         {
-            throw new NotImplementedException();
-            using (var cmd = new MySqlCommand("UPDATE users SET username = @username, password = @password")
+            using (var cmd = new MySqlCommand("UPDATE users SET username = @username WHERE id = @id")
             { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@username", user.UserName);
-                //cmd.Parameters.AddWithValue("@password", );
+                cmd.Parameters.AddWithValue("@id", user.Id);
+                
+                cmd.ExecuteNonQuery();
+            }
+
+            if(user.Password != null)
+            {
+                using (var cmd = new MySqlCommand("UPDATE users SET password = @password WHERE id = @id")
+                { Connection = GetConnection() })
+                {
+                    cmd.Parameters.AddWithValue("@password", CrypterEx.CalculateBCrypt(user.Password));
+                    cmd.Parameters.AddWithValue("@id", user.Id);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
     }
