@@ -379,6 +379,10 @@ namespace ParkPlaces.IO
             }
         }
 
+        /// <summary>
+        /// Update a user's data in the database
+        /// </summary>
+        /// <param name="user"></param>
         public void UpdateUser(User user)
         {
             using (var cmd = new MySqlCommand("UPDATE users SET username = @username WHERE id = @id")
