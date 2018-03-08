@@ -70,6 +70,12 @@ namespace ParkPlaces.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (textBoxUserName.Text == string.Empty || textBoxPassword.Text == string.Empty)
+            {
+                MessageBox.Show("Username and password cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (_loggedInUser == _user
                 && _user.GroupRole > (GroupRole)comboAccessLevel.SelectedItem)
             {
