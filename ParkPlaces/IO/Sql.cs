@@ -14,6 +14,9 @@ namespace ParkPlaces.IO
 {
     public class Sql
     {
+        public static Sql Instance => _instance ?? (_instance = new Sql());
+        private static Sql _instance;
+
         public string Server { get; set; }
         public string Database { get; set; }
         public string User { get; set; }
@@ -368,12 +371,12 @@ namespace ParkPlaces.IO
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public static bool IsDuplicateUser(string username)
+        public bool IsDuplicateUser(string username)
         {
             using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM users WHERE username = @username") { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@username", username);
-                return int.Parse(cmd.ExecuteScalar()) > 0;
+                return int.Parse(cmd.ExecuteScalar().ToString()) > 0;
             }
         }
 

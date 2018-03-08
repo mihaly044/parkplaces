@@ -15,15 +15,12 @@ namespace ParkPlaces.Forms
 {
     public partial class ManageUsersForm : Form
     {
-        private Sql _sql;
         private List<User> _users;
         private User _loggedInUser;
 
         public ManageUsersForm(User loggedInUser)
         {
             InitializeComponent();
-
-            _sql = new Sql();
             _loggedInUser = loggedInUser;
         }
 
@@ -47,13 +44,13 @@ namespace ParkPlaces.Forms
             var editUserForm = new EditUserForm((User)listBoxUsers.SelectedItem, _loggedInUser);
             if(editUserForm.ShowDialog() == DialogResult.OK)
             {
-                _sql.UpdateUser(editUserForm.GetUser());
+                Sql.Instance.UpdateUser(editUserForm.GetUser());
             }
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            _sql.RemoveUser(_users.Find(user => user.UserName == listBoxUsers.SelectedItem.ToString()));
+            Sql.Instance.RemoveUser(_users.Find(user => user.UserName == listBoxUsers.SelectedItem.ToString()));
             refreshUsersListAsync();
         }
 
@@ -65,7 +62,7 @@ namespace ParkPlaces.Forms
         private async void refreshUsersListAsync()
         {
             listBoxUsers.Items.Clear();
-            _users = await _sql.LoadUsers();
+            _users = await Sql.Instance.LoadUsers();
             foreach (var user in _users)
             {
                 listBoxUsers.Items.Add(user);

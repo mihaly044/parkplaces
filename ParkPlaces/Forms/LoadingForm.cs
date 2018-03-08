@@ -6,16 +6,14 @@ namespace ParkPlaces.Forms
 {
     public partial class LoadingForm : Form
     {
-        private readonly Sql _sql;
         private Dto2Object _dto;
         public EventHandler<Dto2Object> OnReadyEventHandler;
 
         public LoadingForm()
         {
             InitializeComponent();
-            _sql = new Sql();
 
-            _sql.OnUpdateChangedEventHandler += (sender, updateProcessChangedArgs) => {
+            Sql.Instance.OnUpdateChangedEventHandler += (sender, updateProcessChangedArgs) => {
                 var currentProgress = ((double)(updateProcessChangedArgs.TotalChunks - updateProcessChangedArgs.CurrentChunks) / (double)updateProcessChangedArgs.TotalChunks) * 100;
                 if(currentProgress - progressBar.Value > 1)
                 {
@@ -24,7 +22,7 @@ namespace ParkPlaces.Forms
                 }
             };
 
-            IoHandler.Instance.OnUpdateChangedEventHandler += _sql.OnUpdateChangedEventHandler;
+            IoHandler.Instance.OnUpdateChangedEventHandler += Sql.Instance.OnUpdateChangedEventHandler;
         }
 
         public async void LoadDataAsync()
@@ -32,7 +30,7 @@ namespace ParkPlaces.Forms
             Load:
             try
             {
-                _dto = await _sql.LoadZones();
+                _dto = await Sql.Instance.LoadZones();
                 OnReadyEventHandler?.Invoke(this, _dto);
                 Close();
 
