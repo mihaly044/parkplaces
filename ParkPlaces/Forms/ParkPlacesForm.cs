@@ -228,5 +228,16 @@ namespace ParkPlaces.Forms
         {
             new ManageUsersForm(LoggedInUser).ShowDialog(this);
         }
+
+        private void CloseAllForms()
+        {
+            var fc = Application.OpenForms;
+            if (fc.Count > 1)
+                for (var i = fc.Count; i > 1; i--)
+                {
+                    var selectedForm = Application.OpenForms[i - 1];
+                    selectedForm.Close();
+                }
+        }
     }
 }
