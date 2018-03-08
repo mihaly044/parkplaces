@@ -68,16 +68,6 @@ namespace ParkPlaces.Misc
         /// </summary>
         public string Password { get; internal set; }
 
-        public static bool operator ==(User user1, User user2)
-        {
-            return user1.Id == user2.Id;
-        }
-
-        public static bool operator !=(User user1, User user2)
-        {
-            return user1.Id != user2.Id;
-        }
-
         public override string ToString()
         {
             return UserName;
