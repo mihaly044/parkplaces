@@ -405,5 +405,45 @@ namespace ParkPlaces.IO
                 }
             }
         }
+
+        /// <summary>
+        /// Get user data from the database based on its id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public User GetUserData(int id)
+        {
+            using (var cmd = new MySqlCommand("SELECT * FROM users WHERE id = @id")
+                {Connection = GetConnection()})
+            {
+                cmd.Parameters.AddWithValue("@id", id);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read() && reader.HasRows)
+                    {
+                        return new User(reader["username"].ToString(), (int)reader["id"])
+                        {
+                            GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString())
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Get updated user data from the database
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public User GetUserData(User user)
+        {
+            if (user == null)
+            {
+                return null;
+            }
+
+            return GetUserData(user.Id);
+        }
     }
 }
