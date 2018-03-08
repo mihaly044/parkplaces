@@ -70,12 +70,12 @@ namespace ParkPlaces.Misc
 
         public static bool operator ==(User user1, User user2)
         {
-            return user2 != null && (user1 != null && user1.Id == user2.Id);
+            return user1.Id == user2.Id;
         }
 
         public static bool operator !=(User user1, User user2)
         {
-            return user2 != null && (user1 != null && user1.Id != user2.Id);
+            return user1.Id != user2.Id;
         }
 
         public override string ToString()
