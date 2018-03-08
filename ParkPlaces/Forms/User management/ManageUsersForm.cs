@@ -37,8 +37,10 @@ namespace ParkPlaces.Forms
             var editUserForm = new EditUserForm((User)listBoxUsers.SelectedItem, _loggedInUser);
             if(editUserForm.ShowDialog() == DialogResult.OK)
             {
+                var selectedIndex = listBoxUsers.SelectedIndex; 
                 Sql.Instance.UpdateUser(editUserForm.GetUser());
                 RefreshUsersListAsync();
+                listBoxUsers.SelectedIndex = selectedIndex;
             }
         }
 
