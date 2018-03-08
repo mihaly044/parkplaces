@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using GMap.NET.MapProviders;
 using ParkPlaces.IO;
@@ -189,6 +192,10 @@ namespace ParkPlaces.Forms
             Text += $" / Logged in as {loginForm.User.UserName} with {loginForm.User.GroupRole} access /";
             LoggedInUser = loginForm.User;
 
+#pragma warning disable 4014
+            CheckUserPrivileges(new CancellationToken(false));
+#pragma warning restore 4014
+
             adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin;
             Map.SetReadOnly(loginForm.User.GroupRole < GroupRole.Editor);
 
@@ -205,6 +212,11 @@ namespace ParkPlaces.Forms
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Logout();
+        }
+
+        private void Logout()
         {
             Hide();
             OnFormLoad();
@@ -227,6 +239,28 @@ namespace ParkPlaces.Forms
         private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new ManageUsersForm(LoggedInUser).ShowDialog(this);
+        }
+
+        private async Task CheckUserPrivileges(CancellationToken cancellationToken)
+        {
+            await Task.Run( async () =>
+            {
+                while (true)
+                {
+                    Debug.WriteLine("asd");
+                    UpdateUserAccess(Sql.Instance.GetUserData(LoggedInUser));
+
+                    await Task.Delay(1000, cancellationToken);
+                    if (cancellationToken.IsCancellationRequested)
+                        break;
+                }
+            });
+        }
+
+        private void UpdateUserAccess(User user)
+        {
+            if(user.GroupRole != LoggedInUser.GroupRole)
+                Invoke(new Action(Logout));
         }
     }
 }
