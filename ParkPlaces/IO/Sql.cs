@@ -379,8 +379,6 @@ namespace ParkPlaces.IO
             }
         }
 
-        // TODO:
-        // Implement method
         public void UpdateUser(User user)
         {
             using (var cmd = new MySqlCommand("UPDATE users SET username = @username WHERE id = @id")

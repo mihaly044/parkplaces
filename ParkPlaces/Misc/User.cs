@@ -107,8 +107,7 @@ namespace ParkPlaces.Misc
             var sql = new Sql();
             var groupRole = sql.AuthenticateUser(userName, password);
 
-            // TODO:
-            // Specify an ID for the logged in user
+            // TODO: Specify an ID for the logged in user
             return new User(userName, 0)
             {
                 GroupRole = groupRole,
