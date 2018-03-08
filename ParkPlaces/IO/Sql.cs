@@ -31,7 +31,7 @@ namespace ParkPlaces.IO
             SetupDb();
         }
 
-        public Sql(string server="", string database="", string user="", string password="", string port="3306")
+        public Sql(string server = "", string database = "", string user = "", string password = "", string port = "3306")
         {
             Server = server;
             Database = database;
@@ -49,14 +49,14 @@ namespace ParkPlaces.IO
         {
             using (var cmd =
                 new MySqlCommand("SELECT COUNT(*) FROM information_schema.schemata WHERE SCHEMA_NAME = @dbName")
-                    {Connection = GetConnection(true)})
+                { Connection = GetConnection(true) })
             {
                 cmd.Parameters.AddWithValue("@dbName", Database);
                 var count = cmd.ExecuteScalar();
 
                 if (int.Parse(count.ToString()) >= 1) return;
                 using (var cmd1 = new MySqlCommand(Properties.Resources.parkplaces)
-                    { Connection = GetConnection(true)})
+                { Connection = GetConnection(true) })
                 {
                     cmd1.ExecuteNonQuery();
                 }
@@ -133,9 +133,9 @@ namespace ParkPlaces.IO
             {
                 cmd.Parameters.AddWithValue("@username", username);
 
-                using(var reader = cmd.ExecuteReader())
+                using (var reader = cmd.ExecuteReader())
                 {
-                    if(reader.Read() && reader.HasRows)
+                    if (reader.Read() && reader.HasRows)
                         if (Crypter.CheckPassword(password, reader["password"].ToString()))
                             return (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString());
                 }
@@ -174,7 +174,7 @@ namespace ParkPlaces.IO
                 {
                     cmd.Parameters[0].Value = city.Telepules;
                     cmd.ExecuteNonQuery();
-                        
+
                     cityIds.Add(city.Telepules, cityId);
                     cityId++;
                 }
@@ -182,7 +182,7 @@ namespace ParkPlaces.IO
 
             using (var cmd = new MySqlCommand(
                 "INSERT INTO zones (cityid, color, fee, service_na, description, timetable) VALUES" +
-                "(@cityid, @color, @fee, @service_na, @description, @timetable)") { Connection = GetConnection()})
+                "(@cityid, @color, @fee, @service_na, @description, @timetable)") { Connection = GetConnection() })
             {
 
                 var zoneId = 1;
@@ -239,7 +239,7 @@ namespace ParkPlaces.IO
         {
             try
             {
-                return new MySqlCommand(query) { Connection =  GetConnection()}
+                return new MySqlCommand(query) { Connection = GetConnection() }
                     .ExecuteNonQuery();
             } catch (Exception e)
             {
@@ -260,7 +260,7 @@ namespace ParkPlaces.IO
                 Zones = new List<PolyZone>()
             };
 
-            
+
             var zoneCount = await GetZoneCount();
             var cProcess = new UpdateProcessChangedArgs(zoneCount);
             var actualCount = 0;
@@ -271,7 +271,7 @@ namespace ParkPlaces.IO
                 var geometryConnection = GetConnection();
 
                 var rd = await cmd.ExecuteReaderAsync();
-                while(await rd.ReadAsync())
+                while (await rd.ReadAsync())
                 {
                     var zone = new PolyZone()
                     {
@@ -288,7 +288,7 @@ namespace ParkPlaces.IO
                     using (MySqlCommand cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]}") { Connection = geometryConnection })
                     {
                         var rd1 = await cmd1.ExecuteReaderAsync();
-                        while(await rd1.ReadAsync())
+                        while (await rd1.ReadAsync())
                         {
                             zone.Geometry.Add(new Geometry() { Lat = (double)rd1["lat"], Lng = (double)rd1["lng"] });
                         }
@@ -360,6 +360,33 @@ namespace ParkPlaces.IO
             {
                 var count = await cmd.ExecuteScalarAsync();
                 return int.Parse(count.ToString());
+            }
+        }
+        
+        /// <summary>
+        /// Checks if an username already exists in the database
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public static bool IsDuplicateUser(string username)
+        {
+            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM users WHERE username = @username") { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@username", username);
+                return int.Parse(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
+        // TODO:
+        // Implement method
+        public void UpdateUser(User user)
+        {
+            throw new NotImplementedException();
+            using (var cmd = new MySqlCommand("UPDATE users SET username = @username, password = @password")
+            { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@username", user.UserName);
+                //cmd.Parameters.AddWithValue("@password", );
             }
         }
     }
