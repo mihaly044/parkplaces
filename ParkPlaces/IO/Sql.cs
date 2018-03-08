@@ -311,6 +311,19 @@ namespace ParkPlaces.IO
         }
 
         /// <summary>
+        /// Calculate the count of zones
+        /// </summary>
+        /// <returns>The count of rows in the zones table</returns>
+        public async Task<int> GetZoneCount()
+        {
+            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM zones") { Connection = GetConnection() })
+            {
+                var count = await cmd.ExecuteScalarAsync();
+                return int.Parse(count.ToString());
+            }
+        }
+
+        /// <summary>
         /// Load users from the database
         /// </summary>
         /// <returns>A list consisting of User type objects</returns>
@@ -348,19 +361,6 @@ namespace ParkPlaces.IO
             {
                 cmd.Parameters.AddWithValue("@id", u.Id);
                 await cmd.ExecuteNonQueryAsync();
-            }
-        }
-
-        /// <summary>
-        /// Calculate the count of zones
-        /// </summary>
-        /// <returns>The count of rows in the zones table</returns>
-        public async Task<int> GetZoneCount()
-        {
-            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM zones") { Connection = GetConnection() })
-            {
-                var count = await cmd.ExecuteScalarAsync();
-                return int.Parse(count.ToString());
             }
         }
         
