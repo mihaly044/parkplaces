@@ -122,7 +122,7 @@ namespace ParkPlaces.Forms
                     }
                 )
             {
-                if(dlg.ShowDialog() == DialogResult.OK)
+                if(dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     Map.LoadPolygons(false, dlg.FileName);
                 }
@@ -138,7 +138,7 @@ namespace ParkPlaces.Forms
                     }
                 )
             {
-                if (dlg.ShowDialog() == DialogResult.OK)
+                if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     Map.SavePolygons(dlg.FileName);
                 }
@@ -149,7 +149,7 @@ namespace ParkPlaces.Forms
         {
             using(var dlg = new GotoCoordinatesForm())
             {
-                if(dlg.ShowDialog() == DialogResult.OK)
+                if(dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     Map.SetMapPosition(dlg.LatLng);
                     Map.SetPointerPosition(dlg.LatLng);
@@ -161,7 +161,7 @@ namespace ParkPlaces.Forms
         {
             using (var dlg = new GotoAddressForm())
             {
-                if (dlg.ShowDialog() == DialogResult.OK)
+                if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     Map.SetMapPosition(dlg.LatLng);
                     Map.SetPointerPosition(dlg.LatLng);
@@ -181,7 +181,7 @@ namespace ParkPlaces.Forms
             Map.UnloadSession();
 
             var loginForm = new LoginForm();
-            if (loginForm.ShowDialog() != DialogResult.OK)
+            if (loginForm.ShowDialog(this) != DialogResult.OK)
             {
                 Environment.Exit(0);
             }
@@ -226,7 +226,7 @@ namespace ParkPlaces.Forms
 
         private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new ManageUsersForm(LoggedInUser).ShowDialog();
+            new ManageUsersForm(LoggedInUser).ShowDialog(this);
         }
     }
 }
