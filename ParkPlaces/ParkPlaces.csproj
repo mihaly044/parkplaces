@@ -125,7 +125,6 @@
     </Compile>
     <Compile Include="Controls\TSRenderer.cs" />
     <Compile Include="Controls\VerticleChangedArg.cs" />
-    <Compile Include="Extensions\CrypterEx.cs" />
     <Compile Include="Extensions\Generic.cs" />
     <Compile Include="Extensions\PrivateObjectEx.cs" />
     <Compile Include="Forms\GotoAddressForm.cs">
