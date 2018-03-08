@@ -230,12 +230,16 @@ namespace ParkPlaces.Forms
         {
             if (forcedLogout)
             {
-                MessageBox.Show(
-                    "Your privilieges have been changed by an administrator therefore you have been logggd out.",
-                    "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                _userPrivilegesCtrl.Cancel();
+                _userPrivilegesCtrl.Cancel(); 
             }
+
+            var fc = Application.OpenForms;
+            if (fc.Count > 1)
+                for (var i = fc.Count; i > 1; i--)
+                {
+                    var selectedForm = Application.OpenForms[i - 1];
+                    selectedForm.Close();
+                }
 
             Hide();
             OnFormLoad();
