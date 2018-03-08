@@ -76,8 +76,9 @@ namespace ParkPlaces.Forms
                 return;
             }
 
+            var accessLevel = (GroupRole) comboAccessLevel.SelectedItem;
             if (_loggedInUser.Id == _user.Id
-                && _user.GroupRole > (GroupRole)comboAccessLevel.SelectedItem)
+                && _user.GroupRole > accessLevel)
             {
                 MessageBox.Show($"Cannot set a lower user level than {_user.GroupRole}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -90,6 +91,7 @@ namespace ParkPlaces.Forms
             }
 
             _user.UserName = textBoxUserName.Text;
+            _user.GroupRole = accessLevel;
 
             if(textBoxPassword.Text != BitConverter.ToString(DefaultPasswd))
             {
