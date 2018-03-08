@@ -46,7 +46,7 @@ namespace ParkPlaces.Forms
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            Sql.Instance.RemoveUser(_users.Find(user => user.UserName == listBoxUsers.SelectedItem.ToString()));
+            Sql.Instance.RemoveUser(_users.Find(user => user.Id == ((User)(listBoxUsers.SelectedItem)).Id));
             RefreshUsersListAsync();
         }
 
