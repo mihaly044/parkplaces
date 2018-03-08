@@ -16,6 +16,12 @@ namespace ParkPlaces.Forms
 
         public User LoggedInUser { get; set; }
 
+        /// <summary>
+        /// Used to cancel CheckUserPrivileges method's runner thread that
+        /// runs in intervals
+        /// </summary>
+        private CancellationTokenSource _userPrivilegesCtrl;
+
         public ParkPlacesForm()
         {
             InitializeComponent();
@@ -193,7 +199,8 @@ namespace ParkPlaces.Forms
             LoggedInUser = loginForm.User;
 
 #pragma warning disable 4014
-            CheckUserPrivileges(new CancellationToken(false));
+            _userPrivilegesCtrl = new CancellationTokenSource();
+            CheckUserPrivileges(_userPrivilegesCtrl.Token);
 #pragma warning restore 4014
 
             adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin;
@@ -219,8 +226,17 @@ namespace ParkPlaces.Forms
         /// <summary>
         /// Logout process
         /// </summary>
-        private void Logout()
+        private void Logout(bool forcedLogout = false)
         {
+            if (forcedLogout)
+            {
+                MessageBox.Show(
+                    "Your privilieges have been changed by an administrator therefore you have been logggd out.",
+                    "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                _userPrivilegesCtrl.Cancel();
+            }
+
             Hide();
             OnFormLoad();
         }
@@ -270,8 +286,10 @@ namespace ParkPlaces.Forms
         /// <param name="user"></param>
         private void UpdateUserAccess(User user)
         {
-            if(user.GroupRole != LoggedInUser.GroupRole)
-                Invoke(new Action(Logout));
+            if (user.GroupRole != LoggedInUser.GroupRole)
+            {
+                Invoke(new Action(() => { Logout(true); }));
+            }
         }
     }
 }
