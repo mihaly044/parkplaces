@@ -395,7 +395,7 @@ namespace ParkPlaces.IO
                 using (var cmd = new MySqlCommand("UPDATE users SET password = @password WHERE id = @id")
                 { Connection = GetConnection() })
                 {
-                    cmd.Parameters.AddWithValue("@password", Crypter.GetCrypter(user.Password).Crypt(user.Password));
+                    cmd.Parameters.AddWithValue("@password", Crypter.Blowfish.Crypt(user.Password));
                     cmd.Parameters.AddWithValue("@id", user.Id);
                     cmd.ExecuteNonQuery();
                 }
