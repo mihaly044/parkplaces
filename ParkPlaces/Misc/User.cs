@@ -45,6 +45,10 @@ namespace ParkPlaces.Misc
         /// </summary>
         public bool IsAuthenticated;
 
+        /// <summary>
+        /// Holds the user's password.
+        /// Shall only be used for editing
+        /// </summary>
         public string Password { get; internal set; }
 
         public static bool operator ==(User user1, User user2)
