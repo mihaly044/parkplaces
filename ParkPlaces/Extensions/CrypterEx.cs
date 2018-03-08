@@ -24,11 +24,8 @@ namespace ParkPlaces.Extensions
         // Generates a salt and calculates the bcrypt hash for the given password. Outputs the results to the console.
         public static string CalculateBCrypt(string password)
         {
-            var crypter = new BlowfishCrypter();
             var passwordBytes = Encoding.Unicode.GetBytes(password); // Convert passwords to bytes.
-
             var salt = GenerateSalt(); // Generate byte array 16 long from cryptographically random source.
-            var saltString = Convert.ToBase64String(salt); // Convert to string for printing.
 
             var hash = BlowfishCipher.BCrypt(passwordBytes, salt, _difficulty); // Perform bcrypt algorithm with set difficulty.
             var hashString = Convert.ToBase64String(hash); // Convert hash to string for storing/printing

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using ParkPlaces.Extensions;
 using System.Collections.Specialized;
-using System.Windows.Forms;
 using CryptSharp;
 using ParkPlaces.Misc;
 
@@ -325,9 +324,8 @@ namespace ParkPlaces.IO
                 var rd = await cmd.ExecuteReaderAsync();
                 while (await rd.ReadAsync())
                 {
-                    usersList.Add(new User()
+                    usersList.Add(new User(rd["username"].ToString(), (int)rd["id"])
                     {
-                        Id = (int)rd["id"],
                         UserName = rd["username"].ToString(),
                         GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), rd["groupid"].ToString())
                     });
@@ -369,7 +367,7 @@ namespace ParkPlaces.IO
         /// <summary>
         /// Checks if an username already exists in the database
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="u"></param>
         /// <returns></returns>
         public bool IsDuplicateUser(User u)
         {

@@ -18,11 +18,28 @@ namespace ParkPlaces.Misc
 
     public class User
     {
+        protected bool Equals(User other)
+        {
+            return Id == other.Id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((User) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
 
         /// <summary>
         /// User id
         /// </summary>
-        public int Id;
+        public readonly int Id;
 
         /// <summary>
         /// Indicates which group the user belongs to
@@ -53,12 +70,12 @@ namespace ParkPlaces.Misc
 
         public static bool operator ==(User user1, User user2)
         {
-            return user1.Id == user2.Id;
+            return user2 != null && (user1 != null && user1.Id == user2.Id);
         }
 
         public static bool operator !=(User user1, User user2)
         {
-            return !(user1.Id == user2.Id);
+            return user2 != null && (user1 != null && user1.Id != user2.Id);
         }
 
         public override string ToString()
@@ -66,15 +83,15 @@ namespace ParkPlaces.Misc
             return UserName;
         }
 
-        public User(string userName, DateTime lastLogin)
+        public User(string userName, int id)
         {
             UserName = userName;
-            LastLogin = lastLogin;
+            Id = id;
         }
 
-        public User()
+        public User(int id)
         {
-
+            Id = id;
         }
 
         /// <summary>
@@ -90,7 +107,9 @@ namespace ParkPlaces.Misc
             var sql = new Sql();
             var groupRole = sql.AuthenticateUser(userName, password);
 
-            return new User(userName, DateTime.Now)
+            // TODO:
+            // Specify an ID for the logged in user
+            return new User(userName, 0)
             {
                 GroupRole = groupRole,
                 IsAuthenticated = groupRole > GroupRole.Guest

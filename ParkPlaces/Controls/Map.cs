@@ -811,7 +811,7 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// Set whether the map should be readonly
         /// </summary>
-        /// <param name="bReadOnly"></param>
+        /// <param name="readOnly"></param>
         public void SetReadOnly(bool readOnly)
         {
             _readOnly = readOnly;

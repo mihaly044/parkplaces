@@ -1,23 +1,21 @@
-﻿using ParkPlaces.DotUtils.Extensions;
+﻿using System;
+using System.Windows.Forms;
 using ParkPlaces.IO;
 using ParkPlaces.Misc;
-using System;
 
-using System.Windows.Forms;
-
-namespace ParkPlaces.Forms.Users_management
+namespace ParkPlaces.Forms
 {
     public partial class EditUserForm : Form
     {
         /// <summary>
         /// The user to be edited
         /// </summary>
-        private User _user;
+        private readonly User _user;
 
         /// <summary>
         /// The user thats currently logged in
         /// </summary>
-        private User _loggedInUser;
+        private readonly User _loggedInUser;
 
         /// <summary>
         /// Used to return the edited user
@@ -26,15 +24,15 @@ namespace ParkPlaces.Forms.Users_management
         /// <returns></returns>
         public User GetUser() => _user;
 
-        private static readonly byte[] defaultPasswd = new byte[]{ 0x25, 0x14, 0xe9, 0x0b,
-                                                                   0xdd, 0x51, 0x3e, 0x6a,
-                                                                   0xec, 0x56, 0xfd, 0xff };
+        private static readonly byte[] DefaultPasswd = { 0x25, 0x14, 0xe9, 0x0b,
+                                                         0xdd, 0x51, 0x3e, 0x6a,
+                                                         0xec, 0x56, 0xfd, 0xff };
 
         public EditUserForm(User user, User loggedInUser)
         {
             InitializeComponent();
             _user = user;
-            _loggedInUser = user;
+            _loggedInUser = loggedInUser;
             DialogResult = DialogResult.Cancel;
         }
 
@@ -61,7 +59,7 @@ namespace ParkPlaces.Forms.Users_management
             }
 
             textBoxUserName.Text = _user.UserName;
-            textBoxPassword.Text = BitConverter.ToString(defaultPasswd);
+            textBoxPassword.Text = BitConverter.ToString(DefaultPasswd);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -81,13 +79,13 @@ namespace ParkPlaces.Forms.Users_management
 
             if(Sql.Instance.IsDuplicateUser(_user))
             {
-                MessageBox.Show($"This username already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("This username already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             _user.UserName = textBoxUserName.Text;
 
-            if(textBoxPassword.Text != BitConverter.ToString(defaultPasswd))
+            if(textBoxPassword.Text != BitConverter.ToString(DefaultPasswd))
             {
                 _user.Password = textBoxPassword.Text;
             }

@@ -1,5 +1,4 @@
-﻿using ParkPlaces.Forms.Users_management;
-using ParkPlaces.IO;
+﻿using ParkPlaces.IO;
 using ParkPlaces.Misc;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ namespace ParkPlaces.Forms
     public partial class ManageUsersForm : Form
     {
         private List<User> _users;
-        private User _loggedInUser;
+        private readonly User _loggedInUser;
 
         public ManageUsersForm(User loggedInUser)
         {
@@ -20,7 +19,7 @@ namespace ParkPlaces.Forms
 
         private void ManageUsersForm_Load(object sender, EventArgs e)
         {
-            refreshUsersListAsync();
+            RefreshUsersListAsync();
         }
 
         private void listBoxUsers_SelectedIndexChanged(object sender, EventArgs e)
@@ -39,22 +38,22 @@ namespace ParkPlaces.Forms
             if(editUserForm.ShowDialog() == DialogResult.OK)
             {
                 Sql.Instance.UpdateUser(editUserForm.GetUser());
-                refreshUsersListAsync();
+                RefreshUsersListAsync();
             }
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
             Sql.Instance.RemoveUser(_users.Find(user => user.UserName == listBoxUsers.SelectedItem.ToString()));
-            refreshUsersListAsync();
+            RefreshUsersListAsync();
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            refreshUsersListAsync();
+            RefreshUsersListAsync();
         }
 
-        private async void refreshUsersListAsync()
+        private async void RefreshUsersListAsync()
         {
             listBoxUsers.Items.Clear();
             _users = await Sql.Instance.LoadUsers();

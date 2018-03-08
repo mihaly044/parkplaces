@@ -1,4 +1,4 @@
-﻿namespace ParkPlaces.Forms.Users_management
+﻿namespace ParkPlaces.Forms
 {
     partial class EditUserForm
     {
