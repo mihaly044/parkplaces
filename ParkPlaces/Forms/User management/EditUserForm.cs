@@ -79,7 +79,7 @@ namespace ParkPlaces.Forms.Users_management
                 return;
             }
 
-            if(Sql.Instance.IsDuplicateUser(_user.UserName))
+            if(Sql.Instance.IsDuplicateUser(_user))
             {
                 MessageBox.Show($"This username already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
