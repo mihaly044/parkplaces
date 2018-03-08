@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="Controls\TSRenderer.cs" />
     <Compile Include="Controls\VerticleChangedArg.cs" />
+    <Compile Include="Extensions\CrypterEx.cs" />
     <Compile Include="Extensions\Generic.cs" />
     <Compile Include="Extensions\PrivateObjectEx.cs" />
     <Compile Include="Forms\GotoAddressForm.cs">
@@ -204,6 +205,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\User management\EditUserForm.resx">
+      <DependentUpon>EditUserForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\User management\ManageUsersForm.resx">
       <DependentUpon>ManageUsersForm.cs</DependentUpon>
