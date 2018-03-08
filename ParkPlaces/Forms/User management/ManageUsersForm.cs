@@ -1,4 +1,5 @@
-﻿using ParkPlaces.IO;
+﻿using ParkPlaces.Forms.Users_management;
+using ParkPlaces.IO;
 using ParkPlaces.Misc;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace ParkPlaces.Forms
 
         private void listBoxUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnRemove.Enabled = _loggedInUser.UserName != listBoxUsers.SelectedItem.ToString();
+            btnRemove.Enabled = _loggedInUser.UserName != ((User)listBoxUsers.SelectedItem).UserName;
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -43,7 +44,11 @@ namespace ParkPlaces.Forms
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            var editUserForm = new EditUserForm((User)listBoxUsers.SelectedItem, _loggedInUser);
+            if(editUserForm.ShowDialog() == DialogResult.OK)
+            {
+                _sql.UpdateUser(editUserForm.GetUser());
+            }
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
@@ -63,7 +68,7 @@ namespace ParkPlaces.Forms
             _users = await _sql.LoadUsers();
             foreach (var user in _users)
             {
-                listBoxUsers.Items.Add(user.UserName);
+                listBoxUsers.Items.Add(user);
             }
             listBoxUsers.SelectedIndex = 0;
         }
