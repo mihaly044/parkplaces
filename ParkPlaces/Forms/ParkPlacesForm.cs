@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using GMap.NET.MapProviders;
 using ParkPlaces.IO;
@@ -15,12 +12,6 @@ namespace ParkPlaces.Forms
     {
 
         public User LoggedInUser { get; set; }
-
-        /// <summary>
-        /// Used to cancel CheckUserPrivileges method's runner thread that
-        /// runs in intervals
-        /// </summary>
-        private CancellationTokenSource _userPrivilegesCtrl;
 
         public ParkPlacesForm()
         {
@@ -198,11 +189,6 @@ namespace ParkPlaces.Forms
             Text += $" / Logged in as {loginForm.User.UserName} with {loginForm.User.GroupRole} access /";
             LoggedInUser = loginForm.User;
 
-#pragma warning disable 4014
-            _userPrivilegesCtrl = new CancellationTokenSource();
-            CheckUserPrivileges(_userPrivilegesCtrl.Token);
-#pragma warning restore 4014
-
             adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin;
             Map.SetReadOnly(loginForm.User.GroupRole < GroupRole.Editor);
 
@@ -220,28 +206,6 @@ namespace ParkPlaces.Forms
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Logout();
-        }
-
-        /// <summary>
-        /// Logout process
-        /// </summary>
-        private void Logout(bool forcedLogout = false)
-        {
-            // Hide open forms
-            var fc = Application.OpenForms;
-            if (fc.Count > 1)
-                for (var i = fc.Count; i > 1; i--)
-                {
-                    var selectedForm = Application.OpenForms[i - 1];
-                    selectedForm.Close();
-                }
-
-            if (forcedLogout)
-            {
-                _userPrivilegesCtrl.Cancel(); 
-            }
-
             Hide();
             OnFormLoad();
         }
@@ -262,39 +226,7 @@ namespace ParkPlaces.Forms
 
         private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new ManageUsersForm(LoggedInUser).Show(this);
-        }
-
-        /// <summary>
-        /// Check user access level in intervals and call UpdateUserAccess
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        private async void CheckUserPrivileges(CancellationToken cancellationToken)
-        {
-            await Task.Run( async () =>
-            {
-                while (true)
-                {
-                    UpdateUserAccess(Sql.Instance.GetUserData(LoggedInUser));
-
-                    await Task.Delay(1000, cancellationToken);
-                    if (cancellationToken.IsCancellationRequested)
-                        break;
-                }
-            });
-        }
-
-        /// <summary>
-        /// Check user access level and log out if necessary
-        /// </summary>
-        /// <param name="user"></param>
-        private void UpdateUserAccess(User user)
-        {
-            if (user.GroupRole != LoggedInUser.GroupRole)
-            {
-                Invoke(new Action(() => { Logout(true); }));
-            }
+            new ManageUsersForm(LoggedInUser).ShowDialog(this);
         }
     }
 }
