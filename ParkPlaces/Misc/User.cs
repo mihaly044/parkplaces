@@ -60,7 +60,7 @@ namespace ParkPlaces.Misc
 
         public override string ToString()
         {
-            return UserName;
+            return $"{UserName} ({GroupRole})";
         }
 
         public User(string userName, int id)
