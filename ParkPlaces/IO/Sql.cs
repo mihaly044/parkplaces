@@ -394,11 +394,12 @@ namespace ParkPlaces.IO
         /// <param name="user"></param>
         public void UpdateUser(User user)
         {
-            using (var cmd = new MySqlCommand("UPDATE users SET username = @username WHERE id = @id")
+            using (var cmd = new MySqlCommand("UPDATE users SET username = @username, groupid = @groupid WHERE id = @id")
             { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@username", user.UserName);
                 cmd.Parameters.AddWithValue("@id", user.Id);
+                cmd.Parameters.AddWithValue("@groupid", (int)user.GroupRole);
                 
                 cmd.ExecuteNonQuery();
             }
