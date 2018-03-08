@@ -270,7 +270,7 @@ namespace ParkPlaces.Forms
         /// </summary>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        private async Task CheckUserPrivileges(CancellationToken cancellationToken)
+        private async void CheckUserPrivileges(CancellationToken cancellationToken)
         {
             await Task.Run( async () =>
             {
