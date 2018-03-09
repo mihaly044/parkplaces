@@ -32,7 +32,13 @@ namespace ParkPlaces.Misc
         public readonly int Id;
 
         /// <summary>
-        /// Indicates which group the user belongs to
+        /// Holds the Id of the user who has had created 
+        /// this one
+        /// </summary>
+        public int CreatorId;
+
+        /// <summary>
+        /// Indicates which group the user belong to
         /// </summary>
         public GroupRole GroupRole;
 
@@ -51,6 +57,11 @@ namespace ParkPlaces.Misc
         /// to use the application (> Guest)
         /// </summary>
         public bool IsAuthenticated;
+
+        /// <summary>
+        /// Indicates it is a newly created user
+        /// </summary>
+        public bool IsNewUser { get { return Id == 0; } }
 
         /// <summary>
         /// Holds the user's password.
