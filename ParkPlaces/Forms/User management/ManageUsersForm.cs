@@ -24,18 +24,25 @@ namespace ParkPlaces.Forms
 
         private void listBoxUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnRemove.Enabled = _loggedInUser.UserName != ((User)listBoxUsers.SelectedItem).UserName;
+            var isCreatorSelected = ((User)listBoxUsers.SelectedItem).Id == _loggedInUser.CreatorId;
+
+            btnRemove.Enabled = _loggedInUser.Id != ((User)listBoxUsers.SelectedItem).Id && !isCreatorSelected;
+            btnEdit.Enabled = !isCreatorSelected;
         }
 
         private void btnNew_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            var newUserForm = new EditUserForm(_loggedInUser);
+            if(newUserForm.ShowDialog(this) == DialogResult.OK)
+            {
+                Sql.Instance.InsertUser(newUserForm.GetUser());
+            }
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            var editUserForm = new EditUserForm((User)listBoxUsers.SelectedItem, _loggedInUser);
-            if(editUserForm.ShowDialog() == DialogResult.OK)
+            var editUserForm = new EditUserForm(_loggedInUser, (User)listBoxUsers.SelectedItem);
+            if(editUserForm.ShowDialog(this) == DialogResult.OK)
             {
                 var selectedIndex = listBoxUsers.SelectedIndex; 
                 Sql.Instance.UpdateUser(editUserForm.GetUser());
