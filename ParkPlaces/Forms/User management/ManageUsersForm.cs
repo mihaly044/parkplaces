@@ -69,8 +69,10 @@ namespace ParkPlaces.Forms
             foreach (var user in _users)
             {
                 listBoxUsers.Items.Add(user);
+
+                if (user.Id == _loggedInUser.Id)
+                    listBoxUsers.SelectedItem = user;
             }
-            listBoxUsers.SelectedIndex = 0;
         }
     }
 }
