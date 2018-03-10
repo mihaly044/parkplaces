@@ -24,7 +24,7 @@ namespace ParkPlaces.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            var rec = new Rectangle(0, 0, this.Width, this.Height);
+            var rec = new Rectangle(0, 0, Width, Height);
             var scaleFactor = (Value - (double)Minimum) / (Maximum - (double)Minimum);
 
             if (ProgressBarRenderer.IsSupported)

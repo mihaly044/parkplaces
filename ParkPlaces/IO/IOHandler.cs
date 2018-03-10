@@ -15,7 +15,8 @@ namespace ParkPlaces.IO
         private NemApi _api;
 #pragma warning restore 649
         public static IoHandler Instance => _instance ?? (_instance = new IoHandler());
-        public static string DataFile => _dataFile;
+        public static string DataFile { get; private set; }
+
         public bool NeedUpdate => GetUpdateNeeded();
 
         private static IoHandler _instance;
@@ -23,7 +24,6 @@ namespace ParkPlaces.IO
         private DateTime _lastUpdate;
         private DateTime _nextUpdate;
         private int _updateInterval;
-        private static string _dataFile;
 
         private bool GetUpdateNeeded()
         {
@@ -36,7 +36,7 @@ namespace ParkPlaces.IO
 
         private IoHandler()
         {
-            _dataFile = "";
+            DataFile = "";
             if (!int.TryParse(ConfigurationManager.AppSettings["UpdateInterval"], out _updateInterval))
             {
                 _updateInterval = 5;
@@ -92,8 +92,8 @@ namespace ParkPlaces.IO
                 config.Save();
                 ConfigurationManager.RefreshSection("appSettings");
 
-                _dataFile = $"geo{_lastUpdate.ToBinary()}.json";
-                WriteDtoToJson(_dataFile, dto);
+                DataFile = $"geo{_lastUpdate.ToBinary()}.json";
+                WriteDtoToJson(DataFile, dto);
             }
 
             return dto;

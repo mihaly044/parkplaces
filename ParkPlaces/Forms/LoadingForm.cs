@@ -1,6 +1,7 @@
 ﻿using ParkPlaces.IO;
 using System;
 using System.Windows.Forms;
+// ReSharper disable ArrangeRedundantParentheses
 
 namespace ParkPlaces.Forms
 {

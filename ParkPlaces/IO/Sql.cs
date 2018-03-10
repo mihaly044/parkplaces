@@ -463,6 +463,7 @@ namespace ParkPlaces.IO
         /// Insert a new user into the database
         /// </summary>
         /// <param name="user"></param>
+        /// <param name="creatorUser"></param>
         public void InsertUser(User user, User creatorUser = null)
         {
             using (var cmd = new MySqlCommand("INSERT INTO users (username, password, groupid) VALUES (@username, @password, @groupid)")
