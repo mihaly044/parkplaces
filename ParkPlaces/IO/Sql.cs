@@ -145,7 +145,8 @@ namespace ParkPlaces.IO
                             return new User(reader["UserName"].ToString(), (int)reader["id"])
                             {
                                 GroupRole = groupRole,
-                                IsAuthenticated = groupRole > GroupRole.Guest
+                                IsAuthenticated = groupRole > GroupRole.Guest,
+                                CreatorId = (int)reader["creatorid"]
                             };
                         }
                     }
@@ -394,12 +395,13 @@ namespace ParkPlaces.IO
         /// <param name="user"></param>
         public void UpdateUser(User user)
         {
-            using (var cmd = new MySqlCommand("UPDATE users SET username = @username, groupid = @groupid WHERE id = @id")
+            using (var cmd = new MySqlCommand("UPDATE users SET username = @username, groupid = @groupid, creatorid = @creatorid WHERE id = @id")
             { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@username", user.UserName);
                 cmd.Parameters.AddWithValue("@id", user.Id);
-                cmd.Parameters.AddWithValue("@groupid", (int)user.GroupRole);
+                cmd.Parameters.AddWithValue("@groupid", user.GroupRole);
+                cmd.Parameters.AddWithValue("@creatorid", user.CreatorId);
                 
                 cmd.ExecuteNonQuery();
             }
@@ -433,7 +435,8 @@ namespace ParkPlaces.IO
                     {
                         return new User(reader["username"].ToString(), (int)reader["id"])
                         {
-                            GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString())
+                            GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString()),
+                            CreatorId = (int)reader["creatorid"]
                         };
                     }
                 }
@@ -454,6 +457,30 @@ namespace ParkPlaces.IO
             }
 
             return GetUserData(user.Id);
+        }
+
+        /// <summary>
+        /// Insert a new user into the database
+        /// </summary>
+        /// <param name="user"></param>
+        public void InsertUser(User user, User creatorUser = null)
+        {
+            using (var cmd = new MySqlCommand("INSERT INTO users (username, password, groupid, creatorid) VALUES (@username, @password, @groupid)")
+            { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@username", user.UserName);
+                cmd.Parameters.AddWithValue("@password", Crypter.Blowfish.Crypt(user.Password));
+                cmd.Parameters.AddWithValue("@groupid", user.GroupRole);
+                cmd.Parameters.AddWithValue("@creatorid", 0);
+                cmd.ExecuteNonQuery();
+            }
+
+            if(creatorUser != null)
+            {
+                var newUser = GetUserData(user);
+                newUser.CreatorId = creatorUser.Id;
+                UpdateUser(newUser);
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ParkPlaces.Forms
         /// <summary>
         /// The user to be edited
         /// </summary>
-        private readonly User _user;
+        private User _user;
 
         /// <summary>
         /// The user thats currently logged in
@@ -28,7 +28,7 @@ namespace ParkPlaces.Forms
                                                          0xdd, 0x51, 0x3e, 0x6a,
                                                          0xec, 0x56, 0xfd, 0xff };
 
-        public EditUserForm(User user, User loggedInUser)
+        public EditUserForm(User loggedInUser, User user = null)
         {
             InitializeComponent();
             _user = user;
@@ -46,20 +46,23 @@ namespace ParkPlaces.Forms
                     var groupRole = (GroupRole)accessLevel;
                     comboAccessLevel.Items.Add(groupRole);
 
-                    if (_user.GroupRole == groupRole)
+                    if (_user != null &&_user.GroupRole == groupRole)
                         comboAccessLevel.SelectedItem = groupRole;
                 }
             }
             else
             {
                 // Since the admin area is reachable only after
-                // groupRole >= Admin, it should never get there
+                // groupRole >= Admin, it should never get here
                 comboAccessLevel.Items.Add(_loggedInUser.GroupRole);
                 comboAccessLevel.Enabled = false;
             }
 
-            textBoxUserName.Text = _user.UserName;
-            textBoxPassword.Text = BitConverter.ToString(DefaultPasswd);
+            if(_user != null)
+            {
+                textBoxUserName.Text = _user.UserName;
+                textBoxPassword.Text = BitConverter.ToString(DefaultPasswd);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -70,6 +73,11 @@ namespace ParkPlaces.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if(_user == null)
+            {
+                _user = new User(0);
+            }
+
             if (textBoxUserName.Text == string.Empty || textBoxPassword.Text == string.Empty)
             {
                 MessageBox.Show("Username and password cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
