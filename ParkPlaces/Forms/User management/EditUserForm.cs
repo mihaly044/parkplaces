@@ -34,6 +34,17 @@ namespace ParkPlaces.Forms
             _user = user;
             _loggedInUser = loggedInUser;
             DialogResult = DialogResult.Cancel;
+
+            if (_user == null)
+            {
+                Text = "New user";
+            }
+        }
+
+        public sealed override string Text
+        {
+            get => base.Text;
+            set => base.Text = value;
         }
 
         private void EditUserForm_Load(object sender, EventArgs e)
