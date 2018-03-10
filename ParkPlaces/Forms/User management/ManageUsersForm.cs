@@ -36,6 +36,7 @@ namespace ParkPlaces.Forms
             if(newUserForm.ShowDialog(this) == DialogResult.OK)
             {
                 Sql.Instance.InsertUser(newUserForm.GetUser());
+                RefreshUsersListAsync();
             }
         }
 

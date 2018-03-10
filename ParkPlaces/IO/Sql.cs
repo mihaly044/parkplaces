@@ -465,13 +465,12 @@ namespace ParkPlaces.IO
         /// <param name="user"></param>
         public void InsertUser(User user, User creatorUser = null)
         {
-            using (var cmd = new MySqlCommand("INSERT INTO users (username, password, groupid, creatorid) VALUES (@username, @password, @groupid)")
+            using (var cmd = new MySqlCommand("INSERT INTO users (username, password, groupid) VALUES (@username, @password, @groupid)")
             { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@username", user.UserName);
                 cmd.Parameters.AddWithValue("@password", Crypter.Blowfish.Crypt(user.Password));
                 cmd.Parameters.AddWithValue("@groupid", user.GroupRole);
-                cmd.Parameters.AddWithValue("@creatorid", 0);
                 cmd.ExecuteNonQuery();
             }
 
