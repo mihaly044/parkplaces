@@ -92,16 +92,16 @@ namespace ParkPlaces.Forms
                 return;
             }
 
-            if(Sql.Instance.IsDuplicateUser(_user))
+            _user.UserName = textBoxUserName.Text;
+            _user.GroupRole = accessLevel;
+
+            if (Sql.Instance.IsDuplicateUser(_user))
             {
                 MessageBox.Show("This username already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            _user.UserName = textBoxUserName.Text;
-            _user.GroupRole = accessLevel;
-
-            if(textBoxPassword.Text != BitConverter.ToString(DefaultPasswd))
+            if (textBoxPassword.Text != BitConverter.ToString(DefaultPasswd))
             {
                 _user.Password = textBoxPassword.Text;
             }
