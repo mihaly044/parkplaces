@@ -58,15 +58,16 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(20) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `groupid` int(11) NOT NULL
+  `groupid` int(11) NOT NULL,
+  `creatorid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- A tábla adatainak kiíratása `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `groupid`) VALUES
-(1, 'admin', '$2y$10$naypQWIa7gb7H8QLIUWa9.I8K3J3fh0SIp3AdOmnYpApBpnrC/KjG', 4);
+INSERT INTO `users` (`id`, `username`, `password`, `groupid`, `creatorid`) VALUES
+(1, 'admin', '$2y$10$naypQWIa7gb7H8QLIUWa9.I8K3J3fh0SIp3AdOmnYpApBpnrC/KjG', 4, 0);
 
 -- --------------------------------------------------------
 
