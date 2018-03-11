@@ -161,7 +161,7 @@ namespace ParkPlaces.IO
         /// the database
         /// </summary>
         /// <param name="dto">The data transfer object that holds polygon data</param>
-        public void ExportToMySql(Dto2Object dto)
+        public async Task<bool> ExportToMySql(Dto2Object dto)
         {
             // Flush table
             SimpleExecQuery("DELETE FROM geometry");
@@ -240,6 +240,8 @@ namespace ParkPlaces.IO
                     zoneId++;
                 }
             }
+
+            return true;
         }
 
         /// <summary>

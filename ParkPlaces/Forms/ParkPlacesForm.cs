@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using GMap.NET.MapProviders;
 using ParkPlaces.IO;
@@ -10,6 +12,12 @@ namespace ParkPlaces.Forms
 {
     public partial class ParkPlacesForm : Form
     {
+
+        /// <summary>
+        /// Used to cancel CheckUserPrivileges method's runner thread that
+        /// runs in intervals
+        /// </summary>
+        private CancellationTokenSource _userPrivilegesCtrl;
 
         public User LoggedInUser { get; set; }
 
@@ -60,12 +68,13 @@ namespace ParkPlaces.Forms
 
         private void Map_VerticlesChanged(VerticleChangedArg verticleChangedArg)
         {
-            lblShapesCount.Text = $"{verticleChangedArg.ShapesCount} shapes and {verticleChangedArg.VerticlesCount} verticles";
+            lblShapesCount.Text =
+                $"{verticleChangedArg.ShapesCount} shapes and {verticleChangedArg.VerticlesCount} verticles";
         }
 
         private void Map_OnMapZoomChanged()
         {
-            if(lblZoom.Visible)
+            if (lblZoom.Visible)
                 lblZoom.Text = $"Zoom: {Map.Zoom}";
         }
 
@@ -102,7 +111,7 @@ namespace ParkPlaces.Forms
         {
             Application.Exit();
         }
-        
+
         private void closeCurrentSessionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Map.UnloadSession();
@@ -116,13 +125,13 @@ namespace ParkPlaces.Forms
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (
-                    var dlg = new OpenFileDialog()
-                    {
-                        Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
-                    }
-                )
+                var dlg = new OpenFileDialog()
+                {
+                    Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
+                }
+            )
             {
-                if(dlg.ShowDialog(this) == DialogResult.OK)
+                if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     Map.LoadPolygons(false, dlg.FileName);
                 }
@@ -132,24 +141,24 @@ namespace ParkPlaces.Forms
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (
-                    var dlg = new SaveFileDialog()
-                    {
-                        Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
-                    }
-                )
+                var dlg = new SaveFileDialog()
+                {
+                    Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*"
+                }
+            )
             {
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     Map.SavePolygons(dlg.FileName);
                 }
-            }     
+            }
         }
 
         private void coordinateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using(var dlg = new GotoCoordinatesForm())
+            using (var dlg = new GotoCoordinatesForm())
             {
-                if(dlg.ShowDialog(this) == DialogResult.OK)
+                if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
                     Map.SetMapPosition(dlg.LatLng);
                     Map.SetPointerPosition(dlg.LatLng);
@@ -189,6 +198,12 @@ namespace ParkPlaces.Forms
             Text += $" / Logged in as {loginForm.User.UserName} with {loginForm.User.GroupRole} access /";
             LoggedInUser = loginForm.User;
 
+#pragma warning disable 4014
+            _userPrivilegesCtrl = new CancellationTokenSource();
+            CheckUserPrivileges(_userPrivilegesCtrl.Token);
+#pragma warning restore 4014
+
+
             adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin;
             Map.SetReadOnly(loginForm.User.GroupRole < GroupRole.Editor);
 
@@ -210,6 +225,23 @@ namespace ParkPlaces.Forms
             OnFormLoad();
         }
 
+        /// <summary>
+        /// Logout process
+        /// </summary>
+        private void Logout(bool forcedLogout = false)
+        {
+
+            CloseAllForms();
+
+            if (forcedLogout)
+            {
+                _userPrivilegesCtrl.Cancel();
+            }
+
+            Hide();
+            OnFormLoad();
+        }
+
 
         // TODO: Make method async
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -220,7 +252,7 @@ namespace ParkPlaces.Forms
             if (dto == null) return;
 
             var sql = new Sql();
-            sql.ExportToMySql(dto);
+            await sql.ExportToMySql(dto);
             MessageBox.Show("Done.");
         }
 
@@ -238,6 +270,38 @@ namespace ParkPlaces.Forms
                     var selectedForm = Application.OpenForms[i - 1];
                     selectedForm.Close();
                 }
+        }
+
+        /// <summary>
+        /// Check user access level in intervals and call UpdateUserAccess
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        private void CheckUserPrivileges(CancellationToken cancellationToken)
+        {
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    UpdateUserAccess(Sql.Instance.GetUserData(LoggedInUser));
+
+                    await Task.Delay(1000, cancellationToken);
+                    if (cancellationToken.IsCancellationRequested)
+                        break;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Check user access level and log out if necessary
+        /// </summary>
+        /// <param name="user"></param>
+        private void UpdateUserAccess(User user)
+        {
+            if (user.GroupRole != LoggedInUser.GroupRole)
+            {
+                Invoke(new Action(() => { Logout(true); }));
+            }
         }
     }
 }
