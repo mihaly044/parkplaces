@@ -49,8 +49,6 @@ namespace ParkPlaces.Forms
                     goto Load;
                 }
             }
-
-            
         }
     }
 }
