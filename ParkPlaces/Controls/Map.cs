@@ -140,6 +140,13 @@ namespace ParkPlaces.Controls
         public bool DisplayVersionInfo { get; set; }
 
         /// <summary>
+        /// Opacity of zones
+        /// </summary>
+        [Category("Map Extension")]
+        [DefaultValue(60)]
+        public int Opacity { get; set; }
+
+        /// <summary>
         /// Indicates whether a polygon is currently drawing
         /// </summary>
         public bool IsDrawingPolygon { get; set; }
@@ -644,7 +651,7 @@ namespace ParkPlaces.Controls
 
             var polygonColor = ColorTranslator.FromHtml(((PolyZone)CurrentPolygon.Tag).Color);
             CurrentPolygon.Stroke = new Pen(polygonColor) { Width = 2 };
-            CurrentPolygon.Fill = new SolidBrush(Color.FromArgb(60, polygonColor));
+            CurrentPolygon.Fill = new SolidBrush(Color.FromArgb(Opacity, polygonColor));
             CurrentPolygon.IsSelected = false;
 
 
@@ -737,7 +744,7 @@ namespace ParkPlaces.Controls
                 {
                     Tag = zone,
                     IsHitTestVisible = true,
-                    Fill = new SolidBrush(Color.FromArgb(60, polygonColor)),
+                    Fill = new SolidBrush(Color.FromArgb(Opacity, polygonColor)),
                     Stroke = new Pen(polygonColor) { Width = 2 }
                 });
             }

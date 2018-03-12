@@ -291,7 +291,7 @@ namespace ParkPlaces.Forms
             // manageUsersToolStripMenuItem
             // 
             this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
-            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.manageUsersToolStripMenuItem.Text = "Manage users";
             this.manageUsersToolStripMenuItem.Click += new System.EventHandler(this.manageUsersToolStripMenuItem_Click);
             // 
