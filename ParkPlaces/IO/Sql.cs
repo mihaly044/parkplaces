@@ -62,17 +62,18 @@ namespace ParkPlaces.IO
         /// <summary>
         /// Check if a table with a given name exists on the SQL server
         /// </summary>
-        /// <param name="tableName"></param>
         /// <param name="dbName"></param>
+        /// <param name="tableName"></param>
         /// <returns></returns>
-        private bool IsTableExists(string tableName, string dbName)
+        private bool IsTableExists(string dbName, string tableName)
         {
             using (var cmd =
-                new MySqlCommand("SELECT count(*) FROM information_schema.TABLES WHERE(TABLE_SCHEMA = '@dbName') AND(TABLE_NAME = '@tableName')")
+                new MySqlCommand("SELECT count(*) FROM information_schema.TABLES WHERE(TABLE_SCHEMA = @dbName) AND(TABLE_NAME = @tableName)")
                 { Connection = GetConnection(true) })
             {
-                cmd.Parameters.AddWithValue("@dbName", dbName);
+                cmd.Parameters.AddWithValue("@dbName", Database);
                 cmd.Parameters.AddWithValue("@tableName", tableName);
+
                 return int.Parse(cmd.ExecuteScalar().ToString()) >= 1;
             }
         }
@@ -83,7 +84,7 @@ namespace ParkPlaces.IO
         /// </summary>
         private void SetupDb()
         {
-            if (!IsDatabaseExists(Database) || !IsTableExists(Database, "users"))
+            if (!IsDatabaseExists(Database) || !IsTableExists(Database, "cities"))
             {
                 using (var cmd1 = new MySqlCommand(Properties.Resources.parkplaces)
                 { Connection = GetConnection(true) })
