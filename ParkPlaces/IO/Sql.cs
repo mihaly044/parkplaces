@@ -71,7 +71,7 @@ namespace ParkPlaces.IO
                 new MySqlCommand("SELECT count(*) FROM information_schema.TABLES WHERE(TABLE_SCHEMA = @dbName) AND(TABLE_NAME = @tableName)")
                 { Connection = GetConnection(true) })
             {
-                cmd.Parameters.AddWithValue("@dbName", Database);
+                cmd.Parameters.AddWithValue("@dbName", dbName);
                 cmd.Parameters.AddWithValue("@tableName", tableName);
 
                 return int.Parse(cmd.ExecuteScalar().ToString()) >= 1;
