@@ -59,7 +59,7 @@ CREATE TABLE `users` (
   `username` varchar(20) NOT NULL,
   `password` varchar(255) NOT NULL,
   `groupid` int(11) NOT NULL,
-  `creatorid` int(11) NOT NULL
+  `creatorid` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
