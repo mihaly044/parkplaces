@@ -19,10 +19,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `parkplaces`
+-- Adatbázis: `***REMOVED***`
 --
-CREATE DATABASE IF NOT EXISTS `parkplaces` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `parkplaces`;
+CREATE DATABASE IF NOT EXISTS `***REMOVED***` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `***REMOVED***`;
 
 -- --------------------------------------------------------
 

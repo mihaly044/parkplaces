@@ -44,19 +44,47 @@ namespace ParkPlaces.IO
         }
 
         /// <summary>
-        /// Check if the required database schema exists.
-        /// Create it if not
+        /// Check if a database with a given name exist on the SQL server
         /// </summary>
-        private void SetupDb()
+        /// <param name="dbName"></param>
+        /// <returns></returns>
+        private bool IsDatabaseExists(string dbName)
         {
             using (var cmd =
                 new MySqlCommand("SELECT COUNT(*) FROM information_schema.schemata WHERE SCHEMA_NAME = @dbName")
                 { Connection = GetConnection(true) })
             {
                 cmd.Parameters.AddWithValue("@dbName", Database);
-                var count = cmd.ExecuteScalar();
+                return int.Parse(cmd.ExecuteScalar().ToString()) >= 1;
+            }
+        }
 
-                if (int.Parse(count.ToString()) >= 1) return;
+        /// <summary>
+        /// Check if a table with a given name exists on the SQL server
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="dbName"></param>
+        /// <returns></returns>
+        private bool IsTableExists(string tableName, string dbName)
+        {
+            using (var cmd =
+                new MySqlCommand("SELECT count(*) FROM information_schema.TABLES WHERE(TABLE_SCHEMA = '@dbName') AND(TABLE_NAME = '@tableName')")
+                { Connection = GetConnection(true) })
+            {
+                cmd.Parameters.AddWithValue("@dbName", dbName);
+                cmd.Parameters.AddWithValue("@tableName", tableName);
+                return int.Parse(cmd.ExecuteScalar().ToString()) >= 1;
+            }
+        }
+
+        /// <summary>
+        /// Check if the required database schema exists.
+        /// Create it if not
+        /// </summary>
+        private void SetupDb()
+        {
+            if (!IsDatabaseExists(Database) || !IsTableExists(Database, "users"))
+            {
                 using (var cmd1 = new MySqlCommand(Properties.Resources.parkplaces)
                 { Connection = GetConnection(true) })
                 {
