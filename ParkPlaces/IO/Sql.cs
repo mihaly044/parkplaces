@@ -222,8 +222,8 @@ namespace ParkPlaces.IO
             }
 
             using (var cmd = new MySqlCommand(
-                "INSERT INTO zones (cityid, color, fee, service_na, description, timetable) VALUES" +
-                "(@cityid, @color, @fee, @service_na, @description, @timetable)") { Connection = GetConnection() })
+                "INSERT INTO zones (cityid, color, fee, service_na, description, timetable, common_name) VALUES" +
+                "(@cityid, @color, @fee, @service_na, @description, @timetable, @common_name)") { Connection = GetConnection() })
             {
 
                 var zoneId = 1;
@@ -231,7 +231,8 @@ namespace ParkPlaces.IO
                 {
                     new MySqlParameter("@cityid", MySqlDbType.String), new MySqlParameter("@color", MySqlDbType.String),
                     new MySqlParameter("@fee", MySqlDbType.String), new MySqlParameter("@service_na", MySqlDbType.String),
-                    new MySqlParameter("@description", MySqlDbType.String), new MySqlParameter("@timetable", MySqlDbType.String)
+                    new MySqlParameter("@description", MySqlDbType.String), new MySqlParameter("@timetable", MySqlDbType.String),
+                    new MySqlParameter("@common_name", MySqlDbType.String)
                 });
 
 
@@ -243,6 +244,7 @@ namespace ParkPlaces.IO
                     cmd.Parameters[3].Value = zone.ServiceNa;
                     cmd.Parameters[4].Value = zone.Description;
                     cmd.Parameters[5].Value = zone.Timetable;
+                    cmd.Parameters[6].Value = zone.Zoneid;
 
                     cmd.ExecuteNonQuery();
 
@@ -325,7 +327,7 @@ namespace ParkPlaces.IO
                         ServiceNa = rd["service_na"].ToString(),
                         Timetable = rd["timetable"].ToString(),
                         Fee = long.Parse(rd["fee"].ToString()),
-                        Zoneid = "TODO: Fix this"
+                        Zoneid = rd["common_name"].ToString()
                     };
 
                     using (MySqlCommand cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]}") { Connection = geometryConnection })
