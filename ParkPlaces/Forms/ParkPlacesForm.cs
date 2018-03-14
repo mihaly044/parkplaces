@@ -25,11 +25,16 @@ namespace ParkPlaces.Forms
         {
             InitializeComponent();
 
+            // Workaround to hide the white strip
+            // between the map and the menustrip
             var tsRenderer = new TsRenderer();
             menuStrip.Renderer = tsRenderer;
             toolStrip.Renderer = tsRenderer;
             statusStrip.Renderer = tsRenderer;
 
+            // Anonymous function for IOHandler's OnUpdateChangedEventHandler
+            // Specifies what happens when IOHandler invokes the aftermentioned
+            // event
             IoHandler.Instance.OnUpdateChangedEventHandler += (s, updateProcessChangedArgs) =>
             {
                 toolStripProgressBar.Visible = true;
@@ -56,44 +61,81 @@ namespace ParkPlaces.Forms
             };
         }
 
+        /// <summary>
+        /// Display the mouse cursor's position in a label
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Map_MouseMove(object sender, MouseEventArgs e)
         {
             lblMouse.Text = Map.FromLocalToLatLng(e.X, e.Y).ToString();
         }
 
+        /// <summary>
+        /// Reset the drawPolygonButton GUI control stat
+        /// </summary>
+        /// <param name="polygon">The polygon on the map that has finished drawing</param>
         private void Map_DrawPolygonEnd(Polygon polygon)
         {
             drawPolygonButton.Checked = false;
         }
 
-        private void Map_VerticlesChanged(VerticleChangedArg verticleChangedArg)
-        {
-            lblShapesCount.Text =
-                $"{verticleChangedArg.ShapesCount} shapes and {verticleChangedArg.VerticlesCount} verticles";
-        }
-
-        private void Map_OnMapZoomChanged()
-        {
-            if (lblZoom.Visible)
-                lblZoom.Text = $"Zoom: {Map.Zoom}";
-        }
-
-        private void googleMapsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Map.MapProvider = GMapProviders.GoogleMap;
-        }
-
-        private void openStreetMapToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Map.MapProvider = GMapProviders.OpenStreetMap;
-        }
-
+        /// <summary>
+        /// Begin drawing a polygon
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void drawPolygonButton_Click(object sender, EventArgs e)
         {
             drawPolygonButton.Checked = true;
             Map.BeginDrawPolygon();
         }
 
+        /// <summary>
+        /// Display and update the total verticles count
+        /// </summary>
+        /// <param name="verticleChangedArg"></param>
+        private void Map_VerticlesChanged(VerticleChangedArg verticleChangedArg)
+        {
+            lblShapesCount.Text =
+                $"{verticleChangedArg.ShapesCount} shapes and {verticleChangedArg.VerticlesCount} verticles";
+        }
+
+        /// <summary>
+        /// Display and update zoom level
+        /// </summary>
+        private void Map_OnMapZoomChanged()
+        {
+            if (lblZoom.Visible)
+                lblZoom.Text = $"Zoom: {Map.Zoom}";
+        }
+
+        /// <summary>
+        /// Used for changing the map provider
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void googleMapsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Map.MapProvider = GMapProviders.GoogleMap;
+        }
+
+        /// <summary>
+        /// Used for changing the map provider
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void openStreetMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Map.MapProvider = GMapProviders.OpenStreetMap;
+        }
+
+
+        /// <summary>
+        /// Removes a polygon from the map
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RemovePolygonButton_Click(object sender, EventArgs e)
         {
             if (Map.CurrentPolygon == null && !Map.IsDrawingPolygon)
@@ -102,26 +144,52 @@ namespace ParkPlaces.Forms
                 Map.RemovePolygon(Map.CurrentPolygon);
         }
 
+        /// <summary>
+        /// Specify an initial text for the label that displays
+        /// the current zoom level of the map
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ParkPlacesForm_Shown(object sender, EventArgs e)
         {
             lblZoom.Text = $"Zoom: {Map.Zoom}";
         }
 
+        /// <summary>
+        /// Exits the application
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        /// <summary>
+        /// Unloads all shapes, markers and verticles from the map 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void closeCurrentSessionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Map.UnloadSession();
         }
 
+        /// <summary>
+        /// Download zone data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void forceUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Map.LoadPolygons(true);
         }
 
+        /// <summary>
+        /// Open shape data from the JSON file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (
@@ -138,6 +206,11 @@ namespace ParkPlaces.Forms
             }
         }
 
+        /// <summary>
+        /// Serialize shape data into a JSON file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (
@@ -154,6 +227,12 @@ namespace ParkPlaces.Forms
             }
         }
 
+        /// <summary>
+        /// Shows a form that allows the user to point the map
+        /// to given coordinates
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void coordinateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var dlg = new GotoCoordinatesForm())
@@ -166,6 +245,12 @@ namespace ParkPlaces.Forms
             }
         }
 
+        /// <summary>
+        /// Shows a form that allows the user to point the map
+        /// to a given address
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void addressToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var dlg = new GotoAddressForm())
@@ -178,11 +263,20 @@ namespace ParkPlaces.Forms
             }
         }
 
+        /// <summary>
+        /// Calls OnFormLoad
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ParkPlacesForm_Load(object sender, EventArgs e)
         {
             OnFormLoad();
         }
 
+        /// <summary>
+        /// Sets default values for each important attribute
+        /// and shows the login form
+        /// </summary>
         private void OnFormLoad()
         {
             Text = "ParkPlaces Editor";
@@ -219,6 +313,11 @@ namespace ParkPlaces.Forms
             loadingForm.LoadDataAsync();
         }
 
+        /// <summary>
+        /// Logout procedure
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Hide();
@@ -256,11 +355,20 @@ namespace ParkPlaces.Forms
             MessageBox.Show("Done.");
         }
 
+        /// <summary>
+        /// Shows the users management window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new ManageUsersForm(LoggedInUser).ShowDialog(this);
         }
 
+        /// <summary>
+        /// Close  all forms that are associated 
+        /// with this application
+        /// </summary>
         private void CloseAllForms()
         {
             var fc = Application.OpenForms;

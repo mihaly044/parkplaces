@@ -9,6 +9,9 @@ namespace ParkPlaces.Forms
 {
     public partial class LoginForm : Form
     {
+        /// <summary>
+        /// Get user data from the login form
+        /// </summary>
         public User User { get; private set; }
 
         public LoginForm()
@@ -17,6 +20,11 @@ namespace ParkPlaces.Forms
             DialogResult = DialogResult.Cancel;
         }
 
+        /// <summary>
+        /// Occurs when the user clicks on the login button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
             User = Sql.Instance.AuthenticateUser(textBoxUserName.Text, textBoxPassword.Text);
@@ -38,26 +46,43 @@ namespace ParkPlaces.Forms
             }
         }
 
+        /// <summary>
+        /// Exit the application
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnExit_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
+        /// <summary>
+        /// This event handler is assigned to both textboxes on the form
+        /// and responsible for starting the login procedure on Enter keypress
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void textBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
                 btnLogin.PerformClick();
         }
 
+        /// <summary>
+        /// Load and fill in default user credientals from
+        /// the configuration file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoginForm_Load(object sender, EventArgs e)
         {
             // Fill in default credientals if given
-            var dbSect = ConfigurationManager.GetSection("DefaultLogin") as NameValueCollection;
-            if (dbSect == null) return;
+            var defaultLogin = ConfigurationManager.GetSection("DefaultLogin") as NameValueCollection;
+            if (defaultLogin == null) return;
 
-            textBoxUserName.Text = dbSect["username"];
-            textBoxPassword.Text = dbSect["password"];
+            textBoxUserName.Text = defaultLogin["username"];
+            textBoxPassword.Text = defaultLogin["password"];
         }
     }
 }

@@ -54,6 +54,14 @@ namespace ParkPlaces.IO
             }
         }
 
+        /// <summary>
+        /// Download zone data from nemzetimobilfizetes.hu
+        /// </summary>
+        /// <param name="saveToDisk">Specifies if the downloaded data should be saved into a file
+        /// for further usage</param>
+        /// <param name="forceUpdate">Force the download even if the last downloaded data's age does not
+        /// exceed <see cref="_updateInterval"/>days</param>
+        /// <returns></returns>
         public async Task<Dto2Object> UpdateAsync(bool saveToDisk = false, bool forceUpdate = false)
         {
             if (!GetUpdateNeeded() && !forceUpdate)
@@ -99,6 +107,11 @@ namespace ParkPlaces.IO
             return dto;
         }
 
+        /// <summary>
+        /// Read a Dto2Object from a JSON file
+        /// </summary>
+        /// <param name="file">Full location of the json file</param>
+        /// <returns></returns>
         public static Dto2Object ReadDtoFromJson(string file)
         {
             try
@@ -115,6 +128,11 @@ namespace ParkPlaces.IO
             }
         }
 
+        /// <summary>
+        /// Serialize all zones into a JSON file
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="dto"></param>
         public static void WriteDtoToJson(string file, Dto2Object dto)
         {
             File.WriteAllText(file, dto.ToJson());
