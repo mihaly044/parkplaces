@@ -43,7 +43,6 @@ namespace ParkPlaces.Forms
             this.lblZoom = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblMouse = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblShapesCount = new System.Windows.Forms.ToolStripStatusLabel();
-            this.Map = new ParkPlaces.Controls.Map();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +63,7 @@ namespace ParkPlaces.Forms
             this.coordinateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveButton = new System.Windows.Forms.ToolStripButton();
+            this.Map = new ParkPlaces.Controls.Map();
             this.toolStripContainer.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -168,42 +168,6 @@ namespace ParkPlaces.Forms
             this.lblShapesCount.Name = "lblShapesCount";
             this.lblShapesCount.Size = new System.Drawing.Size(52, 17);
             this.lblShapesCount.Text = "               ";
-            // 
-            // Map
-            // 
-            this.Map.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Map.BackColor = System.Drawing.Color.Transparent;
-            this.Map.Bearing = 0F;
-            this.Map.CanDragMap = true;
-            this.Map.DisplayVersionInfo = true;
-            this.Map.EmptyTileColor = System.Drawing.Color.Navy;
-            this.Map.GrayScaleMode = false;
-            this.Map.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
-            this.Map.IsDrawingPolygon = false;
-            this.Map.LevelsKeepInMemmory = 5;
-            this.Map.Location = new System.Drawing.Point(0, 0);
-            this.Map.MarkersEnabled = true;
-            this.Map.MaxZoom = 20;
-            this.Map.MinZoom = 8;
-            this.Map.MouseWheelZoomEnabled = true;
-            this.Map.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionWithoutCenter;
-            this.Map.Name = "Map";
-            this.Map.NegativeMode = false;
-            this.Map.PolygonsEnabled = true;
-            this.Map.RetryLoadTile = 0;
-            this.Map.RoutesEnabled = false;
-            this.Map.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
-            this.Map.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
-            this.Map.ShowTileGridLines = false;
-            this.Map.Size = new System.Drawing.Size(1029, 555);
-            this.Map.TabIndex = 0;
-            this.Map.Zoom = 15D;
-            this.Map.OnDrawPolygonEnd += new ParkPlaces.Controls.Map.DrawPolygonEnd(this.Map_DrawPolygonEnd);
-            this.Map.OnVerticlesChanged += new ParkPlaces.Controls.Map.VerticlesChanged(this.Map_VerticlesChanged);
-            this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
-            this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
             // 
             // menuStrip
             // 
@@ -372,6 +336,42 @@ namespace ParkPlaces.Forms
             this.saveButton.Size = new System.Drawing.Size(35, 22);
             this.saveButton.Text = "Save";
             this.saveButton.Click += new System.EventHandler(this.SaveButton_ClickAsync);
+            // 
+            // Map
+            // 
+            this.Map.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Map.BackColor = System.Drawing.Color.Transparent;
+            this.Map.Bearing = 0F;
+            this.Map.CanDragMap = true;
+            this.Map.EmptyTileColor = System.Drawing.Color.Navy;
+            this.Map.GrayScaleMode = false;
+            this.Map.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
+            this.Map.IsDrawingPolygon = false;
+            this.Map.LevelsKeepInMemmory = 5;
+            this.Map.Location = new System.Drawing.Point(0, 0);
+            this.Map.MarkersEnabled = true;
+            this.Map.MaxZoom = 20;
+            this.Map.MinZoom = 8;
+            this.Map.MouseWheelZoomEnabled = true;
+            this.Map.MouseWheelZoomType = GMap.NET.MouseWheelZoomType.MousePositionWithoutCenter;
+            this.Map.Name = "Map";
+            this.Map.NegativeMode = false;
+            this.Map.PolygonsEnabled = true;
+            this.Map.RetryLoadTile = 0;
+            this.Map.RoutesEnabled = false;
+            this.Map.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
+            this.Map.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
+            this.Map.ShowTileGridLines = false;
+            this.Map.Size = new System.Drawing.Size(1029, 555);
+            this.Map.TabIndex = 0;
+            this.Map.ZoneOpacity = 80;
+            this.Map.Zoom = 15D;
+            this.Map.OnDrawPolygonEnd += new ParkPlaces.Controls.Map.DrawPolygonEnd(this.Map_DrawPolygonEnd);
+            this.Map.OnVerticlesChanged += new ParkPlaces.Controls.Map.VerticlesChanged(this.Map_VerticlesChanged);
+            this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
+            this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
             // 
             // ParkPlacesForm
             // 
