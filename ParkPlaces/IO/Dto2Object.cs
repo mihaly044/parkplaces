@@ -89,6 +89,18 @@ namespace ParkPlaces.IO
     public partial class Dto2Object
     {
         public static Dto2Object FromJson(string json) => JsonConvert.DeserializeObject<Dto2Object>(json, Converter.Settings);
+
+        public void Reset()
+        {
+            foreach (var zone in Zones)
+            {
+                zone.Geometry.Clear();
+                zone.Geometry.TrimExcess();
+            }
+
+            Zones.Clear();
+            Zones.TrimExcess();
+        }
     }
 
     public static class Serialize

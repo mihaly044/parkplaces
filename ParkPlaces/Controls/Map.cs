@@ -708,6 +708,8 @@ namespace ParkPlaces.Controls
         /// </summary>
         public async void LoadPolygons(bool forceUpdate = false, string file = "")
         {
+            _dtoObject?.Reset();
+
             if (file != string.Empty)
                 _dtoObject = IoHandler.ReadDtoFromJson(file);
             else if (forceUpdate)
@@ -767,8 +769,11 @@ namespace ParkPlaces.Controls
         /// Reset the map to its initial state with no 
         /// shapes and markers present
         /// </summary>
-        public void UnloadSession()
+        public void UnloadSession(bool resetDto = false)
         {
+            if(resetDto)
+                _dtoObject?.Reset();
+
             Polygons.Clear();
             PolygonRects.Clear();
             TopLayer.Clear();
@@ -776,6 +781,7 @@ namespace ParkPlaces.Controls
             ResetCenter();
             UpdateVerticlesCount();
         }
+        
 
         /// <summary>
         /// Resets the map to the original center point
