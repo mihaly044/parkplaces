@@ -769,8 +769,9 @@ namespace ParkPlaces.Controls
         /// </summary>
         public void UnloadSession()
         {
-            Polygons.Polygons.Clear();
-            PolygonRects.Markers.Clear();
+            Polygons.Clear();
+            PolygonRects.Clear();
+            TopLayer.Clear();
 
             ResetCenter();
             UpdateVerticlesCount();
