@@ -172,7 +172,7 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void closeCurrentSessionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Map.UnloadSession();
+            Map.UnloadSession(true);
         }
 
         /// <summary>
@@ -281,12 +281,12 @@ namespace ParkPlaces.Forms
         {
             Text = "ParkPlaces Editor";
 
-            Map.UnloadSession();
+            Map.UnloadSession(true);
 
             var loginForm = new LoginForm();
             if (loginForm.ShowDialog(this) != DialogResult.OK)
             {
-                Environment.Exit(0);
+                Application.Exit();
             }
 
             Text += $" / Logged in as {loginForm.User.UserName} with {loginForm.User.GroupRole} access /";
