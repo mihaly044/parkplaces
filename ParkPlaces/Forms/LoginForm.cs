@@ -27,6 +27,12 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            // Save selected DB configuration
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings["DBConnection"].Value = comboDBConnection.SelectedIndex == 1 ? "alt" : "main";
+            config.Save();
+            ConfigurationManager.RefreshSection("appSettings");
+
             User = Sql.Instance.AuthenticateUser(textBoxUserName.Text, textBoxPassword.Text);
 
             if (User == null)
@@ -83,6 +89,10 @@ namespace ParkPlaces.Forms
 
             textBoxUserName.Text = defaultLogin["username"];
             textBoxPassword.Text = defaultLogin["password"];
+
+            // Select DB connection
+            var dbConnection = ConfigurationManager.AppSettings["DBConnection"];
+            comboDBConnection.SelectedIndex = dbConnection == "alt" ? 1 : 0;
         }
     }
 }

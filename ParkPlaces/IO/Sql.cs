@@ -99,7 +99,22 @@ namespace ParkPlaces.IO
         /// </summary>
         private void LoadDbCredientals()
         {
-            var dbSect = ConfigurationManager.GetSection("DBConnection") as NameValueCollection;
+            // Switch between alt and main db connections based on App.config
+            var configSection = "";
+            var connectionMode = ConfigurationManager.AppSettings["DBConnection"];
+            switch (connectionMode)
+            {
+                case "alt":
+                    configSection = "AltDBConnection";
+                    break;
+                case "main":
+                    configSection = "DBConnection";
+                    break;
+                default:
+                    throw new Exception("Invalid configuration value fouund in DBConnectiion");
+            }
+
+            var dbSect = ConfigurationManager.GetSection(configSection) as NameValueCollection;
             if (dbSect == null) return;
             Server = dbSect["server"];
             Database = dbSect["database"];

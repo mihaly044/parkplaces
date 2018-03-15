@@ -37,13 +37,15 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboDBConnection = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(321, 99);
+            this.btnLogin.Location = new System.Drawing.Point(321, 122);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 23);
             this.btnLogin.TabIndex = 2;
@@ -94,7 +96,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(240, 99);
+            this.btnExit.Location = new System.Drawing.Point(240, 122);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 3;
@@ -105,7 +107,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::ParkPlaces.Properties.Resources.if_lock_285646;
-            this.pictureBox1.Location = new System.Drawing.Point(13, 30);
+            this.pictureBox1.Location = new System.Drawing.Point(13, 44);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(83, 78);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -132,11 +134,34 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Please authenticate yourself:";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(107, 98);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Database:";
+            // 
+            // comboDBConnection
+            // 
+            this.comboDBConnection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboDBConnection.FormattingEnabled = true;
+            this.comboDBConnection.Items.AddRange(new object[] {
+            "Main",
+            "Alternative"});
+            this.comboDBConnection.Location = new System.Drawing.Point(172, 95);
+            this.comboDBConnection.Name = "comboDBConnection";
+            this.comboDBConnection.Size = new System.Drawing.Size(224, 21);
+            this.comboDBConnection.TabIndex = 9;
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(403, 130);
+            this.ClientSize = new System.Drawing.Size(403, 150);
+            this.Controls.Add(this.comboDBConnection);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnExit);
@@ -171,5 +196,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboDBConnection;
     }
 }
