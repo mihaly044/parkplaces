@@ -33,6 +33,8 @@ namespace ParkPlaces.Forms
             config.Save();
             ConfigurationManager.RefreshSection("appSettings");
 
+            Sql.ResetInstance();
+
             User = Sql.Instance.AuthenticateUser(textBoxUserName.Text, textBoxPassword.Text);
 
             if (User == null)

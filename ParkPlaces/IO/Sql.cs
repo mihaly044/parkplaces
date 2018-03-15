@@ -15,7 +15,6 @@ namespace ParkPlaces.IO
     {
         public static Sql Instance => _instance ?? (_instance = new Sql());
         private static Sql _instance;
-
         public string Server { get; set; }
         public string Database { get; set; }
         public string User { get; set; }
@@ -26,6 +25,14 @@ namespace ParkPlaces.IO
         /// Used to send notifications about loading progress
         /// </summary>
         public EventHandler<UpdateProcessChangedArgs> OnUpdateChangedEventHandler;
+
+        /// <summary>
+        /// Re-read configuration values
+        /// </summary>
+        public static void ResetInstance()
+        {
+            Instance.LoadDbCredientals();
+        }
 
         public Sql()
         {
@@ -54,7 +61,7 @@ namespace ParkPlaces.IO
                 new MySqlCommand("SELECT COUNT(*) FROM information_schema.schemata WHERE SCHEMA_NAME = @dbName")
                 { Connection = GetConnection(true) })
             {
-                cmd.Parameters.AddWithValue("@dbName", Database);
+                cmd.Parameters.AddWithValue("@dbName", dbName);
                 return int.Parse(cmd.ExecuteScalar().ToString()) >= 1;
             }
         }
@@ -143,6 +150,7 @@ namespace ParkPlaces.IO
                 mySqlConnection = new MySqlConnection(
                     $@"SERVER={Server};PORT={Port};DATABASE={Database};UID={User};PASSWORD={Password}");
             }
+
 
             try
             {
