@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using ParkPlaces.Extensions;
 using System.Collections.Specialized;
+
+#if !DEBUG
+    using System.Windows.Forms;
+#endif
+
 using CryptSharp;
 using ParkPlaces.Misc;
 
@@ -237,7 +242,7 @@ namespace ParkPlaces.IO
                 foreach (var city in cities)
                 {
                     cmd.Parameters[0].Value = city.Telepules;
-                    cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
 
                     cityIds.Add(city.Telepules, cityId);
                     cityId++;
@@ -269,7 +274,7 @@ namespace ParkPlaces.IO
                     cmd.Parameters[5].Value = zone.Timetable;
                     cmd.Parameters[6].Value = zone.Zoneid;
 
-                    cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
 
                     foreach (var geometry in zone.Geometry)
                     {
@@ -287,7 +292,7 @@ namespace ParkPlaces.IO
                             cmd1.Parameters[0].Value = zoneId;
                             cmd1.Parameters[1].Value = geometry.Lat;
                             cmd1.Parameters[2].Value = geometry.Lng;
-                            cmd1.ExecuteNonQuery();
+                            await cmd1.ExecuteNonQueryAsync();
                             cmd1.Connection.Close();
                         }
                     }
