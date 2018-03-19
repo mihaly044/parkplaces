@@ -544,7 +544,7 @@ namespace ParkPlaces.Controls
                 _currentDrawingPolygon.Points.Remove(_currentNewRectMaker.Position);
                 UpdatePolygonLocalPosition(_currentDrawingPolygon);
 
-                _currentDrawingPolygon.Tag = new PolyZone
+                var newZone = new PolyZone
                 {
                     Geometry = new List<Geometry>(),
                     Id = "",
@@ -552,11 +552,14 @@ namespace ParkPlaces.Controls
                     Color = ColorTranslator.ToHtml((_currentDrawingPolygon.Fill as SolidBrush)?.Color ?? Color.Black)
                 };
 
-                ((PolyZone)_currentDrawingPolygon.Tag).Geometry.AddRange(
+                newZone.Geometry.AddRange(
                     _currentDrawingPolygon.Points.Select(x => x.ToGeometry())
                 );
 
                 Map_OnPolygonClick(Polygons.Polygons.FirstOrDefault(polygon => polygon == _currentDrawingPolygon), null);
+
+                _currentDrawingPolygon.Tag = newZone;
+                _dtoObject.Zones.Add(newZone);
             }
             else
             {
@@ -776,7 +779,7 @@ namespace ParkPlaces.Controls
 
             Polygons.Clear();
             PolygonRects.Clear();
-            TopLayer.Clear();
+            //TopLayer.Clear();
 
             ResetCenter();
             UpdateVerticlesCount();
