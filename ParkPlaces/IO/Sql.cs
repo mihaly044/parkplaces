@@ -436,6 +436,25 @@ namespace ParkPlaces.IO
         }
 
         /// <summary>
+        /// Remove a zone from the database
+        /// </summary>
+        /// <param name="zone">The zone to be removed</param>
+        public void RemoveZone(PolyZone zone)
+        {
+            using(var cmd = new MySqlCommand("DELETE FROM zones WHERE id = @id") { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@id", zone.Id);
+                cmd.ExecuteNonQuery();
+            }
+
+            using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE zoneid = @id") { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@id", zone.Id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
         /// Calculate the count of zones
         /// </summary>
         /// <returns>The count of rows in the zones table</returns>
