@@ -320,8 +320,7 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Hide();
-            OnFormLoad();
+            Logout(true);
         }
 
         /// <summary>
@@ -338,7 +337,11 @@ namespace ParkPlaces.Forms
             }
 
             Hide();
-            OnFormLoad();
+
+            if(!forcedLogout)
+            {
+                OnFormLoad();
+            }
         }
 
 
