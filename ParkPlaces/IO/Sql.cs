@@ -221,12 +221,12 @@ namespace ParkPlaces.IO
         public async Task<bool> ExportToMySql(Dto2Object dto)
         {
             // Flush table
-            SimpleExecQuery("DELETE FROM geometry");
-            SimpleExecQuery("DELETE FROM zones");
-            SimpleExecQuery("DELETE FROM cities");
-            SimpleExecQuery("ALTER TABLE cities AUTO_INCREMENT = 0");
-            SimpleExecQuery("ALTER TABLE zones AUTO_INCREMENT = 0");
-            SimpleExecQuery("ALTER TABLE geometry AUTO_INCREMENT = 0");
+            Execute("DELETE FROM geometry");
+            Execute("DELETE FROM zones");
+            Execute("DELETE FROM cities");
+            Execute("ALTER TABLE cities AUTO_INCREMENT = 0");
+            Execute("ALTER TABLE zones AUTO_INCREMENT = 0");
+            Execute("ALTER TABLE geometry AUTO_INCREMENT = 0");
 
             // Insert data
             Dictionary<string, int> cityIds = new Dictionary<string, int>();
@@ -308,7 +308,7 @@ namespace ParkPlaces.IO
         /// </summary>
         /// <param name="query"></param>
         /// <returns>-1 if the execution fails. Otherwise the number of affected rows </returns>
-        public int SimpleExecQuery(string query)
+        public int Execute(string query)
         {
             try
             {
