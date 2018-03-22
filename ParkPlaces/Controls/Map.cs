@@ -345,18 +345,14 @@ namespace ParkPlaces.Controls
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    if (_currentRectMarker == null)
+                    if (Equals(_currentRectMarker, null))
                     {
                         _pointer.Position = FromLocalToLatLng(e.X, e.Y);
 
                         // Handles polygon dragging on the map
                         if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
                         {
-                            // TODO :
-                            // Fix DB update when moving polygon pts
-                            return;
-
-                            for (int i = 0; i < CurrentPolygon.Points.Count; i++)
+                            for (var i = 0; i < CurrentPolygon.Points.Count; i++)
                             {
                                 var pnew = new PointLatLng(
                                     CurrentPolygon.Points[i].Lat + _pointer.Position.Lat - _previousMouseLocation.Lat,
@@ -370,7 +366,6 @@ namespace ParkPlaces.Controls
                                 zone.Geometry[i] = pnew.ToGeometry(id);
                             }
 
-                            await Task.Run(()=> { Sql.Instance.UpdateZonePoints(CurrentPolygon); });
                             UpdatePolygonLocalPosition(CurrentPolygon);
                         }
                     }
@@ -391,23 +386,13 @@ namespace ParkPlaces.Controls
                             zone.Geometry[pIndex.Value] = pnew.ToGeometry(id);
                             UpdatePolygonLocalPosition(CurrentPolygon);
 
-                            await Task.Run( () => {  Sql.Instance.UpdatePoint(zone.Geometry[pIndex.Value]); } );
-
-                            CurrentPolygon.PointsHasChanged();
-
                             _pointer.Position = pnew;
+                            CurrentPolygon.PointsHasChanged();
+                            _currentRectMarker.Position = pnew;
 
-                            if (_currentRectMarker != null)
-                            {
-                                _currentRectMarker.Position = pnew;
-                            }
-                            else
-                            {
-                                // Should never ever get there, because here is already a check 
-                                // above. But somehow it still ends up here
-                                Debug.WriteLine(
-                                    "_currentRectMarker should not be null because it has been already checked!");
-                            }
+                            // TODO: Remove real-time update
+                            // It is very inefficent
+                            await Task.Run(() => { Sql.Instance.UpdatePoint(zone.Geometry[pIndex.Value]); });
                         }
                     }
                 }
@@ -437,7 +422,14 @@ namespace ParkPlaces.Controls
         protected override void OnMouseUp(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
+            {
                 _isMouseDown = !_isMouseDown;
+                if (CurrentPolygon != null)
+                {
+                    Sql.Instance.UpdatePoints(CurrentPolygon);
+                }
+
+            }
 
             base.OnMouseUp(e);
         }

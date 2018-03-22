@@ -127,7 +127,7 @@ namespace ParkPlaces.IO
 
         public static Geometry ToGeometry(this PointLatLng input, int id)
         {
-            return new Geometry(input, id);
+            return new Geometry(input, id) { IsModified = true };
         }
     }
 
