@@ -54,14 +54,5 @@ namespace ParkPlaces.Extensions
             }
             Sql.Instance.UpdateZoneInfo(polygon.GetZoneInfo());
         }
-
-        public static void UpdateZonePoints(this Polygon polygon)
-        {
-            if (polygon == null)
-            {
-                throw new ArgumentNullException(nameof(polygon));
-            }
-            Sql.Instance.UpdateZonePoints(polygon.GetZoneInfo());
-        }
     }
 }

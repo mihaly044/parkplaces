@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using ParkPlaces.Extensions;
 using System.Collections.Specialized;
-
+using System.Linq;
 #if !DEBUG
     using System.Windows.Forms;
 #endif
 
 using CryptSharp;
+using ParkPlaces.Map_shapes;
 using ParkPlaces.Misc;
+using ParkPlaces.Utils;
 
 namespace ParkPlaces.IO
 {
@@ -385,7 +387,7 @@ namespace ParkPlaces.IO
         /// Insert a zone into the database
         /// </summary>
         /// <param name="zone">The zone to be inserted</param>
-        public async void InsertZone(PolyZone zone)
+        public async Task<int> InsertZone(PolyZone zone)
         {
             using (var cmd = new MySqlCommand(
                 "INSERT INTO zones (cityid, color, fee, service_na, description, timetable, common_name) VALUES" +
@@ -432,6 +434,8 @@ namespace ParkPlaces.IO
                         cmd1.Connection.Close();
                     }
                 }
+
+                return (int)zoneId;
             }
         }
 
@@ -439,9 +443,11 @@ namespace ParkPlaces.IO
         /// Remove a zone from the database
         /// </summary>
         /// <param name="zone">The zone to be removed</param>
-        public async void RemoveZone(PolyZone zone)
+        public async void RemoveZone(Polygon polygon)
         {
-            using(var cmd = new MySqlCommand("DELETE FROM zones WHERE id = @id") { Connection = GetConnection() })
+            var zone = polygon.GetZoneInfo();
+
+            using (var cmd = new MySqlCommand("DELETE FROM zones WHERE id = @id") { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@id", zone.Id);
                 await cmd.ExecuteNonQueryAsync();
@@ -483,11 +489,19 @@ namespace ParkPlaces.IO
             }
         }
 
-        public async void UpdateZonePoints(PolyZone zone)
+        /// <summary>
+        /// Update all points of a polygon
+        /// Insert points into the database if necessary
+        /// </summary>
+        /// <param name="zone"></param>
+        public async void UpdateZonePoints(Polygon polygon)
         {
-            foreach (var geometry in zone.Geometry)
+            var zone = polygon.GetZoneInfo();
+
+            var i = 0;
+            foreach (var geometry in zone.Geometry.ToList())
             {
-                if ( geometry.Id == 0 || !IsPointExist(geometry))
+                if (geometry.Id == 0)
                 {
                     // New point. Insert into database
                     using (var cmd =
@@ -500,6 +514,9 @@ namespace ParkPlaces.IO
                         cmd.Parameters.AddWithValue("@zoneid", zone.Id);
 
                         await cmd.ExecuteNonQueryAsync();
+
+                        zone.Geometry.ElementAt(i++).Id = (int)cmd.LastInsertedId;
+
                         cmd.Connection.Close();
                     }
                 }
@@ -519,6 +536,28 @@ namespace ParkPlaces.IO
 
                     geometry.IsModified = false;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Update a point of a zone in the databse
+        /// </summary>
+        /// <param name="g">The point to be updated</param>
+        /// <summary>
+        /// Update a point of a zone in the databse
+        /// </summary>
+        /// <param name="g">The point to be updated</param>
+        public async void UpdatePoint(Geometry g)
+        {
+            using (var cmd = new MySqlCommand("UPDATE geometry SET lat = @lat, lng = @lng WHERE id = @id")
+                { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@lat", g.Lat);
+                cmd.Parameters.AddWithValue("@lng", g.Lng);
+                cmd.Parameters.AddWithValue("@id", g.Id);
+                await cmd.ExecuteNonQueryAsync();
+                cmd.Connection.Close();
+                g.IsModified = false;
             }
         }
 

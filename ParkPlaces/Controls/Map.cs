@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using GMap.NET;
 using GMap.NET.MapProviders;
@@ -58,7 +59,7 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// Indicates the current point selected of currentSelPolygon
         /// </summary>
-        private RectMarker _currentRectMaker;
+        private RectMarker _currentRectMarker;
 
         /// <summary>
         /// The current selected polygon. Null if nothing is selected
@@ -209,7 +210,7 @@ namespace ParkPlaces.Controls
         /// <param name="e"></param>
         private void Map_OnPolygonClick(GMapPolygon item, MouseEventArgs e)
         {
-            if (IsDrawingPolygon || item == null || _currentRectMaker != null)
+            if (IsDrawingPolygon || item == null || _currentRectMarker != null)
                 return;
             if (Zoom >= 12)
                 SelectPolygon((Polygon)item);
@@ -226,7 +227,7 @@ namespace ParkPlaces.Controls
             if (item is RectMarker marker && !_isMouseDown)
             {
                 marker.Pen.Color = Color.Red;
-                _currentRectMaker = marker;
+                _currentRectMarker = marker;
             }
         }
 
@@ -241,7 +242,7 @@ namespace ParkPlaces.Controls
             if (item is RectMarker marker)
             {
                 marker.Pen.Color = Color.Blue;
-                _currentRectMaker = null;
+                _currentRectMarker = null;
             }
         }
 
@@ -256,13 +257,13 @@ namespace ParkPlaces.Controls
         {
             if (_readOnly) return;
 
-            EndDrawPolygon(true);
+            EndDrawPolygonAsync(true);
         }
 
         /// <summary>
         /// Occurs when Cancel gets clicked on the context menu that appears in drawing mode
         /// </summary>
-        private void cancelToolStripMenuItem_Click(object sender, EventArgs e) => EndDrawPolygon(false);
+        private void cancelToolStripMenuItem_Click(object sender, EventArgs e) => EndDrawPolygonAsync(false);
 
         /// <summary>
         /// Called when the user clicks on "Delete point" ctx menu of a RectMarker
@@ -338,19 +339,23 @@ namespace ParkPlaces.Controls
         /// Gets called when the cursor moves on the map
         /// </summary>
         /// <param name="e">Mouse event arguments</param>
-        protected override void OnMouseMove(MouseEventArgs e)
+        protected override async void OnMouseMove(MouseEventArgs e)
         {
             if (!_readOnly)
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    if (_currentRectMaker == null)
+                    if (_currentRectMarker == null)
                     {
                         _pointer.Position = FromLocalToLatLng(e.X, e.Y);
 
                         // Handles polygon dragging on the map
                         if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
                         {
+                            // TODO :
+                            // Fix DB update when moving polygon pts
+                            return;
+
                             for (int i = 0; i < CurrentPolygon.Points.Count; i++)
                             {
                                 var pnew = new PointLatLng(
@@ -359,34 +364,51 @@ namespace ParkPlaces.Controls
                                 );
                                 CurrentPolygon.Points[i] = pnew;
 
-                                ((PolyZone) CurrentPolygon.Tag).Geometry[i] = pnew.ToGeometry();
+                                var zone = (PolyZone) CurrentPolygon.Tag;
+                                var id = zone.Geometry[i].Id;
+
+                                zone.Geometry[i] = pnew.ToGeometry(id);
                             }
 
+                            await Task.Run(()=> { Sql.Instance.UpdateZonePoints(CurrentPolygon); });
                             UpdatePolygonLocalPosition(CurrentPolygon);
-                            CurrentPolygon.UpdateZonePoints();
                         }
                     }
                     // Handles dragging a point of a polygon
                     else if (CurrentPolygon != null)
                     {
+
                         var pnew = FromLocalToLatLng(e.X, e.Y);
 
-                        var pIndex = (int?) _currentRectMaker.Tag;
+                        var pIndex = (int?) _currentRectMarker.Tag;
 
                         if (pIndex.HasValue && pIndex < CurrentPolygon.Points.Count)
                         {
                             CurrentPolygon.Points[pIndex.Value] = pnew;
-                            ((PolyZone) CurrentPolygon.Tag).Geometry[pIndex.Value] = pnew.ToGeometry();
+                            var zone = (PolyZone) CurrentPolygon.Tag;
+                            var id = zone.Geometry[pIndex.Value].Id;
 
-                            CurrentPolygon.UpdateZonePoints();
-
+                            zone.Geometry[pIndex.Value] = pnew.ToGeometry(id);
                             UpdatePolygonLocalPosition(CurrentPolygon);
+
+                            await Task.Run( () => {  Sql.Instance.UpdatePoint(zone.Geometry[pIndex.Value]); } );
+
+                            CurrentPolygon.PointsHasChanged();
+
+                            _pointer.Position = pnew;
+
+                            if (_currentRectMarker != null)
+                            {
+                                _currentRectMarker.Position = pnew;
+                            }
+                            else
+                            {
+                                // Should never ever get there, because here is already a check 
+                                // above. But somehow it still ends up here
+                                Debug.WriteLine(
+                                    "_currentRectMarker should not be null because it has been already checked!");
+                            }
                         }
-
-                        CurrentPolygon.PointsHasChanged();
-
-                        _pointer.Position = pnew;
-                        _currentRectMaker.Position = pnew;
                     }
                 }
                 else if (IsDrawingPolygon)
@@ -444,7 +466,7 @@ namespace ParkPlaces.Controls
                         // Show context menu
                         if (IsDrawingPolygon)
                             drawPolygonCtxMenu.Show(this, new Point(e.X, e.Y));
-                        else if (_currentRectMaker != null)
+                        else if (_currentRectMarker != null)
                             polygonPointCtxMenu.Show(this, new Point(e.X, e.Y));
                         break;
                 }
@@ -482,11 +504,11 @@ namespace ParkPlaces.Controls
             switch (e.KeyCode)
             {
                 case Keys.Escape:
-                    EndDrawPolygon(false);
+                    EndDrawPolygonAsync(false);
                     break;
 
                 case Keys.Enter:
-                    EndDrawPolygon(true);
+                    EndDrawPolygonAsync(true);
                     break;
             }
         }
@@ -538,7 +560,7 @@ namespace ParkPlaces.Controls
         /// Aka. Draw mode end
         /// <param name="save">Indicates whether to save or discard the current drawing polygon</param>
         /// </summary>
-        private void EndDrawPolygon(bool save)
+        private async void EndDrawPolygonAsync(bool save)
         {
             IsDrawingPolygon = false;
 
@@ -560,10 +582,11 @@ namespace ParkPlaces.Controls
                 };
 
                 newZone.Geometry.AddRange(
-                    _currentDrawingPolygon.Points.Select(x => x.ToGeometry())
+                    _currentDrawingPolygon.Points.Select(x => x.ToGeometry(0))
                 );
 
-                Sql.Instance.InsertZone(newZone);
+                var zoneId = await Sql.Instance.InsertZone(newZone);
+                newZone.Id = zoneId.ToString();
 
                 Map_OnPolygonClick(Polygons.Polygons.FirstOrDefault(polygon => polygon == _currentDrawingPolygon), null);
 
@@ -589,13 +612,13 @@ namespace ParkPlaces.Controls
         /// Add a new verticle to a given polygon
         /// </summary>
         /// <param name="p"></param>
-        public void AddPolygonPoint(Polygon p)
+        public async void AddPolygonPoint(Polygon p)
         {
-            var pIndex = (int?)_currentRectMaker?.Tag;
+            var pIndex = (int?)_currentRectMarker?.Tag;
             if (pIndex.HasValue)
             {
-                p.Points.Insert(pIndex.Value, _currentRectMaker.Position);
-                ((PolyZone)p.Tag).Geometry.Insert(pIndex.Value, _currentRectMaker.Position.ToGeometry());
+                p.Points.Insert(pIndex.Value, _currentRectMarker.Position);
+                ((PolyZone)p.Tag).Geometry.Insert(pIndex.Value, _currentRectMarker.Position.ToGeometry(0));
 
                 UpdateVerticlesCount();
                 UpdatePolygonLocalPosition(p);
@@ -609,7 +632,7 @@ namespace ParkPlaces.Controls
         /// <param name="p"></param>
         public void DeletePolygonPoint(Polygon p)
         {
-            var pIndex = (int?) _currentRectMaker?.Tag;
+            var pIndex = (int?) _currentRectMarker?.Tag;
             if(pIndex.HasValue)
             {
                 if(p.Points.Count - 1 < 3)
@@ -617,12 +640,14 @@ namespace ParkPlaces.Controls
                     if(MessageBox.Show("The resulting shape won't be closed therefore all of its points will get deleted. Continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         RemovePolygon(p);
+                        // TODO: Remove point from the database
                     }
                 }
                 else
                 {
                     // Delete from zone data
                     ((PolyZone)p.Tag).Geometry.RemoveAt(pIndex.Value);
+
                     // Delete from local data
                     p.Points.RemoveAt(pIndex.Value);
                     UpdatePolygonLocalPosition(p);
@@ -640,7 +665,7 @@ namespace ParkPlaces.Controls
         {
             if (IsDrawingPolygon)
             {
-                EndDrawPolygon(false);
+                EndDrawPolygonAsync(false);
             }
             else if (p != null)
             {
@@ -650,7 +675,7 @@ namespace ParkPlaces.Controls
                 {
                     Polygons.Polygons.RemoveAt(iPolygon);
 
-                    Sql.Instance.RemoveZone((PolyZone)p.Tag);
+                    Sql.Instance.RemoveZone(p);
 
                     ClearSelection();
                 }
@@ -671,7 +696,7 @@ namespace ParkPlaces.Controls
             CurrentPolygon.IsSelected = false;
 
 
-            _currentRectMaker = null;
+            _currentRectMarker = null;
 
             // Clear rect markers
             PolygonRects.Markers.Clear();

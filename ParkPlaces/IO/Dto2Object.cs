@@ -54,7 +54,7 @@ namespace ParkPlaces.IO
 
     public class Geometry
     {
-        public int Id { get; }
+        public int Id { get; set; }
 
         [JsonProperty("lat")]
         public double Lat
@@ -125,9 +125,9 @@ namespace ParkPlaces.IO
     {
         public static string ToJson(this Dto2Object self) => JsonConvert.SerializeObject(self, Converter.Settings);
 
-        public static Geometry ToGeometry(this PointLatLng input)
+        public static Geometry ToGeometry(this PointLatLng input, int id)
         {
-            return new Geometry(input, 0);
+            return new Geometry(input, id);
         }
     }
 
