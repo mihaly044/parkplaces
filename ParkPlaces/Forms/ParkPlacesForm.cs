@@ -287,6 +287,7 @@ namespace ParkPlaces.Forms
             if (loginForm.ShowDialog(this) != DialogResult.OK)
             {
                 Application.Exit();
+                return;
             }
 
             Text += $" / Logged in as {loginForm.User.UserName} with {loginForm.User.GroupRole} access /";
@@ -320,8 +321,7 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Hide();
-            OnFormLoad();
+            Logout(true);
         }
 
         /// <summary>
