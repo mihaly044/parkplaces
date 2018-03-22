@@ -169,7 +169,7 @@ namespace ParkPlaces.IO
                 Debugger.Break();
 #else
                 MessageBox.Show($"MySQL error {error}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(-1);
+                Application.Exit();
 #endif
             }
             return mySqlConnection;
