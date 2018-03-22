@@ -439,18 +439,18 @@ namespace ParkPlaces.IO
         /// Remove a zone from the database
         /// </summary>
         /// <param name="zone">The zone to be removed</param>
-        public void RemoveZone(PolyZone zone)
+        public async void RemoveZone(PolyZone zone)
         {
             using(var cmd = new MySqlCommand("DELETE FROM zones WHERE id = @id") { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@id", zone.Id);
-                cmd.ExecuteNonQuery();
+                await cmd.ExecuteNonQueryAsync();
             }
 
             using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE zoneid = @id") { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@id", zone.Id);
-                cmd.ExecuteNonQuery();
+                await cmd.ExecuteNonQueryAsync();
             }
         }
 
