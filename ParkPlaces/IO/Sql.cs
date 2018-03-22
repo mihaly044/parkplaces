@@ -363,7 +363,7 @@ namespace ParkPlaces.IO
                         var rd1 = await cmd1.ExecuteReaderAsync();
                         while (await rd1.ReadAsync())
                         {
-                            zone.Geometry.Add(new Geometry() { Lat = (double)rd1["lat"], Lng = (double)rd1["lng"] });
+                            zone.Geometry.Add(new Geometry((int)rd1["id"]) { Lat = (double)rd1["lat"], Lng = (double)rd1["lng"] });
                         }
                         rd1.Close();
 
@@ -451,6 +451,90 @@ namespace ParkPlaces.IO
             {
                 cmd.Parameters.AddWithValue("@id", zone.Id);
                 await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async void UpdateZoneInfo(PolyZone zone)
+        {
+            using (var cmd = new MySqlCommand(
+                    @"UPDATE zones SET cityid = @cityid, color = @color, fee = @fee, timetable = @timetable, common_name = @common_name")
+                {Connection = GetConnection()})
+            {
+                cmd.Parameters.AddRange(new[]
+                {
+                    new MySqlParameter("@cityid", MySqlDbType.String),
+                    new MySqlParameter("@color", MySqlDbType.String),
+                    new MySqlParameter("@fee", MySqlDbType.String),
+                    new MySqlParameter("@service_na", MySqlDbType.String),
+                    new MySqlParameter("@description", MySqlDbType.String),
+                    new MySqlParameter("@timetable", MySqlDbType.String),
+                    new MySqlParameter("@common_name", MySqlDbType.String),
+                });
+
+                cmd.Parameters[0].Value = 1;
+                cmd.Parameters[1].Value = zone.Color;
+                cmd.Parameters[2].Value = zone.Fee;
+                cmd.Parameters[3].Value = zone.ServiceNa;
+                cmd.Parameters[4].Value = zone.Description;
+                cmd.Parameters[5].Value = zone.Timetable;
+                cmd.Parameters[6].Value = zone.Zoneid;
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async void UpdateZonePoints(PolyZone zone)
+        {
+            foreach (var geometry in zone.Geometry)
+            {
+                if ( geometry.Id == 0 || !IsPointExist(geometry))
+                {
+                    // New point. Insert into database
+                    using (var cmd =
+                        new MySqlCommand(
+                                "INSERT INTO geometry (zoneid, lat, lng) VALUES (@zoneid, @lat, @lng)")
+                            { Connection = GetConnection() })
+                    {
+                        cmd.Parameters.AddWithValue("@lat", geometry.Lat);
+                        cmd.Parameters.AddWithValue("@lng", geometry.Lng);
+                        cmd.Parameters.AddWithValue("@zoneid", zone.Id);
+
+                        await cmd.ExecuteNonQueryAsync();
+                        cmd.Connection.Close();
+                    }
+                }
+                else if (geometry.IsModified)
+                {
+                    // Found a point that needs to be updated in
+                    // the database 
+                    using (var cmd = new MySqlCommand("UPDATE geometry SET lat = @lat, lng = @lng WHERE id = @id")
+                        {Connection = GetConnection()})
+                    {
+                        cmd.Parameters.AddWithValue("@lat", geometry.Lat);
+                        cmd.Parameters.AddWithValue("@lng", geometry.Lng);
+                        cmd.Parameters.AddWithValue("@id", geometry.Id);
+                        cmd.ExecuteNonQuery();
+                        cmd.Connection.Close();
+                    }
+
+                    geometry.IsModified = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check if a given point of a zone exists in the database
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns>True if the point exists in the geometry table</returns>
+        public bool IsPointExist(Geometry point)
+        {
+            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM geometry WHERE id = @id") { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@id", point.Id);
+                var count = cmd.ExecuteScalar();
+                cmd.Connection.Close();
+                return int.Parse(count.ToString()) > 0;
             }
         }
 

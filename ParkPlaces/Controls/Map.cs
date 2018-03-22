@@ -14,6 +14,7 @@ using GMap.NET.WindowsForms.Markers;
 using ParkPlaces.Forms;
 using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
+using ParkPlaces.Extensions;
 
 namespace ParkPlaces.Controls
 {
@@ -362,6 +363,7 @@ namespace ParkPlaces.Controls
                             }
 
                             UpdatePolygonLocalPosition(CurrentPolygon);
+                            CurrentPolygon.UpdateZonePoints();
                         }
                     }
                     // Handles dragging a point of a polygon
@@ -375,6 +377,8 @@ namespace ParkPlaces.Controls
                         {
                             CurrentPolygon.Points[pIndex.Value] = pnew;
                             ((PolyZone) CurrentPolygon.Tag).Geometry[pIndex.Value] = pnew.ToGeometry();
+
+                            CurrentPolygon.UpdateZonePoints();
 
                             UpdatePolygonLocalPosition(CurrentPolygon);
                         }
