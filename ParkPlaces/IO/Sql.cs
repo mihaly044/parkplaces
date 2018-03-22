@@ -382,6 +382,35 @@ namespace ParkPlaces.IO
         }
 
         /// <summary>
+        /// Insert a zone into the database
+        /// </summary>
+        /// <param name="zone">The zone to be inserted</param>
+        public async void InsertZone(PolyZone zone)
+        {
+            using (var cmd = new MySqlCommand("INSERT INTO zones ")
+            { Connection = GetConnection()})
+            {
+                cmd.Parameters.AddRange(new[]
+                {
+                    new MySqlParameter("@cityid", MySqlDbType.String), new MySqlParameter("@color", MySqlDbType.String),
+                    new MySqlParameter("@fee", MySqlDbType.String), new MySqlParameter("@service_na", MySqlDbType.String),
+                    new MySqlParameter("@description", MySqlDbType.String), new MySqlParameter("@timetable", MySqlDbType.String),
+                    new MySqlParameter("@common_name", MySqlDbType.String)
+                });
+
+                cmd.Parameters[0].Value = 0;
+                cmd.Parameters[1].Value = zone.Color;
+                cmd.Parameters[2].Value = zone.Fee;
+                cmd.Parameters[3].Value = zone.ServiceNa;
+                cmd.Parameters[4].Value = zone.Description;
+                cmd.Parameters[5].Value = zone.Timetable;
+                cmd.Parameters[6].Value = zone.Zoneid;
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        /// <summary>
         /// Calculate the count of zones
         /// </summary>
         /// <returns>The count of rows in the zones table</returns>
