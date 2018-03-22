@@ -549,12 +549,17 @@ namespace ParkPlaces.Controls
                     Geometry = new List<Geometry>(),
                     Id = "",
                     Zoneid = "",
+                    ServiceNa = "Service provider",
+                    Description = "New zone",
+                    Timetable = "",
                     Color = ColorTranslator.ToHtml((_currentDrawingPolygon.Fill as SolidBrush)?.Color ?? Color.Black)
                 };
 
                 newZone.Geometry.AddRange(
                     _currentDrawingPolygon.Points.Select(x => x.ToGeometry())
                 );
+
+                Sql.Instance.InsertZone(newZone);
 
                 Map_OnPolygonClick(Polygons.Polygons.FirstOrDefault(polygon => polygon == _currentDrawingPolygon), null);
 
@@ -640,6 +645,9 @@ namespace ParkPlaces.Controls
                 if (iPolygon > -1)
                 {
                     Polygons.Polygons.RemoveAt(iPolygon);
+
+                    Sql.Instance.RemoveZone((PolyZone)p.Tag);
+
                     ClearSelection();
                 }
             }
