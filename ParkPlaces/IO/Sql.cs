@@ -387,8 +387,10 @@ namespace ParkPlaces.IO
         /// <param name="zone">The zone to be inserted</param>
         public async void InsertZone(PolyZone zone)
         {
-            using (var cmd = new MySqlCommand("INSERT INTO zones ")
-            { Connection = GetConnection()})
+            using (var cmd = new MySqlCommand(
+                "INSERT INTO zones (cityid, color, fee, service_na, description, timetable, common_name) VALUES" +
+                "(@cityid, @color, @fee, @service_na, @description, @timetable, @common_name)")
+            { Connection = GetConnection() })
             {
                 cmd.Parameters.AddRange(new[]
                 {
@@ -398,7 +400,7 @@ namespace ParkPlaces.IO
                     new MySqlParameter("@common_name", MySqlDbType.String)
                 });
 
-                cmd.Parameters[0].Value = 0;
+                cmd.Parameters[0].Value = 1;
                 cmd.Parameters[1].Value = zone.Color;
                 cmd.Parameters[2].Value = zone.Fee;
                 cmd.Parameters[3].Value = zone.ServiceNa;
@@ -407,6 +409,29 @@ namespace ParkPlaces.IO
                 cmd.Parameters[6].Value = zone.Zoneid;
 
                 await cmd.ExecuteNonQueryAsync();
+                var zoneId = cmd.LastInsertedId;
+
+                foreach (var geometry in zone.Geometry)
+                {
+                    using (var cmd1 =
+                        new MySqlCommand(
+                            "INSERT INTO geometry (zoneid, lat, lng) VALUES (@zoneid, @lat, @lng)")
+                        { Connection = GetConnection() })
+                    {
+                        cmd1.Parameters.AddRange(new[]
+                        {
+                                new MySqlParameter("@zoneid", MySqlDbType.String),
+                                new MySqlParameter("@lat", MySqlDbType.Double),
+                                new MySqlParameter("@lng", MySqlDbType.Double)
+                            });
+
+                        cmd1.Parameters[0].Value = zoneId;
+                        cmd1.Parameters[1].Value = geometry.Lat;
+                        cmd1.Parameters[2].Value = geometry.Lng;
+                        await cmd1.ExecuteNonQueryAsync();
+                        cmd1.Connection.Close();
+                    }
+                }
             }
         }
 
