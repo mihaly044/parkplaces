@@ -74,5 +74,24 @@ namespace ParkPlaces.Extensions
                 return int.Parse(zone.Id);
             return -1;
         }
+
+        /// <summary>
+        /// Return the info object associated with a polygon
+        /// shown on the map
+        /// </summary>
+        /// <param name="polygon"></param>
+        /// <returns></returns>
+        public static PolyZone GetZoneInfo(this Polygon polygon)
+        {
+            if (polygon == null)
+            {
+                throw new ArgumentNullException(nameof(polygon));
+            }
+
+            if (polygon.Tag is PolyZone zone)
+                return zone;
+            else
+                return null;
+        }
     }
 }
