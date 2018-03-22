@@ -54,35 +54,53 @@ namespace ParkPlaces.IO
 
     public class Geometry
     {
+        public int Id { get; }
+
         [JsonProperty("lat")]
         public double Lat
         {
             get => _internalPoint.Lat;
-            set => _internalPoint.Lat = value;
+            set
+            {
+                _internalPoint.Lat = value;
+                IsModified = true;
+            }
         }
 
         [JsonProperty("long")]
         public double Lng
         {
             get => _internalPoint.Lng;
-            set => _internalPoint.Lng = value;
+            set
+            {
+                _internalPoint.Lng = value;
+                IsModified = true;
+            }
         }
+
+        /// <summary>
+        /// Indicates whether this point has been modified and needs to be updated
+        /// in the database
+        /// </summary>
+        public bool IsModified { get; set; }
 
         private PointLatLng _internalPoint;
 
-        public Geometry()
+        public Geometry(int id)
         {
+            Id = id;
             _internalPoint = new PointLatLng();
         }
 
-        public Geometry(PointLatLng input)
+        public Geometry(PointLatLng input, int id)
         {
             _internalPoint = input;
+            Id = id;
         }
 
         public static Geometry FromLatLng(PointLatLng input)
         {
-            return new Geometry(input);
+            return new Geometry(input, 0);
         }
     }
 
@@ -109,7 +127,7 @@ namespace ParkPlaces.IO
 
         public static Geometry ToGeometry(this PointLatLng input)
         {
-            return new Geometry(input);
+            return new Geometry(input, 0);
         }
     }
 
