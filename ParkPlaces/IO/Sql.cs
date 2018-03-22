@@ -494,7 +494,7 @@ namespace ParkPlaces.IO
         /// Insert points into the database if necessary
         /// </summary>
         /// <param name="zone"></param>
-        public async void UpdateZonePoints(Polygon polygon)
+        public async void UpdatePoints(Polygon polygon)
         {
             var zone = polygon.GetZoneInfo();
 
