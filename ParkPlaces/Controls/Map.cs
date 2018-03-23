@@ -99,6 +99,11 @@ namespace ParkPlaces.Controls
         /// <param name="verticleChangedArg">Contains total verticle and shapes count</param>
         public delegate void VerticlesChanged(VerticleChangedArg verticleChangedArg);
 
+        /// <summary>
+        /// Invvoked after dragging of a polygon or pointh has finished
+        /// </summary>
+        public delegate void DragEnd(Polygon polygon);
+
 
         #region Constructors
 
@@ -132,6 +137,7 @@ namespace ParkPlaces.Controls
         #region Events
         public event DrawPolygonEnd OnDrawPolygonEnd;
         public event VerticlesChanged OnVerticlesChanged;
+        public event DragEnd OnDragEnd;
         #endregion Events
 
         /// <summary>
@@ -392,7 +398,7 @@ namespace ParkPlaces.Controls
 
                             // TODO: Remove real-time update
                             // It is very inefficent
-                            await Task.Run(() => { Sql.Instance.UpdatePoint(zone.Geometry[pIndex.Value]); });
+                            //await Task.Run(() => { Sql.Instance.UpdatePoint(zone.Geometry[pIndex.Value]); });
                         }
                     }
                 }
@@ -426,7 +432,7 @@ namespace ParkPlaces.Controls
                 _isMouseDown = !_isMouseDown;
                 if (CurrentPolygon != null)
                 {
-                    Sql.Instance.UpdatePoints(CurrentPolygon);
+                    OnDragFinish(CurrentPolygon);
                 }
 
             }
@@ -862,6 +868,12 @@ namespace ParkPlaces.Controls
         public void SetReadOnly(bool readOnly)
         {
             _readOnly = readOnly;
+        }
+
+        protected void OnDragFinish(Polygon polygon)
+        {
+            OnDragEnd?.Invoke(polygon);
+            Sql.Instance.UpdatePoints(CurrentPolygon);
         }
         #endregion App logic
     }
