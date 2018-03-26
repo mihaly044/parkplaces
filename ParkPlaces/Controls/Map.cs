@@ -484,8 +484,14 @@ namespace ParkPlaces.Controls
 
             base.OnDoubleClick(e);
 
-            if (CurrentPolygon != null && CurrentPolygon.IsMouseOver)
-                new EditZoneForm((PolyZone)CurrentPolygon.Tag).Show();
+            if (CurrentPolygon == null || !CurrentPolygon.IsMouseOver) return;
+
+            var zone = (PolyZone) CurrentPolygon.Tag;
+            var editZoneForm = new EditZoneForm(zone);
+            if (editZoneForm.ShowDialog() == DialogResult.OK)
+            {
+                Sql.Instance.UpdateZoneInfo(editZoneForm.GetZone());
+            }
         }
 
         /// <summary>
@@ -638,7 +644,6 @@ namespace ParkPlaces.Controls
                     if(MessageBox.Show("A keletkező alakzat nyitott lesz, ezért az összes pontja el lesz távolítva. Folytatja?", "Figyelmeztetés", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         RemovePolygon(p);
-                        // TODO: Remove point from the database
                     }
                 }
                 else

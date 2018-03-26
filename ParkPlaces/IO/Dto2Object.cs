@@ -86,7 +86,8 @@ namespace ParkPlaces.IO
 
         private PointLatLng _internalPoint;
 
-        public Geometry(int id)
+        [JsonConstructor]
+        public Geometry(int id=0)
         {
             Id = id;
             _internalPoint = new PointLatLng();
