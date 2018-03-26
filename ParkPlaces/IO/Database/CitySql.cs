@@ -19,12 +19,12 @@ namespace ParkPlaces.IO.Database
             var cityList = new List<City>();
 
             using (var cmd = new MySqlCommand("SELECT * FROM cities")
-                { Connection = GetConnection() })
+                {Connection = GetConnection()})
             {
                 var rd = await cmd.ExecuteReaderAsync();
                 while (await rd.ReadAsync())
                 {
-                    cityList.Add(new City((int)rd["id"])
+                    cityList.Add(new City((int) rd["id"])
                     {
                         Name = rd["city"].ToString()
                     });
@@ -41,7 +41,8 @@ namespace ParkPlaces.IO.Database
         /// <returns></returns>
         public bool IsDuplicateCity(City city)
         {
-            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM cities WHERE city = @city") { Connection = GetConnection() })
+            using (var cmd =
+                new MySqlCommand("SELECT COUNT(*) FROM cities WHERE city = @city") {Connection = GetConnection()})
             {
                 cmd.Parameters.AddWithValue("@city", city);
                 return int.Parse(cmd.ExecuteScalar().ToString()) > 0;
@@ -56,11 +57,11 @@ namespace ParkPlaces.IO.Database
         public int InsertCity(City city)
         {
             using (var cmd = new MySqlCommand("INSERT INTO cities (city) VALUES (@city)")
-                { Connection = GetConnection() })
+                {Connection = GetConnection()})
             {
                 cmd.Parameters.AddWithValue("@city", city.Name);
                 cmd.ExecuteNonQuery();
-                return (int)cmd.LastInsertedId;
+                return (int) cmd.LastInsertedId;
             }
         }
 
@@ -73,7 +74,7 @@ namespace ParkPlaces.IO.Database
             if (city == null) return;
 
             using (var cmd = new MySqlCommand("DELETE FROM cities WHERE id = @id")
-                { Connection = GetConnection() })
+                {Connection = GetConnection()})
             {
                 cmd.Parameters.AddWithValue("@id", city.Id);
                 await cmd.ExecuteNonQueryAsync();
@@ -107,18 +108,35 @@ namespace ParkPlaces.IO.Database
         public City GetCityData(int id)
         {
             using (var cmd = new MySqlCommand("SELECT * FROM city WHERE id = @id")
-                { Connection = GetConnection() })
+                {Connection = GetConnection()})
             {
                 cmd.Parameters.AddWithValue("@id", id);
                 using (var reader = cmd.ExecuteReader())
                 {
                     if (reader.Read() && reader.HasRows)
                     {
-                        return City.FromString(reader["city"].ToString());
+                        return City.FromString(reader["city"].ToString(), id);
                     }
                 }
             }
             return null;
+        }
+
+        public int GetCityId(City city)
+        {
+            using (var cmd = new MySqlCommand("SELECT * FROM cities WHERE city = @city")
+                { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@city", city);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read() && reader.HasRows)
+                    {
+                        return (int) reader["id"];
+                    }
+                }
+            }
+            return 0;
         }
     }
 }

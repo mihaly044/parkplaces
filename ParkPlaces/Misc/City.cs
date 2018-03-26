@@ -15,9 +15,9 @@
             return Name;
         }
 
-        public static City FromString(string name)
+        public static City FromString(string name, int id = 0)
         {
-            return new City(){Name = name};
+            return new City(id){Name = name};
         }
     }
 }

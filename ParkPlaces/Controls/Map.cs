@@ -586,17 +586,27 @@ namespace ParkPlaces.Controls
                     Color = ColorTranslator.ToHtml((_currentDrawingPolygon.Fill as SolidBrush)?.Color ?? Color.Black)
                 };
 
-                newZone.Geometry.AddRange(
-                    _currentDrawingPolygon.Points.Select(x => x.ToGeometry(0))
-                );
+                var editZoneForm = new EditZoneForm(newZone);
+                if (editZoneForm.ShowDialog() == DialogResult.OK)
+                {
+                    newZone = editZoneForm.GetZone();
+                    newZone.Geometry.AddRange(
+                        _currentDrawingPolygon.Points.Select(x => x.ToGeometry(0))
+                    );
 
-                var zoneId = await Sql.Instance.InsertZone(newZone);
-                newZone.Id = zoneId.ToString();
+
+                    var zoneId = await Sql.Instance.InsertZone(newZone);
+                    newZone.Id = zoneId.ToString();
+
+                    _currentDrawingPolygon.Tag = newZone;
+                    _dtoObject.Zones.Add(newZone);
+                }
+                else
+                {
+                    Polygons.Polygons.Remove(_currentDrawingPolygon);
+                }
 
                 Map_OnPolygonClick(Polygons.Polygons.FirstOrDefault(polygon => polygon == _currentDrawingPolygon), null);
-
-                _currentDrawingPolygon.Tag = newZone;
-                _dtoObject.Zones.Add(newZone);
             }
             else
             {

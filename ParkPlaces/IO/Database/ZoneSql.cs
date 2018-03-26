@@ -93,7 +93,8 @@ namespace ParkPlaces.IO.Database
                     new MySqlParameter("@common_name", MySqlDbType.String)
                 });
 
-                cmd.Parameters[0].Value = 1;
+                var city = City.FromString(zone.Telepules);
+                cmd.Parameters[0].Value = !IsDuplicateCity(city) ? InsertCity(city) : GetCityId(city);
                 cmd.Parameters[1].Value = zone.Color;
                 cmd.Parameters[2].Value = zone.Fee;
                 cmd.Parameters[3].Value = zone.ServiceNa;
@@ -122,6 +123,7 @@ namespace ParkPlaces.IO.Database
                         cmd1.Parameters[1].Value = geometry.Lat;
                         cmd1.Parameters[2].Value = geometry.Lng;
                         await cmd1.ExecuteNonQueryAsync();
+                        geometry.Id = (int)cmd1.LastInsertedId;
                         cmd1.Connection.Close();
                     }
                 }
@@ -172,7 +174,7 @@ namespace ParkPlaces.IO.Database
 
 
                 var city = City.FromString(zone.Telepules);
-                cmd.Parameters[0].Value = !IsDuplicateCity(city) ? InsertCity(city) : city.Id;
+                cmd.Parameters[0].Value = !IsDuplicateCity(city) ? InsertCity(city) : GetCityId(city);
 
                 cmd.Parameters[1].Value = zone.Color;
                 cmd.Parameters[2].Value = zone.Fee;
