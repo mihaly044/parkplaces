@@ -698,6 +698,7 @@ namespace ParkPlaces.Controls
 
             // Clear rect markers
             PolygonRects.Markers.Clear();
+            CurrentPolygon = null;
         }
 
         /// <summary>
