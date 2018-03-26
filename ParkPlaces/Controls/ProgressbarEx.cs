@@ -32,6 +32,7 @@ namespace ParkPlaces.Controls
 
             rec.Width = (int)((rec.Width * scaleFactor) - 4);
             rec.Height -= InnerMargin * InnerMargin;
+            if (rec.Width == 0) rec.Width = 1;
             var brush = new LinearGradientBrush(rec, ForeColor, BackColor, LinearGradientMode.Vertical);
             e.Graphics.FillRectangle(brush, InnerMargin, InnerMargin, rec.Width, rec.Height);
         }
