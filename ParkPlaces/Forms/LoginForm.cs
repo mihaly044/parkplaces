@@ -39,12 +39,12 @@ namespace ParkPlaces.Forms
 
             if (User == null)
             {
-                MessageBox.Show("Invalid username or password.", "Error",
+                MessageBox.Show("Helytelen felhasználónév vagy jelszó.", "Hiba",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else if (!User.IsAuthenticated)
             {
-                MessageBox.Show("You do not have the appropriate rights to use this application.", "Error",
+                MessageBox.Show("Nincs megfelelő jogosultsága az alkalmazás használatához.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else

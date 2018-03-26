@@ -635,7 +635,7 @@ namespace ParkPlaces.Controls
             {
                 if(p.Points.Count - 1 < 3)
                 {
-                    if(MessageBox.Show("The resulting shape won't be closed therefore all of its points will get deleted. Continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    if(MessageBox.Show("A keletkező alakzat nyitott lesz, ezért az összes pontja el lesz távolítva. Folytatja?", "Figyelmeztetés", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         RemovePolygon(p);
                         // TODO: Remove point from the database

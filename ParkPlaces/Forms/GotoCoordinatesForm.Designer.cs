@@ -52,7 +52,7 @@
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 1;
-            this.cancelButton.Text = "Cancel";
+            this.cancelButton.Text = "Mégsee";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
@@ -61,9 +61,9 @@
             this.longitudeLabel.AutoSize = true;
             this.longitudeLabel.Location = new System.Drawing.Point(13, 13);
             this.longitudeLabel.Name = "longitudeLabel";
-            this.longitudeLabel.Size = new System.Drawing.Size(57, 13);
+            this.longitudeLabel.Size = new System.Drawing.Size(62, 13);
             this.longitudeLabel.TabIndex = 2;
-            this.longitudeLabel.Text = "Longitude:";
+            this.longitudeLabel.Text = "Hosszúság:";
             // 
             // longitudeTextBox
             // 
@@ -84,9 +84,9 @@
             this.latitudeLabel.AutoSize = true;
             this.latitudeLabel.Location = new System.Drawing.Point(14, 39);
             this.latitudeLabel.Name = "latitudeLabel";
-            this.latitudeLabel.Size = new System.Drawing.Size(45, 13);
+            this.latitudeLabel.Size = new System.Drawing.Size(58, 13);
             this.latitudeLabel.TabIndex = 4;
-            this.latitudeLabel.Text = "Latitude";
+            this.latitudeLabel.Text = "Szélesség:";
             // 
             // GotoCoordinatesForm
             // 
@@ -103,7 +103,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GotoCoordinatesForm";
-            this.Text = "Enter coordinates";
+            this.Text = "Koordináták megadása";
             this.ResumeLayout(false);
             this.PerformLayout();
 

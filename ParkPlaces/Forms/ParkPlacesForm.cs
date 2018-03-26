@@ -44,7 +44,7 @@ namespace ParkPlaces.Forms
                     toolStripProgressBar.Value = 0;
                     toolStripProgressBar.Minimum = 0;
                     toolStripProgressBar.Maximum = 100;
-                    toolStripStatusLabel.Text = "Starting update ...";
+                    toolStripStatusLabel.Text = "Frissítés indítása";
                     return;
                 }
 
@@ -52,12 +52,12 @@ namespace ParkPlaces.Forms
                 toolStripProgressBar.Value = updateProcessChangedArgs.CurrentChunks;
 
                 toolStripStatusLabel.Text =
-                    $"Downloaded {updateProcessChangedArgs.CurrentChunks} items of {updateProcessChangedArgs.TotalChunks}";
+                    $"Letöltve {updateProcessChangedArgs.CurrentChunks} város a(z) {updateProcessChangedArgs.TotalChunks}-ből";
 
                 if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
 
                 toolStripProgressBar.Visible = false;
-                toolStripStatusLabel.Text = "Ready";
+                toolStripStatusLabel.Text = "Kész";
             };
         }
 
@@ -98,7 +98,7 @@ namespace ParkPlaces.Forms
         private void Map_VerticlesChanged(VerticleChangedArg verticleChangedArg)
         {
             lblShapesCount.Text =
-                $"{verticleChangedArg.ShapesCount} shapes and {verticleChangedArg.VerticlesCount} verticles";
+                $"{verticleChangedArg.ShapesCount} alakzat és {verticleChangedArg.VerticlesCount} pont";
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace ParkPlaces.Forms
         private void RemovePolygonButton_Click(object sender, EventArgs e)
         {
             if (Map.CurrentPolygon == null && !Map.IsDrawingPolygon)
-                MessageBox.Show("No polygon has been selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Nem választott ki zónát.", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
                 Map.RemovePolygon(Map.CurrentPolygon);
         }
@@ -290,7 +290,7 @@ namespace ParkPlaces.Forms
                 return;
             }
 
-            Text += $" / Logged in as {loginForm.User.UserName} with {loginForm.User.GroupRole} access /";
+            Text += $" / Belépve mint {loginForm.User.UserName}, {loginForm.User.GroupRole} jogosultsággal /";
             LoggedInUser = loginForm.User;
 
 #pragma warning disable 4014
@@ -352,7 +352,7 @@ namespace ParkPlaces.Forms
 
             var sql = new Sql();
             await sql.ExportToMySql(dto);
-            MessageBox.Show("Done.");
+            MessageBox.Show("Kész.");
         }
 
         /// <summary>
