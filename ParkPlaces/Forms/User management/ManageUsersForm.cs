@@ -2,6 +2,7 @@
 using ParkPlaces.Misc;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ParkPlaces.Forms
@@ -74,6 +75,39 @@ namespace ParkPlaces.Forms
                 if (user.Id == _loggedInUser.Id)
                     listBoxUsers.SelectedItem = user;
             }
+        }
+
+        private readonly SolidBrush _selectedColor = new SolidBrush(Color.FromKnownColor(KnownColor.Highlight));
+        private readonly SolidBrush _unselectedColor = new SolidBrush(Color.White);
+        private readonly SolidBrush _adminColor = new SolidBrush(Color.Yellow);
+
+        private void listBoxUsers_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            e.DrawBackground();
+
+            if (e.Index >= 0 && e.Index < listBoxUsers.Items.Count)
+            {
+                var user = listBoxUsers.Items[e.Index] as User;
+                var selected = (e.State & DrawItemState.Selected) == DrawItemState.Selected;
+
+                SolidBrush backgroundColor;
+                if (user?.GroupRole == GroupRole.Admin && !selected)
+                {
+                    backgroundColor = _adminColor;
+                }
+                else if (selected)
+                {
+                    backgroundColor = _selectedColor;
+                }
+                else
+                {
+                    backgroundColor = _unselectedColor;
+                }
+                
+                e.Graphics.FillRectangle(backgroundColor, e.Bounds);
+                e.Graphics.DrawString(user?.ToString(), e.Font, Brushes.Black, listBoxUsers.GetItemRectangle(e.Index).Location);
+            }
+            e.DrawFocusRectangle();
         }
     }
 }
