@@ -9,7 +9,7 @@ namespace ParkPlaces.Forms
 {
     public partial class EditZoneForm : Form
     {
-        private PolyZone _zone;
+        private readonly PolyZone _zone;
         private List<City> _cities;
 
         public PolyZone GetZone() => _zone;
