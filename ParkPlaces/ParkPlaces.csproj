@@ -165,7 +165,10 @@
       <DependentUpon>ManageUsersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IO\IOHandler.cs" />
-    <Compile Include="IO\Sql.cs" />
+    <Compile Include="IO\Database\CitySql.cs" />
+    <Compile Include="IO\Database\Sql.cs" />
+    <Compile Include="IO\Database\UserSql+.cs" />
+    <Compile Include="IO\Database\ZoneSql.cs" />
     <Compile Include="IO\UpdateProcessChanged.cs" />
     <Compile Include="Map shapes\Layer.cs" />
     <Compile Include="Map shapes\Polygon.cs" />
