@@ -43,6 +43,7 @@ namespace ParkPlaces.Forms
             this.lblZoom = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblMouse = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblShapesCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.Map = new ParkPlaces.Controls.Map();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +64,6 @@ namespace ParkPlaces.Forms
             this.coordinateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveButton = new System.Windows.Forms.ToolStripButton();
-            this.Map = new ParkPlaces.Controls.Map();
             this.toolStripContainer.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -169,174 +169,6 @@ namespace ParkPlaces.Forms
             this.lblShapesCount.Size = new System.Drawing.Size(52, 17);
             this.lblShapesCount.Text = "               ";
             // 
-            // menuStrip
-            // 
-            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.menuStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
-            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.adminToolStripMenuItem,
-            this.helpToolStripMenuItem});
-            this.menuStrip.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(1029, 24);
-            this.menuStrip.TabIndex = 5;
-            this.menuStrip.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
-            this.saveToolStripMenuItem,
-            this.forceUpdateToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.closeCurrentSessionToolStripMenuItem,
-            this.logoutToolStripMenuItem,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.openToolStripMenuItem.Text = "Open from JSON";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.saveToolStripMenuItem.Text = "Export to JSON";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
-            // forceUpdateToolStripMenuItem
-            // 
-            this.forceUpdateToolStripMenuItem.Name = "forceUpdateToolStripMenuItem";
-            this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.forceUpdateToolStripMenuItem.Text = "Force update";
-            this.forceUpdateToolStripMenuItem.Click += new System.EventHandler(this.forceUpdateToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(182, 6);
-            // 
-            // closeCurrentSessionToolStripMenuItem
-            // 
-            this.closeCurrentSessionToolStripMenuItem.Name = "closeCurrentSessionToolStripMenuItem";
-            this.closeCurrentSessionToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.closeCurrentSessionToolStripMenuItem.Text = "Close current session";
-            this.closeCurrentSessionToolStripMenuItem.Click += new System.EventHandler(this.closeCurrentSessionToolStripMenuItem_Click);
-            // 
-            // logoutToolStripMenuItem
-            // 
-            this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.logoutToolStripMenuItem.Text = "Logout";
-            this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // adminToolStripMenuItem
-            // 
-            this.adminToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.manageUsersToolStripMenuItem});
-            this.adminToolStripMenuItem.Name = "adminToolStripMenuItem";
-            this.adminToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
-            this.adminToolStripMenuItem.Text = "Admin";
-            // 
-            // manageUsersToolStripMenuItem
-            // 
-            this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
-            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.manageUsersToolStripMenuItem.Text = "Manage users";
-            this.manageUsersToolStripMenuItem.Click += new System.EventHandler(this.manageUsersToolStripMenuItem_Click);
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.aboutToolStripMenuItem.Text = "About";
-            // 
-            // toolStrip
-            // 
-            this.toolStrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.drawPolygonButton,
-            this.removePolygonButton,
-            this.gotoButton,
-            this.saveButton});
-            this.toolStrip.Location = new System.Drawing.Point(3, 24);
-            this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(283, 25);
-            this.toolStrip.TabIndex = 4;
-            this.toolStrip.Text = "toolStrip";
-            // 
-            // drawPolygonButton
-            // 
-            this.drawPolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.drawPolygonButton.Name = "drawPolygonButton";
-            this.drawPolygonButton.Size = new System.Drawing.Size(80, 22);
-            this.drawPolygonButton.Text = "Add polygon";
-            this.drawPolygonButton.Click += new System.EventHandler(this.drawPolygonButton_Click);
-            // 
-            // removePolygonButton
-            // 
-            this.removePolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.removePolygonButton.Name = "removePolygonButton";
-            this.removePolygonButton.Size = new System.Drawing.Size(101, 22);
-            this.removePolygonButton.Text = "Remove polygon";
-            this.removePolygonButton.Click += new System.EventHandler(this.RemovePolygonButton_Click);
-            // 
-            // gotoButton
-            // 
-            this.gotoButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.coordinateToolStripMenuItem,
-            this.addressToolStripMenuItem});
-            this.gotoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.gotoButton.Name = "gotoButton";
-            this.gotoButton.Size = new System.Drawing.Size(55, 22);
-            this.gotoButton.Text = "Goto...";
-            // 
-            // coordinateToolStripMenuItem
-            // 
-            this.coordinateToolStripMenuItem.Name = "coordinateToolStripMenuItem";
-            this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.coordinateToolStripMenuItem.Text = "Coordinate";
-            this.coordinateToolStripMenuItem.Click += new System.EventHandler(this.coordinateToolStripMenuItem_Click);
-            // 
-            // addressToolStripMenuItem
-            // 
-            this.addressToolStripMenuItem.Name = "addressToolStripMenuItem";
-            this.addressToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.addressToolStripMenuItem.Text = "Address";
-            this.addressToolStripMenuItem.Click += new System.EventHandler(this.addressToolStripMenuItem_Click);
-            // 
-            // saveButton
-            // 
-            this.saveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.saveButton.Image = ((System.Drawing.Image)(resources.GetObject("saveButton.Image")));
-            this.saveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(35, 22);
-            this.saveButton.Text = "Save";
-            this.saveButton.Click += new System.EventHandler(this.SaveButton_ClickAsync);
-            // 
             // Map
             // 
             this.Map.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -372,6 +204,185 @@ namespace ParkPlaces.Forms
             this.Map.OnVerticlesChanged += new ParkPlaces.Controls.Map.VerticlesChanged(this.Map_VerticlesChanged);
             this.Map.OnMapZoomChanged += new GMap.NET.MapZoomChanged(this.Map_OnMapZoomChanged);
             this.Map.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Map_MouseMove);
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.menuStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.adminToolStripMenuItem,
+            this.helpToolStripMenuItem});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(1029, 24);
+            this.menuStrip.TabIndex = 5;
+            this.menuStrip.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.forceUpdateToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.closeCurrentSessionToolStripMenuItem,
+            this.logoutToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_53_62710;
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.openToolStripMenuItem.Text = "Open from JSON";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Export_File_40053;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.saveToolStripMenuItem.Text = "Export to JSON";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // forceUpdateToolStripMenuItem
+            // 
+            this.forceUpdateToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_update_64935;
+            this.forceUpdateToolStripMenuItem.Name = "forceUpdateToolStripMenuItem";
+            this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.forceUpdateToolStripMenuItem.Text = "Force update";
+            this.forceUpdateToolStripMenuItem.Click += new System.EventHandler(this.forceUpdateToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(182, 6);
+            // 
+            // closeCurrentSessionToolStripMenuItem
+            // 
+            this.closeCurrentSessionToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_cancel_48_10277;
+            this.closeCurrentSessionToolStripMenuItem.Name = "closeCurrentSessionToolStripMenuItem";
+            this.closeCurrentSessionToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.closeCurrentSessionToolStripMenuItem.Text = "Close current session";
+            this.closeCurrentSessionToolStripMenuItem.Click += new System.EventHandler(this.closeCurrentSessionToolStripMenuItem_Click);
+            // 
+            // logoutToolStripMenuItem
+            // 
+            this.logoutToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_logout_63128;
+            this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.logoutToolStripMenuItem.Text = "Logout";
+            this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_exit_6035;
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // adminToolStripMenuItem
+            // 
+            this.adminToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.manageUsersToolStripMenuItem});
+            this.adminToolStripMenuItem.Name = "adminToolStripMenuItem";
+            this.adminToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.adminToolStripMenuItem.Text = "Admin";
+            // 
+            // manageUsersToolStripMenuItem
+            // 
+            this.manageUsersToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Users_85409;
+            this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
+            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.manageUsersToolStripMenuItem.Text = "Manage users";
+            this.manageUsersToolStripMenuItem.Click += new System.EventHandler(this.manageUsersToolStripMenuItem_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Information_27854;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            // 
+            // toolStrip
+            // 
+            this.toolStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.drawPolygonButton,
+            this.removePolygonButton,
+            this.gotoButton,
+            this.saveButton});
+            this.toolStrip.Location = new System.Drawing.Point(3, 24);
+            this.toolStrip.Name = "toolStrip";
+            this.toolStrip.Size = new System.Drawing.Size(362, 25);
+            this.toolStrip.TabIndex = 4;
+            this.toolStrip.Text = "toolStrip";
+            // 
+            // drawPolygonButton
+            // 
+            this.drawPolygonButton.Image = global::ParkPlaces.Properties.Resources.if_draw_polygon_64148;
+            this.drawPolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.drawPolygonButton.Name = "drawPolygonButton";
+            this.drawPolygonButton.Size = new System.Drawing.Size(96, 22);
+            this.drawPolygonButton.Text = "Add polygon";
+            this.drawPolygonButton.Click += new System.EventHandler(this.drawPolygonButton_Click);
+            // 
+            // removePolygonButton
+            // 
+            this.removePolygonButton.Image = global::ParkPlaces.Properties.Resources.if_f_cross_256_282471;
+            this.removePolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.removePolygonButton.Name = "removePolygonButton";
+            this.removePolygonButton.Size = new System.Drawing.Size(117, 22);
+            this.removePolygonButton.Text = "Remove polygon";
+            this.removePolygonButton.Click += new System.EventHandler(this.RemovePolygonButton_Click);
+            // 
+            // gotoButton
+            // 
+            this.gotoButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.coordinateToolStripMenuItem,
+            this.addressToolStripMenuItem});
+            this.gotoButton.Image = global::ParkPlaces.Properties.Resources.if_Rounded___High_Ultra_Colour02___Maps_2250024;
+            this.gotoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.gotoButton.Name = "gotoButton";
+            this.gotoButton.Size = new System.Drawing.Size(71, 22);
+            this.gotoButton.Text = "Goto...";
+            // 
+            // coordinateToolStripMenuItem
+            // 
+            this.coordinateToolStripMenuItem.Name = "coordinateToolStripMenuItem";
+            this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.coordinateToolStripMenuItem.Text = "Coordinate";
+            this.coordinateToolStripMenuItem.Click += new System.EventHandler(this.coordinateToolStripMenuItem_Click);
+            // 
+            // addressToolStripMenuItem
+            // 
+            this.addressToolStripMenuItem.Name = "addressToolStripMenuItem";
+            this.addressToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addressToolStripMenuItem.Text = "Address";
+            this.addressToolStripMenuItem.Click += new System.EventHandler(this.addressToolStripMenuItem_Click);
+            // 
+            // saveButton
+            // 
+            this.saveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.saveButton.Image = ((System.Drawing.Image)(resources.GetObject("saveButton.Image")));
+            this.saveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(35, 22);
+            this.saveButton.Text = "Save";
+            this.saveButton.Click += new System.EventHandler(this.SaveButton_ClickAsync);
             // 
             // ParkPlacesForm
             // 

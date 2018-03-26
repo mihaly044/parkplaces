@@ -97,9 +97,119 @@ namespace ParkPlaces.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap if_53_62710 {
+            get {
+                object obj = ResourceManager.GetObject("if_53_62710", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_cancel_48_10277 {
+            get {
+                object obj = ResourceManager.GetObject("if_cancel_48_10277", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_draw_polygon_64148 {
+            get {
+                object obj = ResourceManager.GetObject("if_draw_polygon_64148", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_exit_6035 {
+            get {
+                object obj = ResourceManager.GetObject("if_exit_6035", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_Export_File_40053 {
+            get {
+                object obj = ResourceManager.GetObject("if_Export File_40053", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_f_cross_256_282471 {
+            get {
+                object obj = ResourceManager.GetObject("if_f-cross_256_282471", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_Information_27854 {
+            get {
+                object obj = ResourceManager.GetObject("if_Information_27854", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap if_lock_285646 {
             get {
                 object obj = ResourceManager.GetObject("if_lock_285646", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_logout_63128 {
+            get {
+                object obj = ResourceManager.GetObject("if_logout_63128", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_Rounded___High_Ultra_Colour02___Maps_2250024 {
+            get {
+                object obj = ResourceManager.GetObject("if_Rounded_-_High_Ultra_Colour02_-_Maps_2250024", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_update_64935 {
+            get {
+                object obj = ResourceManager.GetObject("if_update_64935", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap if_Users_85409 {
+            get {
+                object obj = ResourceManager.GetObject("if_Users_85409", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -132,8 +242,7 @@ namespace ParkPlaces.Properties {
         ///
         ////*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
         ////*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-        ////*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-        ////*!40101 S [rest of string was truncated]&quot;;.
+        ////*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTI [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string parkplaces {
             get {

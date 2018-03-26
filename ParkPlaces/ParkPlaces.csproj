@@ -261,6 +261,17 @@
     <None Include="Resources\parkplaces.sql" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\if_53_62710.png" />
+    <None Include="Resources\if_Export File_40053.png" />
+    <None Include="Resources\if_update_64935.png" />
+    <None Include="Resources\if_cancel_48_10277.png" />
+    <None Include="Resources\if_logout_63128.png" />
+    <None Include="Resources\if_exit_6035.png" />
+    <None Include="Resources\if_Users_85409.png" />
+    <None Include="Resources\if_Information_27854.png" />
+    <None Include="Resources\if_draw_polygon_64148.png" />
+    <None Include="Resources\if_f-cross_256_282471.png" />
+    <None Include="Resources\if_Rounded_-_High_Ultra_Colour02_-_Maps_2250024.png" />
     <Content Include="sampledata.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
