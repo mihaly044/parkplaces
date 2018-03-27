@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using ParkPlaces.Extensions;
@@ -244,11 +242,7 @@ namespace ParkPlaces.IO.Database
         }
 
         /// <summary>
-        /// Update a point of a zone in the databse
-        /// </summary>
-        /// <param name="g">The point to be updated</param>
-        /// <summary>
-        /// Update a point of a zone in the databse
+        /// Update a point of a zone in the database
         /// </summary>
         /// <param name="g">The point to be updated</param>
         public async void UpdatePoint(Geometry g)

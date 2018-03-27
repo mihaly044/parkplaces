@@ -8,6 +8,7 @@ using ParkPlaces.Map_shapes;
 using ParkPlaces.Controls;
 using ParkPlaces.IO.Database;
 using ParkPlaces.Misc;
+// ReSharper disable MethodSupportsCancellation
 
 namespace ParkPlaces.Forms
 {

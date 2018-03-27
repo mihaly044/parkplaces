@@ -6,7 +6,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using GMap.NET;
 using GMap.NET.MapProviders;
@@ -15,7 +14,6 @@ using GMap.NET.WindowsForms.Markers;
 using ParkPlaces.Forms;
 using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
-using ParkPlaces.Extensions;
 using ParkPlaces.IO.Database;
 
 namespace ParkPlaces.Controls
@@ -346,7 +344,7 @@ namespace ParkPlaces.Controls
         /// Gets called when the cursor moves on the map
         /// </summary>
         /// <param name="e">Mouse event arguments</param>
-        protected override async void OnMouseMove(MouseEventArgs e)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
             if (!_readOnly)
             {
@@ -627,7 +625,7 @@ namespace ParkPlaces.Controls
         /// Add a new verticle to a given polygon
         /// </summary>
         /// <param name="p"></param>
-        public async void AddPolygonPoint(Polygon p)
+        public void AddPolygonPoint(Polygon p)
         {
             var pIndex = (int?)_currentRectMarker?.Tag;
             if (pIndex.HasValue)

@@ -61,7 +61,7 @@ namespace ParkPlaces.Misc
         /// <summary>
         /// Indicates it is a newly created user
         /// </summary>
-        public bool IsNewUser { get { return Id == 0; } }
+        public bool IsNewUser => Id == 0;
 
         /// <summary>
         /// Holds the user's password.

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ParkPlaces.DotUtils.Net;
 // ReSharper disable FieldCanBeMadeReadOnly.Local
+// ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
 
 namespace ParkPlaces.IO
 {
