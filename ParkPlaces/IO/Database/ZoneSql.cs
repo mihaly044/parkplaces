@@ -156,7 +156,7 @@ namespace ParkPlaces.IO.Database
         public async void UpdateZoneInfo(PolyZone zone)
         {
             using (var cmd = new MySqlCommand(
-                    @"UPDATE zones SET cityid = @cityid, color = @color, fee = @fee, timetable = @timetable, common_name = @common_name, serrvice_na = @service_na WHERE id = @id")
+                    @"UPDATE zones SET cityid = @cityid, color = @color, fee = @fee, timetable = @timetable, common_name = @common_name, service_na = @service_na WHERE id = @id")
                 { Connection = GetConnection() })
             {
 
