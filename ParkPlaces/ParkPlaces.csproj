@@ -128,6 +128,12 @@
     <Compile Include="Extensions\Generic.cs" />
     <Compile Include="Extensions\PolygonEx.cs" />
     <Compile Include="Extensions\PrivateObjectEx.cs" />
+    <Compile Include="Forms\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\GotoAddressForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,6 +200,9 @@
     <Compile Include="Utils\PolygonalUtil.cs" />
     <EmbeddedResource Include="Controls\Map.resx">
       <DependentUpon>Map.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EditZoneForm.resx">
       <DependentUpon>EditZoneForm.cs</DependentUpon>
@@ -277,6 +286,7 @@
     <None Include="Resources\if_draw_polygon_64148.png" />
     <None Include="Resources\if_f-cross_256_282471.png" />
     <None Include="Resources\if_Rounded_-_High_Ultra_Colour02_-_Maps_2250024.png" />
+    <None Include="Resources\installerlogo.png" />
     <Content Include="sampledata.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

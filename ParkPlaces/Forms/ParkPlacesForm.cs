@@ -412,5 +412,10 @@ namespace ParkPlaces.Forms
                 Invoke(new Action(() => { Logout(true); }));
             }
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new AboutBox().Show();
+        }
     }
 }
