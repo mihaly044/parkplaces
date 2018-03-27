@@ -132,9 +132,9 @@ namespace ParkPlaces.Forms
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(12, 117);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 13);
+            this.label5.Size = new System.Drawing.Size(56, 13);
             this.label5.TabIndex = 10;
-            this.label5.Text = "Település";
+            this.label5.Text = "Település:";
             // 
             // comboBoxCities
             // 

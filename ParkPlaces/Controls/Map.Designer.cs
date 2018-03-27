@@ -36,8 +36,8 @@ namespace ParkPlaces.Controls
             this.finalizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cancelEscToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.polygonPointCtxMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.deletePointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addPointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deletePointToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drawPolygonCtxMenu.SuspendLayout();
             this.polygonPointCtxMenu.SuspendLayout();
             this.SuspendLayout();
@@ -49,20 +49,20 @@ namespace ParkPlaces.Controls
             this.cancelEscToolStripMenuItem});
             this.drawPolygonCtxMenu.Name = "drawPolygonCtxMenu";
             this.drawPolygonCtxMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.drawPolygonCtxMenu.Size = new System.Drawing.Size(152, 48);
+            this.drawPolygonCtxMenu.Size = new System.Drawing.Size(213, 48);
             // 
             // finalizeToolStripMenuItem
             // 
             this.finalizeToolStripMenuItem.Name = "finalizeToolStripMenuItem";
-            this.finalizeToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
-            this.finalizeToolStripMenuItem.Text = "Finalize (&Enter)";
+            this.finalizeToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.finalizeToolStripMenuItem.Text = "Zóna véglegesítése (Enter)";
             this.finalizeToolStripMenuItem.Click += new System.EventHandler(this.finalizeToolStripMenuItem_Click);
             // 
             // cancelEscToolStripMenuItem
             // 
             this.cancelEscToolStripMenuItem.Name = "cancelEscToolStripMenuItem";
-            this.cancelEscToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
-            this.cancelEscToolStripMenuItem.Text = "Cancel (&Esc)";
+            this.cancelEscToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
+            this.cancelEscToolStripMenuItem.Text = "Zóna elvetése (Esc)";
             this.cancelEscToolStripMenuItem.Click += new System.EventHandler(this.cancelToolStripMenuItem_Click);
             // 
             // polygonPointCtxMenu
@@ -72,21 +72,21 @@ namespace ParkPlaces.Controls
             this.deletePointToolStripMenuItem});
             this.polygonPointCtxMenu.Name = "polygonPointCtxMenu";
             this.polygonPointCtxMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.polygonPointCtxMenu.Size = new System.Drawing.Size(153, 70);
-            // 
-            // deletePointToolStripMenuItem
-            // 
-            this.deletePointToolStripMenuItem.Name = "deletePointToolStripMenuItem";
-            this.deletePointToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.deletePointToolStripMenuItem.Text = "Delete point";
-            this.deletePointToolStripMenuItem.Click += new System.EventHandler(this.deletePointToolStripMenuItem_Click);
+            this.polygonPointCtxMenu.Size = new System.Drawing.Size(207, 70);
             // 
             // addPointToolStripMenuItem
             // 
             this.addPointToolStripMenuItem.Name = "addPointToolStripMenuItem";
-            this.addPointToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.addPointToolStripMenuItem.Text = "Add point";
+            this.addPointToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.addPointToolStripMenuItem.Text = "Csomópont hozzáaadása";
             this.addPointToolStripMenuItem.Click += new System.EventHandler(this.addPointToolStripMenuItem_Click);
+            // 
+            // deletePointToolStripMenuItem
+            // 
+            this.deletePointToolStripMenuItem.Name = "deletePointToolStripMenuItem";
+            this.deletePointToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.deletePointToolStripMenuItem.Text = "Csomópont törlése";
+            this.deletePointToolStripMenuItem.Click += new System.EventHandler(this.deletePointToolStripMenuItem_Click);
             // 
             // Map
             // 

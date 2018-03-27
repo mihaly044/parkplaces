@@ -38,7 +38,7 @@ namespace ParkPlaces.Forms
 
             if (_user == null)
             {
-                Text = "New user";
+                Text = "Új felhasználó";
             }
         }
 

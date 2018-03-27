@@ -76,8 +76,14 @@ namespace ParkPlaces.Forms
 
             _zone.Fee = fee;
             _zone.ServiceNa = textBoxServiceNa.Text;
-
             _zone.Telepules = comboBoxCities.SelectedItem?.ToString() ?? comboBoxCities.Text;
+
+            if (_zone.Telepules == string.Empty)
+            {
+                MessageBox.Show("A városnév nem lehet üres", "Hiba", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
 
             _zone.Zoneid = textBoxCommonName.Text; 
 

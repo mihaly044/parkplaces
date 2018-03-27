@@ -314,7 +314,7 @@ namespace ParkPlaces.Forms
             // 
             this.aboutToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Information_27854;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.aboutToolStripMenuItem.Text = "Impresszum";
             // 
             // toolStrip
@@ -364,14 +364,14 @@ namespace ParkPlaces.Forms
             // 
             this.coordinateToolStripMenuItem.Name = "coordinateToolStripMenuItem";
             this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.coordinateToolStripMenuItem.Text = "Coordinate";
+            this.coordinateToolStripMenuItem.Text = "Koordináta";
             this.coordinateToolStripMenuItem.Click += new System.EventHandler(this.coordinateToolStripMenuItem_Click);
             // 
             // addressToolStripMenuItem
             // 
             this.addressToolStripMenuItem.Name = "addressToolStripMenuItem";
             this.addressToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addressToolStripMenuItem.Text = "Address";
+            this.addressToolStripMenuItem.Text = "Cím";
             this.addressToolStripMenuItem.Click += new System.EventHandler(this.addressToolStripMenuItem_Click);
             // 
             // saveButton

@@ -56,8 +56,12 @@ namespace ParkPlaces.Forms
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            Sql.Instance.RemoveUser(_users.Find(user => user.Id == ((User)(listBoxUsers.SelectedItem)).Id));
-            RefreshUsersListAsync();
+            if (MessageBox.Show("A fiók törlését nem lehet visszavonni. Folytatja?", "Figyelmeztetés",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.OK)
+            {
+                Sql.Instance.RemoveUser(_users.Find(user => user.Id == ((User)(listBoxUsers.SelectedItem)).Id));
+                RefreshUsersListAsync();
+            }
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
