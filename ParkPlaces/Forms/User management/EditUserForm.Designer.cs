@@ -95,7 +95,7 @@
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 6;
-            this.btnSave.Text = "Save";
+            this.btnSave.Text = "Mentés";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
@@ -105,7 +105,7 @@
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 7;
-            this.btnCancel.Text = "Cancel";
+            this.btnCancel.Text = "Mégse";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
@@ -126,7 +126,7 @@
             this.MaximizeBox = false;
             this.Name = "EditUserForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Edit user";
+            this.Text = "Felhasználó szerkesztése";
             this.Load += new System.EventHandler(this.EditUserForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

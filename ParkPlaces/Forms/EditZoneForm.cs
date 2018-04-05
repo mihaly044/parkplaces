@@ -77,6 +77,7 @@ namespace ParkPlaces.Forms
             _zone.Fee = fee;
             _zone.ServiceNa = textBoxServiceNa.Text;
             _zone.Telepules = comboBoxCities.SelectedItem?.ToString() ?? comboBoxCities.Text;
+            _zone.Timetable = textBoxTimetable.Text;
 
             if (_zone.Telepules == string.Empty)
             {
