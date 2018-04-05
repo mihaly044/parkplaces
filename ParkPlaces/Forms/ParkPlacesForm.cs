@@ -8,6 +8,7 @@ using ParkPlaces.Map_shapes;
 using ParkPlaces.Controls;
 using ParkPlaces.IO.Database;
 using ParkPlaces.Misc;
+using System.Diagnostics;
 // ReSharper disable MethodSupportsCancellation
 
 namespace ParkPlaces.Forms
@@ -343,18 +344,29 @@ namespace ParkPlaces.Forms
             OnFormLoad();
         }
 
-
-        // TODO: Make method async
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async void SaveButton_ClickAsync(object sender, EventArgs e)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             var dto = Map.GetDataObject();
             if (dto == null) return;
 
-            var sql = new Sql();
-            await Task.Run( () => {  sql.ExportToMySql(dto); } );
-            MessageBox.Show("Kész.");
+            Progress<int> progress = new Progress<int>();
+            progress.ProgressChanged += (sender2, progressPercentage) =>
+            {
+                toolStripProgressBar.Visible = true;
+                toolStripProgressBar.Value = progressPercentage;
+
+                toolStripStatusLabel.Text =
+                    $"Zónák feldolgozása ... {progressPercentage}%";
+
+
+                if (progressPercentage == 100)
+                {
+                    toolStripProgressBar.Visible = false;
+                    toolStripStatusLabel.Text = "Kész";
+                }
+            };
+
+            await Task.Run(() => { Sql.Instance.ExportToMySql(dto, progress); });
         }
 
         /// <summary>

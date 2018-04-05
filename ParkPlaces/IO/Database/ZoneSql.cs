@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -379,7 +380,7 @@ namespace ParkPlaces.IO.Database
         /// the database
         /// </summary>
         /// <param name="dto">The data transfer object that holds polygon data</param>
-        public async Task<bool> ExportToMySql(Dto2Object dto)
+        public void ExportToMySql(Dto2Object dto, IProgress<int> progress)
         {
             // Flush table
             Execute("DELETE FROM geometry");
@@ -389,7 +390,8 @@ namespace ParkPlaces.IO.Database
             Execute("ALTER TABLE zones AUTO_INCREMENT = 0");
             Execute("ALTER TABLE geometry AUTO_INCREMENT = 0");
 
-            
+            int doneSoFar = 0;
+            int lastReportedProgress = -1;
 
             using (var cmd = new MySqlCommand(
                     "INSERT INTO zones (cityid, color, fee, service_na, description, timetable, common_name) VALUES" +
@@ -418,7 +420,7 @@ namespace ParkPlaces.IO.Database
                     cmd.Parameters[5].Value = zone.Timetable;
                     cmd.Parameters[6].Value = zone.Zoneid;
 
-                    await cmd.ExecuteNonQueryAsync();
+                    cmd.ExecuteNonQuery();
                     zoneId = (int)cmd.LastInsertedId;
 
                     foreach (var geometry in zone.Geometry)
@@ -438,14 +440,21 @@ namespace ParkPlaces.IO.Database
                             cmd1.Parameters[0].Value = zoneId;
                             cmd1.Parameters[1].Value = geometry.Lat;
                             cmd1.Parameters[2].Value = geometry.Lng;
-                            await cmd1.ExecuteNonQueryAsync();
+                            cmd1.ExecuteNonQuery();
                             cmd1.Connection.Close();
                         }
                     }
+
+                    doneSoFar++;
+                    var progressPercentage = (int)((double)doneSoFar / dto.Zones.Count * 100);
+                    if (progressPercentage != lastReportedProgress)
+                    {
+                        progress.Report(progressPercentage);
+
+                        lastReportedProgress = progressPercentage;
+                    }
                 }
             }
-
-            return true;
         }
     }
 }
