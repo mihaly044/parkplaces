@@ -389,26 +389,7 @@ namespace ParkPlaces.IO.Database
             Execute("ALTER TABLE zones AUTO_INCREMENT = 0");
             Execute("ALTER TABLE geometry AUTO_INCREMENT = 0");
 
-            // Insert data
-            Dictionary<string, int> cityIds = new Dictionary<string, int>();
-
-            var cities = dto.Zones.DistinctBy(zone => zone.Telepules);
-
-            using (var cmd = new MySqlCommand("INSERT INTO cities (city) VALUES (@city)") { Connection = GetConnection() })
-            {
-                var cityId = 1;
-
-                cmd.Parameters.Add("@city", MySqlDbType.String);
-
-                foreach (var city in cities)
-                {
-                    cmd.Parameters[0].Value = city.Telepules;
-                    await cmd.ExecuteNonQueryAsync();
-
-                    cityIds.Add(city.Telepules, cityId);
-                    cityId++;
-                }
-            }
+            
 
             using (var cmd = new MySqlCommand(
                     "INSERT INTO zones (cityid, color, fee, service_na, description, timetable, common_name) VALUES" +
@@ -425,10 +406,13 @@ namespace ParkPlaces.IO.Database
                     new MySqlParameter("@common_name", MySqlDbType.String)
                 });
 
+                zoneId = (int)cmd.LastInsertedId;
 
                 foreach (var zone in dto.Zones)
                 {
-                    cmd.Parameters[0].Value = cityIds[zone.Telepules];
+                    var city = City.FromString(zone.Telepules);
+
+                    cmd.Parameters[0].Value = !IsDuplicateCity(city) ? InsertCity(city) : GetCityId(city);
                     cmd.Parameters[1].Value = zone.Color;
                     cmd.Parameters[2].Value = zone.Fee;
                     cmd.Parameters[3].Value = zone.ServiceNa;
@@ -459,7 +443,6 @@ namespace ParkPlaces.IO.Database
                             cmd1.Connection.Close();
                         }
                     }
-                    zoneId++;
                 }
             }
 
