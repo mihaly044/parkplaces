@@ -2,6 +2,8 @@
 using System;
 using System.Windows.Forms;
 using ParkPlaces.IO.Database;
+using MySql.Data.MySqlClient;
+using System.Threading.Tasks;
 // ReSharper disable RedundantCast
 
 // ReSharper disable ArrangeRedundantParentheses
@@ -32,11 +34,19 @@ namespace ParkPlaces.Forms
             Load:
             try
             {
-                _dto = await Sql.Instance.LoadZones();
+                Progress<int> progress = new Progress<int>();
+
+                progress.ProgressChanged += (sender, progressPercentage) =>
+                {
+                    progressBar.Value = progressPercentage;
+                };
+
+                await Task.Run(()=> { _dto = Sql.Instance.LoadZones(progress); });
+
                 OnReadyEventHandler?.Invoke(this, _dto);
                 Close();
 
-            } catch (Exception)
+            } catch (MySqlException)
             {
                 var dlgResult = MessageBox.Show("Unable to communicate with the database server.\n" +
                     "Press retry to try again or cancel to close the application.", "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);

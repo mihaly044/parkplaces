@@ -67,7 +67,7 @@ namespace ParkPlaces.IO.Database
         /// Load polygon data from the database
         /// </summary>
         /// <returns>Data transfer object that holds the data</returns>
-        public async Task<Dto2Object> LoadZones()
+        public Dto2Object LoadZones(IProgress<int> progress)
         {
             var dto = new Dto2Object
             {
@@ -76,17 +76,18 @@ namespace ParkPlaces.IO.Database
             };
 
 
-            var zoneCount = await GetZoneCount();
-            var cProcess = new UpdateProcessChangedArgs(zoneCount);
-            var actualCount = 0;
+            var zoneCount = GetZoneCount();
+            int doneSoFar = 0;
+            int lastReportedProgress = -1;
+            progress.Report(0);
 
             using (var cmd = new MySqlCommand("SELECT * FROM zones INNER JOIN cities ON cities.id = zones.cityid")
                 { Connection = GetConnection() })
             {
                 var geometryConnection = GetConnection();
 
-                var rd = await cmd.ExecuteReaderAsync();
-                while (await rd.ReadAsync())
+                var rd = cmd.ExecuteReader();
+                while (rd.Read())
                 {
                     var zone = new PolyZone()
                     {
@@ -103,20 +104,24 @@ namespace ParkPlaces.IO.Database
 
                     using (MySqlCommand cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]}") { Connection = geometryConnection })
                     {
-                        var rd1 = await cmd1.ExecuteReaderAsync();
-                        while (await rd1.ReadAsync())
+                        var rd1 = cmd1.ExecuteReader();
+                        while (rd1.Read())
                         {
                             zone.Geometry.Add(new Geometry((int)rd1["id"]) { Lat = (double)rd1["lat"], Lng = (double)rd1["lng"] });
                         }
                         rd1.Close();
-
-                        actualCount++;
-
-                        cProcess.UpdateChunks(zoneCount - actualCount);
-                        OnUpdateChangedEventHandler?.Invoke(this, cProcess);
                     }
 
                     dto.Zones.Add(zone);
+
+                    doneSoFar++;
+                    var progressPercentage = (int)((double)doneSoFar / zoneCount * 100);
+                    if (progressPercentage != lastReportedProgress)
+                    {
+                        progress.Report(progressPercentage);
+
+                        lastReportedProgress = progressPercentage;
+                    }
                 }
                 geometryConnection.Close();
                 rd.Close();
@@ -350,11 +355,11 @@ namespace ParkPlaces.IO.Database
         /// Calculate the count of zones
         /// </summary>
         /// <returns>The count of rows in the zones table</returns>
-        public async Task<int> GetZoneCount()
+        public int GetZoneCount()
         {
             using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM zones") { Connection = GetConnection() })
             {
-                var count = await cmd.ExecuteScalarAsync();
+                var count = cmd.ExecuteScalar();
                 return int.Parse(count.ToString());
             }
         }
