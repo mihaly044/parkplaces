@@ -406,8 +406,6 @@ namespace ParkPlaces.IO.Database
                     new MySqlParameter("@common_name", MySqlDbType.String)
                 });
 
-                zoneId = (int)cmd.LastInsertedId;
-
                 foreach (var zone in dto.Zones)
                 {
                     var city = City.FromString(zone.Telepules);
@@ -421,6 +419,7 @@ namespace ParkPlaces.IO.Database
                     cmd.Parameters[6].Value = zone.Zoneid;
 
                     await cmd.ExecuteNonQueryAsync();
+                    zoneId = (int)cmd.LastInsertedId;
 
                     foreach (var geometry in zone.Geometry)
                     {
