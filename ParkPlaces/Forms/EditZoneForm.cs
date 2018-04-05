@@ -29,6 +29,7 @@ namespace ParkPlaces.Forms
             textBoxFee.Text = _zone.Fee.ToString();
             textBoxServiceNa.Text = _zone.ServiceNa;
             textBoxTimetable.Text = _zone.Timetable;
+            textBoxCommonName.Text = _zone.Zoneid;
 
             if (_zone.Color != string.Empty)
             {
