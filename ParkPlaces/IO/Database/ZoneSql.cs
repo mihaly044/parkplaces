@@ -461,6 +461,8 @@ namespace ParkPlaces.IO.Database
                     }
                 }
             }
+
+            progress.Report(100);
         }
     }
 }
