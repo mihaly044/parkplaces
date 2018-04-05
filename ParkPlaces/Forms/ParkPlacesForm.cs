@@ -349,6 +349,8 @@ namespace ParkPlaces.Forms
             var dto = Map.GetDataObject();
             if (dto == null) return;
 
+            saveButton.Enabled = false;
+
             Progress<int> progress = new Progress<int>();
             progress.ProgressChanged += (sender2, progressPercentage) =>
             {
@@ -362,6 +364,7 @@ namespace ParkPlaces.Forms
                 {
                     toolStripProgressBar.Visible = false;
                     toolStripStatusLabel.Text = "Kész";
+                    saveButton.Enabled = true;
                 }
             };
 
