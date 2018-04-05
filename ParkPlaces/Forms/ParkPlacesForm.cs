@@ -306,8 +306,6 @@ namespace ParkPlaces.Forms
             Map.SetReadOnly(loginForm.User.GroupRole < GroupRole.Editor);
 
             var loadingForm = new LoadingForm();
-            loadingForm.Show();
-
             loadingForm.OnReadyEventHandler += (s, dto) =>
             {
                 Map.ConstructGui(dto);
@@ -315,6 +313,8 @@ namespace ParkPlaces.Forms
             };
 
             loadingForm.LoadDataAsync();
+
+            loadingForm.ShowDialog();
         }
 
         /// <summary>
