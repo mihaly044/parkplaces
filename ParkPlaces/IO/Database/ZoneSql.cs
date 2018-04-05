@@ -249,7 +249,7 @@ namespace ParkPlaces.IO.Database
             var i = 0;
             foreach (var geometry in zone.Geometry.ToList())
             {
-                if (geometry.Id == 0)
+                if (geometry.Id == 0 && zone.Geometry[i].Id == 0)
                 {
                     Debug.WriteLine($"Insert pt {geometry} of {zone.Id}");
 
@@ -287,7 +287,7 @@ namespace ParkPlaces.IO.Database
                         cmd.Connection.Close();
                     }
 
-                    geometry.IsModified = false;
+                    zone.Geometry[i].IsModified = false;
                 }
             }
 
