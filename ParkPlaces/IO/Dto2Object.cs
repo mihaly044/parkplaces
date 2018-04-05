@@ -91,7 +91,6 @@ namespace ParkPlaces.IO
         {
             Id = id;
             _internalPoint = new PointLatLng();
-            IsModified = false;
         }
 
         public Geometry(PointLatLng input, int id)
