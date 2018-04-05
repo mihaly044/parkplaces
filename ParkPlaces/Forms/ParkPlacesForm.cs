@@ -358,7 +358,6 @@ namespace ParkPlaces.Forms
                 toolStripStatusLabel.Text =
                     $"Zónák feldolgozása ... {progressPercentage}%";
 
-
                 if (progressPercentage == 100)
                 {
                     toolStripProgressBar.Visible = false;

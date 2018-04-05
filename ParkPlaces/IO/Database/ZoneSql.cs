@@ -392,6 +392,7 @@ namespace ParkPlaces.IO.Database
 
             int doneSoFar = 0;
             int lastReportedProgress = -1;
+            progress.Report(0);
 
             using (var cmd = new MySqlCommand(
                     "INSERT INTO zones (cityid, color, fee, service_na, description, timetable, common_name) VALUES" +
