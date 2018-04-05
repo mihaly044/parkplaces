@@ -246,6 +246,12 @@ namespace ParkPlaces.IO.Database
         {
             var zone = polygon.GetZoneInfo();
 
+            if(!IsZoneExist(zone))
+            {
+                // Zone not in database. There is nothing to save.
+                return;
+            }
+
             var i = 0;
             foreach (var geometry in zone.Geometry.ToList())
             {
@@ -283,7 +289,7 @@ namespace ParkPlaces.IO.Database
                         cmd.Parameters.AddWithValue("@lat", geometry.Lat);
                         cmd.Parameters.AddWithValue("@lng", geometry.Lng);
                         cmd.Parameters.AddWithValue("@id", geometry.Id);
-                        cmd.ExecuteNonQuery();
+                        await cmd.ExecuteNonQueryAsync();
                         cmd.Connection.Close();
                     }
 
@@ -349,6 +355,22 @@ namespace ParkPlaces.IO.Database
             {
                 var count = await cmd.ExecuteScalarAsync();
                 return int.Parse(count.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Check if a given zone exists in the database
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns>True if the zone exists in the database</returns>
+        public bool IsZoneExist(PolyZone zone)
+        {
+            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM zones WHERE id = @id") { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@id", zone.Zoneid);
+                var count = cmd.ExecuteScalar();
+                cmd.Connection.Close();
+                return int.Parse(count.ToString()) > 0;
             }
         }
 
