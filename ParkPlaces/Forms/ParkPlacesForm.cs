@@ -353,7 +353,7 @@ namespace ParkPlaces.Forms
             if (dto == null) return;
 
             var sql = new Sql();
-            await sql.ExportToMySql(dto);
+            await Task.Run( () => {  sql.ExportToMySql(dto); } );
             MessageBox.Show("Kész.");
         }
 
