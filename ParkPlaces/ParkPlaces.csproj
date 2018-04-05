@@ -282,9 +282,6 @@
     <None Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\parkplaces.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\if_53_62710.png" />
     <None Include="Resources\if_Export File_40053.png" />
     <None Include="Resources\if_update_64935.png" />
@@ -297,6 +294,7 @@
     <None Include="Resources\if_f-cross_256_282471.png" />
     <None Include="Resources\if_Rounded_-_High_Ultra_Colour02_-_Maps_2250024.png" />
     <None Include="Resources\installerlogo.png" />
+    <Content Include="Resources\parkplaces.sql" />
     <Content Include="sampledata.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
