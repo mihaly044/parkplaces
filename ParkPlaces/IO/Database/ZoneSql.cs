@@ -12,6 +12,57 @@ namespace ParkPlaces.IO.Database
     public partial class Sql
     {
         /// <summary>
+        /// Contains the IDs of points that are waiting to be deleted from the database
+        /// (delete queue)
+        /// </summary>
+        private Queue<int> _pointsToBeDeleted;
+
+        /// <summary>
+        /// Creates the _pointsToBeDeleted queue if needed
+        /// </summary>
+        /// <returns>True if the list had to be created</returns>
+        private bool CreatePointsQueue()
+        {
+            if (_pointsToBeDeleted == null)
+            {
+                _pointsToBeDeleted = new Queue<int>();
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Add a point to the delete queue
+        /// </summary>
+        /// <param name="g"></param>
+        public void AddPtToBeDeleted(Geometry g)
+        {
+            CreatePointsQueue();
+            _pointsToBeDeleted.Enqueue(g.Id);
+        }
+
+        /// <summary>
+        /// Return the next point to be deleted
+        /// </summary>
+        /// <returns>The next item to be deleted. -1 if there are none</returns>
+        private int FetchPointToBeDeleted()
+        {
+            if (CreatePointsQueue())
+            {
+                return -1;
+            }
+
+            if(_pointsToBeDeleted.Count > 0)
+            {
+                return _pointsToBeDeleted.Dequeue();
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
         /// Load polygon data from the database
         /// </summary>
         /// <returns>Data transfer object that holds the data</returns>
@@ -237,6 +288,19 @@ namespace ParkPlaces.IO.Database
                     }
 
                     geometry.IsModified = false;
+                }
+            }
+
+            // Process points to be deleted
+            int id;
+            while((id = FetchPointToBeDeleted()) > -1 )
+            {
+                using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE id = @id")
+                { Connection = GetConnection() })
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                    cmd.Connection.Close();
                 }
             }
         }

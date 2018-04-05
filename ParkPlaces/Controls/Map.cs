@@ -657,8 +657,14 @@ namespace ParkPlaces.Controls
                 }
                 else
                 {
+                    var point = ((PolyZone)p.Tag).Geometry.ElementAt(pIndex.Value);
+
+                    // Delete from the database
+                    Sql.Instance.AddPtToBeDeleted(point);
+                    Sql.Instance.UpdatePoints(p);
+
                     // Delete from zone data
-                    ((PolyZone)p.Tag).Geometry.RemoveAt(pIndex.Value);
+                    ((PolyZone)p.Tag).Geometry.Remove(point);
 
                     // Delete from local data
                     p.Points.RemoveAt(pIndex.Value);
