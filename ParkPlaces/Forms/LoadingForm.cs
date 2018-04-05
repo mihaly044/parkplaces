@@ -31,35 +31,17 @@ namespace ParkPlaces.Forms
 
         public async void LoadDataAsync()
         {
-            Load:
-            try
+            Progress<int> progress = new Progress<int>();
+
+            progress.ProgressChanged += (sender, progressPercentage) =>
             {
-                Progress<int> progress = new Progress<int>();
+                progressBar.Value = progressPercentage;
+            };
 
-                progress.ProgressChanged += (sender, progressPercentage) =>
-                {
-                    progressBar.Value = progressPercentage;
-                };
+            await Task.Run(() => { _dto = Sql.Instance.LoadZones(progress); });
 
-                await Task.Run(()=> { _dto = Sql.Instance.LoadZones(progress); });
-
-                OnReadyEventHandler?.Invoke(this, _dto);
-                Close();
-
-            } catch (MySqlException)
-            {
-                var dlgResult = MessageBox.Show("Unable to communicate with the database server.\n" +
-                    "Press retry to try again or cancel to close the application.", "Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-
-                if (dlgResult == DialogResult.Cancel)
-                {
-                    Environment.Exit(0);
-                }
-                else if (dlgResult == DialogResult.Retry)
-                {
-                    goto Load;
-                }
-            }
+            OnReadyEventHandler?.Invoke(this, _dto);
+            Close();
         }
     }
 }
