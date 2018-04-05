@@ -36,7 +36,7 @@ namespace ParkPlaces.IO.Database
         /// Add a point to the delete queue
         /// </summary>
         /// <param name="g"></param>
-        public void AddPtToBeDeleted(Geometry g)
+        public void AddPointToBeDeleted(Geometry g)
         {
             CreatePointsQueue();
             _pointsToBeDeleted.Enqueue(g.Id);

@@ -660,7 +660,7 @@ namespace ParkPlaces.Controls
                     var point = ((PolyZone)p.Tag).Geometry.ElementAt(pIndex.Value);
 
                     // Delete from the database
-                    Sql.Instance.AddPtToBeDeleted(point);
+                    Sql.Instance.AddPointToBeDeleted(point);
                     Sql.Instance.UpdatePoints(p);
 
                     // Delete from zone data
