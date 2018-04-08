@@ -60,6 +60,10 @@ namespace ParkPlaces.Forms
                 if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
 
                 toolStripProgressBar.Visible = false;
+
+                toolStripProgressBar.Minimum = 0;
+                toolStripProgressBar.Maximum = 100;
+
                 toolStripStatusLabel.Text = "Kész";
             };
         }
@@ -304,6 +308,7 @@ namespace ParkPlaces.Forms
 
             adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin;
             Map.SetReadOnly(loginForm.User.GroupRole < GroupRole.Editor);
+            Map.SetPositionByKeywords("Szeged");
 
             var loadingForm = new LoadingForm();
             loadingForm.OnReadyEventHandler += (s, dto) =>
@@ -352,6 +357,7 @@ namespace ParkPlaces.Forms
             saveButton.Enabled = false;
 
             Progress<int> progress = new Progress<int>();
+
             progress.ProgressChanged += (sender2, progressPercentage) =>
             {
                 toolStripProgressBar.Visible = true;

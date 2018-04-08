@@ -107,7 +107,7 @@ namespace ParkPlaces.IO.Database
                         var rd1 = cmd1.ExecuteReader();
                         while (rd1.Read())
                         {
-                            zone.Geometry.Add(new Geometry((int)rd1["id"]) { Lat = (double)rd1["lat"], Lng = (double)rd1["lng"] });
+                            zone.Geometry.Add(new Geometry((int)rd1["id"]) { Lat = (double)rd1["lat"], Lng = (double)rd1["lng"], IsModified = false });
                         }
                         rd1.Close();
                     }
@@ -373,7 +373,7 @@ namespace ParkPlaces.IO.Database
         {
             using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM zones WHERE id = @id") { Connection = GetConnection() })
             {
-                cmd.Parameters.AddWithValue("@id", zone.Zoneid);
+                cmd.Parameters.AddWithValue("@id", zone.Id);
                 var count = cmd.ExecuteScalar();
                 cmd.Connection.Close();
                 return int.Parse(count.ToString()) > 0;
