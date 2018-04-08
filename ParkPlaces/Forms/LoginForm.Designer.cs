@@ -45,7 +45,7 @@
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(346, 122);
+            this.btnLogin.Location = new System.Drawing.Point(396, 122);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 23);
             this.btnLogin.TabIndex = 2;
@@ -56,7 +56,7 @@
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(107, 47);
+            this.lblUserName.Location = new System.Drawing.Point(157, 47);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(84, 13);
             this.lblUserName.TabIndex = 1;
@@ -65,7 +65,7 @@
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(107, 73);
+            this.lblPassword.Location = new System.Drawing.Point(157, 73);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(39, 13);
             this.lblPassword.TabIndex = 2;
@@ -75,7 +75,7 @@
             // 
             this.textBoxUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBoxUserName.ForeColor = System.Drawing.Color.Blue;
-            this.textBoxUserName.Location = new System.Drawing.Point(197, 44);
+            this.textBoxUserName.Location = new System.Drawing.Point(247, 44);
             this.textBoxUserName.Name = "textBoxUserName";
             this.textBoxUserName.Size = new System.Drawing.Size(224, 20);
             this.textBoxUserName.TabIndex = 0;
@@ -86,7 +86,7 @@
             // 
             this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBoxPassword.ForeColor = System.Drawing.Color.Blue;
-            this.textBoxPassword.Location = new System.Drawing.Point(197, 70);
+            this.textBoxPassword.Location = new System.Drawing.Point(247, 70);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '•';
             this.textBoxPassword.Size = new System.Drawing.Size(224, 20);
@@ -96,7 +96,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(265, 122);
+            this.btnExit.Location = new System.Drawing.Point(315, 122);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 3;
@@ -106,11 +106,11 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::ParkPlaces.Properties.Resources.if_lock_285646;
-            this.pictureBox1.Location = new System.Drawing.Point(13, 44);
+            this.pictureBox1.Image = global::ParkPlaces.Properties.Resources.icon;
+            this.pictureBox1.Location = new System.Drawing.Point(-46, -14);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(83, 78);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.Size = new System.Drawing.Size(192, 192);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
@@ -120,7 +120,7 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(-1, -1);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(432, 25);
+            this.panel1.Size = new System.Drawing.Size(483, 25);
             this.panel1.TabIndex = 7;
             // 
             // label1
@@ -128,7 +128,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(127, 6);
+            this.label1.Location = new System.Drawing.Point(152, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(178, 16);
             this.label1.TabIndex = 0;
@@ -137,7 +137,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(107, 98);
+            this.label2.Location = new System.Drawing.Point(157, 98);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 8;
@@ -150,7 +150,7 @@
             this.comboDBConnection.Items.AddRange(new object[] {
             "Main",
             "Alternative"});
-            this.comboDBConnection.Location = new System.Drawing.Point(197, 95);
+            this.comboDBConnection.Location = new System.Drawing.Point(247, 95);
             this.comboDBConnection.Name = "comboDBConnection";
             this.comboDBConnection.Size = new System.Drawing.Size(224, 21);
             this.comboDBConnection.TabIndex = 9;
@@ -159,7 +159,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(429, 150);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(478, 150);
             this.Controls.Add(this.comboDBConnection);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);

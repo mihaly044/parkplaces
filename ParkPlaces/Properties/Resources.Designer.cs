@@ -97,6 +97,16 @@ namespace ParkPlaces.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon {
+            get {
+                object obj = ResourceManager.GetObject("icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap if_53_62710 {
             get {
                 object obj = ResourceManager.GetObject("if_53_62710", resourceCulture);
@@ -235,24 +245,20 @@ namespace ParkPlaces.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -- phpMyAdmin SQL Dump
-        ///-- version 4.7.4
-        ///-- https://www.phpmyadmin.net/
-        ///--
-        ///-- Gép: 127.0.0.1
-        ///-- Létrehozás ideje: 2018. Már 05. 20:22
-        ///-- Kiszolgáló verziója: 10.1.30-MariaDB
-        ///-- PHP verzió: 7.2.1
-        ///
+        ///   Looks up a localized string similar to SET FOREIGN_KEY_CHECKS=0;
         ///SET SQL_MODE = &quot;NO_AUTO_VALUE_ON_ZERO&quot;;
-        ///SET AUTOCOMMIT = 0;
-        ///START TRANSACTION;
         ///SET time_zone = &quot;+00:00&quot;;
-        ///
         ///
         ////*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
         ////*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-        ////*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTI [rest of string was truncated]&quot;;.
+        ////*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+        ////*!40101 SET NAMES utf8 */;
+        ///
+        ///CREATE DATABASE IF NOT EXISTS `parkplaces` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+        ///USE `parkplaces`;
+        ///
+        ///CREATE TABLE IF NOT EXISTS `cities` (
+        ///`id` int(11) NOT NULL [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string parkplaces {
             get {
