@@ -81,10 +81,17 @@ namespace ParkPlaces.IO.Database
             int lastReportedProgress = -1;
             progress.Report(0);
 
-            using (var cmd = new MySqlCommand("SELECT * FROM zones INNER JOIN cities ON cities.id = zones.cityid")
+            var strCmd = "SELECT * FROM zones INNER JOIN cities ON cities.id = zones.cityid";
+            if (LimitCity != string.Empty)
+                strCmd += " WHERE cities.city LIKE @city";
+
+            using (var cmd = new MySqlCommand(strCmd)
                 { Connection = GetConnection() })
             {
                 var geometryConnection = GetConnection();
+
+                if (LimitCity != string.Empty)
+                    cmd.Parameters.AddWithValue("@city", '%' + LimitCity +'%');
 
                 var rd = cmd.ExecuteReader();
                 while (rd.Read())

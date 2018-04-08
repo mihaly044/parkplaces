@@ -19,6 +19,7 @@ namespace ParkPlaces.IO.Database
         public string User { get; set; }
         public string Password { private get; set; }
         public string Port { get; set; }
+        public string LimitCity { get; set; }
 
         /// <summary>
         /// Used to send notifications about loading progress
