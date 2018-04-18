@@ -298,10 +298,8 @@
     <None Include="Resources\if_Rounded_-_High_Ultra_Colour02_-_Maps_2250024.png" />
     <None Include="Resources\installerlogo.png" />
     <Content Include="favicon.ico" />
-    <Content Include="icon.ico" />
     <None Include="Resources\icon.png" />
     <Content Include="Resources\parkplaces.sql" />
-    <Content Include="sampledata.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.106.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.106.0\build\net46\System.Data.SQLite.Core.targets')" />
