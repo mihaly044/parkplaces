@@ -428,9 +428,9 @@ namespace ParkPlaces.IO.Database
                     cmd.Parameters[0].Value = !IsDuplicateCity(city) ? InsertCity(city) : GetCityId(city);
                     cmd.Parameters[1].Value = zone.Color;
                     cmd.Parameters[2].Value = zone.Fee;
-                    cmd.Parameters[3].Value = zone.ServiceNa;
-                    cmd.Parameters[4].Value = zone.Description;
-                    cmd.Parameters[5].Value = zone.Timetable;
+                    cmd.Parameters[3].Value = zone.ServiceNa ?? "Nincs adat";
+                    cmd.Parameters[4].Value = zone.Description ?? "Nincs adat";
+                    cmd.Parameters[5].Value = zone.Timetable ?? "";
                     cmd.Parameters[6].Value = zone.Zoneid;
 
                     cmd.ExecuteNonQuery();
