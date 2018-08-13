@@ -7,13 +7,13 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
-CREATE DATABASE IF NOT EXISTS `parkplaces` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+CREATE DATABASE IF NOT EXISTS `parkplaces` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `parkplaces`;
 
 CREATE TABLE IF NOT EXISTS `cities` (
 `id` int(11) NOT NULL,
   `city` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 INSERT INTO `cities` (`id`, `city`) VALUES
 (1, 'Szeged');
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `geometry` (
 `id` int(11) NOT NULL,
   `lat` double NOT NULL,
   `lng` double NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 INSERT INTO `geometry` (`zoneid`, `id`, `lat`, `lng`) VALUES
 (1, 1, 46.255846818480315, 20.14090061187744),
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) NOT NULL,
   `groupid` int(11) NOT NULL,
   `creatorid` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 INSERT INTO `users` (`id`, `username`, `password`, `groupid`, `creatorid`) VALUES
 (1, 'admin', '$2y$10$naypQWIa7gb7H8QLIUWa9.I8K3J3fh0SIp3AdOmnYpApBpnrC/KjG', 4, 0),
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `zones` (
   `description` varchar(255) NOT NULL,
   `timetable` varchar(255) DEFAULT NULL,
   `common_name` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 INSERT INTO `zones` (`id`, `cityid`, `color`, `fee`, `service_na`, `description`, `timetable`, `common_name`) VALUES
 (1, 1, 'Red', 700, 'Szeged megyei jogú város önkormányzata', 'New zone', '06:00-18:00', 'SZEGED-1'),
