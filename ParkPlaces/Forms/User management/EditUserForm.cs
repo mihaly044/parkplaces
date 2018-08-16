@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using ParkPlaces.IO.Database;
-using ParkPlaces.Misc;
+using PPNetLib.Prototypes;
 
 namespace ParkPlaces.Forms
 {

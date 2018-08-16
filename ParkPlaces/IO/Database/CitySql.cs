@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using ParkPlaces.Misc;
+using PPNetLib.Prototypes;
 
 namespace ParkPlaces.IO.Database
 {

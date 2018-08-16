@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ParkPlaces.Extensions
+namespace PPServer.Extensions
 {
     public static class Generic
     {

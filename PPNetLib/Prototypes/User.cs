@@ -1,5 +1,5 @@
 ﻿using System;
-namespace ParkPlaces.Misc
+namespace PPNetLib.Prototypes
 {
 
     /// <summary>
@@ -67,7 +67,7 @@ namespace ParkPlaces.Misc
         /// Holds the user's password.
         /// Shall only be used for editing
         /// </summary>
-        public string Password { get; internal set; }
+        public string Password { get; set; }
 
         public override string ToString()
         {

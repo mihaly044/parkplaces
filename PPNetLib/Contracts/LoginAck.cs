@@ -8,15 +8,23 @@ namespace PPNetLib.Contracts
     [ProtoContract]
     public class LoginAck: Packet
     {
-        public enum Status
-        {
-            BadPassword,
-            Unauthorized,
-            Success
-        }
-
         [ProtoMember(1)]
-        public Status LoginStatus;
+        public int Id;
+
+        [ProtoMember(2)]
+        public int GroupRole;
+
+        [ProtoMember(3)]
+        public int CreatorId;
+
+        [ProtoMember(4)]
+        public string UserName;
+
+        [ProtoMember(5)]
+        public DateTime LastLogin;
+
+        [ProtoMember(6)]
+        public bool IsAuthenticated;
 
         public LoginAck()
         {

@@ -3,9 +3,9 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Windows.Forms;
 using ParkPlaces.IO.Database;
-using ParkPlaces.Misc;
 using ParkPlaces.Net;
 using PPNetLib.Contracts;
+using PPNetLib.Prototypes;
 
 namespace ParkPlaces.Forms
 {
@@ -20,7 +20,6 @@ namespace ParkPlaces.Forms
         {
             InitializeComponent();
             DialogResult = DialogResult.Cancel;
-            c = new Client();
         }
 
         /// <summary>
@@ -98,19 +97,6 @@ namespace ParkPlaces.Forms
             // Select DB connection
             var dbConnection = ConfigurationManager.AppSettings["DBConnection"];
             comboDBConnection.SelectedIndex = dbConnection == "alt" ? 1 : 0;
-        }
-
-        Client c;
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
-            c.Send(new LoginReq() { Username = "A", Password = "D"});
-            c.Send(new LoginReq() { Username = "B", Password = "E" });
-            c.Send(new LoginReq() { Username = "C", Password = "F" });
-
-            c.OnTest += () => {
-                MessageBox.Show("Success!");
-            };
         }
     }
 }

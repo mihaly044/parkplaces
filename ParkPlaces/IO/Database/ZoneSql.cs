@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using ParkPlaces.Extensions;
 using ParkPlaces.Map_shapes;
-using ParkPlaces.Misc;
+using PPNetLib.Prototypes;
 
 namespace ParkPlaces.IO.Database
 {

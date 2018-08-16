@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PPServer.Database
 {
-    public class Sql
+    public partial class Sql
     {
         public static Sql Instance => _instance ?? (_instance = new Sql());
         private static Sql _instance;

@@ -1,4 +1,4 @@
-﻿namespace ParkPlaces.Misc
+﻿namespace PPNetLib.Prototypes
 {
     public class City
     {

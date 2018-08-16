@@ -13,19 +13,38 @@ using System.Diagnostics;
 
 namespace ParkPlaces.Net
 {
-    public class Client
+    public partial class Client
     {
+        private static Client _instance;
+        public static Client Instance => _instance ?? (_instance = new Client());
+
         private WatsonTcpClient _watsonTcpClient;
         private string _serverIp;
-        private const int _serverPort = 11000;
-
-        public delegate void Test();
-        public event Test OnTest;
+        private int _serverPort;
 
         public Client()
         {
             _serverIp = ConfigurationManager.AppSettings["ServerIP"];
-            _watsonTcpClient = new WatsonTcpClient(_serverIp, _serverPort, ServerConnected, ServerDisconnected, MessageReceived, true);
+            if(Int32.TryParse(ConfigurationManager.AppSettings["ServerPort"], out var port))
+            {
+                _serverPort = port;
+            }
+            else
+            {
+                _serverPort = 11000;
+            }
+        }
+
+        public void Connect()
+        {
+            try
+            {
+                _watsonTcpClient = new WatsonTcpClient(_serverIp, _serverPort, ServerConnected, ServerDisconnected, MessageReceived, true);
+            }
+            catch (Exception e)
+            {
+                OnConnectionError?.Invoke(e);
+            }
         }
 
         private bool MessageReceived(byte[] data)
@@ -44,7 +63,6 @@ namespace ParkPlaces.Net
                         {
                             case Protocols.LOGIN_ACK:
                                 var packet = Serializer.Deserialize<LoginAck>(stream);
-                                OnTest.Invoke();
 
                                 break;
                         }
@@ -62,6 +80,7 @@ namespace ParkPlaces.Net
 
         private bool ServerDisconnected()
         {
+            OnConnectionError?.Invoke(new Exception());
             return false;
         }
 

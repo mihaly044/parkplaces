@@ -7,8 +7,9 @@ using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
 using ParkPlaces.Controls;
 using ParkPlaces.IO.Database;
-using ParkPlaces.Misc;
 using System.Diagnostics;
+using ParkPlaces.Net;
+using PPNetLib.Prototypes;
 // ReSharper disable MethodSupportsCancellation
 
 namespace ParkPlaces.Forms
@@ -66,6 +67,16 @@ namespace ParkPlaces.Forms
 
                 toolStripStatusLabel.Text = "Kész";
             };
+
+            Client.Instance.OnConnectionError += OnConnectionError;
+        }
+
+        private void OnConnectionError(Exception e)
+        {
+            Invoke(new Action(() => {
+                MessageBox.Show("Hiba a szerverrel történő kommunikáció során.\nA program kilép.", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(e.HResult);
+            }));
         }
 
         /// <summary>
@@ -277,6 +288,7 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void ParkPlacesForm_Load(object sender, EventArgs e)
         {
+            Client.Instance.Connect();
             OnFormLoad();
         }
 

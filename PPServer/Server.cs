@@ -67,11 +67,7 @@ namespace PPServer
                             case Protocols.LOGIN_REQ:
                                 var packet = Serializer.Deserialize<LoginReq>(stream);
 
-                                var loginAck = new LoginAck
-                                {
-                                    LoginStatus = LoginAck.Status.Success
-                                };
-                                Send<LoginAck>(ipPort, loginAck);
+                                
 
                                 //OnLogin(packet);
 
