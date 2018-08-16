@@ -49,7 +49,6 @@ namespace ParkPlaces.Net
 
         private bool MessageReceived(byte[] data)
         {
-            return false;
             if (data != null && data.Length > 0)
             {
                 try

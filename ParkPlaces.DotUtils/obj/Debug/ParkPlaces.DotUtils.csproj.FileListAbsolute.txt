@@ -13,7 +13,6 @@ C:\Users\Misi\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\bin\Debug\Newtonsoft.J
 C:\Users\Misi\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.csproj.CoreCompileInputs.cache
 C:\Users\Misi\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.dll
 C:\Users\Misi\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.pdb
-C:\Users\Misi\Source\Repos\ParkPlaces\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.csprojResolveAssemblyReference.cache
 C:\Users\Misi\Source\Repos\ParkPlaces2\ParkPlaces.DotUtils\bin\Debug\ParkPlaces.DotUtils.dll
 C:\Users\Misi\Source\Repos\ParkPlaces2\ParkPlaces.DotUtils\bin\Debug\ParkPlaces.DotUtils.pdb
 C:\Users\Misi\Source\Repos\ParkPlaces2\ParkPlaces.DotUtils\bin\Debug\Newtonsoft.Json.dll
@@ -22,3 +21,5 @@ C:\Users\Misi\Source\Repos\ParkPlaces2\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.
 C:\Users\Misi\Source\Repos\ParkPlaces2\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.csproj.CoreCompileInputs.cache
 C:\Users\Misi\Source\Repos\ParkPlaces2\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.dll
 C:\Users\Misi\Source\Repos\ParkPlaces2\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.pdb
+C:\Users\Misi\source\repos\ParkPlaces\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.csprojAssemblyReference.cache
+C:\Users\Misi\source\repos\ParkPlaces\ParkPlaces.DotUtils\obj\Debug\ParkPlaces.DotUtils.csproj.CopyComplete
