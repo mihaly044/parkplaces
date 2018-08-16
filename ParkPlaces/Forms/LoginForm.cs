@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Windows.Forms;
+using CryptSharp;
 using ParkPlaces.IO.Database;
 using ParkPlaces.Net;
 using PPNetLib.Contracts;
@@ -20,6 +21,29 @@ namespace ParkPlaces.Forms
         {
             InitializeComponent();
             DialogResult = DialogResult.Cancel;
+
+            Client.Instance.OnLoginAck += OnLoginAck;
+        }
+
+        private void OnLoginAck(LoginAck ack)
+        {
+            User = (User)ack.User;
+
+            if (User == null)
+            {
+                MessageBox.Show("Helytelen felhasználónév vagy jelszó.", "Hiba",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else if (!User.IsAuthenticated)
+            {
+                MessageBox.Show("Nincs megfelelő jogosultsága az alkalmazás használatához.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
         }
 
         /// <summary>
@@ -29,6 +53,12 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            var req = new LoginReq();
+            req.Username = textBoxUserName.Text;
+            req.Password = Crypter.Blowfish.Crypt(textBoxPassword.Text);
+            Client.Instance.Send(req);
+
+            /*
             // Save selected DB configuration
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             config.AppSettings.Settings["DBConnection"].Value = comboDBConnection.SelectedIndex == 1 ? "alt" : "main";
@@ -53,7 +83,7 @@ namespace ParkPlaces.Forms
             {
                 DialogResult = DialogResult.OK;
                 Close();
-            }
+            }*/
         }
 
         /// <summary>

@@ -17,6 +17,7 @@ namespace PPServer
     {
         private string _ip;
         private int _port;
+        private Handler _handler;
         private WatsonTcpServer _watsonTcpServer;
 
         public Server()
@@ -31,6 +32,7 @@ namespace PPServer
             {
                 throw e;
             }
+            _handler = new Handler(this);
         }
 
         public void Listen()
@@ -66,11 +68,12 @@ namespace PPServer
                         {
                             case Protocols.LOGIN_REQ:
                                 var packet = Serializer.Deserialize<LoginReq>(stream);
+                                _handler.OnLoginReq(packet, ipPort);
 
-                                
+                                break;
 
-                                //OnLogin(packet);
-
+                            default:
+                                _watsonTcpServer.DisconnectClient(ipPort);
                                 break;
                         }
                         Console.WriteLine("Received PID {0} from {1}", PacketID, ipPort);

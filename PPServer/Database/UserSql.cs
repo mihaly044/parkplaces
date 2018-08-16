@@ -17,8 +17,34 @@ namespace PPServer.Database
         /// <param name="password"></param>
         /// <returns>The logged in user object or null if the username
         /// or the password was wrong</returns>
-        public LoginAck AuthenticateUser(string username, string password)
+        public User AuthenticateUser(string username, string password)
         {
+            if (username == string.Empty || password == string.Empty)
+                return null;
+
+            using (var cmd = new MySqlCommand("SELECT * FROM users WHERE username = @username ")
+            { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@username", username);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read() && reader.HasRows)
+                    {
+                        if (password == reader["password"].ToString())
+                        {
+                            var groupRole = (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString());
+                            return new User(reader["UserName"].ToString(), (int)reader["id"])
+                            {
+                                GroupRole = groupRole,
+                                IsAuthenticated = groupRole > GroupRole.Guest,
+                                CreatorId = (int)reader["creatorid"]
+                            };
+                        }
+                    }
+                }
+            }
+
             return null;
         }
 

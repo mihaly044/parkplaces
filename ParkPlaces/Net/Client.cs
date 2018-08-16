@@ -49,6 +49,7 @@ namespace ParkPlaces.Net
 
         private bool MessageReceived(byte[] data)
         {
+            return false;
             if (data != null && data.Length > 0)
             {
                 try
@@ -62,8 +63,8 @@ namespace ParkPlaces.Net
                         switch (PacketID)
                         {
                             case Protocols.LOGIN_ACK:
-                                var packet = Serializer.Deserialize<LoginAck>(stream);
-
+                                var packet = Serializer.Deserialize<PPNetLib.Contracts.LoginAck>(stream);
+                                OnLoginAck?.Invoke(packet);
                                 break;
                         }
                         Debug.WriteLine("Received PID {0} from {1}", PacketID);

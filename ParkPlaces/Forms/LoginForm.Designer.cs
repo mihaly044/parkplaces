@@ -39,7 +39,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.comboDBConnection = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -162,7 +161,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(478, 150);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.comboDBConnection);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
@@ -201,6 +199,5 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboDBConnection;
-        private System.Windows.Forms.Button button1;
     }
 }
