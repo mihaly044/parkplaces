@@ -14,9 +14,9 @@ namespace PPNetLib
         [ProtoMember(1)]
         public int PacketID { get; set; }
 
-        public Packet(int id)
+        public Packet()
         {
-            this.PacketID = id;
+            
         }
     }
 }

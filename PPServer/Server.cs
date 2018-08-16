@@ -10,7 +10,6 @@ using PPNetLib;
 using PPNetLib.Contracts;
 using ProtoBuf;
 using WatsonTcp;
-using PPNetLib.Extensions;
 
 namespace PPServer
 {
@@ -57,25 +56,33 @@ namespace PPServer
             {
                 try
                 {
-                    var PacketID = BitConverter.ToInt32(data, 0);
-
-                    var stream = new MemoryStream();
-                    stream.Write(data, 0, data.Length);
-
-                    switch (PacketID)
+                    using (var stream = new MemoryStream(data))
                     {
-                        case Protocols.LOGIN_REQ:
-                            var packet = Serializer.Deserialize<LoginReq>(stream);
-                            //OnLogin(packet);
+                        var bPacketID = new byte[4];
+                        stream.Read(bPacketID, 0, 4);
+                        var PacketID = BitConverter.ToInt32(bPacketID, 0);
 
-                            break;
+                        switch (PacketID)
+                        {
+                            case Protocols.LOGIN_REQ:
+                                var packet = Serializer.Deserialize<LoginReq>(stream);
+
+                                var loginAck = new LoginAck
+                                {
+                                    LoginStatus = LoginAck.Status.Success
+                                };
+                                Send<LoginAck>(ipPort, loginAck);
+
+                                //OnLogin(packet);
+
+                                break;
+                        }
+                        Console.WriteLine("Received PID {0} from {1}", PacketID, ipPort);
                     }
-
-                    Console.WriteLine("Received PID {0} from {1}", PacketID, ipPort);
                 }
-                catch(Exception)
+                catch (Exception e)
                 {
-                    Console.WriteLine("Error...");
+                    Console.WriteLine(e.Message);
                 }
             }
 
@@ -91,7 +98,7 @@ namespace PPServer
             stream.Write(pid, 0, 4);
             Serializer.Serialize(stream, packet);
 
-            _watsonTcpServer.Send(ipPort, stream.ToByteArray());
+            _watsonTcpServer.Send(ipPort, stream.ToArray());
 
             return true;
         }

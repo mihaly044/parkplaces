@@ -8,8 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WatsonTcp;
-using PPNetLib.Extensions;
 using PPNetLib.Contracts;
+using System.Diagnostics;
 
 namespace ParkPlaces.Net
 {
@@ -18,6 +18,9 @@ namespace ParkPlaces.Net
         private WatsonTcpClient _watsonTcpClient;
         private string _serverIp;
         private const int _serverPort = 11000;
+
+        public delegate void Test();
+        public event Test OnTest;
 
         public Client()
         {
@@ -31,25 +34,26 @@ namespace ParkPlaces.Net
             {
                 try
                 {
-                    var PacketID = BitConverter.ToInt32(data, 0);
-
-                    var stream = new MemoryStream();
-                    stream.Write(data, 0, data.Length);
-
-                    switch (PacketID)
+                    using (var stream = new MemoryStream(data))
                     {
-                        case Protocols.LOGIN_REQ:
-                            var packet = Serializer.Deserialize<LoginAck>(stream);
-                            //OnLogin(packet);
+                        var bPacketID = new byte[4];
+                        stream.Read(bPacketID, 0, 4);
+                        var PacketID = BitConverter.ToInt32(bPacketID, 0);
 
-                            break;
+                        switch (PacketID)
+                        {
+                            case Protocols.LOGIN_ACK:
+                                var packet = Serializer.Deserialize<LoginAck>(stream);
+                                OnTest.Invoke();
+
+                                break;
+                        }
+                        Debug.WriteLine("Received PID {0} from {1}", PacketID);
                     }
-
-                    Console.WriteLine("Received PID {0} from {1}", PacketID);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Console.WriteLine("Error...");
+                    Debug.WriteLine(e.Message);
                 }
             }
 
@@ -66,7 +70,7 @@ namespace ParkPlaces.Net
             return false;
         }
 
-        public bool Send<T>(string ipPort, T packet)
+        public bool Send<T>(T packet)
         {
             int PacketID = ((Packet)(object)packet).PacketID;
 
@@ -75,7 +79,7 @@ namespace ParkPlaces.Net
             stream.Write(pid, 0, 4);
             Serializer.Serialize(stream, packet);
 
-            _watsonTcpClient.Send(stream.ToByteArray());
+            _watsonTcpClient.Send(stream.ToArray());
 
             return true;
         }

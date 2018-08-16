@@ -18,9 +18,9 @@ namespace PPNetLib.Contracts
         [ProtoMember(1)]
         public Status LoginStatus;
 
-        public LoginAck(): base(Protocols.LOGIN_ACK)
+        public LoginAck()
         {
-
+            PacketID = Protocols.LOGIN_ACK;
         }
     }
 }

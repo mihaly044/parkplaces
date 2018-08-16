@@ -14,9 +14,9 @@ namespace PPNetLib.Contracts
         [ProtoMember(2)]
         public string Password { get; set; }
 
-        public LoginReq() : base(Protocols.LOGIN_REQ)
+        public LoginReq()
         {
-
+            PacketID = Protocols.LOGIN_REQ;
         }
     }
 }
