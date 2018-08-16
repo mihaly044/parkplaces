@@ -53,12 +53,13 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            /*
             var req = new LoginReq();
             req.Username = textBoxUserName.Text;
             req.Password = Crypter.Blowfish.Crypt(textBoxPassword.Text);
-            Client.Instance.Send(req);
+            Client.Instance.Send(req);*/
 
-            /*
+            
             // Save selected DB configuration
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             config.AppSettings.Settings["DBConnection"].Value = comboDBConnection.SelectedIndex == 1 ? "alt" : "main";
@@ -83,7 +84,7 @@ namespace ParkPlaces.Forms
             {
                 DialogResult = DialogResult.OK;
                 Close();
-            }*/
+            }
         }
 
         /// <summary>

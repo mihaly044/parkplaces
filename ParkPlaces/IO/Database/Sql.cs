@@ -143,12 +143,12 @@ namespace ParkPlaces.IO.Database
             if (noDatabase)
             {
                 mySqlConnection = new MySqlConnection(
-                    $@"SERVER={Server};PORT={Port};UID={User};PASSWORD={Password}");
+                    $@"SERVER={Server};PORT={Port};UID={User};PASSWORD={Password};SslMode=none");
             }
             else
             {
                 mySqlConnection = new MySqlConnection(
-                    $@"SERVER={Server};PORT={Port};DATABASE={Database};UID={User};PASSWORD={Password}");
+                    $@"SERVER={Server};PORT={Port};DATABASE={Database};UID={User};PASSWORD={Password};SslMode=none");
             }
 
 
