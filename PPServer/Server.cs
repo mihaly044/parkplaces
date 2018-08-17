@@ -16,24 +16,19 @@ namespace PPServer
 {
     public class Server
     {
-        private string _ip;
-        private int _port;
-        private Handler _handler;
+        private readonly string _ip;
+        private readonly int _port;
+        private readonly Handler _handler;
         private WatsonTcpServer _watsonTcpServer;
-        private Dictionary<string, User> _authUsers;
+        private readonly Dictionary<string, User> _authUsers;
 
         public Server()
         {
             var configSect = ConfigurationManager.GetSection("ServerConfiguration") as NameValueCollection;
-            try
-            {
-                _ip = configSect["IPAddress"];
-                _port = Int32.Parse(configSect["Port"]);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            // ReSharper disable once PossibleNullReferenceException
+            _ip = configSect["IPAddress"];
+            _port = int.Parse(configSect["Port"]);
+
             _handler = new Handler(this);
             _authUsers = new Dictionary<string, User>();
         }
