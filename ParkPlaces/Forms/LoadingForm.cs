@@ -55,14 +55,17 @@ namespace ParkPlaces.Forms
                 Zones = new List<PolyZone>()
             };
 
-            Client.Instance.Send(new ZoneListReq());
+            if (_zoneCount > 0)
+            {
+                Client.Instance.Send(new ZoneListReq());
 
-            // Wait for all the data to arrive
-            _manualResetEvent = new ManualResetEvent(false);
-            await Task.Run(() => {
-                _manualResetEvent.WaitOne();
-            });
-            _manualResetEvent.Reset();
+                // Wait for all the data to arrive
+                _manualResetEvent = new ManualResetEvent(false);
+                await Task.Run(() => {
+                    _manualResetEvent.WaitOne();
+                });
+                _manualResetEvent.Reset();
+            }
 
             OnReadyEventHandler?.Invoke(this, _dto);
             Close();
