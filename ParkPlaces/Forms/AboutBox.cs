@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 // ReSharper disable VirtualMemberCallInConstructor
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace ParkPlaces.Forms
 {
