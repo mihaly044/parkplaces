@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ProtoBuf;
+using System;
+
 namespace PPNetLib.Prototypes
 {
 
@@ -14,6 +16,7 @@ namespace PPNetLib.Prototypes
         Admin = 4
     }
 
+    [ProtoContract]
     public class User
     {
         protected bool Equals(User other)
@@ -29,33 +32,39 @@ namespace PPNetLib.Prototypes
         /// <summary>
         /// User id
         /// </summary>
+        [ProtoMember(1)]
         public readonly int Id;
 
         /// <summary>
         /// Holds the Id of the user who has had created 
         /// this one
         /// </summary>
+        [ProtoMember(2)]
         public int CreatorId;
 
         /// <summary>
         /// Indicates which group the user belong to
         /// </summary>
+        [ProtoMember(3)]
         public GroupRole GroupRole;
 
         /// <summary>
         /// Contains an username
         /// </summary>
+        [ProtoMember(4)]
         public string UserName;
 
         /// <summary>
         /// Contains the time the user has last logged in
         /// </summary>
+        [ProtoMember(5)]
         public DateTime LastLogin;
 
         /// <summary>
         /// Indicates whether the user has got the appropriate rights
         /// to use the application (> Guest)
         /// </summary>
+        [ProtoMember(6)]
         public bool IsAuthenticated;
 
         /// <summary>
@@ -67,11 +76,17 @@ namespace PPNetLib.Prototypes
         /// Holds the user's password.
         /// Shall only be used for editing
         /// </summary>
+        [ProtoMember(7)]
         public string Password { get; set; }
 
         public override string ToString()
         {
             return $"{UserName} ({GroupRole})";
+        }
+
+        public User()
+        {
+            Id = -1;
         }
 
         public User(string userName, int id)

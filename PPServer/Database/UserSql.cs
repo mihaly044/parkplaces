@@ -19,6 +19,7 @@ namespace PPServer.Database
         /// or the password was wrong</returns>
         public User AuthenticateUser(string username, string password)
         {
+
             if (username == string.Empty || password == string.Empty)
                 return null;
 
@@ -31,7 +32,7 @@ namespace PPServer.Database
                 {
                     if (reader.Read() && reader.HasRows)
                     {
-                        if (password == reader["password"].ToString())
+                        if (Crypter.CheckPassword(password, reader["password"].ToString()))
                         {
                             var groupRole = (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString());
                             return new User(reader["UserName"].ToString(), (int)reader["id"])

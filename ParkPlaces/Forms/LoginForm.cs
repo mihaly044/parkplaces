@@ -53,12 +53,13 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            /*
+            
             var req = new LoginReq();
             req.Username = textBoxUserName.Text;
-            req.Password = Crypter.Blowfish.Crypt(textBoxPassword.Text);
-            Client.Instance.Send(req);*/
+            req.Password = textBoxPassword.Text;
+            Client.Instance.Send(req);
 
+            return;
             
             // Save selected DB configuration
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
