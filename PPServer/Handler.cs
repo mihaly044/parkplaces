@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace PPServer
 {
@@ -38,7 +39,11 @@ namespace PPServer
 
         public void OnZoneListReq(string ipPort)
         {
-            Sql.Instance.LoadZones(ipPort, _server);
+            Sql.Instance.LoadZones( (PolyZone zone) => {
+                var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
+                _server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized });
+                return true;
+            } );
         }
     }
 }

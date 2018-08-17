@@ -30,7 +30,7 @@ namespace PPServer.Database
         /// Load polygon data from the database
         /// </summary>
         /// <returns>Data transfer object that holds the data</returns>
-        public void LoadZones(string ipPort, Server server)
+        public void LoadZones(Func<PolyZone, bool> Callback)
         {
             var strCmd = "SELECT * FROM zones INNER JOIN cities ON cities.id = zones.cityid";
 
@@ -65,8 +65,7 @@ namespace PPServer.Database
                         rd1.Close();
                     }
 
-                    var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
-                    server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized });
+                    Callback(zone);
                 }
                 geometryConnection.Close();
                 rd.Close();
