@@ -79,22 +79,19 @@ namespace ParkPlaces.Forms
 
         private void OnZoneListAck(ZoneListAck ack)
         {
-            _currentProgress++;
             progressBar.Value = (int)((double)_currentProgress / _zoneCount * 100);
 
-            if(_currentProgress >= _zoneCount)
+            // De-serialize data and add to collection
+            var zone = ack.Zone;
+            _dto.Zones.Add(JsonConvert.DeserializeObject<PolyZone>(zone, Converter.Settings));
+            _currentProgress++;
+
+            if (_currentProgress >= _zoneCount)
             {
                 // We have all the data
                 _manualResetEvent.Set();
-                return;
             }
-            else
-            {
-                // De-serialize data and add to collection
-                var zone = ack.Zone;
-                _dto.Zones.Add(JsonConvert.DeserializeObject<PolyZone>(zone, Converter.Settings));
-            }
-            
+
         }
     }
 }
