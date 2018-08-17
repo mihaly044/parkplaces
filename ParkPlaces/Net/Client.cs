@@ -51,46 +51,43 @@ namespace ParkPlaces.Net
 
         private bool MessageReceived(byte[] data)
         {
-            if (data != null && data.Length > 0)
+            if (data == null || data.Length <= 0) return false;
+
+            try
             {
-                try
+                using (var stream = new MemoryStream(data))
                 {
-                    using (var stream = new MemoryStream(data))
+                    var bPacketId = new byte[4];
+                    stream.Read(bPacketId, 0, 4);
+                    var packetId = (Protocols)BitConverter.ToInt32(bPacketId, 0);
+
+                    // ReSharper disable once SwitchStatementMissingSomeCases
+                    switch (packetId)
                     {
-                        var bPacketID = new byte[4];
-                        stream.Read(bPacketID, 0, 4);
-                        var PacketID = (Protocols)BitConverter.ToInt32(bPacketID, 0);
-
-                        switch (PacketID)
-                        {
-                            case Protocols.LOGIN_ACK:
-                                var loginAck = Serializer.Deserialize<PPNetLib.Contracts.LoginAck>(stream);
-                                OnLoginAck?.Invoke(loginAck);
+                        case Protocols.LOGIN_ACK:
+                            var loginAck = Serializer.Deserialize<PPNetLib.Contracts.LoginAck>(stream);
+                            OnLoginAck?.Invoke(loginAck);
                             break;
-
-                            case Protocols.ZONECOUNT_ACK:
-                                var zoneCountAck = Serializer.Deserialize<PPNetLib.Contracts.ZoneCountAck>(stream);
-                                OnZoneCountAck?.Invoke(zoneCountAck);
+                        case Protocols.ZONECOUNT_ACK:
+                            var zoneCountAck = Serializer.Deserialize<PPNetLib.Contracts.ZoneCountAck>(stream);
+                            OnZoneCountAck?.Invoke(zoneCountAck);
                             break;
-
-                            case Protocols.ZONELIST_ACK:
-                                var zoneListAck = Serializer.Deserialize<PPNetLib.Contracts.ZoneListAck>(stream);
-                                OnZoneListAck?.Invoke(zoneListAck);
-                             break;
-
-                            case Protocols.INSERTZONE_ACK:
-                                var zoneInsertAck = Serializer.Deserialize<PPNetLib.Contracts.InsertZoneAck>(stream);
-                                OnZoneInsertAck?.Invoke(zoneInsertAck);
-                                OnZoneInsertAck = null;
+                        case Protocols.ZONELIST_ACK:
+                            var zoneListAck = Serializer.Deserialize<PPNetLib.Contracts.ZoneListAck>(stream);
+                            OnZoneListAck?.Invoke(zoneListAck);
                             break;
-                        }
-                        Debug.WriteLine("Received PID {0}", PacketID);
+                        case Protocols.INSERTZONE_ACK:
+                            var zoneInsertAck = Serializer.Deserialize<PPNetLib.Contracts.InsertZoneAck>(stream);
+                            OnZoneInsertAck?.Invoke(zoneInsertAck);
+                            OnZoneInsertAck = null;
+                            break;
                     }
+                    Debug.WriteLine("Received PID {0}", packetId);
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
 
             return true;
@@ -109,11 +106,11 @@ namespace ParkPlaces.Net
 
         public bool Send<T>(T packet)
         {
-            var PacketID = (int)((Packet)(object)packet).PacketID;
+            var packetId = (int)((Packet)(object)packet).PacketID;
 
             using (var stream = new MemoryStream())
             {
-                var pid = BitConverter.GetBytes(PacketID);
+                var pid = BitConverter.GetBytes(packetId);
                 stream.Write(pid, 0, 4);
                 Serializer.Serialize(stream, packet);
 
