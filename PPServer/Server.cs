@@ -74,19 +74,15 @@ namespace PPServer
                                 var packet = Serializer.Deserialize<LoginReq>(stream);
                                 var user = _handler.OnLoginReq(packet, ipPort);
 
-                                if(_authUsers.ContainsKey(ipPort))
+                                if(!_authUsers.ContainsKey(ipPort))
                                     _authUsers.Add(ipPort, user);
                             break;
 
-                            case Protocols.ZONECOUNT_ACK:
-                                
-                                if(_authUsers[ipPort] != null)
-                                {
-                                    if (!CheckPrivileges(ipPort, GroupRole.Guest))
-                                        goto default;
+                            case Protocols.ZONECOUNT_REQ:
+                                if (!CheckPrivileges(ipPort, GroupRole.Guest))
+                                    goto default;
 
-                                    _handler.OnZoneCountReq(ipPort);
-                                }
+                                _handler.OnZoneCountReq(ipPort);
 
                                 break;
 
