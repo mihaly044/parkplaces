@@ -19,14 +19,7 @@ namespace ParkPlaces.Forms
         {
             InitializeComponent();
 
-            Sql.Instance.OnUpdateChangedEventHandler += (sender, updateProcessChangedArgs) => {
-                var currentProgress = ((double)(updateProcessChangedArgs.TotalChunks - updateProcessChangedArgs.CurrentChunks) / (double)updateProcessChangedArgs.TotalChunks) * 100;
-                if(currentProgress - progressBar.Value > 1)
-                {
-                    progressBar.Value = (int)currentProgress;
-                   
-                }
-            };
+
         }
 
         public async void LoadDataAsync()
