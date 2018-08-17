@@ -30,7 +30,7 @@ namespace PPServer.Database
         /// Load polygon data from the database
         /// </summary>
         /// <returns>Data transfer object that holds the data</returns>
-        public void LoadZones(Func<PolyZone, bool> Callback)
+        public void LoadZones(Func<PolyZone, bool> callback)
         {
             var strCmd = "SELECT * FROM zones INNER JOIN cities ON cities.id = zones.cityid";
 
@@ -65,7 +65,7 @@ namespace PPServer.Database
                         rd1.Close();
                     }
 
-                    Callback(zone);
+                    callback(zone);
                 }
                 geometryConnection.Close();
                 rd.Close();
