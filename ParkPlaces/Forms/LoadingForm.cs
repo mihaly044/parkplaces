@@ -35,6 +35,8 @@ namespace ParkPlaces.Forms
 
             _manualResetEvent = new ManualResetEvent(false);
 
+
+
             Client.Instance.OnZoneCountAck += OnZoneCountAck;
             Client.Instance.OnZoneListAck += OnZoneListAck;
         }
@@ -68,6 +70,10 @@ namespace ParkPlaces.Forms
             }
 
             OnReadyEventHandler?.Invoke(this, _dto);
+
+            Client.Instance.OnZoneCountAck -= OnZoneCountAck;
+            Client.Instance.OnZoneListAck -= OnZoneListAck;
+
             Close();
         }
 
