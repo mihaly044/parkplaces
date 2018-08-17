@@ -21,6 +21,7 @@ namespace ParkPlaces.Forms
         {
             InitializeComponent();
             DialogResult = DialogResult.Cancel;
+            CheckForIllegalCrossThreadCalls = false;
 
             Client.Instance.OnLoginAck += OnLoginAck;
         }
