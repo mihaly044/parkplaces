@@ -55,7 +55,10 @@ namespace ParkPlaces.Forms
                 Zones = new List<PolyZone>()
             };
 
+            Client.Instance.Send(new ZoneListReq());
+
             // Wait for all the data to arrive
+            _manualResetEvent = new ManualResetEvent(false);
             await Task.Run(() => {
                 _manualResetEvent.WaitOne();
             });
@@ -67,7 +70,6 @@ namespace ParkPlaces.Forms
 
         private void OnZoneCountAck(ZoneCountAck ack)
         {
-            Invoke(new Action( () => { MessageBox.Show($"{ack.ZoneCount}"); }));
             _zoneCount = ack.ZoneCount;
             _manualResetEvent.Set();
         }
@@ -75,7 +77,7 @@ namespace ParkPlaces.Forms
         private void OnZoneListAck(ZoneListAck ack)
         {
             _currentProgress++;
-            progressBar.Value = (_currentProgress / _zoneCount)*100;
+            Invoke(new Action(() => { progressBar.Value = (_currentProgress / _zoneCount) * 100; }));
 
             if(_currentProgress >= _zoneCount)
             {

@@ -72,6 +72,11 @@ namespace ParkPlaces.Net
                                 var zoneCountAck = Serializer.Deserialize<PPNetLib.Contracts.ZoneCountAck>(stream);
                                 OnZoneCountAck?.Invoke(zoneCountAck);
                             break;
+
+                            case Protocols.ZONELIST_ACK:
+                                var zoneListAck = Serializer.Deserialize<PPNetLib.Contracts.ZoneListAck>(stream);
+                                OnZoneListAck(zoneListAck);
+                                break;
                         }
                         Debug.WriteLine("Received PID {0}", PacketID);
                     }

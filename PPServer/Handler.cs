@@ -1,5 +1,6 @@
 ﻿using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
+using PPServer.LocalPrototypes;
 using PPServer.Database;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,11 @@ namespace PPServer
         {
             var count = Sql.Instance.GetZoneCount();
             _server.Send(ipPort, new ZoneCountAck() { ZoneCount = count });
+        }
+
+        public void OnZoneListReq(string ipPort)
+        {
+            Sql.Instance.LoadZones(ipPort, _server);
         }
     }
 }

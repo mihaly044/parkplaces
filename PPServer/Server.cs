@@ -83,14 +83,19 @@ namespace PPServer
                                     goto default;
 
                                 _handler.OnZoneCountReq(ipPort);
-
                                 break;
+
+                            case Protocols.ZONELIST_REQ:
+                                if (!CheckPrivileges(ipPort, GroupRole.Guest))
+                                    goto default;
+                                _handler.OnZoneListReq(ipPort);
+                            break;
 
                             default:
                                 _watsonTcpServer.DisconnectClient(ipPort);
                                 break;
                         }
-                        Console.WriteLine("Received PID {0} from {1}", PacketID, ipPort);
+                        //Console.WriteLine("Received PID {0} from {1}", PacketID, ipPort);
                     }
                 }
                 catch (Exception e)
@@ -112,7 +117,10 @@ namespace PPServer
                 stream.Write(pid, 0, 4);
                 Serializer.Serialize(stream, packet);
 
-                _watsonTcpServer.Send(ipPort, stream.ToArray());
+                var buffer = stream.ToArray();
+
+                _watsonTcpServer.Send(ipPort, buffer);
+                //Console.WriteLine("PID {0} of {1} bytes sent to {2}", PacketID, buffer.Length, ipPort);
             }
 
             return true;
