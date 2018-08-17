@@ -69,8 +69,7 @@ namespace PPServer
                             case Protocols.LOGIN_REQ:
                                 var packet = Serializer.Deserialize<LoginReq>(stream);
                                 _handler.OnLoginReq(packet, ipPort);
-
-                                break;
+                            break;
 
                             default:
                                 _watsonTcpServer.DisconnectClient(ipPort);
@@ -92,12 +91,14 @@ namespace PPServer
         {
             int PacketID = ((Packet)(object)packet).PacketID;
 
-            var stream = new MemoryStream();
-            var pid = BitConverter.GetBytes(PacketID);
-            stream.Write(pid, 0, 4);
-            Serializer.Serialize(stream, packet);
+            using (var stream = new MemoryStream())
+            {
+                var pid = BitConverter.GetBytes(PacketID);
+                stream.Write(pid, 0, 4);
+                Serializer.Serialize(stream, packet);
 
-            _watsonTcpServer.Send(ipPort, stream.ToArray());
+                _watsonTcpServer.Send(ipPort, stream.ToArray());
+            }
 
             return true;
         }

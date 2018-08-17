@@ -64,7 +64,7 @@ namespace ParkPlaces.Net
                             case Protocols.LOGIN_ACK:
                                 var packet = Serializer.Deserialize<PPNetLib.Contracts.LoginAck>(stream);
                                 OnLoginAck?.Invoke(packet);
-                                break;
+                            break;
                         }
                         Debug.WriteLine("Received PID {0} from {1}", PacketID);
                     }
@@ -93,12 +93,14 @@ namespace ParkPlaces.Net
         {
             int PacketID = ((Packet)(object)packet).PacketID;
 
-            var stream = new MemoryStream();
-            var pid = BitConverter.GetBytes(PacketID);
-            stream.Write(pid, 0, 4);
-            Serializer.Serialize(stream, packet);
+            using (var stream = new MemoryStream())
+            {
+                var pid = BitConverter.GetBytes(PacketID);
+                stream.Write(pid, 0, 4);
+                Serializer.Serialize(stream, packet);
 
-            _watsonTcpClient.Send(stream.ToArray());
+                _watsonTcpClient.Send(stream.ToArray());
+            }
 
             return true;
         }
