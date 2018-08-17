@@ -32,7 +32,7 @@ namespace PPServer.Database
         /// <returns>Data transfer object that holds the data</returns>
         public void LoadZones(Func<PolyZone, bool> callback)
         {
-            var strCmd = "SELECT * FROM zones INNER JOIN cities ON cities.id = zones.cityid";
+            const string strCmd = "SELECT * FROM zones INNER JOIN cities ON cities.id = zones.cityid";
 
             using (var cmd = new MySqlCommand(strCmd)
             { Connection = GetConnection() })
@@ -55,7 +55,7 @@ namespace PPServer.Database
                         Telepules = rd["city"].ToString()
                     };
 
-                    using (MySqlCommand cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]}") { Connection = geometryConnection })
+                    using (var cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]}") { Connection = geometryConnection })
                     {
                         var rd1 = cmd1.ExecuteReader();
                         while (rd1.Read())
