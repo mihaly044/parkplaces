@@ -19,20 +19,13 @@ namespace ParkPlaces.Net
         public static Client Instance => _instance ?? (_instance = new Client());
 
         private WatsonTcpClient _watsonTcpClient;
-        private string _serverIp;
-        private int _serverPort;
+        private readonly string _serverIp;
+        private readonly int _serverPort;
 
         public Client()
         {
             _serverIp = ConfigurationManager.AppSettings["ServerIP"];
-            if(Int32.TryParse(ConfigurationManager.AppSettings["ServerPort"], out var port))
-            {
-                _serverPort = port;
-            }
-            else
-            {
-                _serverPort = 11000;
-            }
+            _serverPort = int.TryParse(ConfigurationManager.AppSettings["ServerPort"], out var port) ? port : 11000;
         }
 
         public void Connect(bool throwsException=false)
@@ -45,7 +38,7 @@ namespace ParkPlaces.Net
             {
                 OnConnectionError?.Invoke(e);
                 if (throwsException)
-                    throw e;
+                    throw;
             }
         }
 
