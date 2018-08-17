@@ -62,8 +62,13 @@ namespace ParkPlaces.Net
                         switch (PacketID)
                         {
                             case Protocols.LOGIN_ACK:
-                                var packet = Serializer.Deserialize<PPNetLib.Contracts.LoginAck>(stream);
-                                OnLoginAck?.Invoke(packet);
+                                var loginAck = Serializer.Deserialize<PPNetLib.Contracts.LoginAck>(stream);
+                                OnLoginAck?.Invoke(loginAck);
+                            break;
+
+                            case Protocols.ZONECOUNT_ACK:
+                                var zoneCountAck = Serializer.Deserialize<PPNetLib.Contracts.ZoneCountAck>(stream);
+                                OnZoneCountAck?.Invoke(zoneCountAck);
                             break;
                         }
                         Debug.WriteLine("Received PID {0}", PacketID);

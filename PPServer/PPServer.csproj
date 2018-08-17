@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Database\Sql.cs" />
     <Compile Include="Database\UserSql.cs" />
+    <Compile Include="Database\ZoneSql.cs" />
     <Compile Include="Extensions\Generic.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="Program.cs" />

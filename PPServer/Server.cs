@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PPNetLib;
 using PPNetLib.Contracts;
+using PPNetLib.Prototypes;
 using ProtoBuf;
 using WatsonTcp;
 
@@ -19,6 +20,7 @@ namespace PPServer
         private int _port;
         private Handler _handler;
         private WatsonTcpServer _watsonTcpServer;
+        private Dictionary<string, User> _authUsers;
 
         public Server()
         {
@@ -33,6 +35,7 @@ namespace PPServer
                 throw e;
             }
             _handler = new Handler(this);
+            _authUsers = new Dictionary<string, User>();
         }
 
         public void Listen()
@@ -68,8 +71,22 @@ namespace PPServer
                         {
                             case Protocols.LOGIN_REQ:
                                 var packet = Serializer.Deserialize<LoginReq>(stream);
-                                _handler.OnLoginReq(packet, ipPort);
+                                var user = _handler.OnLoginReq(packet, ipPort);
+
+                                _authUsers.Add(ipPort, user);
                             break;
+
+                            case Protocols.ZONECOUNT_ACK:
+                                
+                                if(_authUsers[ipPort] != null)
+                                {
+                                    if (!CheckPrivileges(ipPort, GroupRole.Guest))
+                                        goto default;
+
+                                    _handler.OnZoneCountReq(ipPort);
+                                }
+
+                                break;
 
                             default:
                                 _watsonTcpServer.DisconnectClient(ipPort);
@@ -101,6 +118,18 @@ namespace PPServer
             }
 
             return true;
+        }
+
+        private bool CheckPrivileges(string ipPort, GroupRole min)
+        {
+            if(_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
+            {
+                return _authUsers[ipPort].GroupRole >= min;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

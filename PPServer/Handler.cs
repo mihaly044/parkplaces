@@ -18,13 +18,21 @@ namespace PPServer
             _server = s;
         }
 
-        public void OnLoginReq(LoginReq packet, string ipPort)
+        public User OnLoginReq(LoginReq packet, string ipPort)
         {
             var ack = new LoginAck();
             var user = Sql.Instance.AuthenticateUser(packet.Username, packet.Password);
             ack.User = user;
 
             _server.Send(ipPort, ack);
+
+            return user;
+        }
+
+        public void OnZoneCountReq(string ipPort)
+        {
+            var count = Sql.Instance.GetZoneCount();
+            _server.Send(ipPort, new ZoneCountAck() { ZoneCount = count });
         }
     }
 }
