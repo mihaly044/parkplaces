@@ -58,34 +58,6 @@ namespace ParkPlaces.Forms
                 Username = textBoxUserName.Text,
                 Password = textBoxPassword.Text
             });
-
-            return;
-            
-            // Save selected DB configuration
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["DBConnection"].Value = comboDBConnection.SelectedIndex == 1 ? "alt" : "main";
-            config.Save();
-            ConfigurationManager.RefreshSection("appSettings");
-
-            Sql.ResetInstance();
-
-            User = Sql.Instance.AuthenticateUser(textBoxUserName.Text, textBoxPassword.Text);
-
-            if (User == null)
-            {
-                MessageBox.Show("Helytelen felhasználónév vagy jelszó.", "Hiba",
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            else if (!User.IsAuthenticated)
-            {
-                MessageBox.Show("Nincs megfelelő jogosultsága az alkalmazás használatához.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            else
-            {
-                DialogResult = DialogResult.OK;
-                Close();
-            }
         }
 
         /// <summary>
