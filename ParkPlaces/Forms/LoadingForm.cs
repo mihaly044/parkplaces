@@ -77,7 +77,7 @@ namespace ParkPlaces.Forms
         private void OnZoneListAck(ZoneListAck ack)
         {
             _currentProgress++;
-            Invoke(new Action(() => { progressBar.Value = (_currentProgress / _zoneCount) * 100; }));
+            progressBar.Value = (int)((double)_currentProgress / _zoneCount * 100);
 
             if(_currentProgress >= _zoneCount)
             {
