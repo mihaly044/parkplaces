@@ -18,6 +18,7 @@ using ParkPlaces.IO.Database;
 using ParkPlaces.Net;
 using PPNetLib.Contracts;
 using Newtonsoft.Json;
+using ParkPlaces.Extensions;
 
 namespace ParkPlaces.Controls
 {
@@ -699,7 +700,8 @@ namespace ParkPlaces.Controls
                 {
                     Polygons.Polygons.RemoveAt(iPolygon);
 
-                    Sql.Instance.RemoveZone(p);
+                    var zoneId = p.GetZoneId();
+                    Client.Instance.Send(new RemoveZoneReq(){ZoneId =  zoneId });
 
                     ClearSelection();
                 }

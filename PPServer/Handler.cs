@@ -53,5 +53,10 @@ namespace PPServer
 
             _server.Send(ipPort, new InsertZoneAck() { ZoneId = id });
         }
+
+        public void OnRemoveZoneReq(RemoveZoneReq packet)
+        {
+            Sql.Instance.RemoveZone(packet.ZoneId);
+        }
     }
 }

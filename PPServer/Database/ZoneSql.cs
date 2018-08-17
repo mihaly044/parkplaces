@@ -129,5 +129,25 @@ namespace PPServer.Database
                 return (int)zoneId;
             }
         }
+
+        /// <summary>
+        /// Remove a zone from the database
+        /// </summary>
+        /// <param name="zoneId">The zone to be removed</param>
+        public async void RemoveZone(int zoneId)
+        {
+
+            using (var cmd = new MySqlCommand("DELETE FROM zones WHERE id = @id") { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@id", zoneId);
+                await cmd.ExecuteNonQueryAsync();
+            }
+
+            using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE zoneid = @id") { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@id", zoneId);
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
     }
 }

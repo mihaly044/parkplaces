@@ -14,6 +14,7 @@ namespace PPNetLib
         ZONELIST_REQ,
         ZONELIST_ACK,
         INSERTZONE_REQ,
-        INSERTZONE_ACK
+        INSERTZONE_ACK,
+        REMOVEZONE_REQ
     };
 }

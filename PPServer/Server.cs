@@ -95,6 +95,14 @@ namespace PPServer
                             _handler.OnInsertZoneReqAsync(insertZoneReq, ipPort);
                             break;
 
+                            case Protocols.REMOVEZONE_REQ:
+                                if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                                    goto default;
+
+                                var removeZoneReq = Serializer.Deserialize<RemoveZoneReq>(stream);
+                                _handler.OnRemoveZoneReq(removeZoneReq);
+                                break;
+
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
                             break;

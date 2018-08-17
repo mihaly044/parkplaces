@@ -1,0 +1,19 @@
+﻿using ProtoBuf;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PPNetLib.Contracts
+{
+    [ProtoContract]
+    public class RemoveZoneReq : Packet
+    {
+        [ProtoMember(1)]
+        public int ZoneId { get; set; }
+
+        public RemoveZoneReq()
+        {
+            PacketID = Protocols.REMOVEZONE_REQ;
+        }
+    }
+}
