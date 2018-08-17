@@ -51,6 +51,7 @@ namespace PPServer
 
         private bool ClientDisconnected(string ipPort)
         {
+            _authUsers.Remove(ipPort);
             Console.WriteLine("Client disconnected: " + ipPort);
             return true;
         }
@@ -73,7 +74,8 @@ namespace PPServer
                                 var packet = Serializer.Deserialize<LoginReq>(stream);
                                 var user = _handler.OnLoginReq(packet, ipPort);
 
-                                _authUsers.Add(ipPort, user);
+                                if(_authUsers.ContainsKey(ipPort))
+                                    _authUsers.Add(ipPort, user);
                             break;
 
                             case Protocols.ZONECOUNT_ACK:
