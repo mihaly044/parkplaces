@@ -421,6 +421,8 @@ namespace ParkPlaces.Forms
         /// <returns></returns>
         private void CheckUserPrivileges(CancellationToken cancellationToken)
         {
+            // TODO: Rewrite CheckUserPrivileges
+            return;
             Task.Run(async () =>
             {
                 while (true)

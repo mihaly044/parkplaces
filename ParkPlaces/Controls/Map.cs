@@ -902,8 +902,9 @@ namespace ParkPlaces.Controls
 
         protected void OnDragFinish(Polygon polygon)
         {
+            // TODO: Write server side Sql.Instance.UpdatePoint
             OnDragEnd?.Invoke(polygon);
-            Sql.Instance.UpdatePoints(CurrentPolygon);
+            //Sql.Instance.UpdatePoints(CurrentPolygon);
         }
         #endregion App logic
     }
