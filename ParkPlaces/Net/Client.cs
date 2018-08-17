@@ -66,7 +66,7 @@ namespace ParkPlaces.Net
                                 OnLoginAck?.Invoke(packet);
                             break;
                         }
-                        Debug.WriteLine("Received PID {0} from {1}", PacketID);
+                        Debug.WriteLine("Received PID {0}", PacketID);
                     }
                 }
                 catch (Exception e)
