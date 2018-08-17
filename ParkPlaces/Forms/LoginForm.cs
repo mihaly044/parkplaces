@@ -53,11 +53,11 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            
-            var req = new LoginReq();
-            req.Username = textBoxUserName.Text;
-            req.Password = textBoxPassword.Text;
-            Client.Instance.Send(req);
+            Client.Instance.Send(new LoginReq
+            {
+                Username = textBoxUserName.Text,
+                Password = textBoxPassword.Text
+            });
 
             return;
             
