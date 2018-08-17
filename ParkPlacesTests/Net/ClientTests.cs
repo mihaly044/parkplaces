@@ -12,10 +12,14 @@ namespace ParkPlaces.Net.Tests
     public class ClientTests
     {
         [TestMethod()]
-        public void ClientTest()
+        public void ConnectShouldThrowException()
         {
             var c = new Client();
-            Assert.ThrowsException<Exception>(() => { c.Connect(); });
+            var shouldThrowException = true;
+
+            Assert.ThrowsException<ArgumentNullException>(() => {
+                c.Connect(shouldThrowException);
+            });
         }
     }
 }

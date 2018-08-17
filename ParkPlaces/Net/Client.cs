@@ -35,7 +35,7 @@ namespace ParkPlaces.Net
             }
         }
 
-        public void Connect()
+        public void Connect(bool throwsException=false)
         {
             try
             {
@@ -44,6 +44,8 @@ namespace ParkPlaces.Net
             catch (Exception e)
             {
                 OnConnectionError?.Invoke(e);
+                if (throwsException)
+                    throw e;
             }
         }
 
