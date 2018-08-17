@@ -12,7 +12,7 @@ namespace PPNetLib
     public class Packet
     {
         [ProtoMember(1)]
-        public int PacketID { get; set; }
+        public Protocols PacketID { get; set; }
 
         public Packet()
         {

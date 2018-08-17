@@ -45,5 +45,13 @@ namespace PPServer
                 return true;
             } );
         }
+
+        public async void OnInsertZoneReqAsync(InsertZoneReq packet, string ipPort)
+        {
+            var zone = JsonConvert.DeserializeObject<PolyZone> (packet.Zone, Converter.Settings);
+            var id = await Sql.Instance.InsertZone(zone);
+
+            _server.Send(ipPort, new InsertZoneAck() { ZoneId = id });
+        }
     }
 }

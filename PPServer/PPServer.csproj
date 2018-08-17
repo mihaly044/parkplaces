@@ -76,6 +76,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\CitySql.cs" />
     <Compile Include="Database\Sql.cs" />
     <Compile Include="Database\UserSql.cs" />
     <Compile Include="Database\ZoneSql.cs" />

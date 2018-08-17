@@ -66,13 +66,13 @@ namespace PPServer
                     {
                         var bPacketID = new byte[4];
                         stream.Read(bPacketID, 0, 4);
-                        var PacketID = BitConverter.ToInt32(bPacketID, 0);
+                        var PacketID = (Protocols)BitConverter.ToInt32(bPacketID, 0);
 
                         switch (PacketID)
                         {
                             case Protocols.LOGIN_REQ:
-                                var packet = Serializer.Deserialize<LoginReq>(stream);
-                                var user = _handler.OnLoginReq(packet, ipPort);
+                                var loginReq = Serializer.Deserialize<LoginReq>(stream);
+                                var user = _handler.OnLoginReq(loginReq, ipPort);
 
                                 if(!_authUsers.ContainsKey(ipPort))
                                     _authUsers.Add(ipPort, user);
@@ -89,6 +89,14 @@ namespace PPServer
                                 if (!CheckPrivileges(ipPort, GroupRole.Guest))
                                     goto default;
                                 _handler.OnZoneListReq(ipPort);
+                            break;
+
+                            case Protocols.INSERTZONE_REQ:
+                                if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                                    goto default;
+
+                                var insertZoneReq = Serializer.Deserialize<InsertZoneReq>(stream);
+                                _handler.OnInsertZoneReqAsync(insertZoneReq, ipPort);
                             break;
 
                             default:
@@ -109,7 +117,7 @@ namespace PPServer
 
         public bool Send<T>(string ipPort, T packet)
         {
-            int PacketID = ((Packet)(object)packet).PacketID;
+            var PacketID = (int)((Packet)(object)packet).PacketID;
 
             using (var stream = new MemoryStream())
             {

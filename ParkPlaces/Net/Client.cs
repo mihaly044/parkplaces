@@ -59,7 +59,7 @@ namespace ParkPlaces.Net
                     {
                         var bPacketID = new byte[4];
                         stream.Read(bPacketID, 0, 4);
-                        var PacketID = BitConverter.ToInt32(bPacketID, 0);
+                        var PacketID = (Protocols)BitConverter.ToInt32(bPacketID, 0);
 
                         switch (PacketID)
                         {
@@ -75,8 +75,14 @@ namespace ParkPlaces.Net
 
                             case Protocols.ZONELIST_ACK:
                                 var zoneListAck = Serializer.Deserialize<PPNetLib.Contracts.ZoneListAck>(stream);
-                                OnZoneListAck(zoneListAck);
-                                break;
+                                OnZoneListAck?.Invoke(zoneListAck);
+                             break;
+
+                            case Protocols.INSERTZONE_ACK:
+                                var zoneInsertAck = Serializer.Deserialize<PPNetLib.Contracts.InsertZoneAck>(stream);
+                                OnZoneInsertAck?.Invoke(zoneInsertAck);
+                                OnZoneInsertAck = null;
+                            break;
                         }
                         Debug.WriteLine("Received PID {0}", PacketID);
                     }
@@ -103,7 +109,7 @@ namespace ParkPlaces.Net
 
         public bool Send<T>(T packet)
         {
-            int PacketID = ((Packet)(object)packet).PacketID;
+            var PacketID = (int)((Packet)(object)packet).PacketID;
 
             using (var stream = new MemoryStream())
             {
