@@ -15,6 +15,9 @@ using ParkPlaces.Forms;
 using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
 using ParkPlaces.IO.Database;
+using ParkPlaces.Net;
+using PPNetLib.Contracts;
+using Newtonsoft.Json;
 
 namespace ParkPlaces.Controls
 {
@@ -563,7 +566,7 @@ namespace ParkPlaces.Controls
         /// Aka. Draw mode end
         /// <param name="save">Indicates whether to save or discard the current drawing polygon</param>
         /// </summary>
-        private async void EndDrawPolygonAsync(bool save)
+        private void EndDrawPolygonAsync(bool save)
         {
             IsDrawingPolygon = false;
 
@@ -592,9 +595,12 @@ namespace ParkPlaces.Controls
                         _currentDrawingPolygon.Points.Select(x => x.ToGeometry(0))
                     );
 
+                    var zoneSeriliazed = JsonConvert.SerializeObject(newZone, Converter.Settings);
 
-                    var zoneId = await Sql.Instance.InsertZone(newZone);
-                    newZone.Id = zoneId.ToString();
+                    Client.Instance.Send(new InsertZoneReq() { Zone = zoneSeriliazed });
+                    Client.Instance.OnZoneInsertAck += (ack) => {
+                        newZone.Id = ack.ZoneId.ToString();
+                    };
 
                     _currentDrawingPolygon.Tag = newZone;
                     _dtoObject.Zones.Add(newZone);
