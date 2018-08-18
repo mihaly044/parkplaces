@@ -54,7 +54,7 @@ namespace PPServer
         public void Listen()
         {
             Console.WriteLine("Server starting up");
-            _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, false);
+            _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, true);
             Console.WriteLine($"Server listening on {_ip}:{_port}");
         }
 
@@ -158,8 +158,16 @@ namespace PPServer
                         case Protocols.UPDATEPOINT_REQ:
                             if (!CheckPrivileges(ipPort, GroupRole.Editor))
                                 goto default;
+
                             var updatePointReq = Serializer.Deserialize<UpdatePointReq>(stream);
                             _handler.OnUpdatePointReq(updatePointReq);
+                            break;
+
+                        case Protocols.CITYLIST_REQ:
+                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                                goto default;
+
+                            _handler.OnCityListReqAsync(ipPort);
                             break;
 
                         default:

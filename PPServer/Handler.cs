@@ -80,5 +80,11 @@ namespace PPServer
             var zone = JsonConvert.DeserializeObject<PolyZone>(packet.Zone, Converter.Settings);
             Sql.Instance.UpdateZoneInfo(zone);
         }
+
+        public async void OnCityListReqAsync(string ipPort)
+        {
+            var cities = await Sql.Instance.LoadCities();
+            _server.Send(ipPort, new CityListAck(){ Cities = cities });
+        }
     }
 }

@@ -23,5 +23,8 @@ namespace ParkPlaces.Net
 
         public delegate void ZoneInsertAck(PPNetLib.Contracts.InsertZoneAck ack);
         public event ZoneInsertAck OnZoneInsertAck;
+
+        public delegate void CityListAck(PPNetLib.Contracts.CityListAck ack);
+        public event CityListAck OnCityListAck;
     }
 }

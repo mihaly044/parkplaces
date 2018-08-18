@@ -28,6 +28,8 @@ namespace PPNetLib
         REMOVEPOINT_REQ,
         INSERTPOINT_REQ,
         INSERTPOINT_ACK,
-        UPDATEPOINT_REQ
+        UPDATEPOINT_REQ,
+        CITYLIST_REQ,
+        CITYLIST_ACK
     };
 }

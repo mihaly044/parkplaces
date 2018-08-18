@@ -4,6 +4,9 @@ using System.Windows.Forms;
 using ParkPlaces.IO;
 using ParkPlaces.IO.Database;
 using PPNetLib.Prototypes;
+using ParkPlaces.Net;
+using PPNetLib.Contracts;
+using ProtoBuf;
 
 namespace ParkPlaces.Forms
 {
@@ -18,11 +21,33 @@ namespace ParkPlaces.Forms
         {
             InitializeComponent();
             _zone = zone;
+
+            Client.Instance.OnCityListAck += OnCityListAck;
+        }
+
+        private void OnCityListAck(CityListAck packet)
+        {
+            comboBoxCities.Items.Clear();
+            _cities = (List<City>)packet.Cities;
+            if (_cities != null)
+            {
+                foreach (var city in _cities)
+                {
+                    comboBoxCities.Items.Add(city);
+
+                    if (_zone.Telepules == city.ToString())
+                        comboBoxCities.SelectedItem = city;
+
+                }
+            }
+
+            // Reset event listener
+            Client.Instance.OnCityListAck -= OnCityListAck;
         }
 
         private void EditZoneForm_Load(object sender, System.EventArgs e)
         {
-            LoadCitiesAsync();
+            Client.Instance.Send(new CityListReq());
 
             textBoxId.Text = _zone.Id;
             textBoxColor.Text = _zone.Color;
@@ -34,20 +59,6 @@ namespace ParkPlaces.Forms
             if (_zone.Color != string.Empty)
             {
                 textBoxColor.BackColor = ColorTranslator.FromHtml(textBoxColor.Text);
-            }
-        }
-
-        private async void LoadCitiesAsync()
-        {
-            comboBoxCities.Items.Clear();
-            _cities = await Sql.Instance.LoadCities();
-            foreach (var city in _cities)
-            {
-                comboBoxCities.Items.Add(city);
-
-                if (_zone.Telepules == city.ToString())
-                    comboBoxCities.SelectedItem = city;
-
             }
         }
 

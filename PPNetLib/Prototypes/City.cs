@@ -1,9 +1,20 @@
-﻿namespace PPNetLib.Prototypes
+﻿using ProtoBuf;
+
+namespace PPNetLib.Prototypes
 {
+    [ProtoContract]
     public class City
     {
-        public int Id { get; }
+        [ProtoMember(1)]
+        public int Id { get; set; }
+
+        [ProtoMember(2)]
         public string Name { get; set; }
+
+        public City()
+        {
+            Id = 0;
+        }
 
         public City(int id = 0)
         {

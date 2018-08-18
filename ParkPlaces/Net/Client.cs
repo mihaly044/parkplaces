@@ -80,6 +80,10 @@ namespace ParkPlaces.Net
                             OnZoneInsertAck?.Invoke(zoneInsertAck);
                             OnZoneInsertAck = null;
                             break;
+                        case Protocols.CITYLIST_ACK:
+                            var cityListAck = Serializer.Deserialize<PPNetLib.Contracts.CityListAck>(stream);
+                            OnCityListAck?.Invoke(cityListAck);
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }
