@@ -40,7 +40,7 @@
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(396, 107);
+            this.btnLogin.Location = new System.Drawing.Point(396, 97);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 23);
             this.btnLogin.TabIndex = 2;
@@ -51,7 +51,7 @@
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(157, 58);
+            this.lblUserName.Location = new System.Drawing.Point(157, 48);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(84, 13);
             this.lblUserName.TabIndex = 1;
@@ -60,7 +60,7 @@
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(157, 84);
+            this.lblPassword.Location = new System.Drawing.Point(157, 74);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(39, 13);
             this.lblPassword.TabIndex = 2;
@@ -70,7 +70,7 @@
             // 
             this.textBoxUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBoxUserName.ForeColor = System.Drawing.Color.Blue;
-            this.textBoxUserName.Location = new System.Drawing.Point(247, 55);
+            this.textBoxUserName.Location = new System.Drawing.Point(247, 45);
             this.textBoxUserName.Name = "textBoxUserName";
             this.textBoxUserName.Size = new System.Drawing.Size(224, 20);
             this.textBoxUserName.TabIndex = 0;
@@ -81,7 +81,7 @@
             // 
             this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBoxPassword.ForeColor = System.Drawing.Color.Blue;
-            this.textBoxPassword.Location = new System.Drawing.Point(247, 81);
+            this.textBoxPassword.Location = new System.Drawing.Point(247, 71);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '•';
             this.textBoxPassword.Size = new System.Drawing.Size(224, 20);
@@ -91,7 +91,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(315, 107);
+            this.btnExit.Location = new System.Drawing.Point(315, 97);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 3;
