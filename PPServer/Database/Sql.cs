@@ -104,12 +104,12 @@ namespace PPServer.Database
             if (noDatabase)
             {
                 mySqlConnection = new MySqlConnection(
-                    $@"SERVER={Server};PORT={Port};UID={User};PASSWORD={Password};SslMode=none");
+                    $@"SERVER={Server};PORT={Port};UID={User};PASSWORD={Password};SslMode=none;Pooling=false");
             }
             else
             {
                 mySqlConnection = new MySqlConnection(
-                    $@"SERVER={Server};PORT={Port};DATABASE={Database};UID={User};PASSWORD={Password};SslMode=none");
+                    $@"SERVER={Server};PORT={Port};DATABASE={Database};UID={User};PASSWORD={Password};SslMode=none;Pooling=false");
             }
 
 
