@@ -176,23 +176,17 @@ namespace PPServer.Database
         /// Insert a new user into the database
         /// </summary>
         /// <param name="user"></param>
-        /// <param name="creatorUser"></param>
-        public void InsertUser(User user, User creatorUser = null)
+        /// <param name="creatorId"></param>
+        public void InsertUser(User user, int creatorId)
         {
-            using (var cmd = new MySqlCommand("INSERT INTO users (username, password, groupid) VALUES (@username, @password, @groupid)")
+            using (var cmd = new MySqlCommand("INSERT INTO users (username, password, groupid, creatorid) VALUES (@username, @password, @groupid, @creatorid)")
                 { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@username", user.UserName);
                 cmd.Parameters.AddWithValue("@password", Crypter.Blowfish.Crypt(user.Password));
                 cmd.Parameters.AddWithValue("@groupid", user.GroupRole);
+                cmd.Parameters.AddWithValue("@creatorid", creatorId);
                 cmd.ExecuteNonQuery();
-            }
-
-            if (creatorUser != null)
-            {
-                var newUser = GetUserData(user);
-                newUser.CreatorId = creatorUser.Id;
-                UpdateUser(newUser);
             }
         }
     }

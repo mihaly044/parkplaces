@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ParkPlaces.IO.Database;
 using PPNetLib.Prototypes;
+using ParkPlaces.Net;
+using PPNetLib.Contracts;
 
 namespace ParkPlaces.Forms
 {
@@ -24,6 +28,16 @@ namespace ParkPlaces.Forms
         /// <returns></returns>
         public User GetUser() => _user;
 
+        /// <summary>
+        /// Used for waiting for server response
+        /// </summary>
+        private ManualResetEvent _manualResetEvent;
+
+        /// <summary>
+        /// Indicates whether the user to be created is a duplicate
+        /// </summary>
+        private bool _isDuplicateUser;
+
         private static readonly byte[] DefaultPasswd = { 0x25, 0x14, 0xe9, 0x0b,
                                                          0xdd, 0x51, 0x3e, 0x6a,
                                                          0xec, 0x56, 0xfd, 0xff };
@@ -39,6 +53,13 @@ namespace ParkPlaces.Forms
             {
                 Text = "Új felhasználó";
             }
+            Client.Instance.OnIsDuplicateUserAck += OnIsDuplicateUserAck;
+        }
+
+        private void OnIsDuplicateUserAck(IsDuplicateUserAck packet)
+        {
+            _isDuplicateUser = packet.IsDuplicateUser;
+            _manualResetEvent.Set();
         }
 
         public sealed override string Text
@@ -82,7 +103,7 @@ namespace ParkPlaces.Forms
             Close();
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_ClickAsync(object sender, EventArgs e)
         {
             if(_user == null)
             {
@@ -106,7 +127,16 @@ namespace ParkPlaces.Forms
             _user.UserName = textBoxUserName.Text;
             _user.GroupRole = accessLevel;
 
-            if (Sql.Instance.IsDuplicateUser(_user))
+            _manualResetEvent = new ManualResetEvent(false);
+
+            // Wait for server response
+            await Task.Run(() => {
+                Client.Instance.Send(new IsDuplicateUserReq(){User = _user});
+                _manualResetEvent.WaitOne();
+            });
+            _manualResetEvent.Reset();
+
+            if (_isDuplicateUser)
             {
                 MessageBox.Show("This username already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;

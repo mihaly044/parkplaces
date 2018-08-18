@@ -93,6 +93,12 @@ namespace ParkPlaces.Net
                             var userListAck = Serializer.Deserialize<PPNetLib.Contracts.UserListAck>(stream);
                             OnUserListAck?.Invoke(userListAck);
                             break;
+                         case Protocols.ISDUPLICATEUSER_ACK:
+                            var isDuplicateUserAck = Serializer.Deserialize<PPNetLib.Contracts.IsDuplicateUserAck>(stream);
+                            OnIsDuplicateUserAck?.Invoke(isDuplicateUserAck);
+                             OnIsDuplicateUserAck = null;
+                            break;
+
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }

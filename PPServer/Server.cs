@@ -201,6 +201,14 @@ namespace PPServer
                             _handler.OnUpdateUserReq(updateUserReq);
                             break;
 
+                        case Protocols.ISDUPLICATEUSER_REQ:
+                            if (!CheckPrivileges(ipPort, GroupRole.Admin))
+                                goto default;
+
+                            var isDuplicateUserReq = Serializer.Deserialize<IsDuplicateUserReq>(stream);
+                            _handler.IsDuplicateUserReq(isDuplicateUserReq, ipPort);
+                            break;
+
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
                             Console.WriteLine("Invalid message from {0}", ipPort);

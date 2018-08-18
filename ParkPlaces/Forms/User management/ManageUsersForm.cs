@@ -57,7 +57,7 @@ namespace ParkPlaces.Forms
             if(newUserForm.ShowDialog(this) == DialogResult.OK)
             {
                 var user = newUserForm.GetUser();
-                Client.Instance.Send(new InsertUserReq() {User = user});
+                Client.Instance.Send(new InsertUserReq() {User = user, CreatorId = _loggedInUser.Id});
                 RefreshUsersList();
             }
         }

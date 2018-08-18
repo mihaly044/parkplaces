@@ -96,7 +96,8 @@ namespace PPServer
         public void OnInsertUserReq(InsertUserReq packet)
         {
             var user = packet.User;
-            Sql.Instance.InsertUser(user);
+            var creatorId = packet.CreatorId;
+            Sql.Instance.InsertUser(user, creatorId);
         }
 
         public void OnRemoveUserReq(RemoveUserReq packet)
@@ -109,6 +110,13 @@ namespace PPServer
         {
             var user = packet.User;
             Sql.Instance.UpdateUser(user);
+        }
+
+        public void IsDuplicateUserReq(IsDuplicateUserReq packet, string ipPort)
+        {
+            var user = packet.User;
+            var isDuplicateUser = Sql.Instance.IsDuplicateUser(user);
+            _server.Send(ipPort, new IsDuplicateUserAck(){ IsDuplicateUser = isDuplicateUser });
         }
     }
 }
