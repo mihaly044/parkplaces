@@ -54,7 +54,13 @@ namespace PPServer
         public void Listen()
         {
             Console.WriteLine("Server starting up");
+
+#if DEBUG
             _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, true);
+#else
+            _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, false);
+#endif
+
             Console.WriteLine($"Server listening on {_ip}:{_port}");
         }
 
