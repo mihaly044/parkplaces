@@ -43,6 +43,8 @@ namespace ParkPlaces.Forms
                 DialogResult = DialogResult.OK;
                 Close();
             }
+
+            Client.Instance.OnLoginAck -= OnLoginAck;
         }
 
         /// <summary>
