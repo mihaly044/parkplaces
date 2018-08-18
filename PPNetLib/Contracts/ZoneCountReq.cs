@@ -10,7 +10,7 @@ namespace PPNetLib.Contracts
     {
         public ZoneCountReq()
         {
-            PacketID = Protocols.ZONECOUNT_REQ;
+            PacketId = Protocols.ZONECOUNT_REQ;
         }
     }
 }

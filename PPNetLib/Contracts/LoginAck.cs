@@ -13,7 +13,7 @@ namespace PPNetLib.Contracts
 
         public LoginAck()
         {
-            PacketID = Protocols.LOGIN_ACK;
+            PacketId = Protocols.LOGIN_ACK;
         }
     }
 }

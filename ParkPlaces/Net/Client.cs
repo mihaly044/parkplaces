@@ -99,7 +99,7 @@ namespace ParkPlaces.Net
 
         public bool Send<T>(T packet)
         {
-            var packetId = (int)((Packet)(object)packet).PacketID;
+            var packetId = (int)((Packet)(object)packet).PacketId;
 
             using (var stream = new MemoryStream())
             {

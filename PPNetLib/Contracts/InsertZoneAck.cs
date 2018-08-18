@@ -13,7 +13,7 @@ namespace PPNetLib.Contracts
 
         public InsertZoneAck()
         {
-            PacketID = Protocols.INSERTZONE_ACK;
+            PacketId = Protocols.INSERTZONE_ACK;
         }
     }
 }

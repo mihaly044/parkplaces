@@ -493,7 +493,7 @@ namespace ParkPlaces.Controls
             var editZoneForm = new EditZoneForm(zone);
             if (editZoneForm.ShowDialog() == DialogResult.OK)
             {
-                Sql.Instance.UpdateZoneInfo(editZoneForm.GetZone());
+                Client.Instance.Send(new UpdateZoneReq() {Zone = JsonConvert.SerializeObject(editZoneForm.GetZone())});
             }
         }
 
@@ -911,6 +911,12 @@ namespace ParkPlaces.Controls
             /* var serializedZone = JsonConvert.SerializeObject(polygon.GetZoneInfo());
             Client.Instance.Send(new UpdatePointsReq() { Zone = serializedZone });*/
         }
+
+        public void UpdatePoints(Polygon p)
+        {
+            
+        }
+
         #endregion App logic
     }
 }

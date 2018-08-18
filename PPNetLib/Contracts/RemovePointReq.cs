@@ -13,7 +13,7 @@ namespace PPNetLib.Contracts
 
         public RemovePointReq()
         {
-            PacketID = Protocols.REMOVEPOINT_REQ;
+            PacketId = Protocols.REMOVEPOINT_REQ;
         }
     }
 }

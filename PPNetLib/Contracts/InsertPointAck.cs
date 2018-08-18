@@ -6,14 +6,14 @@ using System.Text;
 namespace PPNetLib.Contracts
 {
     [ProtoContract]
-    public class InsertZoneReq : Packet
+    public class InsertPointAck : Packet
     {
         [ProtoMember(1)]
-        public string Zone;
+        public int PointId { get; set; }
 
-        public InsertZoneReq()
+        public InsertPointAck()
         {
-            PacketId = Protocols.INSERTZONE_REQ;
+            PacketId = Protocols.INSERTPOINT_ACK;
         }
     }
 }

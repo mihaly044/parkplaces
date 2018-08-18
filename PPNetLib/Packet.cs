@@ -7,12 +7,10 @@ using PPNetLib.Contracts;
 namespace PPNetLib
 {
     [ProtoContract]
-    [ProtoInclude(10, typeof(LoginAck))]
-    [ProtoInclude(11, typeof(LoginReq))]
     public class Packet
     {
         [ProtoMember(1)]
-        public Protocols PacketID { get; set; }
+        public Protocols PacketId { get; set; }
 
         public Packet()
         {

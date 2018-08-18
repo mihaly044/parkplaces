@@ -17,7 +17,7 @@ namespace PPNetLib
         INSERTZONE_REQ,
         INSERTZONE_ACK,
         REMOVEZONE_REQ,
-        UPDATEPOINTS_REQ,
+        UPDATEZONE_REQ,
         REMOVEPOINT_REQ,
         INSERTPOINT_REQ,
         INSERTPOINT_ACK,

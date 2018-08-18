@@ -103,6 +103,14 @@ namespace PPServer
                             _handler.OnRemoveZoneReq(removeZoneReq);
                             break;
 
+                        case Protocols.UPDATEZONE_REQ:
+                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                                goto default;
+
+                            var updateZoneReq = Serializer.Deserialize<UpdateZoneReq>(stream);
+                            _handler.OnUpdateZoneReq(updateZoneReq);
+                            break;
+
                         case Protocols.REMOVEPOINT_REQ:
                             if (!CheckPrivileges(ipPort, GroupRole.Editor))
                                 goto default;
@@ -111,11 +119,26 @@ namespace PPServer
                             _handler.OnRemovePointReq(removePointReq);
                             break;
 
+                        case Protocols.INSERTPOINT_REQ:
+                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                                goto default;
+
+                            var insertPointReq = Serializer.Deserialize<InsertPointReq>(stream);
+                            _handler.OnInsertPointReqAsync(insertPointReq, ipPort);
+                            break;
+
+                        case Protocols.UPDATEPOINT_REQ:
+                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                                goto default;
+                            var updatePointReq = Serializer.Deserialize<UpdatePointReq>(stream);
+                            _handler.OnUpdatePointReq(updatePointReq);
+                            break;
+
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
                             break;
                     }
-                    Console.WriteLine("Received PID {0} from {1}", packetId, ipPort);
+                    Console.WriteLine("Received PID {0} from {1}", Enum.GetName(typeof(Protocols), packetId), ipPort);
                 }
             }
             catch (Exception e)
@@ -128,7 +151,7 @@ namespace PPServer
 
         public void Send<T>(string ipPort, T packet)
         {
-            var packetId = (int)((Packet)(object)packet).PacketID;
+            var packetId = (int)((Packet)(object)packet).PacketId;
 
             using (var stream = new MemoryStream())
             {

@@ -63,5 +63,22 @@ namespace PPServer
         {
             Sql.Instance.RemovePoint(packet.PointId);
         }
+
+        public async void OnInsertPointReqAsync(InsertPointReq packet, string ipPort)
+        {
+            var id =  await Sql.Instance.InsertPointAsync(packet.ZoneId, packet.Lat, packet.Lng);
+            _server.Send(ipPort, new InsertPointAck(){PointId = id});
+        }
+
+        public void OnUpdatePointReq(UpdatePointReq packet)
+        {
+            Sql.Instance.UpdatePoint(packet.PointId, packet.Lat, packet.Lng);
+        }
+
+        public void OnUpdateZoneReq(UpdateZoneReq packet)
+        {
+            var zone = JsonConvert.DeserializeObject<PolyZone>(packet.Zone, Converter.Settings);
+            Sql.Instance.UpdateZoneInfo(zone);
+        }
     }
 }

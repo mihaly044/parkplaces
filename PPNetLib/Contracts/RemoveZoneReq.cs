@@ -13,7 +13,7 @@ namespace PPNetLib.Contracts
 
         public RemoveZoneReq()
         {
-            PacketID = Protocols.REMOVEZONE_REQ;
+            PacketId = Protocols.REMOVEZONE_REQ;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace PPNetLib.Contracts
 
         public ZoneCountAck()
         {
-            PacketID = Protocols.ZONECOUNT_ACK;
+            PacketId = Protocols.ZONECOUNT_ACK;
         }
     }
 }

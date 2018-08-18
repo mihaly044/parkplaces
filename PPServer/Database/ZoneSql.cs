@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using GMap.NET;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using PPNetLib.Contracts;
@@ -151,6 +153,45 @@ namespace PPServer.Database
         }
 
         /// <summary>
+        ///  Update a zone in the database
+        /// </summary>
+        /// <param name="zone"></param>
+        public async void UpdateZoneInfo(PolyZone zone)
+        {
+            using (var cmd = new MySqlCommand(
+                    @"UPDATE zones SET cityid = @cityid, color = @color, fee = @fee, timetable = @timetable, common_name = @common_name, service_na = @service_na WHERE id = @id")
+                { Connection = GetConnection() })
+            {
+
+                cmd.Parameters.AddRange(new[]
+                {
+                    new MySqlParameter("@cityid", MySqlDbType.String),
+                    new MySqlParameter("@color", MySqlDbType.String),
+                    new MySqlParameter("@fee", MySqlDbType.String),
+                    new MySqlParameter("@service_na", MySqlDbType.String),
+                    new MySqlParameter("@description", MySqlDbType.String),
+                    new MySqlParameter("@timetable", MySqlDbType.String),
+                    new MySqlParameter("@common_name", MySqlDbType.String),
+                    new MySqlParameter("@id", MySqlDbType.String)
+                });
+
+
+                var city = City.FromString(zone.Telepules);
+                cmd.Parameters[0].Value = !IsDuplicateCity(city) ? InsertCity(city) : GetCityId(city);
+
+                cmd.Parameters[1].Value = zone.Color;
+                cmd.Parameters[2].Value = zone.Fee;
+                cmd.Parameters[3].Value = zone.ServiceNa;
+                cmd.Parameters[4].Value = zone.Description;
+                cmd.Parameters[5].Value = zone.Timetable;
+                cmd.Parameters[6].Value = zone.Zoneid;
+                cmd.Parameters[7].Value = zone.Id;
+
+                await cmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        /// <summary>
         /// Delete a point from the geometry table
         /// </summary>
         /// <param name="pointId">The point to be deleted</param>
@@ -163,6 +204,50 @@ namespace PPServer.Database
                 cmd.ExecuteNonQuery();
                 cmd.Connection.Close();
 
+                cmd.Connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Insert a point to the database
+        /// </summary>
+        /// <param name="zoneId"></param>
+        /// <param name="lat"></param>
+        /// <param name="lng"></param>
+        /// <returns></returns>
+        public async Task<int> InsertPointAsync(int zoneId, double lat, double lng)
+        {
+            using (var cmd =
+                new MySqlCommand(
+                        "INSERT INTO geometry (zoneid, lat, lng) VALUES (@zoneid, @lat, @lng)")
+                    { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@lat", lat);
+                cmd.Parameters.AddWithValue("@lng", lng);
+                cmd.Parameters.AddWithValue("@zoneid", zoneId);
+
+                await cmd.ExecuteNonQueryAsync();
+                cmd.Connection.Close();
+
+                return (int) cmd.LastInsertedId;
+            }
+        }
+
+        /// <summary>
+        /// Update a point of a zone in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="lat"></param>
+        /// <param name="lng"></param>
+        public async void UpdatePoint(int id, double lat, double lng)
+        {
+            using (var cmd = new MySqlCommand("UPDATE geometry SET lat = @lat, lng = @lng WHERE id = @id")
+                { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@lat", id);
+                cmd.Parameters.AddWithValue("@lng", lat);
+                cmd.Parameters.AddWithValue("@id", lng);
+                await cmd.ExecuteNonQueryAsync();
                 cmd.Connection.Close();
             }
         }

@@ -16,7 +16,7 @@ namespace PPNetLib.Contracts
 
         public LoginReq()
         {
-            PacketID = Protocols.LOGIN_REQ;
+            PacketId = Protocols.LOGIN_REQ;
         }
     }
 }
