@@ -2,8 +2,6 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Windows.Forms;
-using CryptSharp;
-using ParkPlaces.IO.Database;
 using ParkPlaces.Net;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
@@ -28,7 +26,7 @@ namespace ParkPlaces.Forms
 
         private void OnLoginAck(LoginAck ack)
         {
-            User = (User)ack.User;
+            User = ack.User;
 
             if (User == null)
             {
