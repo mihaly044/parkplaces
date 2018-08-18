@@ -63,6 +63,8 @@ namespace PPServer
                     stream.Read(bPacketId, 0, 4);
                     var packetId = (Protocols)BitConverter.ToInt32(bPacketId, 0);
 
+                    Console.WriteLine("Received PID {0} from {1}", Enum.GetName(typeof(Protocols), packetId), ipPort);
+
                     // ReSharper disable once SwitchStatementMissingSomeCases
                     switch (packetId)
                     {
@@ -138,7 +140,6 @@ namespace PPServer
                             _watsonTcpServer.DisconnectClient(ipPort);
                             break;
                     }
-                    Console.WriteLine("Received PID {0} from {1}", Enum.GetName(typeof(Protocols), packetId), ipPort);
                 }
             }
             catch (Exception e)
@@ -162,7 +163,7 @@ namespace PPServer
                 var buffer = stream.ToArray();
 
                 _watsonTcpServer.Send(ipPort, buffer);
-                //Console.WriteLine("PID {0} of {1} bytes sent to {2}", PacketID, buffer.Length, ipPort);
+                Console.WriteLine("PID {0} of {1} bytes sent to {2}", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
             }
         }
 
