@@ -27,8 +27,9 @@ namespace ParkPlaces.Forms
 
         private void OnCityListAck(CityListAck packet)
         {
+            comboBoxCities.Enabled = true;
             comboBoxCities.Items.Clear();
-            _cities = (List<City>)packet.Cities;
+            _cities = packet.Cities;
             if (_cities != null)
             {
                 foreach (var city in _cities)

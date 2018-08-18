@@ -138,11 +138,13 @@ namespace ParkPlaces.Forms
             // 
             // comboBoxCities
             // 
+            this.comboBoxCities.Enabled = false;
             this.comboBoxCities.FormattingEnabled = true;
             this.comboBoxCities.Location = new System.Drawing.Point(99, 114);
             this.comboBoxCities.Name = "comboBoxCities";
             this.comboBoxCities.Size = new System.Drawing.Size(226, 21);
             this.comboBoxCities.TabIndex = 11;
+            this.comboBoxCities.Text = "Betöltés...";
             // 
             // label6
             // 
