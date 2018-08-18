@@ -75,7 +75,7 @@ namespace PPServer.Database
                     configSection = "DBConnection";
                     break;
                 default:
-                    throw new Exception("Invalid configuration value fouund in DBConnectiion");
+                    throw new Exception("Invalid configuration value found in DBConnectiion");
             }
 
             var dbSect = ConfigurationManager.GetSection(configSection) as NameValueCollection;
