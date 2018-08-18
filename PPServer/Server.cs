@@ -95,19 +95,27 @@ namespace PPServer
                             _handler.OnInsertZoneReqAsync(insertZoneReq, ipPort);
                             break;
 
-                            case Protocols.REMOVEZONE_REQ:
-                                if (!CheckPrivileges(ipPort, GroupRole.Editor))
-                                    goto default;
+                       case Protocols.REMOVEZONE_REQ:
+                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                                goto default;
 
-                                var removeZoneReq = Serializer.Deserialize<RemoveZoneReq>(stream);
-                                _handler.OnRemoveZoneReq(removeZoneReq);
-                                break;
+                            var removeZoneReq = Serializer.Deserialize<RemoveZoneReq>(stream);
+                            _handler.OnRemoveZoneReq(removeZoneReq);
+                            break;
+
+                        case Protocols.REMOVEPOINT_REQ:
+                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                                goto default;
+
+                            var removePointReq = Serializer.Deserialize<RemovePointReq>(stream);
+                            _handler.OnRemovePointReq(removePointReq);
+                            break;
 
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
                             break;
                     }
-                    //Console.WriteLine("Received PID {0} from {1}", PacketID, ipPort);
+                    Console.WriteLine("Received PID {0} from {1}", packetId, ipPort);
                 }
             }
             catch (Exception e)

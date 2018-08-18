@@ -149,5 +149,22 @@ namespace PPServer.Database
                 await cmd.ExecuteNonQueryAsync();
             }
         }
+
+        /// <summary>
+        /// Delete a point from the geometry table
+        /// </summary>
+        /// <param name="pointId">The point to be deleted</param>
+        public void RemovePoint(int pointId)
+        {
+            using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE id = @id")
+                { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@id", pointId);
+                cmd.ExecuteNonQuery();
+                cmd.Connection.Close();
+
+                cmd.Connection.Close();
+            }
+        }
     }
 }

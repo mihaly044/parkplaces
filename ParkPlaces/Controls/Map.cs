@@ -668,8 +668,11 @@ namespace ParkPlaces.Controls
                     var point = ((PolyZone)p.Tag).Geometry.ElementAt(pIndex.Value);
 
                     // Delete from the database
-                    Sql.Instance.AddPointToBeDeleted(point);
-                    Sql.Instance.UpdatePoints(p);
+                    //Sql.Instance.AddPointToBeDeleted(point);
+                    Client.Instance.Send(new RemovePointReq() {PointId = point.Id});
+
+                    // TODO: Review DeletePolygonPoint
+                    //Sql.Instance.UpdatePoints(p);
 
                     // Delete from zone data
                     ((PolyZone)p.Tag).Geometry.Remove(point);
@@ -905,6 +908,8 @@ namespace ParkPlaces.Controls
             // TODO: Write server side Sql.Instance.UpdatePoint
             OnDragEnd?.Invoke(polygon);
             //Sql.Instance.UpdatePoints(CurrentPolygon);
+            /* var serializedZone = JsonConvert.SerializeObject(polygon.GetZoneInfo());
+            Client.Instance.Send(new UpdatePointsReq() { Zone = serializedZone });*/
         }
         #endregion App logic
     }

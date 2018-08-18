@@ -58,5 +58,10 @@ namespace PPServer
         {
             Sql.Instance.RemoveZone(packet.ZoneId);
         }
+
+        public void OnRemovePointReq(RemovePointReq packet)
+        {
+            Sql.Instance.RemovePoint(packet.PointId);
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+// ReSharper disable RedundantCommaInEnumDeclaration
 
 namespace PPNetLib
 {
@@ -15,6 +16,11 @@ namespace PPNetLib
         ZONELIST_ACK,
         INSERTZONE_REQ,
         INSERTZONE_ACK,
-        REMOVEZONE_REQ
+        REMOVEZONE_REQ,
+        UPDATEPOINTS_REQ,
+        REMOVEPOINT_REQ,
+        INSERTPOINT_REQ,
+        INSERTPOINT_ACK,
+        UPDATEPOINT_REQ
     };
 }
