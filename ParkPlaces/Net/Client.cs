@@ -22,6 +22,7 @@ namespace ParkPlaces.Net
         private readonly string _serverIp;
         private readonly int _serverPort;
         private bool _offlineMode;
+        private bool _forceDisconnect;
 
         public Client()
         {
@@ -53,6 +54,15 @@ namespace ParkPlaces.Net
         public bool IsConnected()
         {
             return _watsonTcpClient != null && _watsonTcpClient.IsConnected();
+        }
+
+        public void Disconnect()
+        {
+            if(IsConnected())
+            {
+                _forceDisconnect = true;
+                _watsonTcpClient.Dispose();
+            }
         }
 
         public bool GetOfflineMode()
@@ -131,7 +141,8 @@ namespace ParkPlaces.Net
 
         private bool ServerDisconnected()
         {
-            OnConnectionError?.Invoke(new Exception());
+            if(!_forceDisconnect)
+                OnConnectionError?.Invoke(new Exception());
             return false;
         }
 

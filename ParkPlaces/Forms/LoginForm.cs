@@ -22,6 +22,8 @@ namespace ParkPlaces.Forms
             CheckForIllegalCrossThreadCalls = false;
 
             Client.Instance.OnLoginAck += OnLoginAck;
+
+            Client.Instance.Disconnect();
         }
 
         private void OnLoginAck(LoginAck ack)
