@@ -341,7 +341,9 @@ namespace ParkPlaces.Forms
             OnFormLoad();
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async void SaveButton_ClickAsync(object sender, EventArgs e)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             // TODO: Rewrite SaveButton_ClickAsync
             /*
