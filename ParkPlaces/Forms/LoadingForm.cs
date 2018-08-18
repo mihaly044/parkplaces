@@ -1,8 +1,6 @@
 ﻿using ParkPlaces.IO;
 using System;
 using System.Windows.Forms;
-using ParkPlaces.IO.Database;
-using MySql.Data.MySqlClient;
 using System.Threading.Tasks;
 using PPNetLib.Contracts;
 using ParkPlaces.Net;
