@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 #pragma warning disable 67
 
 namespace ParkPlaces.Net
@@ -26,5 +23,8 @@ namespace ParkPlaces.Net
 
         public delegate void CityListAck(PPNetLib.Contracts.CityListAck ack);
         public event CityListAck OnCityListAck;
+
+        public delegate void InsertPointAck(PPNetLib.Contracts.InsertPointAck ack);
+        public event InsertPointAck OnPointInsertAck;
     }
 }
