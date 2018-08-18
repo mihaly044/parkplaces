@@ -77,7 +77,7 @@ namespace ParkPlaces.Forms
         private void btnRemove_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("A fiók törlését nem lehet visszavonni. Folytatja?", "Figyelmeztetés",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.OK)
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
                 Client.Instance.Send(new RemoveUserReq() {UserId = ((User) (listBoxUsers.SelectedItem)).Id});
                 RefreshUsersList();
