@@ -65,6 +65,11 @@ namespace ParkPlaces.Net
             }
         }
 
+        public void ResetLoginAck()
+        {
+            OnLoginAck = null;
+        }
+
         public bool GetOfflineMode()
         {
             return _offlineMode;
