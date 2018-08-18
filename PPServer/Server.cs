@@ -31,11 +31,31 @@ namespace PPServer
 
             _handler = new Handler(this);
             _authUsers = new Dictionary<string, User>();
+            printAsciiArtLogo();
+        }
+
+        private void printAsciiArtLogo()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(
+                @"
+8888888b.  8888888b.   .d8888b.                                             
+888   Y88b 888   Y88b d88P  Y88b                                            
+888    888 888    888 Y88b.                                                 
+888   d88P 888   d88P  ""Y888b.    .d88b.  888d888 888  888  .d88b.  888d888 
+8888888P""  8888888P""      ""Y88b. d8P  Y8b 888P""   888  888 d8P  Y8b 888P""   
+888        888              ""888 88888888 888     Y88  88P 88888888 888     
+888        888        Y88b  d88P Y8b.     888      Y8bd8P  Y8b.     888     
+888        888         ""Y8888P""   ""Y8888  888       Y88P    ""Y8888  888
+");
+            Console.ResetColor();
         }
 
         public void Listen()
         {
-            _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, true);
+            Console.WriteLine("Server starting up");
+            _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, false);
+            Console.WriteLine($"Server listening on {_ip}:{_port}");
         }
 
         private bool ClientConnected(string ipPort)
@@ -163,7 +183,7 @@ namespace PPServer
                 var buffer = stream.ToArray();
 
                 _watsonTcpServer.Send(ipPort, buffer);
-                Console.WriteLine("PID {0} of {1} bytes sent to {2}", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
+                //Console.WriteLine("PID {0} of {1} bytes sent to {2}", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
             }
         }
 
