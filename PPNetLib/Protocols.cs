@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 // ReSharper disable RedundantCommaInEnumDeclaration
 
 namespace PPNetLib
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum Protocols
     {
         LOGIN_REQ = 0x0001,
