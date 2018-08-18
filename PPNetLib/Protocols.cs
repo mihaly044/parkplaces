@@ -9,7 +9,7 @@ namespace PPNetLib
 {
     public static class Protocol
     {
-        public const int Version = 2;
+        public const int Version = 3;
     }
 
     [SuppressMessage("ReSharper", "InconsistentNaming")]

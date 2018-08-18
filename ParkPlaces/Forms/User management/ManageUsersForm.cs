@@ -64,11 +64,13 @@ namespace ParkPlaces.Forms
         private void btnEdit_Click(object sender, EventArgs e)
         {
             var editUserForm = new EditUserForm(_loggedInUser, (User)listBoxUsers.SelectedItem);
+            var previousGroupLevel = editUserForm.GetUser().GroupRole;
+
             if(editUserForm.ShowDialog(this) == DialogResult.OK)
             {
                 var selectedIndex = listBoxUsers.SelectedIndex;
                 var user = editUserForm.GetUser();
-                Client.Instance.Send(new UpdateUserReq() {User = user});
+                Client.Instance.Send(new UpdateUserReq() {User = user, ForceDisconnect = previousGroupLevel >= user.GroupRole});
 
                 RefreshUsersList();
                 listBoxUsers.SelectedIndex = selectedIndex;

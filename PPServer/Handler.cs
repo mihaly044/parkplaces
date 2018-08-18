@@ -110,6 +110,9 @@ namespace PPServer
         {
             var user = packet.User;
             Sql.Instance.UpdateUser(user);
+
+            if(packet.ForceDisconnect)
+                _server.DisconnectUser(user.Id);
         }
 
         public void IsDuplicateUserReq(IsDuplicateUserReq packet, string ipPort)

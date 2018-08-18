@@ -231,6 +231,13 @@ namespace PPServer
             return true;
         }
 
+        public void DisconnectUser(int userId)
+        {
+            var user = _authUsers.FirstOrDefault(u => u.Value.Id == userId);
+            if(user.Key != null)
+            _watsonTcpServer.DisconnectClient(user.Key);
+        }
+
         public void Send<T>(string ipPort, T packet)
         {
             var packetId = (int)((Packet)(object)packet).PacketId;
