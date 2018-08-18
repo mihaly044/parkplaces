@@ -30,6 +30,8 @@ namespace PPNetLib
         INSERTPOINT_ACK,
         UPDATEPOINT_REQ,
         CITYLIST_REQ,
-        CITYLIST_ACK
+        CITYLIST_ACK,
+        USERLIST_REQ,
+        USERLIST_ACK
     };
 }

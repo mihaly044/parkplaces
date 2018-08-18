@@ -26,5 +26,8 @@ namespace ParkPlaces.Net
 
         public delegate void InsertPointAck(PPNetLib.Contracts.InsertPointAck ack);
         public event InsertPointAck OnPointInsertAck;
+
+        public delegate void UserListAck(PPNetLib.Contracts.UserListAck ack);
+        public event UserListAck OnUserListAck;
     }
 }

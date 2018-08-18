@@ -86,5 +86,11 @@ namespace PPServer
             var cities = await Sql.Instance.LoadCities();
             _server.Send(ipPort, new CityListAck(){ Cities = cities });
         }
+
+        public async void OnUserListReqAsync(string ipPort)
+        {
+            var users = await Sql.Instance.LoadUsers();
+            _server.Send(ipPort, new UserListAck(){ Users = users });
+        }
     }
 }

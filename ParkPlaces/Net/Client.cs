@@ -89,6 +89,10 @@ namespace ParkPlaces.Net
                             var cityListAck = Serializer.Deserialize<PPNetLib.Contracts.CityListAck>(stream);
                             OnCityListAck?.Invoke(cityListAck);
                             break;
+                        case Protocols.USERLIST_ACK:
+                            var userListAck = Serializer.Deserialize<PPNetLib.Contracts.UserListAck>(stream);
+                            OnUserListAck?.Invoke(userListAck);
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }

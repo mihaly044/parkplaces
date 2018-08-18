@@ -170,6 +170,13 @@ namespace PPServer
                             _handler.OnCityListReqAsync(ipPort);
                             break;
 
+                        case Protocols.USERLIST_REQ:
+                            if (!CheckPrivileges(ipPort, GroupRole.Admin))
+                                goto default;
+
+                            _handler.OnUserListReqAsync(ipPort);
+                            break;
+
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
                             Console.WriteLine("Invalid message from {0}", ipPort);

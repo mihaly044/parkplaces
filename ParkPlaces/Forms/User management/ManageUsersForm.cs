@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using ParkPlaces.IO.Database;
+using ParkPlaces.Net;
+using PPNetLib.Contracts;
 
 namespace ParkPlaces.Forms
 {
@@ -20,7 +22,25 @@ namespace ParkPlaces.Forms
 
         private void ManageUsersForm_Load(object sender, EventArgs e)
         {
-            RefreshUsersListAsync();
+            RefreshUsersList();
+        }
+
+        private void OnUserListAck(UserListAck packet)
+        {
+            listBoxUsers.Items.Clear();
+            _users = packet.Users;
+
+            listBoxUsers.Enabled = true;
+
+            foreach (var user in _users)
+            {
+                listBoxUsers.Items.Add(user);
+
+                if (user.Id == _loggedInUser.Id)
+                    listBoxUsers.SelectedItem = user;
+            }
+
+            Client.Instance.OnUserListAck -= OnUserListAck;
         }
 
         private void listBoxUsers_SelectedIndexChanged(object sender, EventArgs e)
@@ -37,7 +57,7 @@ namespace ParkPlaces.Forms
             if(newUserForm.ShowDialog(this) == DialogResult.OK)
             {
                 Sql.Instance.InsertUser(newUserForm.GetUser());
-                RefreshUsersListAsync();
+                RefreshUsersList();
             }
         }
 
@@ -48,7 +68,7 @@ namespace ParkPlaces.Forms
             {
                 var selectedIndex = listBoxUsers.SelectedIndex; 
                 Sql.Instance.UpdateUser(editUserForm.GetUser());
-                RefreshUsersListAsync();
+                RefreshUsersList();
                 listBoxUsers.SelectedIndex = selectedIndex;
             }
         }
@@ -59,26 +79,20 @@ namespace ParkPlaces.Forms
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.OK)
             {
                 Sql.Instance.RemoveUser(_users.Find(user => user.Id == ((User)(listBoxUsers.SelectedItem)).Id));
-                RefreshUsersListAsync();
+                RefreshUsersList();
             }
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            RefreshUsersListAsync();
+            listBoxUsers.Enabled = false;
+            RefreshUsersList();
         }
 
-        private async void RefreshUsersListAsync()
+        private void RefreshUsersList()
         {
-            listBoxUsers.Items.Clear();
-            _users = await Sql.Instance.LoadUsers();
-            foreach (var user in _users)
-            {
-                listBoxUsers.Items.Add(user);
-
-                if (user.Id == _loggedInUser.Id)
-                    listBoxUsers.SelectedItem = user;
-            }
+            Client.Instance.Send(new UserListReq());
+            Client.Instance.OnUserListAck += OnUserListAck;
         }
 
         private readonly SolidBrush _selectedColor = new SolidBrush(Color.FromKnownColor(KnownColor.Highlight));
