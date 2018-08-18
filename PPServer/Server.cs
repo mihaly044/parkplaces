@@ -79,6 +79,12 @@ namespace PPServer
             {
                 using (var stream = new MemoryStream(data))
                 {
+                    var bProtocolVersion = new byte[4];
+                    stream.Read(bProtocolVersion, 0, 4);
+                    var protocolVersion = BitConverter.ToInt32(bProtocolVersion, 0);
+                    if(protocolVersion != Protocol.Version)
+                        throw new Exception($"Invalid protocol version {ipPort}");
+
                     var bPacketId = new byte[4];
                     stream.Read(bPacketId, 0, 4);
                     var packetId = (Protocols)BitConverter.ToInt32(bPacketId, 0);
@@ -158,6 +164,7 @@ namespace PPServer
 
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
+                            Console.WriteLine("Invalid message from {0}", ipPort);
                             break;
                     }
                 }
@@ -165,6 +172,7 @@ namespace PPServer
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                _watsonTcpServer.DisconnectClient(ipPort);
             }
 
             return true;
@@ -176,6 +184,9 @@ namespace PPServer
 
             using (var stream = new MemoryStream())
             {
+                var protocolVersion = BitConverter.GetBytes(Protocol.Version);
+                stream.Write(protocolVersion, 0, 4);
+
                 var pid = BitConverter.GetBytes(packetId);
                 stream.Write(pid, 0, 4);
                 Serializer.Serialize(stream, packet);

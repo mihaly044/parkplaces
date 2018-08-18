@@ -7,6 +7,11 @@ using System.Text;
 
 namespace PPNetLib
 {
+    public static class Protocol
+    {
+        public const int Version = 2;
+    }
+
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum Protocols
     {

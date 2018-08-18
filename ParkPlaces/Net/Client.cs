@@ -50,6 +50,12 @@ namespace ParkPlaces.Net
             {
                 using (var stream = new MemoryStream(data))
                 {
+                    var bProtocolVersion = new byte[4];
+                    stream.Read(bProtocolVersion, 0, 4);
+                    var protocolVersion = BitConverter.ToInt32(bProtocolVersion, 0);
+                    if (protocolVersion != Protocol.Version)
+                        throw new Exception("Invalid protocol version");
+
                     var bPacketId = new byte[4];
                     stream.Read(bPacketId, 0, 4);
                     var packetId = (Protocols)BitConverter.ToInt32(bPacketId, 0);
@@ -103,6 +109,9 @@ namespace ParkPlaces.Net
 
             using (var stream = new MemoryStream())
             {
+                var protocolVersion = BitConverter.GetBytes(Protocol.Version);
+                stream.Write(protocolVersion, 0, 4);
+
                 var pid = BitConverter.GetBytes(packetId);
                 stream.Write(pid, 0, 4);
                 Serializer.Serialize(stream, packet);
