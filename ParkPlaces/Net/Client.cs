@@ -124,9 +124,8 @@ namespace ParkPlaces.Net
                          case Protocols.ISDUPLICATEUSER_ACK:
                             var isDuplicateUserAck = Serializer.Deserialize<PPNetLib.Contracts.IsDuplicateUserAck>(stream);
                             OnIsDuplicateUserAck?.Invoke(isDuplicateUserAck);
-                             OnIsDuplicateUserAck = null;
+                            OnIsDuplicateUserAck = null;
                             break;
-
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }
