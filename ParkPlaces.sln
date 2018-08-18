@@ -14,7 +14,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPServer", "PPServer\PPServ
 		{242EEA4C-408F-4CA2-A383-D3AB5F7A0F79} = {242EEA4C-408F-4CA2-A383-D3AB5F7A0F79}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPNetLib", "PPNetLib\PPNetLib.csproj", "{242EEA4C-408F-4CA2-A383-D3AB5F7A0F79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPNetLib", "PPNetLib\PPNetLib.csproj", "{242EEA4C-408F-4CA2-A383-D3AB5F7A0F79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTester", "ServerTester\ServerTester.csproj", "{D81D96E3-B2BB-4B2E-9FD2-B2110B0C4DA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,10 @@ Global
 		{242EEA4C-408F-4CA2-A383-D3AB5F7A0F79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{242EEA4C-408F-4CA2-A383-D3AB5F7A0F79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{242EEA4C-408F-4CA2-A383-D3AB5F7A0F79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D81D96E3-B2BB-4B2E-9FD2-B2110B0C4DA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D81D96E3-B2BB-4B2E-9FD2-B2110B0C4DA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D81D96E3-B2BB-4B2E-9FD2-B2110B0C4DA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D81D96E3-B2BB-4B2E-9FD2-B2110B0C4DA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
