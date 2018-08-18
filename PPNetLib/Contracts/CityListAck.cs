@@ -9,7 +9,7 @@ namespace PPNetLib.Contracts
     [ProtoContract]
     public class CityListAck: Packet
     {
-        [ProtoMember(1, DynamicType = true)]
+        [ProtoMember(1)]
         public List<City> Cities { get; set; }
 
         public CityListAck()
