@@ -905,16 +905,32 @@ namespace ParkPlaces.Controls
 
         protected void OnDragFinish(Polygon polygon)
         {
-            // TODO: Write server side Sql.Instance.UpdatePoint
             OnDragEnd?.Invoke(polygon);
-            //Sql.Instance.UpdatePoints(CurrentPolygon);
-            /* var serializedZone = JsonConvert.SerializeObject(polygon.GetZoneInfo());
-            Client.Instance.Send(new UpdatePointsReq() { Zone = serializedZone });*/
+            UpdatePoints(CurrentPolygon);
         }
 
-        public void UpdatePoints(Polygon p)
+        /// <summary>
+        /// Send update REQs to the server
+        /// </summary>
+        /// <param name="p"></param>
+        private void UpdatePoints(Polygon p)
         {
-            
+            var zone = p.GetZoneInfo();
+            var i = 0;
+            foreach (var geometry in zone.Geometry.ToList())
+            {
+                if (geometry.IsModified)
+                {
+                    zone.Geometry[i].IsModified = false;
+                    Client.Instance.Send(new UpdatePointReq()
+                    {
+                        PointId = geometry.Id,
+                        Lat = geometry.Lat,
+                        Lng = geometry.Lng
+                    });
+                }
+                i++;
+            }
         }
 
         #endregion App logic
