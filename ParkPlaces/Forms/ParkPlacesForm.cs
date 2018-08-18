@@ -16,13 +16,6 @@ namespace ParkPlaces.Forms
 {
     public partial class ParkPlacesForm : Form
     {
-
-        /// <summary>
-        /// Used to cancel CheckUserPrivileges method's runner thread that
-        /// runs in intervals
-        /// </summary>
-        private CancellationTokenSource _userPrivilegesCtrl;
-
         public User LoggedInUser { get; set; }
 
         public ParkPlacesForm()
@@ -312,12 +305,6 @@ namespace ParkPlaces.Forms
             Text += $" / Belépve mint {loginForm.User.UserName}, {loginForm.User.GroupRole} jogosultsággal /";
             LoggedInUser = loginForm.User;
 
-#pragma warning disable 4014
-            _userPrivilegesCtrl = new CancellationTokenSource();
-            CheckUserPrivileges(_userPrivilegesCtrl.Token);
-#pragma warning restore 4014
-
-
             adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin;
             Map.SetReadOnly(loginForm.User.GroupRole < GroupRole.Editor);
             Map.SetPositionByKeywords("Szeged");
@@ -341,28 +328,23 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Logout(true);
+            Logout();
         }
 
         /// <summary>
         /// Logout process
         /// </summary>
-        private void Logout(bool forcedLogout = false)
+        private void Logout()
         {
-
             CloseAllForms();
-
-            if (forcedLogout)
-            {
-                _userPrivilegesCtrl.Cancel();
-            }
-
             Hide();
             OnFormLoad();
         }
 
         private async void SaveButton_ClickAsync(object sender, EventArgs e)
         {
+            // TODO: Rewrite SaveButton_ClickAsync
+            /*
             var dto = Map.GetDataObject();
             if (dto == null) return;
 
@@ -386,7 +368,7 @@ namespace ParkPlaces.Forms
                 }
             };
 
-            await Task.Run(() => { Sql.Instance.ExportToMySql(dto, progress); });
+            await Task.Run(() => { Sql.Instance.ExportToMySql(dto, progress); });*/
         }
 
         /// <summary>
@@ -415,28 +397,6 @@ namespace ParkPlaces.Forms
         }
 
         /// <summary>
-        /// Check user access level in intervals and call UpdateUserAccess
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        private void CheckUserPrivileges(CancellationToken cancellationToken)
-        {
-            // TODO: Rewrite CheckUserPrivileges
-            return;
-            Task.Run(async () =>
-            {
-                while (true)
-                {
-                    UpdateUserAccess(Sql.Instance.GetUserData(LoggedInUser));
-
-                    await Task.Delay(1000, cancellationToken);
-                    if (cancellationToken.IsCancellationRequested)
-                        break;
-                }
-            });
-        }
-
-        /// <summary>
         /// Check user access level and log out if necessary
         /// </summary>
         /// <param name="user"></param>
@@ -444,7 +404,7 @@ namespace ParkPlaces.Forms
         {
             if (user.GroupRole != LoggedInUser.GroupRole)
             {
-                Invoke(new Action(() => { Logout(true); }));
+                Invoke(new Action(Logout));
             }
         }
 
