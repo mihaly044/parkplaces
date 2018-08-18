@@ -13,7 +13,7 @@ namespace PPServer
         {
             Server server = new Server();
             server.Listen();
-            Console.ReadLine();
+            while(true) Console.ReadLine();
         }
     }
 }
