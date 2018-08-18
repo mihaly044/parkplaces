@@ -34,6 +34,7 @@ namespace PPNetLib
         USERLIST_REQ,
         USERLIST_ACK,
         INSERTUSER_REQ,
-        REMOVEUSER_REQ
+        REMOVEUSER_REQ,
+        UPDATEUSER_REQ
     };
 }

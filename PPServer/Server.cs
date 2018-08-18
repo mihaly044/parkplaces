@@ -193,6 +193,14 @@ namespace PPServer
                             _handler.OnRemoveUserReq(removeUserReq);
                             break;
 
+                        case Protocols.UPDATEUSER_REQ:
+                            if (!CheckPrivileges(ipPort, GroupRole.Admin))
+                                goto default;
+
+                            var updateUserReq = Serializer.Deserialize<UpdateUserReq>(stream);
+                            _handler.OnUpdateUserReq(updateUserReq);
+                            break;
+
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
                             Console.WriteLine("Invalid message from {0}", ipPort);
