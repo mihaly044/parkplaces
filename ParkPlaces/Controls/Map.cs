@@ -18,9 +18,9 @@ using ParkPlaces.Net;
 using PPNetLib.Contracts;
 using Newtonsoft.Json;
 using ParkPlaces.Extensions;
-
 namespace ParkPlaces.Controls
 {
+    // TODO: Make Map class independent of Client
     public partial class Map : GMapControl
     {
 
