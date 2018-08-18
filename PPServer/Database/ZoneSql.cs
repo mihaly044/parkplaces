@@ -127,6 +127,7 @@ namespace PPServer.Database
                         cmd1.Connection.Close();
                     }
                 }
+                cmd.Connection.Close();
 
                 return (int)zoneId;
             }
@@ -138,17 +139,18 @@ namespace PPServer.Database
         /// <param name="zoneId">The zone to be removed</param>
         public async void RemoveZone(int zoneId)
         {
-
             using (var cmd = new MySqlCommand("DELETE FROM zones WHERE id = @id") { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@id", zoneId);
                 await cmd.ExecuteNonQueryAsync();
+                cmd.Connection.Close();
             }
 
             using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE zoneid = @id") { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@id", zoneId);
                 await cmd.ExecuteNonQueryAsync();
+                cmd.Connection.Close();
             }
         }
 
@@ -188,6 +190,7 @@ namespace PPServer.Database
                 cmd.Parameters[7].Value = zone.Id;
 
                 await cmd.ExecuteNonQueryAsync();
+                cmd.Connection.Close();
             }
         }
 
@@ -202,8 +205,6 @@ namespace PPServer.Database
             {
                 cmd.Parameters.AddWithValue("@id", pointId);
                 cmd.ExecuteNonQuery();
-                cmd.Connection.Close();
-
                 cmd.Connection.Close();
             }
         }
