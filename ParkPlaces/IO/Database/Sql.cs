@@ -10,6 +10,7 @@ using ParkPlaces.Extensions;
 
 namespace ParkPlaces.IO.Database
 {
+    [Obsolete("Client side SQL operations are obsolete. Use server side instead", false)]
     public partial class Sql
     {
         public static Sql Instance => _instance ?? (_instance = new Sql());
