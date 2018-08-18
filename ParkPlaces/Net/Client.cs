@@ -21,6 +21,7 @@ namespace ParkPlaces.Net
         private WatsonTcpClient _watsonTcpClient;
         private readonly string _serverIp;
         private readonly int _serverPort;
+        private bool _offlineMode;
 
         public Client()
         {
@@ -40,6 +41,23 @@ namespace ParkPlaces.Net
                 if (throwsException)
                     throw;
             }
+
+            SetOfflineMode(false);
+        }
+
+        public void SetOfflineMode(bool offlineMode)
+        {
+            _offlineMode = offlineMode;
+        }
+
+        public bool IsConnected()
+        {
+            return _watsonTcpClient != null && _watsonTcpClient.IsConnected();
+        }
+
+        public bool GetOfflineMode()
+        {
+            return _offlineMode;
         }
 
         private bool MessageReceived(byte[] data)
@@ -124,6 +142,9 @@ namespace ParkPlaces.Net
 
         public bool Send<T>(T packet)
         {
+            if (_offlineMode)
+                return false;
+
             var packetId = (int)((Packet)(object)packet).PacketId;
 
             using (var stream = new MemoryStream())

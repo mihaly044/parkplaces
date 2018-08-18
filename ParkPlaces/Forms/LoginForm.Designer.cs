@@ -35,6 +35,7 @@
             this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.btnExit = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnOfflineMode = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -109,12 +110,23 @@
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
+            // btnOfflineMode
+            // 
+            this.btnOfflineMode.Location = new System.Drawing.Point(155, 102);
+            this.btnOfflineMode.Name = "btnOfflineMode";
+            this.btnOfflineMode.Size = new System.Drawing.Size(81, 23);
+            this.btnOfflineMode.TabIndex = 7;
+            this.btnOfflineMode.Text = "Offline mód";
+            this.btnOfflineMode.UseVisualStyleBackColor = true;
+            this.btnOfflineMode.Click += new System.EventHandler(this.btnOfflineMode_Click);
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
             this.ClientSize = new System.Drawing.Size(478, 150);
+            this.Controls.Add(this.btnOfflineMode);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.textBoxPassword);
@@ -144,5 +156,6 @@
         private System.Windows.Forms.TextBox textBoxPassword;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button btnOfflineMode;
     }
 }

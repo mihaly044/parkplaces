@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -280,7 +281,6 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void ParkPlacesForm_Load(object sender, EventArgs e)
         {
-            Client.Instance.Connect();
             OnFormLoad();
         }
 
@@ -304,20 +304,35 @@ namespace ParkPlaces.Forms
             Text += $" / Belépve mint {loginForm.User.UserName}, {loginForm.User.GroupRole} jogosultsággal /";
             LoggedInUser = loginForm.User;
 
-            adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin;
+            var offlineMode = Client.Instance.GetOfflineMode();
+
+            adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin && !offlineMode;
             Map.SetReadOnly(loginForm.User.GroupRole < GroupRole.Editor);
             Map.SetPositionByKeywords("Szeged");
 
-            var loadingForm = new LoadingForm();
-            loadingForm.OnReadyEventHandler += (s, dto) =>
+            if (!offlineMode)
             {
+                var loadingForm = new LoadingForm();
+                loadingForm.OnReadyEventHandler += (s, dto) =>
+                {
+                    Map.ConstructGui(dto);
+                    Show();
+                };
+
+                loadingForm.LoadDataAsync();
+                loadingForm.ShowDialog();
+            }
+            else
+            {
+                var dto = new Dto2Object
+                {
+                    Zones = new List<PolyZone>(),
+                    Type = "ZoneCollection"
+                };
+
                 Map.ConstructGui(dto);
                 Show();
-            };
-
-            loadingForm.LoadDataAsync();
-
-            loadingForm.ShowDialog();
+            }
         }
 
         /// <summary>

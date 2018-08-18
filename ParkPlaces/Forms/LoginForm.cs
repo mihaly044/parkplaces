@@ -54,6 +54,11 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            Client.Instance.SetOfflineMode(false);
+
+            if(!Client.Instance.IsConnected())
+                Client.Instance.Connect();
+
             Client.Instance.Send(new LoginReq
             {
                 Username = textBoxUserName.Text,
@@ -98,6 +103,17 @@ namespace ParkPlaces.Forms
 
             textBoxUserName.Text = defaultLogin["username"];
             textBoxPassword.Text = defaultLogin["password"];
+        }
+
+        private void btnOfflineMode_Click(object sender, EventArgs e)
+        {
+            Client.Instance.SetOfflineMode(true);
+            User = new User(textBoxUserName.Text, 1);
+            User.GroupRole = GroupRole.Admin;
+
+            DialogResult = DialogResult.OK;
+            Client.Instance.OnLoginAck -= OnLoginAck;
+            Close();
         }
     }
 }
