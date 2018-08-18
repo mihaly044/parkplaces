@@ -640,17 +640,20 @@ namespace ParkPlaces.Controls
             {
                 p.Points.Insert(pIndex.Value, _currentRectMarker.Position);
 
+                var geometry = _currentRectMarker.Position.ToGeometry(0);
+
                 Client.Instance.Send(new InsertPointReq()
                 {
-                    Lat = _currentRectMarker.Position.Lat,
-                    Lng = _currentRectMarker.Position.Lng,
+                    Lat = geometry.Lat,
+                    Lng = geometry.Lng,
                     ZoneId = p.GetZoneId()
                 });
-
+                
                 Client.Instance.OnPointInsertAck += (ack) =>
                 {
-                    ((PolyZone)p.Tag).Geometry.Insert(pIndex.Value,
-                        _currentRectMarker.Position.ToGeometry(ack.PointId));
+                    geometry.Id = ack.PointId;
+                    //((PolyZone)p.Tag).Geometry.Insert(pIndex.Value, geometry);
+                    p.GetZoneInfo().Geometry.Insert(pIndex.Value, geometry);
                 };
 
                 UpdateVerticlesCount();
