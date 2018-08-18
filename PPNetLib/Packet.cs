@@ -12,12 +12,8 @@ namespace PPNetLib
         [ProtoMember(1)]
         public Protocols PacketId { get; set; }
 
-        [ProtoMember(2)]
-        public int ProtocolVersion { get; set; }
-
         public Packet()
         {
-            ProtocolVersion = Protocol.Version;
         }
     }
 }
