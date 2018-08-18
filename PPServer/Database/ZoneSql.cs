@@ -245,9 +245,9 @@ namespace PPServer.Database
             using (var cmd = new MySqlCommand("UPDATE geometry SET lat = @lat, lng = @lng WHERE id = @id")
                 { Connection = GetConnection() })
             {
-                cmd.Parameters.AddWithValue("@lat", id);
-                cmd.Parameters.AddWithValue("@lng", lat);
-                cmd.Parameters.AddWithValue("@id", lng);
+                cmd.Parameters.AddWithValue("@lat", lat);
+                cmd.Parameters.AddWithValue("@lng", lng);
+                cmd.Parameters.AddWithValue("@id", id);
                 await cmd.ExecuteNonQueryAsync();
                 cmd.Connection.Close();
             }
