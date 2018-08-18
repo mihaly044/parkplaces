@@ -56,7 +56,8 @@ namespace ParkPlaces.Forms
             var newUserForm = new EditUserForm(_loggedInUser);
             if(newUserForm.ShowDialog(this) == DialogResult.OK)
             {
-                Sql.Instance.InsertUser(newUserForm.GetUser());
+                var user = newUserForm.GetUser();
+                Client.Instance.Send(new InsertUserReq() {User = user});
                 RefreshUsersList();
             }
         }

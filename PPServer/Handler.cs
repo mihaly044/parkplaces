@@ -92,5 +92,11 @@ namespace PPServer
             var users = await Sql.Instance.LoadUsers();
             _server.Send(ipPort, new UserListAck(){ Users = users });
         }
+
+        public void OnInsertUserReq(InsertUserReq packet)
+        {
+            var user = packet.User;
+            Sql.Instance.InsertUser(user);
+        }
     }
 }

@@ -177,6 +177,14 @@ namespace PPServer
                             _handler.OnUserListReqAsync(ipPort);
                             break;
 
+                        case Protocols.INSERTUSER_REQ:
+                            if (!CheckPrivileges(ipPort, GroupRole.Admin))
+                                goto default;
+
+                            var insertUserReq = Serializer.Deserialize<InsertUserReq>(stream);
+                            _handler.OnInsertUserReq(insertUserReq);
+                            break;
+
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
                             Console.WriteLine("Invalid message from {0}", ipPort);
