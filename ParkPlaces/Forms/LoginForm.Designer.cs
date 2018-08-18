@@ -37,15 +37,13 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.comboDBConnection = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(396, 122);
+            this.btnLogin.Location = new System.Drawing.Point(396, 107);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 23);
             this.btnLogin.TabIndex = 2;
@@ -56,7 +54,7 @@
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(157, 47);
+            this.lblUserName.Location = new System.Drawing.Point(157, 58);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(84, 13);
             this.lblUserName.TabIndex = 1;
@@ -65,7 +63,7 @@
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(157, 73);
+            this.lblPassword.Location = new System.Drawing.Point(157, 84);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(39, 13);
             this.lblPassword.TabIndex = 2;
@@ -75,7 +73,7 @@
             // 
             this.textBoxUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBoxUserName.ForeColor = System.Drawing.Color.Blue;
-            this.textBoxUserName.Location = new System.Drawing.Point(247, 44);
+            this.textBoxUserName.Location = new System.Drawing.Point(247, 55);
             this.textBoxUserName.Name = "textBoxUserName";
             this.textBoxUserName.Size = new System.Drawing.Size(224, 20);
             this.textBoxUserName.TabIndex = 0;
@@ -86,7 +84,7 @@
             // 
             this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBoxPassword.ForeColor = System.Drawing.Color.Blue;
-            this.textBoxPassword.Location = new System.Drawing.Point(247, 70);
+            this.textBoxPassword.Location = new System.Drawing.Point(247, 81);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '•';
             this.textBoxPassword.Size = new System.Drawing.Size(224, 20);
@@ -96,7 +94,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(315, 122);
+            this.btnExit.Location = new System.Drawing.Point(315, 107);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 3;
@@ -134,35 +132,12 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Kérem azonosítsa magát";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(157, 98);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Adatbázis:";
-            // 
-            // comboDBConnection
-            // 
-            this.comboDBConnection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboDBConnection.FormattingEnabled = true;
-            this.comboDBConnection.Items.AddRange(new object[] {
-            "Main",
-            "Alternative"});
-            this.comboDBConnection.Location = new System.Drawing.Point(247, 95);
-            this.comboDBConnection.Name = "comboDBConnection";
-            this.comboDBConnection.Size = new System.Drawing.Size(224, 21);
-            this.comboDBConnection.TabIndex = 9;
-            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(478, 150);
-            this.Controls.Add(this.comboDBConnection);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnExit);
@@ -197,7 +172,5 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboDBConnection;
     }
 }

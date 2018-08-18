@@ -96,10 +96,6 @@ namespace ParkPlaces.Forms
 
             textBoxUserName.Text = defaultLogin["username"];
             textBoxPassword.Text = defaultLogin["password"];
-
-            // Select DB connection
-            var dbConnection = ConfigurationManager.AppSettings["DBConnection"];
-            comboDBConnection.SelectedIndex = dbConnection == "alt" ? 1 : 0;
         }
     }
 }
