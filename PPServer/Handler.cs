@@ -2,18 +2,13 @@
 using PPNetLib.Prototypes;
 using PPServer.LocalPrototypes;
 using PPServer.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace PPServer
 {
     public class Handler
     {
-        private Server _server;
+        private readonly Server _server;
 
         public Handler(Server s)
         {

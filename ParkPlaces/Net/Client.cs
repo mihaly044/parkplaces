@@ -1,14 +1,9 @@
 ﻿using PPNetLib;
 using ProtoBuf;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WatsonTcp;
-using PPNetLib.Contracts;
 using System.Diagnostics;
 
 namespace ParkPlaces.Net

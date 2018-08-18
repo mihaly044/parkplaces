@@ -11,7 +11,7 @@ namespace ParkPlaces.Map_shapes
 {
     public class Polygon : GMapPolygon
     {
-        public bool IsSelected { get; set; }
+        public bool IsSelected { private get; set; }
         private bool _areaNeedsUpdate;
         private double _area;
         // private Font _nameFont; //never used
@@ -21,7 +21,7 @@ namespace ParkPlaces.Map_shapes
             _areaNeedsUpdate = true;
         }
 
-        public Point GetCentroid()
+        private Point GetCentroid()
         {
             var count = LocalPoints.Count - 1;
             var centroidX = LocalPoints.Sum(m => m.X) / count;
@@ -41,7 +41,7 @@ namespace ParkPlaces.Map_shapes
             return _area;
         }
 
-        public string GetAreaAsString(int decimalPlaces, bool inSquareMetres = true)
+        private string GetAreaAsString(int decimalPlaces, bool inSquareMetres = true)
         {
             var sb = new StringBuilder("0.");
 

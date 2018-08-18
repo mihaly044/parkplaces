@@ -122,7 +122,7 @@ namespace ParkPlaces.Controls
             _readOnly = false;
 
             _pointer = new GMarkerGoogle(Position, GMarkerGoogleType.arrow) { IsHitTestVisible = false };
-            TopLayer.Markers.Add(_pointer);
+            _topLayer.Markers.Add(_pointer);
 
             var deleteCacheDate = DateTime.Now;
             deleteCacheDate = deleteCacheDate.AddDays(-10);
@@ -130,8 +130,8 @@ namespace ParkPlaces.Controls
 
             _centerOfTheMap = new PointLatLng(47.49801, 19.03991);
 
-            drawPolygonCtxMenu.Renderer = TsRenderer;
-            polygonPointCtxMenu.Renderer = TsRenderer;
+            drawPolygonCtxMenu.Renderer = _tsRenderer;
+            polygonPointCtxMenu.Renderer = _tsRenderer;
         }
 
         #endregion Constructors
@@ -185,28 +185,28 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// The very upper overlayof the map
         /// </summary>
-        internal readonly Layer TopLayer = new Layer("topLayer");
+        private readonly Layer _topLayer = new Layer("topLayer");
 
         /// <summary>
         /// Map layer that contains polygons
         /// </summary>
-        internal readonly Layer Polygons = new Layer("polygons");
+        private readonly Layer _polygons = new Layer("polygons");
 
         /// <summary>
         /// Map layer that contains rectangle markers
         /// </summary>
-        internal readonly Layer PolygonRects = new Layer("polygonRects");
+        private readonly Layer _polygonRects = new Layer("polygonRects");
 
         /// <summary>
         /// Version info gets rendered using this font
         /// </summary>
-        internal readonly Font BlueFont = new Font(FontFamily.GenericSansSerif, 7, FontStyle.Regular);
+        private readonly Font _blueFont = new Font(FontFamily.GenericSansSerif, 7, FontStyle.Regular);
 
         /// <summary>
         /// Workaround for a bug that causes a white line to be rendered
         /// around menus and toolstrips
         /// </summary>
-        internal readonly TsRenderer TsRenderer = new TsRenderer();
+        private readonly TsRenderer _tsRenderer = new TsRenderer();
         #endregion Internals
 
         #region GMap events
@@ -325,7 +325,7 @@ namespace ParkPlaces.Controls
                     $"Release version {fvi.FileVersion}, OS: {Environment.OSVersion}, .NET v{Environment.Version}, Render: {_renderDelta} ms";
 #endif
 
-                e.Graphics.DrawString(version, BlueFont, Brushes.Blue, new Point(5, 5));
+                e.Graphics.DrawString(version, _blueFont, Brushes.Blue, new Point(5, 5));
             }
         }
 
@@ -338,9 +338,9 @@ namespace ParkPlaces.Controls
             base.OnLoad(e);
             MapProvider = GMapProviders.GoogleMap;
             Position = _centerOfTheMap;
-            Overlays.Add(Polygons);
-            Overlays.Add(PolygonRects);
-            Overlays.Add(TopLayer);
+            Overlays.Add(_polygons);
+            Overlays.Add(_polygonRects);
+            Overlays.Add(_topLayer);
         }
 
         /// <summary>
@@ -554,11 +554,11 @@ namespace ParkPlaces.Controls
 
             var points = new List<PointLatLng> { _pointer.Position };
             _currentDrawingPolygon = new Polygon(points, "New polygon") { IsHitTestVisible = true };
-            Polygons.Polygons.Add(_currentDrawingPolygon);
+            _polygons.Polygons.Add(_currentDrawingPolygon);
 
             IsDrawingPolygon = true;
             _currentNewRectMaker = new RectMarker(new PointLatLng(0, 0));
-            TopLayer.Markers.Add(_currentNewRectMaker);
+            _topLayer.Markers.Add(_currentNewRectMaker);
         }
 
         /// <summary>
@@ -608,21 +608,21 @@ namespace ParkPlaces.Controls
                 }
                 else
                 {
-                    Polygons.Polygons.Remove(_currentDrawingPolygon);
+                    _polygons.Polygons.Remove(_currentDrawingPolygon);
                 }
 
-                Map_OnPolygonClick(Polygons.Polygons.FirstOrDefault(polygon => polygon == _currentDrawingPolygon), null);
+                Map_OnPolygonClick(_polygons.Polygons.FirstOrDefault(polygon => polygon == _currentDrawingPolygon), null);
             }
             else
             {
-                Polygons.Polygons.Remove(_currentDrawingPolygon);
+                _polygons.Polygons.Remove(_currentDrawingPolygon);
             }
 
             OnDrawPolygonEnd?.Invoke(_currentDrawingPolygon);
 
             _currentDrawingPolygon = null;
 
-            TopLayer.Markers.Remove(_currentNewRectMaker);
+            _topLayer.Markers.Remove(_currentNewRectMaker);
             _currentNewRectMaker = null;
 
             UpdateVerticlesCount();
@@ -632,6 +632,7 @@ namespace ParkPlaces.Controls
         /// Add a new verticle to a given polygon
         /// </summary>
         /// <param name="p"></param>
+        // ReSharper disable once MemberCanBePrivate.Global
         public void AddPolygonPoint(Polygon p)
         {
             var pIndex = (int?)_currentRectMarker?.Tag;
@@ -665,6 +666,7 @@ namespace ParkPlaces.Controls
         /// Delete the current selected point of a polygon
         /// </summary>
         /// <param name="p"></param>
+        // ReSharper disable once MemberCanBePrivate.Global
         public void DeletePolygonPoint(Polygon p)
         {
             var pIndex = (int?) _currentRectMarker?.Tag;
@@ -712,11 +714,11 @@ namespace ParkPlaces.Controls
             }
             else if (p != null)
             {
-                var iPolygon = Polygons.Polygons.IndexOf(p);
+                var iPolygon = _polygons.Polygons.IndexOf(p);
 
                 if (iPolygon > -1)
                 {
-                    Polygons.Polygons.RemoveAt(iPolygon);
+                    _polygons.Polygons.RemoveAt(iPolygon);
 
                     var zoneId = p.GetZoneId();
                     Client.Instance.Send(new RemoveZoneReq(){ZoneId =  zoneId });
@@ -743,7 +745,7 @@ namespace ParkPlaces.Controls
             _currentRectMarker = null;
 
             // Clear rect markers
-            PolygonRects.Markers.Clear();
+            _polygonRects.Markers.Clear();
             CurrentPolygon = null;
         }
 
@@ -767,7 +769,7 @@ namespace ParkPlaces.Controls
             for (var i = 0; i < p.Points.Count; i++)
             {
                 var mBorders = new RectMarker(p.Points[i]) { Tag = i };
-                PolygonRects.Markers.Add(mBorders);
+                _polygonRects.Markers.Add(mBorders);
             }
         }
 
@@ -783,7 +785,7 @@ namespace ParkPlaces.Controls
                 Zones = new List<PolyZone>()
             };
 
-            data.Zones.AddRange(Polygons.Polygons.Select(x => (PolyZone)x.Tag));
+            data.Zones.AddRange(_polygons.Polygons.Select(x => (PolyZone)x.Tag));
 
             IoHandler.WriteDtoToJson(file, data);
         }
@@ -828,7 +830,7 @@ namespace ParkPlaces.Controls
                 var polygonPoints = zone.Geometry.Select(m => new PointLatLng(m.Lat, m.Lng)).ToList();
                 var polygonColor = ColorTranslator.FromHtml(zone.Color);
 
-                Polygons.Polygons.Add(new Polygon(polygonPoints, zone.Description)
+                _polygons.Polygons.Add(new Polygon(polygonPoints, zone.Description)
                 {
                     Tag = zone,
                     IsHitTestVisible = true,
@@ -859,8 +861,8 @@ namespace ParkPlaces.Controls
             if(resetDto)
                 _dtoObject?.Reset();
 
-            Polygons.Clear();
-            PolygonRects.Clear();
+            _polygons.Clear();
+            _polygonRects.Clear();
             //TopLayer.Clear();
 
             ResetCenter();
@@ -872,6 +874,7 @@ namespace ParkPlaces.Controls
         /// Resets the map to the original center point
         /// defined by _centerOfTheMap
         /// </summary>
+        // ReSharper disable once MemberCanBePrivate.Global
         public void ResetCenter()
         {
             Position = _centerOfTheMap;
@@ -903,8 +906,8 @@ namespace ParkPlaces.Controls
         private void UpdateVerticlesCount()
         {
             OnVerticlesChanged?.Invoke(new VerticleChangedArg(
-                Polygons.Polygons.Sum(p => p.Points.Count),
-                Polygons.Polygons.Count
+                _polygons.Polygons.Sum(p => p.Points.Count),
+                _polygons.Polygons.Count
                 ));
         }
 
@@ -917,6 +920,7 @@ namespace ParkPlaces.Controls
             _readOnly = readOnly;
         }
 
+        // ReSharper disable once MemberCanBePrivate.Global
         protected void OnDragFinish(Polygon polygon)
         {
             OnDragEnd?.Invoke(polygon);

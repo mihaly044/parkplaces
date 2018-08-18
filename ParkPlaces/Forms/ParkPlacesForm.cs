@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using GMap.NET.MapProviders;
 using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
 using ParkPlaces.Controls;
-using System.Diagnostics;
 using ParkPlaces.Net;
 using PPNetLib.Prototypes;
 // ReSharper disable MethodSupportsCancellation
@@ -16,7 +13,7 @@ namespace ParkPlaces.Forms
 {
     public partial class ParkPlacesForm : Form
     {
-        public User LoggedInUser { get; set; }
+        private User _loggedInUser;
 
         public ParkPlacesForm()
         {
@@ -302,7 +299,7 @@ namespace ParkPlaces.Forms
             }
 
             Text += $" / Belépve mint {loginForm.User.UserName}, {loginForm.User.GroupRole} jogosultsággal /";
-            LoggedInUser = loginForm.User;
+            _loggedInUser = loginForm.User;
 
             var offlineMode = Client.Instance.GetOfflineMode();
 
@@ -394,7 +391,7 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new ManageUsersForm(LoggedInUser).ShowDialog(this);
+            new ManageUsersForm(_loggedInUser).ShowDialog(this);
         }
 
         /// <summary>
@@ -418,7 +415,7 @@ namespace ParkPlaces.Forms
         /// <param name="user"></param>
         private void UpdateUserAccess(User user)
         {
-            if (user.GroupRole != LoggedInUser.GroupRole)
+            if (user.GroupRole != _loggedInUser.GroupRole)
             {
                 Invoke(new Action(Logout));
             }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using PPNetLib.Prototypes;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace PPServer.Database
 {

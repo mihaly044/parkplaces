@@ -1,8 +1,4 @@
 ﻿using ProtoBuf;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using PPNetLib.Contracts;
 
 namespace PPNetLib
 {
@@ -10,9 +6,9 @@ namespace PPNetLib
     public class Packet
     {
         [ProtoMember(1)]
-        public Protocols PacketId { get; set; }
+        public Protocols PacketId { get; protected set; }
 
-        public Packet()
+        protected Packet()
         {
         }
     }

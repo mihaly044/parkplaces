@@ -16,6 +16,7 @@ namespace ParkPlaces.IO
         private NemApi _api;
 #pragma warning restore 649
         public static IoHandler Instance => _instance ?? (_instance = new IoHandler());
+        // ReSharper disable once MemberCanBePrivate.Global
         public static string DataFile { get; private set; }
 
         public bool NeedUpdate => GetUpdateNeeded();

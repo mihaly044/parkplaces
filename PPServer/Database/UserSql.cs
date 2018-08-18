@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CryptSharp;
 using MySql.Data.MySqlClient;
-using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
 
 namespace PPServer.Database
@@ -136,7 +135,7 @@ namespace PPServer.Database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public User GetUserData(int id)
+        private User GetUserData(int id)
         {
             using (var cmd = new MySqlCommand("SELECT * FROM users WHERE id = @id")
                 { Connection = GetConnection() })

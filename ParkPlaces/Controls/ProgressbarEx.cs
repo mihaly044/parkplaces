@@ -15,6 +15,7 @@ namespace ParkPlaces.Controls
         /// </summary>
         [Category("Design")]
         [DefaultValue(0)]
+        // ReSharper disable once MemberCanBePrivate.Global
         public int InnerMargin { get; set; }
 
         public ProgressBarEx()

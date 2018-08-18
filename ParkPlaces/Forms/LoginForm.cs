@@ -110,8 +110,7 @@ namespace ParkPlaces.Forms
         private void btnOfflineMode_Click(object sender, EventArgs e)
         {
             Client.Instance.SetOfflineMode(true);
-            User = new User(textBoxUserName.Text, 1);
-            User.GroupRole = GroupRole.Admin;
+            User = new User(textBoxUserName.Text, 1) {GroupRole = GroupRole.Admin};
 
             DialogResult = DialogResult.OK;
             Client.Instance.OnLoginAck -= OnLoginAck;

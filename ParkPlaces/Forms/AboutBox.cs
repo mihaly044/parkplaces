@@ -42,6 +42,7 @@ namespace ParkPlaces.Forms
         {
             get
             {
+                // ReSharper disable once ArrangeAccessorOwnerBody
                 return Assembly.GetExecutingAssembly().GetName().Version.ToString();
             }
         }

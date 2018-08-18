@@ -29,10 +29,10 @@ namespace PPServer
 
             _handler = new Handler(this);
             _authUsers = new Dictionary<string, User>();
-            printAsciiArtLogo();
+            PrintAsciiArtLogo();
         }
 
-        private void printAsciiArtLogo()
+        private void PrintAsciiArtLogo()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(

@@ -1,13 +1,9 @@
 ﻿using MySql.Data.MySqlClient;
 using PPServer.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PPServer.Database
 {
@@ -15,11 +11,11 @@ namespace PPServer.Database
     {
         public static Sql Instance => _instance ?? (_instance = new Sql());
         private static Sql _instance;
-        public string Server { get; set; }
-        public string Database { get; set; }
-        public string User { get; set; }
-        public string Password { private get; set; }
-        public string Port { get; set; }
+        private string _server;
+        private string _database;
+        private string _user;
+        private string _password;
+        private string _port;
 
         /// <summary>
         /// Re-read configuration values
@@ -29,7 +25,7 @@ namespace PPServer.Database
             Instance.LoadDbCredientals();
         }
 
-        public Sql()
+        private Sql()
         {
             LoadDbCredientals();
             SetupDb();
@@ -37,11 +33,11 @@ namespace PPServer.Database
 
         public Sql(string server = "", string database = "", string user = "", string password = "", string port = "3306")
         {
-            Server = server;
-            Database = database;
-            User = user;
-            Password = password;
-            Port = port;
+            _server = server;
+            _database = database;
+            _user = user;
+            _password = password;
+            _port = port;
             SetupDb();
         }
 
@@ -84,11 +80,11 @@ namespace PPServer.Database
 
             var dbSect = ConfigurationManager.GetSection(configSection) as NameValueCollection;
             if (dbSect == null) return;
-            Server = dbSect["server"];
-            Database = dbSect["database"];
-            User = dbSect["user"];
-            Password = dbSect["password"];
-            Port = dbSect["port"];
+            _server = dbSect["server"];
+            _database = dbSect["database"];
+            _user = dbSect["user"];
+            _password = dbSect["password"];
+            _port = dbSect["port"];
         }
 
         /// <summary>
@@ -97,19 +93,19 @@ namespace PPServer.Database
         /// </summary>
         /// <param name="noDatabase">True if there is no database specified in the connection string</param>
         /// <returns></returns>
-        public MySqlConnection GetConnection(bool noDatabase = false)
+        private MySqlConnection GetConnection(bool noDatabase = false)
         {
             MySqlConnection mySqlConnection;
 
             if (noDatabase)
             {
                 mySqlConnection = new MySqlConnection(
-                    $@"SERVER={Server};PORT={Port};UID={User};PASSWORD={Password};SslMode=none;Pooling=false");
+                    $@"SERVER={_server};PORT={_port};UID={_user};PASSWORD={_password};SslMode=none;Pooling=false");
             }
             else
             {
                 mySqlConnection = new MySqlConnection(
-                    $@"SERVER={Server};PORT={Port};DATABASE={Database};UID={User};PASSWORD={Password};SslMode=none;Pooling=false");
+                    $@"SERVER={_server};PORT={_port};DATABASE={_database};UID={_user};PASSWORD={_password};SslMode=none;Pooling=false");
             }
 
 

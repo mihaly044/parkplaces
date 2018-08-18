@@ -6,7 +6,7 @@ namespace PPNetLib.Prototypes
     public class City
     {
         [ProtoMember(1)]
-        public int Id { get; set; }
+        public int Id { get; }
 
         [ProtoMember(2)]
         public string Name { get; set; }

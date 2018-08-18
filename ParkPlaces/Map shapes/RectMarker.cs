@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using GMap.NET;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace ParkPlaces.Map_shapes
 {
