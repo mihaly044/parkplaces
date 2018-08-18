@@ -19,7 +19,6 @@ namespace PPServer.Database
         /// or the password was wrong</returns>
         public User AuthenticateUser(string username, string password)
         {
-
             if (username == string.Empty || password == string.Empty)
                 return null;
 
