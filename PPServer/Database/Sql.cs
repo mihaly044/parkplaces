@@ -124,8 +124,8 @@ namespace PPServer.Database
                 Debug.WriteLine($"Database error {error}");
                 Debugger.Break();
 #else
-                MessageBox.Show($"MySQL error {error}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
+                Console.WriteLine($"Database error {error}");
+                Debugger.Break();
 #endif
             }
             return mySqlConnection;
