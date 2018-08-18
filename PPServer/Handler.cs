@@ -98,5 +98,11 @@ namespace PPServer
             var user = packet.User;
             Sql.Instance.InsertUser(user);
         }
+
+        public void OnRemoveUserReq(RemoveUserReq packet)
+        {
+            var id = packet.UserId;
+            Sql.Instance.RemoveUser(id);
+        }
     }
 }

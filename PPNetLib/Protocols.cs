@@ -33,6 +33,7 @@ namespace PPNetLib
         CITYLIST_ACK,
         USERLIST_REQ,
         USERLIST_ACK,
-        INSERTUSER_REQ
+        INSERTUSER_REQ,
+        REMOVEUSER_REQ
     };
 }

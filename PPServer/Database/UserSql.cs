@@ -76,15 +76,13 @@ namespace PPServer.Database
         /// <summary>
         /// Remove an user from the database
         /// </summary>
-        /// <param name="u">The user to be removed</param>
-        public async void RemoveUser(User u)
+        /// <param name="userId">The user to be removed</param>
+        public async void RemoveUser(int userId)
         {
-            if (u == null) return;
-
             using (var cmd = new MySqlCommand("DELETE FROM users WHERE id = @id")
                 { Connection = GetConnection() })
             {
-                cmd.Parameters.AddWithValue("@id", u.Id);
+                cmd.Parameters.AddWithValue("@id", userId);
                 await cmd.ExecuteNonQueryAsync();
             }
         }

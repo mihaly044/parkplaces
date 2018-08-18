@@ -79,7 +79,7 @@ namespace ParkPlaces.Forms
             if (MessageBox.Show("A fiók törlését nem lehet visszavonni. Folytatja?", "Figyelmeztetés",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.OK)
             {
-                Sql.Instance.RemoveUser(_users.Find(user => user.Id == ((User)(listBoxUsers.SelectedItem)).Id));
+                Client.Instance.Send(new RemoveUserReq() {UserId = ((User) (listBoxUsers.SelectedItem)).Id});
                 RefreshUsersList();
             }
         }
