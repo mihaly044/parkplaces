@@ -16,11 +16,6 @@ namespace ParkPlaces
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if(args.Length > 0)
-            {
-                Sql.Instance.LimitCity = string.Join(";", args);
-            }
-
             Application.Run(new ParkPlacesForm());
         }
     }
