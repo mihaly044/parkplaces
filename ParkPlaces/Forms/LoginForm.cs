@@ -32,19 +32,19 @@ namespace ParkPlaces.Forms
             {
                 MessageBox.Show("Helytelen felhasználónév vagy jelszó.", "Hiba",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                Client.Instance.Disconnect();
             }
             else if (!User.IsAuthenticated)
             {
                 MessageBox.Show("Nincs megfelelő jogosultsága az alkalmazás használatához.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                Client.Instance.Disconnect();
             }
             else
             {
                 DialogResult = DialogResult.OK;
                 Close();
-            }
-
-            Client.Instance.Disconnect();
+            }    
         }
 
         /// <summary>
