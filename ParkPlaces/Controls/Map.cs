@@ -983,7 +983,7 @@ namespace ParkPlaces.Controls
             await DoWaiting();
 
             var i = 0;
-            foreach (var geometry in zone.Geometry.ToList())
+            foreach (var geometry in zone.Geometry)
             {
                 if (geometry.IsModified)
                 {
