@@ -1039,7 +1039,7 @@ namespace ParkPlaces.Controls
 
         /// <summary>
         /// Indicate that the client will be waiting for a response
-        /// from the servert
+        /// from the server
         /// </summary>
         private void StartWaiting()
         {
