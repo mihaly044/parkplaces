@@ -625,7 +625,7 @@ namespace ParkPlaces.Controls
                     Debug.WriteLine(zoneSeriliazed);
 
                     Client.Instance.Send(new InsertZoneReq() { Zone = zoneSeriliazed });
-                    Waiting();
+                    StartWaiting();
 
                     Client.Instance.OnZoneInsertAck += (ack) => {
                         newZone.Id = ack.ZoneId.ToString();
@@ -678,13 +678,8 @@ namespace ParkPlaces.Controls
 
                 var geometry = _currentRectMarker.Position.ToGeometry(0);
 
-                if (_isWaitingForResponse)
-                {
-                    await Task.Run(() =>
-                    {
-                        _manualResetEvent.WaitOne();
-                    });
-                }
+                // Wait for ZoneId to arrivc
+                await DoWaiting();
 
                 Client.Instance.Send(new InsertPointReq()
                 {
@@ -694,7 +689,7 @@ namespace ParkPlaces.Controls
                     Index = pIndex.Value
                 });
 
-                Waiting();
+                StartWaiting();
                 Client.Instance.OnPointInsertAck += (ack) =>
                 {
                     geometry.Id = ack.PointId;
@@ -983,12 +978,7 @@ namespace ParkPlaces.Controls
         {
             var zone = p.GetZoneInfo();
 
-            if (_isWaitingForResponse)
-            {
-                await Task.Run(() => {
-                    _manualResetEvent.WaitOne();
-                });
-            }
+            await DoWaiting();
 
             var i = 0;
             foreach (var geometry in zone.Geometry.ToList())
@@ -1049,7 +1039,7 @@ namespace ParkPlaces.Controls
         /// Indicate that the client will be waiting for a response
         /// from the servert
         /// </summary>
-        private void Waiting()
+        private void StartWaiting()
         {
             _manualResetEvent = new ManualResetEvent(false);
             _isWaitingForResponse = true;
@@ -1071,6 +1061,21 @@ namespace ParkPlaces.Controls
         public bool IsWaiting()
         {
             return _isWaitingForResponse;
+        }
+
+        /// <summary>
+        /// Do waiting for a server response
+        /// </summary>
+        /// <returns></returns>
+        public async Task DoWaiting()
+        {
+            if (_isWaitingForResponse)
+            {
+                await Task.Run(() =>
+                {
+                    _manualResetEvent.WaitOne();
+                });
+            }
         }
 
         #endregion App logic
