@@ -991,6 +991,11 @@ namespace ParkPlaces.Controls
             }
         }
 
+        /// <summary>
+        /// Called on POINTUPDATED_ACK, whenever a point changes
+        /// in some other running client. Updates local points respectively
+        /// </summary>
+        /// <param name="packet"></param>
         private void OnPointUpdatedAck(PointUpdatedAck packet)
         {
             foreach (var polygon in _polygons.Polygons)
@@ -1023,18 +1028,29 @@ namespace ParkPlaces.Controls
             }
         }
 
+        /// <summary>
+        /// Indicate that the client will be waiting for a response
+        /// from the servert
+        /// </summary>
         private void Waiting()
         {
             _manualResetEvent = new ManualResetEvent(false);
             _isWaitingForResponse = true;
         }
 
+        /// <summary>
+        /// Stop waiting for a server response
+        /// </summary>
         private void StopWaiting()
         {
             _manualResetEvent.Set();
             _isWaitingForResponse = false;
         }
 
+        /// <summary>
+        /// Checks whether the client is waiting for a server response
+        /// </summary>
+        /// <returns></returns>
         public bool IsWaiting()
         {
             return _isWaitingForResponse;
