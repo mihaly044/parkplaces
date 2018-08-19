@@ -6,6 +6,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using GMap.NET;
 using GMap.NET.MapProviders;
@@ -88,6 +90,16 @@ namespace ParkPlaces.Controls
         /// Used to get the previous mouse location on every OnMouseMove call
         /// </summary>
         private PointLatLng _previousMouseLocation;
+
+        /// <summary>
+        /// Used for waiting for server responses
+        /// </summary>
+        private ManualResetEvent _manualResetEvent;
+
+        /// <summary>
+        /// Indicates whether the client is waiting for server response
+        /// </summary>
+        private bool _isWaitingForResponse;
         #endregion
 
         /// <summary>
@@ -133,6 +145,8 @@ namespace ParkPlaces.Controls
 
             drawPolygonCtxMenu.Renderer = _tsRenderer;
             polygonPointCtxMenu.Renderer = _tsRenderer;
+
+            _isWaitingForResponse = false;
 
             Client.Instance.OnPointUpdatedAck += OnPointUpdatedAck;
         }
@@ -602,8 +616,18 @@ namespace ParkPlaces.Controls
                     Debug.WriteLine(zoneSeriliazed);
 
                     Client.Instance.Send(new InsertZoneReq() { Zone = zoneSeriliazed });
+                    Waiting();
+
                     Client.Instance.OnZoneInsertAck += (ack) => {
                         newZone.Id = ack.ZoneId.ToString();
+
+                        // Set newly inserted zone's point ids
+                        for (var i = 0; i < newZone.Geometry.Count; i++)
+                        {
+                            newZone.Geometry[i].Id = ack.PointIds[i];
+                        }
+
+                        StopWaiting();
                     };
 
                     _currentDrawingPolygon.Tag = newZone;
@@ -653,11 +677,12 @@ namespace ParkPlaces.Controls
                     Index = pIndex.Value
                 });
                 
+                Waiting();
                 Client.Instance.OnPointInsertAck += (ack) =>
                 {
                     geometry.Id = ack.PointId;
-                    //((PolyZone)p.Tag).Geometry.Insert(pIndex.Value, geometry);
                     p.GetZoneInfo().Geometry.Insert(pIndex.Value, geometry);
+                    StopWaiting();
                 };
 
                 UpdateVerticlesCount();
@@ -930,20 +955,23 @@ namespace ParkPlaces.Controls
         protected void OnDragFinish(Polygon polygon)
         {
             OnDragEnd?.Invoke(polygon);
-            UpdatePoints(CurrentPolygon);
+            UpdatePointsAsync(CurrentPolygon);
         }
 
         /// <summary>
         /// Send update REQs to the server
         /// </summary>
         /// <param name="p"></param>
-        private void UpdatePoints(Polygon p)
+        private async void UpdatePointsAsync(Polygon p)
         {
             var zone = p.GetZoneInfo();
 
-            // Do not try to update newly created zone
-            if (string.IsNullOrEmpty(zone.Id))
-                return;
+            if (_isWaitingForResponse)
+            {
+                await Task.Run(() => {
+                    _manualResetEvent.WaitOne();
+                });
+            }
 
             var i = 0;
             foreach (var geometry in zone.Geometry.ToList())
@@ -993,6 +1021,18 @@ namespace ParkPlaces.Controls
                 UpdatePolygonLocalPosition(polygon);
                 Refresh();
             }
+        }
+
+        private void Waiting()
+        {
+            _manualResetEvent = new ManualResetEvent(false);
+            _isWaitingForResponse = true;
+        }
+
+        private void StopWaiting()
+        {
+            _manualResetEvent.Set();
+            _isWaitingForResponse = false;
         }
 
         #endregion App logic

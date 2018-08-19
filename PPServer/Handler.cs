@@ -1,4 +1,5 @@
-﻿using PPNetLib.Contracts;
+﻿using System.Collections.Generic;
+using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
 using PPServer.LocalPrototypes;
 using PPServer.Database;
@@ -45,9 +46,19 @@ namespace PPServer
         public async void OnInsertZoneReqAsync(InsertZoneReq packet, string ipPort)
         {
             var zone = JsonConvert.DeserializeObject<PolyZone> (packet.Zone, Converter.Settings);
-            var id = await Sql.Instance.InsertZone(zone);
 
-            _server.Send(ipPort, new InsertZoneAck() { ZoneId = id });
+            var pointIds = new List<int>();
+            var id = await Sql.Instance.InsertZone(zone, delegate(int pointId)
+            {
+                pointIds.Add(pointId);
+                return false;
+            });
+
+            _server.Send(ipPort, new InsertZoneAck()
+            {
+                ZoneId = id,
+                PointIds = pointIds
+            });
         }
 
         public void OnRemoveZoneReq(RemoveZoneReq packet, string ipPort)

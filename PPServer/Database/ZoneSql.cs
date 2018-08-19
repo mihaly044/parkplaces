@@ -72,7 +72,7 @@ namespace PPServer.Database
         /// Insert a zone into the database
         /// </summary>
         /// <param name="zone">The zone to be inserted</param>
-        public async Task<int> InsertZone(PolyZone zone)
+        public async Task<int> InsertZone(PolyZone zone, Func<int, bool> geometryCallback)
         {
             using (var cmd = new MySqlCommand(
                     "INSERT INTO zones (cityid, color, fee, service_na, description, timetable, common_name) VALUES" +
@@ -117,7 +117,10 @@ namespace PPServer.Database
                         cmd1.Parameters[1].Value = geometry.Lat;
                         cmd1.Parameters[2].Value = geometry.Lng;
                         await cmd1.ExecuteNonQueryAsync();
-                        geometry.Id = (int)cmd1.LastInsertedId;
+
+                        // Send back the inserted points' IDs
+                        geometryCallback((int) cmd1.LastInsertedId);
+
                         cmd1.Connection.Close();
                     }
                 }
