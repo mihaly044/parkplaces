@@ -11,6 +11,9 @@ namespace PPNetLib.Contracts
         [ProtoMember(2)]
         public int ZoneId { get; set; }
 
+        [ProtoMember(4)]
+        public int Index { get; set; }
+
         public RemovePointReq()
         {
             PacketId = Protocols.REMOVEPOINT_REQ;

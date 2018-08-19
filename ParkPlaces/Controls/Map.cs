@@ -708,7 +708,7 @@ namespace ParkPlaces.Controls
         /// </summary>
         /// <param name="p"></param>
         // ReSharper disable once MemberCanBePrivate.Global
-        public void DeletePolygonPoint(Polygon p)
+        public async void DeletePolygonPoint(Polygon p)
         {
             var pIndex = (int?) _currentRectMarker?.Tag;
             if(pIndex.HasValue)
@@ -726,12 +726,14 @@ namespace ParkPlaces.Controls
                     var point = zone.Geometry.ElementAt(pIndex.Value);
                     var zoneId = int.Parse(zone.Id);
 
-                    // Delete from the database
-                    //Sql.Instance.AddPointToBeDeleted(point);
-                    Client.Instance.Send(new RemovePointReq() {PointId = point.Id, ZoneId = zoneId});
-
-                    // TODO: Review DeletePolygonPoint
-                    //Sql.Instance.UpdatePoints(p);
+                    // Delete from the database, wait for ZoneId to arrive
+                    await DoWaiting();
+                    Client.Instance.Send(new RemovePointReq()
+                    {
+                        PointId = point.Id,
+                        ZoneId = zoneId,
+                        Index = pIndex.Value
+                    });
 
                     // Delete from zone data
                     ((PolyZone)p.Tag).Geometry.Remove(point);

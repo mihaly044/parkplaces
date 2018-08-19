@@ -68,7 +68,7 @@ namespace PPServer
 
         public void OnRemovePointReq(RemovePointReq packet, string ipPort)
         {
-            Sql.Instance.RemovePoint(packet.PointId);
+            Sql.Instance.RemovePoint(packet.PointId, packet.Index, packet.ZoneId);
 
             _server.SendToEveryoneExcept(new PointUpdatedAck()
             {

@@ -206,13 +206,26 @@ namespace PPServer.Database
         /// Delete a point from the geometry table
         /// </summary>
         /// <param name="pointId">The point to be deleted</param>
-        public void RemovePoint(int pointId)
+        /// <param name="polyIndex">The index of the point to be deleted</param>
+        /// <param name="zoneId">Id of the zone that the point is in</param>
+        public async void RemovePoint(int pointId, int polyIndex, int zoneId)
         {
-            using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE id = @id")
+            using (var cmd =
+                new MySqlCommand("UPDATE geometry SET polyindex = polyindex - 1 WHERE polyindex > @polyIndex AND zoneid = @zoneId")
+                    { Connection = GetConnection() })
+            {
+                cmd.Parameters.AddWithValue("@polyindex", polyIndex);
+                cmd.Parameters.AddWithValue("@zoneId", zoneId);
+                await cmd.ExecuteNonQueryAsync();
+                cmd.Connection.Close();
+            }
+
+            using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE id = @id AND zoneid = @zoneId")
                 { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@id", pointId);
-                cmd.ExecuteNonQuery();
+                cmd.Parameters.AddWithValue("@zoneId", zoneId);
+                await cmd.ExecuteNonQueryAsync();
                 cmd.Connection.Close();
             }
         }
