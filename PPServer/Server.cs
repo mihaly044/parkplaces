@@ -132,7 +132,7 @@ namespace PPServer
                                 goto default;
 
                             var removeZoneReq = Serializer.Deserialize<RemoveZoneReq>(stream);
-                            _handler.OnRemoveZoneReq(removeZoneReq);
+                            _handler.OnRemoveZoneReq(removeZoneReq, ipPort);
                             break;
 
                         case Protocols.UPDATEZONE_REQ:
@@ -140,7 +140,7 @@ namespace PPServer
                                 goto default;
 
                             var updateZoneReq = Serializer.Deserialize<UpdateZoneReq>(stream);
-                            _handler.OnUpdateZoneReq(updateZoneReq);
+                            _handler.OnUpdateZoneReq(updateZoneReq, ipPort);
                             break;
 
                         case Protocols.REMOVEPOINT_REQ:
@@ -148,7 +148,7 @@ namespace PPServer
                                 goto default;
 
                             var removePointReq = Serializer.Deserialize<RemovePointReq>(stream);
-                            _handler.OnRemovePointReq(removePointReq);
+                            _handler.OnRemovePointReq(removePointReq, ipPort);
                             break;
 
                         case Protocols.INSERTPOINT_REQ:
@@ -164,7 +164,7 @@ namespace PPServer
                                 goto default;
 
                             var updatePointReq = Serializer.Deserialize<UpdatePointReq>(stream);
-                            _handler.OnUpdatePointReq(updatePointReq);
+                            _handler.OnUpdatePointReq(updatePointReq, ipPort);
                             break;
 
                         case Protocols.CITYLIST_REQ:
@@ -234,6 +234,14 @@ namespace PPServer
             var user = _authUsers.FirstOrDefault(u => u.Value.Id == userId);
             if(user.Key != null)
             _watsonTcpServer.DisconnectClient(user.Key);
+        }
+
+        public void SendToEveryoneExcept<T>(T packet, string except)
+        {
+            var clients = _watsonTcpServer.ListClients();
+            foreach(var client in clients)
+                if(except != client)
+                    Send(client, packet);
         }
 
         public void Send<T>(string ipPort, T packet)

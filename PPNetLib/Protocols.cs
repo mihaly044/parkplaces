@@ -34,6 +34,7 @@ namespace PPNetLib
         REMOVEUSER_REQ,
         UPDATEUSER_REQ,
         ISDUPLICATEUSER_REQ,
-        ISDUPLICATEUSER_ACK
+        ISDUPLICATEUSER_ACK,
+        POINTUPDATED_ACK
     };
 }

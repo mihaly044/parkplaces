@@ -3,6 +3,7 @@ using PPNetLib.Prototypes;
 using PPServer.LocalPrototypes;
 using PPServer.Database;
 using Newtonsoft.Json;
+using PPNetLib.Contracts.SynchroniseAcks;
 
 namespace PPServer
 {
@@ -49,28 +50,52 @@ namespace PPServer
             _server.Send(ipPort, new InsertZoneAck() { ZoneId = id });
         }
 
-        public void OnRemoveZoneReq(RemoveZoneReq packet)
+        public void OnRemoveZoneReq(RemoveZoneReq packet, string ipPort)
         {
             Sql.Instance.RemoveZone(packet.ZoneId);
         }
 
-        public void OnRemovePointReq(RemovePointReq packet)
+        public void OnRemovePointReq(RemovePointReq packet, string ipPort)
         {
             Sql.Instance.RemovePoint(packet.PointId);
+
+            _server.SendToEveryoneExcept(new PointUpdatedAck()
+            {
+                Removed = true,
+                ZoneId = packet.ZoneId,
+                PointId = packet.PointId
+            }, ipPort);
         }
 
         public async void OnInsertPointReqAsync(InsertPointReq packet, string ipPort)
         {
             var id =  await Sql.Instance.InsertPointAsync(packet.ZoneId, packet.Lat, packet.Lng);
             _server.Send(ipPort, new InsertPointAck(){PointId = id});
+
+            _server.SendToEveryoneExcept(new PointUpdatedAck()
+            {
+                Added = true,
+                PointId = id,
+                Lat = packet.Lat,
+                Lng = packet.Lng,
+                ZoneId = packet.ZoneId
+            }, ipPort);
         }
 
-        public void OnUpdatePointReq(UpdatePointReq packet)
+        public void OnUpdatePointReq(UpdatePointReq packet, string ipPort)
         {
             Sql.Instance.UpdatePoint(packet.PointId, packet.Lat, packet.Lng);
+
+            _server.SendToEveryoneExcept(new PointUpdatedAck()
+            {
+                PointId = packet.PointId,
+                Lat = packet.Lat,
+                Lng = packet.Lng,
+                ZoneId = packet.ZoneId
+            }, ipPort);
         }
 
-        public void OnUpdateZoneReq(UpdateZoneReq packet)
+        public void OnUpdateZoneReq(UpdateZoneReq packet, string ipPort)
         {
             var zone = JsonConvert.DeserializeObject<PolyZone>(packet.Zone, Converter.Settings);
             Sql.Instance.UpdateZoneInfo(zone);

@@ -32,5 +32,8 @@ namespace ParkPlaces.Net
 
         public delegate void IsDuplicateUserAck(PPNetLib.Contracts.IsDuplicateUserAck ack);
         public event IsDuplicateUserAck OnIsDuplicateUserAck;
+
+        public delegate void PointUpdatedAck(PPNetLib.Contracts.SynchroniseAcks.PointUpdatedAck ack);
+        public event PointUpdatedAck OnPointUpdatedAck;
     }
 }

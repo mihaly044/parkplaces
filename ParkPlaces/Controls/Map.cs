@@ -18,6 +18,8 @@ using ParkPlaces.Net;
 using PPNetLib.Contracts;
 using Newtonsoft.Json;
 using ParkPlaces.Extensions;
+using PPNetLib.Contracts.SynchroniseAcks;
+
 namespace ParkPlaces.Controls
 {
     // TODO: Make Map class independent of Client
@@ -132,6 +134,8 @@ namespace ParkPlaces.Controls
 
             drawPolygonCtxMenu.Renderer = _tsRenderer;
             polygonPointCtxMenu.Renderer = _tsRenderer;
+
+            Client.Instance.OnPointUpdatedAck += OnPointUpdatedAck;
         }
 
         #endregion Constructors
@@ -681,11 +685,13 @@ namespace ParkPlaces.Controls
                 }
                 else
                 {
-                    var point = ((PolyZone)p.Tag).Geometry.ElementAt(pIndex.Value);
+                    var zone = (PolyZone)p.Tag;
+                    var point = zone.Geometry.ElementAt(pIndex.Value);
+                    var zoneId = int.Parse(zone.Id);
 
                     // Delete from the database
                     //Sql.Instance.AddPointToBeDeleted(point);
-                    Client.Instance.Send(new RemovePointReq() {PointId = point.Id});
+                    Client.Instance.Send(new RemovePointReq() {PointId = point.Id, ZoneId = zoneId});
 
                     // TODO: Review DeletePolygonPoint
                     //Sql.Instance.UpdatePoints(p);
@@ -944,10 +950,43 @@ namespace ParkPlaces.Controls
                     {
                         PointId = geometry.Id,
                         Lat = geometry.Lat,
-                        Lng = geometry.Lng
+                        Lng = geometry.Lng,
+                        ZoneId = int.Parse(zone.Id)
                     });
                 }
                 i++;
+            }
+        }
+
+        private void OnPointUpdatedAck(PointUpdatedAck packet)
+        {
+            foreach (var polygon in _polygons.Polygons)
+            {
+                if (!(polygon.Tag is PolyZone zone)) continue;
+                if (int.Parse(zone.Id) != packet.ZoneId) continue;
+
+                if (packet.Added)
+                {
+                    var pointLatLng = new PointLatLng(packet.Lat, packet.Lng);
+                    polygon.Points.Add(pointLatLng);
+                    zone.Geometry.Add(pointLatLng.ToGeometry(packet.PointId));
+                }
+                else if (packet.Removed)
+                {
+                    var i = zone.Geometry.FindIndex(x => x.Id == packet.PointId);
+                    polygon.Points.RemoveAt(i);
+                    zone.Geometry.RemoveAt(i);
+                }
+                else
+                {
+                    var i = zone.Geometry.FindIndex(x => x.Id == packet.PointId);
+                    var pt = new PointLatLng(packet.Lat, packet.Lng);
+                    polygon.Points[i] = pt;
+                    zone.Geometry[i] = pt.ToGeometry(packet.PointId);
+                }
+
+                UpdatePolygonLocalPosition(polygon);
+                Refresh();
             }
         }
 

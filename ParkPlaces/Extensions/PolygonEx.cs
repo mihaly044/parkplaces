@@ -53,5 +53,12 @@ namespace ParkPlaces.Extensions
             }
             Client.Instance.Send(new UpdateZoneReq() { Zone = JsonConvert.SerializeObject(polygon.GetZoneInfo())});
         }
+
+        public static int GetId(this Polygon polygon)
+        {
+            if(polygon.Tag is PolyZone zone)
+                return int.Parse(zone.Id);
+            return -1;
+        }
     }
 }

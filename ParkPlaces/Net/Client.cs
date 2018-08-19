@@ -126,6 +126,11 @@ namespace ParkPlaces.Net
                             OnIsDuplicateUserAck?.Invoke(isDuplicateUserAck);
                             OnIsDuplicateUserAck = null;
                             break;
+                        case Protocols.POINTUPDATED_ACK:
+                            var pointUpdatedAck =
+                                Serializer.Deserialize<PPNetLib.Contracts.SynchroniseAcks.PointUpdatedAck>(stream);
+                            OnPointUpdatedAck?.Invoke(pointUpdatedAck);
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }
