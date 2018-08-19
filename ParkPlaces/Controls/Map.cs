@@ -650,7 +650,8 @@ namespace ParkPlaces.Controls
                 {
                     Lat = geometry.Lat,
                     Lng = geometry.Lng,
-                    ZoneId = p.GetZoneId()
+                    ZoneId = p.GetZoneId(),
+                    Index = pIndex.Value
                 });
                 
                 Client.Instance.OnPointInsertAck += (ack) =>
@@ -940,6 +941,11 @@ namespace ParkPlaces.Controls
         private void UpdatePoints(Polygon p)
         {
             var zone = p.GetZoneInfo();
+
+            // Do not try to update newly created zone
+            if (string.IsNullOrEmpty(zone.Id))
+                return;
+
             var i = 0;
             foreach (var geometry in zone.Geometry.ToList())
             {

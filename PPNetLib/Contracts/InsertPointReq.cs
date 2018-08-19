@@ -8,6 +8,7 @@ namespace PPNetLib.Contracts
         [ProtoMember(1)] public int ZoneId { get; set; }
         [ProtoMember(2)] public double Lat { get; set; }
         [ProtoMember(3)] public double Lng { get; set; }
+        [ProtoMember(4)] public int Index { get; set; }
 
         public InsertPointReq()
         {
