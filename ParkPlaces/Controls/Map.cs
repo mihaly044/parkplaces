@@ -669,7 +669,7 @@ namespace ParkPlaces.Controls
         /// </summary>
         /// <param name="p"></param>
         // ReSharper disable once MemberCanBePrivate.Global
-        public void AddPolygonPoint(Polygon p)
+        public async void AddPolygonPoint(Polygon p)
         {
             var pIndex = (int?)_currentRectMarker?.Tag;
             if (pIndex.HasValue)
@@ -678,6 +678,14 @@ namespace ParkPlaces.Controls
 
                 var geometry = _currentRectMarker.Position.ToGeometry(0);
 
+                if (_isWaitingForResponse)
+                {
+                    await Task.Run(() =>
+                    {
+                        _manualResetEvent.WaitOne();
+                    });
+                }
+
                 Client.Instance.Send(new InsertPointReq()
                 {
                     Lat = geometry.Lat,
@@ -685,7 +693,7 @@ namespace ParkPlaces.Controls
                     ZoneId = p.GetZoneId(),
                     Index = pIndex.Value
                 });
-                
+
                 Waiting();
                 Client.Instance.OnPointInsertAck += (ack) =>
                 {
