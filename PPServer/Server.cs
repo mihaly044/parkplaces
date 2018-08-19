@@ -260,7 +260,7 @@ namespace PPServer
                 var buffer = stream.ToArray();
 
                 _watsonTcpServer.Send(ipPort, buffer);
-                //Console.WriteLine("PID {0} of {1} bytes sent to {2}", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
+                Console.WriteLine("PID {0} of {1} bytes sent to {2}", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
             }
         }
 
