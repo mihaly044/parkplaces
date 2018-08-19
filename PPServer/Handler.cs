@@ -74,7 +74,8 @@ namespace PPServer
             {
                 Removed = true,
                 ZoneId = packet.ZoneId,
-                PointId = packet.PointId
+                PointId = packet.PointId,
+                Index = packet.Index
             }, ipPort);
         }
 
@@ -89,7 +90,8 @@ namespace PPServer
                 PointId = id,
                 Lat = packet.Lat,
                 Lng = packet.Lng,
-                ZoneId = packet.ZoneId
+                ZoneId = packet.ZoneId,
+                Index = packet.Index
             }, ipPort);
         }
 

@@ -23,6 +23,9 @@ namespace PPNetLib.Contracts.SynchroniseAcks
         [ProtoMember(6)]
         public bool Added { get; set; }
 
+        [ProtoMember(7)]
+        public int Index { get; set; }
+
         public PointUpdatedAck()
         {
             PacketId = Protocols.POINTUPDATED_ACK;

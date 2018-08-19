@@ -1015,14 +1015,13 @@ namespace ParkPlaces.Controls
                 if (packet.Added)
                 {
                     var pointLatLng = new PointLatLng(packet.Lat, packet.Lng);
-                    polygon.Points.Add(pointLatLng);
-                    zone.Geometry.Add(pointLatLng.ToGeometry(packet.PointId));
+                    polygon.Points.Insert(packet.Index, pointLatLng);
+                    zone.Geometry.Insert(packet.Index, pointLatLng.ToGeometry(packet.PointId));
                 }
                 else if (packet.Removed)
                 {
-                    var i = zone.Geometry.FindIndex(x => x.Id == packet.PointId);
-                    polygon.Points.RemoveAt(i);
-                    zone.Geometry.RemoveAt(i);
+                    polygon.Points.RemoveAt(packet.Index);
+                    zone.Geometry.RemoveAt(packet.Index);
                 }
                 else
                 {
