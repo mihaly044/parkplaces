@@ -425,5 +425,15 @@ namespace ParkPlaces.Forms
         {
             new AboutBox().Show();
         }
+
+        private void ParkPlacesForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!Client.Instance.GetOfflineMode() && Map.IsWaiting())
+            {
+                var result = MessageBox.Show(
+                    "Feldolgozatlan módosításai vannak. Biztosan kilép?", "Figyelmeztetés", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                e.Cancel = result == DialogResult.No; 
+            }
+        }
     }
 }

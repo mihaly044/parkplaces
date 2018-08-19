@@ -1035,6 +1035,11 @@ namespace ParkPlaces.Controls
             _isWaitingForResponse = false;
         }
 
+        public bool IsWaiting()
+        {
+            return _isWaitingForResponse;
+        }
+
         #endregion App logic
     }
 }

@@ -314,7 +314,7 @@ namespace ParkPlaces.Forms
             // 
             this.aboutToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Information_27854;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.aboutToolStripMenuItem.Text = "Impresszum";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -395,6 +395,7 @@ namespace ParkPlaces.Forms
             this.Name = "ParkPlacesForm";
             this.ShowIcon = false;
             this.Text = "ParkPlaces Editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ParkPlacesForm_FormClosing);
             this.Load += new System.EventHandler(this.ParkPlacesForm_Load);
             this.Shown += new System.EventHandler(this.ParkPlacesForm_Shown);
             this.toolStripContainer.BottomToolStripPanel.ResumeLayout(false);
