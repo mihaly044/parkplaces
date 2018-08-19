@@ -32,7 +32,7 @@ namespace ParkPlaces.Map_shapes
             Pen = new Pen(Brushes.Blue, 1);
             Brush = Brushes.Red;
 
-            Size = new Size(10, 10);
+            Size = new Size(20, 20);
             Offset = new Point(-Size.Width / 2, -Size.Height / 2);
         }
 
@@ -41,7 +41,9 @@ namespace ParkPlaces.Map_shapes
             Rect = new Rectangle(LocalPosition.X, LocalPosition.Y, Size.Width, Size.Height);
             Font = new Font("Arial", 12);
             g.DrawRectangle(Pen, Rect);
-            g.DrawString("*", Font, Brush, Rect);
+
+            // Draw point index when specified
+            g.DrawString(Tag?.ToString() ?? "*", Font, Brush, Rect);
         }
 
         public override void Dispose()
