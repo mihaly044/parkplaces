@@ -25,7 +25,6 @@ namespace ParkPlaces.Controls
     // TODO: Make Map class independent of Client
     public partial class Map : GMapControl
     {
-
         #region Private fields and consts
 
         /// <summary>
