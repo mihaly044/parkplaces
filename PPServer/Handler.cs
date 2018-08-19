@@ -80,7 +80,7 @@ namespace PPServer
 
         public async void OnInsertPointReqAsync(InsertPointReq packet, string ipPort)
         {
-            var id =  await Sql.Instance.InsertPointAsync(packet.ZoneId, packet.Lat, packet.Lng);
+            var id =  await Sql.Instance.InsertPointAsync(packet.ZoneId, packet.Lat, packet.Lng, packet.Index);
             _server.Send(ipPort, new InsertPointAck(){PointId = id});
 
             _server.SendToEveryoneExcept(new PointUpdatedAck()

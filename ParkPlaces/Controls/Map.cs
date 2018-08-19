@@ -406,6 +406,15 @@ namespace ParkPlaces.Controls
                         {
                             CurrentPolygon.Points[pIndex.Value] = pnew;
                             var zone = (PolyZone) CurrentPolygon.Tag;
+
+                            // TODO: Find a workaround for waiting for a server response in this
+                            // non-asynch method. Currently it causes the gui to hang up 
+                            if (_isWaitingForResponse)
+                            {
+                                while(_isWaitingForResponse)
+                                    Thread.Sleep(300);
+                            }
+
                             var id = zone.Geometry[pIndex.Value].Id;
 
                             zone.Geometry[pIndex.Value] = pnew.ToGeometry(id);

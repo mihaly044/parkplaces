@@ -51,7 +51,7 @@ namespace PPServer.Database
                         Telepules = rd["city"].ToString()
                     };
 
-                    using (var cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]}") { Connection = geometryConnection })
+                    using (var cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]} ORDER BY polyindex") { Connection = geometryConnection })
                     {
                         var rd1 = cmd1.ExecuteReader();
                         while (rd1.Read())
@@ -72,6 +72,7 @@ namespace PPServer.Database
         /// Insert a zone into the database
         /// </summary>
         /// <param name="zone">The zone to be inserted</param>
+        /// <param name="geometryCallback">Used to return new point Ids</param>
         public async Task<int> InsertZone(PolyZone zone, Func<int, bool> geometryCallback)
         {
             using (var cmd = new MySqlCommand(
@@ -99,18 +100,27 @@ namespace PPServer.Database
                 await cmd.ExecuteNonQueryAsync();
                 var zoneId = cmd.LastInsertedId;
 
+                var polyIndex = 0;
+                var lastId = 0L;
                 foreach (var geometry in zone.Geometry)
                 {
+                    if (lastId != zoneId)
+                    {
+                        polyIndex = 0;
+                        lastId = zoneId;
+                    }
+
                     using (var cmd1 =
                         new MySqlCommand(
-                                "INSERT INTO geometry (zoneid, lat, lng) VALUES (@zoneid, @lat, @lng)")
+                                "INSERT INTO geometry (zoneid, lat, lng, polyindex) VALUES (@zoneid, @lat, @lng, @polyIndex)")
                         { Connection = GetConnection() })
                     {
                         cmd1.Parameters.AddRange(new[]
                         {
                             new MySqlParameter("@zoneid", MySqlDbType.String),
                             new MySqlParameter("@lat", MySqlDbType.Double),
-                            new MySqlParameter("@lng", MySqlDbType.Double)
+                            new MySqlParameter("@lng", MySqlDbType.Double),
+                            new MySqlParameter("@polyIndex", polyIndex)
                         });
 
                         cmd1.Parameters[0].Value = zoneId;
@@ -123,6 +133,7 @@ namespace PPServer.Database
 
                         cmd1.Connection.Close();
                     }
+                    polyIndex++;
                 }
                 cmd.Connection.Close();
 
@@ -212,22 +223,34 @@ namespace PPServer.Database
         /// <param name="zoneId"></param>
         /// <param name="lat"></param>
         /// <param name="lng"></param>
+        /// <param name="polyIndex"></param>
         /// <returns></returns>
-        public async Task<int> InsertPointAsync(int zoneId, double lat, double lng)
+        public async Task<int> InsertPointAsync(int zoneId, double lat, double lng, int polyIndex)
         {
+            using (var cmd = 
+                new MySqlCommand("UPDATE geometry SET polyindex = polyindex + 1 WHERE polyindex >= @polyIndex AND zoneid = @zoneId")
+                { Connection = GetConnection()})
+            {
+                cmd.Parameters.AddWithValue("@polyindex", polyIndex);
+                cmd.Parameters.AddWithValue("@zoneId", zoneId);
+                await cmd.ExecuteNonQueryAsync();
+                cmd.Connection.Close();
+            }
+
             using (var cmd =
                 new MySqlCommand(
-                        "INSERT INTO geometry (zoneid, lat, lng) VALUES (@zoneid, @lat, @lng)")
-                    { Connection = GetConnection() })
+                        "INSERT INTO geometry (zoneid, lat, lng, polyIndex) VALUES (@zoneId, @lat, @lng, @polyIndex)")
+                { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@lat", lat);
                 cmd.Parameters.AddWithValue("@lng", lng);
-                cmd.Parameters.AddWithValue("@zoneid", zoneId);
+                cmd.Parameters.AddWithValue("@zoneId", zoneId);
+                cmd.Parameters.AddWithValue("@polyIndex", polyIndex);
 
                 await cmd.ExecuteNonQueryAsync();
                 cmd.Connection.Close();
 
-                return (int) cmd.LastInsertedId;
+                return (int)cmd.LastInsertedId;
             }
         }
 
