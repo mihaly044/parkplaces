@@ -125,7 +125,7 @@ namespace PPServer.Database
             using (var cmd = new MySqlCommand("SELECT * FROM cities WHERE city = @city")
                 { Connection = GetConnection() })
             {
-                cmd.Parameters.AddWithValue("@city", city);
+                cmd.Parameters.AddWithValue("@city", city.Name);
                 using (var reader = cmd.ExecuteReader())
                 {
                     if (reader.Read() && reader.HasRows)
