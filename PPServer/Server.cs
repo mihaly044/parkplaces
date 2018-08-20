@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using PPNetLib;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
@@ -23,10 +24,22 @@ namespace PPServer
         public Server()
         {
             var configSect = ConfigurationManager.GetSection("ServerConfiguration") as NameValueCollection;
-            // ReSharper disable once PossibleNullReferenceException
-            _ip = configSect["IPAddress"];
-            _port = int.Parse(configSect["Port"]);
 
+            // ReSharper disable once PossibleNullReferenceException
+            var ip = configSect["IPAddress"];
+            if (ip == null)
+            {
+                _ip = Extensions.Net.GetLocalIPv4(NetworkInterfaceType.Ethernet);
+                if (_ip == string.Empty)
+                    _ip = Extensions.Net.GetLocalIPv4(NetworkInterfaceType.Wireless80211);
+            }
+            else
+            {
+                _ip = configSect["IPAddress"];
+            }
+
+
+            _port = int.Parse(configSect["Port"]);
             _handler = new Handler(this);
             _authUsers = new Dictionary<string, User>();
             PrintAsciiArtLogo();
