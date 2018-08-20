@@ -1045,6 +1045,7 @@ namespace ParkPlaces.Controls
 
                 UpdatePolygonLocalPosition(polygon);
                 Refresh();
+                break;
             }
         }
 
