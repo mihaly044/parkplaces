@@ -212,7 +212,7 @@ namespace ParkPlaces.Controls
         #region Internals
 
         /// <summary>
-        /// The very upper overlayof the map
+        /// The very upper overlay of the map
         /// </summary>
         private readonly Layer _topLayer = new Layer("topLayer");
 
