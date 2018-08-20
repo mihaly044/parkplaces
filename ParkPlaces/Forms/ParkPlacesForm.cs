@@ -25,40 +25,38 @@ namespace ParkPlaces.Forms
             menuStrip.Renderer = tsRenderer;
             toolStrip.Renderer = tsRenderer;
             statusStrip.Renderer = tsRenderer;
+            
+            IoHandler.Instance.OnUpdateChangedEventHandler += OnUpdateChangedEventHandler;
+            Client.Instance.OnConnectionError += OnConnectionError;
+        }
 
-            // Anonymous function for IOHandler's OnUpdateChangedEventHandler
-            // Specifies what happens when IOHandler invokes the aftermentioned
-            // event
-            IoHandler.Instance.OnUpdateChangedEventHandler += (s, updateProcessChangedArgs) =>
+        private void OnUpdateChangedEventHandler(object sender, UpdateProcessChangedArgs updateProcessChangedArgs)
+        {
+            toolStripProgressBar.Visible = true;
+
+            if (updateProcessChangedArgs.TotalChunks == 1)
             {
-                toolStripProgressBar.Visible = true;
-
-                if (updateProcessChangedArgs.TotalChunks == 1)
-                {
-                    toolStripProgressBar.Value = 0;
-                    toolStripProgressBar.Minimum = 0;
-                    toolStripProgressBar.Maximum = 100;
-                    toolStripStatusLabel.Text = "Frissítés indítása";
-                    return;
-                }
-
-                toolStripProgressBar.Maximum = updateProcessChangedArgs.TotalChunks;
-                toolStripProgressBar.Value = updateProcessChangedArgs.CurrentChunks;
-
-                toolStripStatusLabel.Text =
-                    $"Letöltve {updateProcessChangedArgs.CurrentChunks} város a(z) {updateProcessChangedArgs.TotalChunks}-ből";
-
-                if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
-
-                toolStripProgressBar.Visible = false;
-
+                toolStripProgressBar.Value = 0;
                 toolStripProgressBar.Minimum = 0;
                 toolStripProgressBar.Maximum = 100;
+                toolStripStatusLabel.Text = "Frissítés indítása";
+                return;
+            }
 
-                toolStripStatusLabel.Text = "Kész";
-            };
+            toolStripProgressBar.Maximum = updateProcessChangedArgs.TotalChunks;
+            toolStripProgressBar.Value = updateProcessChangedArgs.CurrentChunks;
 
-            Client.Instance.OnConnectionError += OnConnectionError;
+            toolStripStatusLabel.Text =
+                $"Letöltve {updateProcessChangedArgs.CurrentChunks} város a(z) {updateProcessChangedArgs.TotalChunks}-ből";
+
+            if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
+
+            toolStripProgressBar.Visible = false;
+
+            toolStripProgressBar.Minimum = 0;
+            toolStripProgressBar.Maximum = 100;
+
+            toolStripStatusLabel.Text = "Kész";
         }
 
         private void OnConnectionError(Exception e)
