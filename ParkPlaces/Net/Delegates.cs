@@ -38,5 +38,8 @@ namespace ParkPlaces.Net
 
         public delegate void ZoneInfoUpdatedAAck(PPNetLib.Contracts.SynchroniseAcks.ZoneInfoUpdatedAck ack);
         public event ZoneInfoUpdatedAAck OnZoneInfoUpdatedAck;
+
+        public delegate void LoginDuplicateAck();
+        public event LoginDuplicateAck OnLoginDuplicateAck;
     }
 }

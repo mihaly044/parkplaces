@@ -47,6 +47,13 @@ namespace ParkPlaces.Forms
             }    
         }
 
+        private void OnLoginDuplicateAck()
+        {
+            MessageBox.Show("Nem lehet belépni.\nValaki más már belépett ezzel a fiókkal.", "Hiba",
+                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            Client.Instance.Disconnect();
+        }
+
         /// <summary>
         /// Occurs when the user clicks on the login button
         /// </summary>
@@ -56,6 +63,7 @@ namespace ParkPlaces.Forms
         {
             Client.Instance.ResetLoginAck();
             Client.Instance.OnLoginAck += OnLoginAck;
+            Client.Instance.OnLoginDuplicateAck += OnLoginDuplicateAck;
             Client.Instance.SetOfflineMode(false);
 
             if(!Client.Instance.IsConnected())
@@ -114,6 +122,7 @@ namespace ParkPlaces.Forms
 
             DialogResult = DialogResult.OK;
             Client.Instance.OnLoginAck -= OnLoginAck;
+            Client.Instance.OnLoginDuplicateAck -= OnLoginDuplicateAck;
             Close();
         }
     }

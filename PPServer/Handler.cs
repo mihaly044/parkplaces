@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
 using PPServer.LocalPrototypes;
@@ -18,15 +19,21 @@ namespace PPServer
             _server = s;
         }
 
-        public User OnLoginReq(LoginReq packet, string ipPort)
+        public User OnLoginReq(LoginReq packet, string ipPort, Dictionary<string, User> users)
         {
-            var ack = new LoginAck();
-            var user = Sql.Instance.AuthenticateUser(packet.Username, packet.Password);
-            ack.User = user;
-
-            _server.Send(ipPort, ack);
-
-            return user;
+            if (users.FirstOrDefault(u => u.Value.UserName == packet.Username).Value != null)
+            {
+                _server.Send(ipPort, new LoginDuplicateAck());
+            }
+            else
+            {
+                var ack = new LoginAck();
+                var user = Sql.Instance.AuthenticateUser(packet.Username, packet.Password);
+                ack.User = user;
+                _server.Send(ipPort, ack);
+                return user;
+            }
+            return null;
         }
 
         public void OnZoneCountReq(string ipPort)

@@ -136,6 +136,9 @@ namespace ParkPlaces.Net
                                 Serializer.Deserialize<PPNetLib.Contracts.SynchroniseAcks.ZoneInfoUpdatedAck>(stream);
                             OnZoneInfoUpdatedAck?.Invoke(zoneInfoUpdatedAck);
                             break;
+                        case Protocols.LOGINDUPLICATE_ACK:
+                            OnLoginDuplicateAck?.Invoke();
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }
