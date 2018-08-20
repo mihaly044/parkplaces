@@ -114,8 +114,11 @@ namespace PPServer
                             var loginReq = Serializer.Deserialize<LoginReq>(stream);
                             var user = _handler.OnLoginReq(loginReq, ipPort, _authUsers);
 
-                            if(!_authUsers.ContainsKey(ipPort))
-                                _authUsers.Add(ipPort, user);
+                            if (user != null)
+                            {
+                                if (!_authUsers.ContainsKey(ipPort))
+                                    _authUsers.Add(ipPort, user);
+                            }
                             break;
 
                         case Protocols.ZONECOUNT_REQ:
