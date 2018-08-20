@@ -28,6 +28,18 @@ namespace ParkPlaces.Forms
             
             IoHandler.Instance.OnUpdateChangedEventHandler += OnUpdateChangedEventHandler;
             Client.Instance.OnConnectionError += OnConnectionError;
+            Map.OnStartWaiting += MapOnStartWaiting;
+            Map.OnStopWaiting += MapOnStopWaiting;
+        }
+
+        private void MapOnStopWaiting()
+        {
+            toolStripStatusLabel.Text = "Kész";
+        }
+
+        private void MapOnStartWaiting()
+        {
+            toolStripStatusLabel.Text = "Feldolgozás ...";
         }
 
         private void OnUpdateChangedEventHandler(object sender, UpdateProcessChangedArgs updateProcessChangedArgs)

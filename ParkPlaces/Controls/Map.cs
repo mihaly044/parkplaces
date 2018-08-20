@@ -119,6 +119,16 @@ namespace ParkPlaces.Controls
         /// </summary>
         public delegate void DragEnd(Polygon polygon);
 
+        /// <summary>
+        /// Invoked when the client starts waiting for a server response
+        /// </summary>
+        public delegate void WaitingStart();
+
+        /// <summary>
+        /// Invoked after the client has stopped waiting for a server response
+        /// </summary>
+        public delegate void WaitingStop();
+
 
         #region Constructors
 
@@ -157,6 +167,8 @@ namespace ParkPlaces.Controls
         public event DrawPolygonEnd OnDrawPolygonEnd;
         public event VerticlesChanged OnVerticlesChanged;
         public event DragEnd OnDragEnd;
+        public event WaitingStart OnStartWaiting;
+        public event WaitingStop OnStopWaiting;
         #endregion Events
 
         /// <summary>
@@ -1044,6 +1056,7 @@ namespace ParkPlaces.Controls
         {
             _manualResetEvent = new ManualResetEvent(false);
             _isWaitingForResponse = true;
+            OnStartWaiting?.Invoke();
         }
 
         /// <summary>
@@ -1053,6 +1066,7 @@ namespace ParkPlaces.Controls
         {
             _manualResetEvent.Set();
             _isWaitingForResponse = false;
+            OnStopWaiting?.Invoke();
         }
 
         /// <summary>
