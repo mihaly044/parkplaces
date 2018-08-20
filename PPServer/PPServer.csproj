@@ -84,6 +84,7 @@
     <Compile Include="Database\UserSql.cs" />
     <Compile Include="Database\ZoneSql.cs" />
     <Compile Include="Extensions\Generic.cs" />
+    <Compile Include="Extensions\Net.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="LocalPrototypes\Dto2Object.cs" />
     <Compile Include="Program.cs" />

@@ -38,7 +38,6 @@ namespace PPServer
                 _ip = configSect["IPAddress"];
             }
 
-
             _port = int.Parse(configSect["Port"]);
             _handler = new Handler(this);
             _authUsers = new Dictionary<string, User>();
