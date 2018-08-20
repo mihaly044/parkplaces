@@ -42,7 +42,7 @@ namespace PPServer.Database
             using (var cmd =
                 new MySqlCommand("SELECT COUNT(*) FROM cities WHERE city = @city") {Connection = GetConnection()})
             {
-                cmd.Parameters.AddWithValue("@city", city);
+                cmd.Parameters.AddWithValue("@city", city.Name);
                 return int.Parse(cmd.ExecuteScalar().ToString()) > 0;
             }
         }
