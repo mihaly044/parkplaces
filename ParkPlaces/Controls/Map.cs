@@ -634,8 +634,6 @@ namespace ParkPlaces.Controls
                     );
 
                     var zoneSeriliazed = JsonConvert.SerializeObject(newZone, Converter.Settings);
-                    Debug.WriteLine(zoneSeriliazed);
-
                     Client.Instance.Send(new InsertZoneReq() { Zone = zoneSeriliazed });
                     StartWaiting();
 
