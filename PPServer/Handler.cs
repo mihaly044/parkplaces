@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
 using PPServer.LocalPrototypes;
@@ -46,8 +47,8 @@ namespace PPServer
         public async void OnInsertZoneReqAsync(InsertZoneReq packet, string ipPort)
         {
             var zone = JsonConvert.DeserializeObject<PolyZone> (packet.Zone, Converter.Settings);
-
             var pointIds = new List<int>();
+
             var id = await Sql.Instance.InsertZone(zone, delegate(int pointId)
             {
                 pointIds.Add(pointId);
@@ -59,11 +60,24 @@ namespace PPServer
                 ZoneId = id,
                 PointIds = pointIds
             });
+
+            _server.SendToEveryoneExcept(new ZoneInfoUpdatedAck()
+            {
+                ZoneId = id,
+                Added = true,
+                Data = JsonConvert.SerializeObject(zone, Converter.Settings)
+            }, ipPort);
         }
 
         public void OnRemoveZoneReq(RemoveZoneReq packet, string ipPort)
         {
             Sql.Instance.RemoveZone(packet.ZoneId);
+
+            _server.SendToEveryoneExcept(new ZoneInfoUpdatedAck()
+            {
+                ZoneId = packet.ZoneId,
+                Removed = true,
+            }, ipPort);
         }
 
         public void OnRemovePointReq(RemovePointReq packet, string ipPort)
@@ -112,6 +126,12 @@ namespace PPServer
         {
             var zone = JsonConvert.DeserializeObject<PolyZone>(packet.Zone, Converter.Settings);
             Sql.Instance.UpdateZoneInfo(zone);
+
+            _server.SendToEveryoneExcept(new ZoneInfoUpdatedAck()
+            {
+                ZoneId = int.Parse(zone.Id),
+                Data = JsonConvert.SerializeObject(zone, Converter.Settings)
+            }, ipPort);
         }
 
         public async void OnCityListReqAsync(string ipPort)

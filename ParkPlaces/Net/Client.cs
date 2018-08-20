@@ -131,6 +131,11 @@ namespace ParkPlaces.Net
                                 Serializer.Deserialize<PPNetLib.Contracts.SynchroniseAcks.PointUpdatedAck>(stream);
                             OnPointUpdatedAck?.Invoke(pointUpdatedAck);
                             break;
+                        case Protocols.ZONEINFOUPDATED_ACK:
+                            var zoneInfoUpdatedAck =
+                                Serializer.Deserialize<PPNetLib.Contracts.SynchroniseAcks.ZoneInfoUpdatedAck>(stream);
+                            OnZoneInfoUpdatedAck?.Invoke(zoneInfoUpdatedAck);
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }

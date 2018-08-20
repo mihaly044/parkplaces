@@ -128,8 +128,10 @@ namespace PPServer.Database
                         cmd1.Parameters[2].Value = geometry.Lng;
                         await cmd1.ExecuteNonQueryAsync();
 
+                        var id = (int) cmd1.LastInsertedId;
                         // Send back the inserted points' IDs
-                        geometryCallback((int) cmd1.LastInsertedId);
+                        geometryCallback(id);
+                        geometry.Id = id;
 
                         cmd1.Connection.Close();
                     }
@@ -137,6 +139,7 @@ namespace PPServer.Database
                 }
                 cmd.Connection.Close();
 
+                zone.Id = zoneId.ToString();
                 return (int)zoneId;
             }
         }

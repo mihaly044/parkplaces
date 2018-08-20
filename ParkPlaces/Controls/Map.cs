@@ -159,8 +159,8 @@ namespace ParkPlaces.Controls
             _isWaitingForResponse = false;
 
             Client.Instance.OnPointUpdatedAck += OnPointUpdatedAck;
+            Client.Instance.OnZoneInfoUpdatedAck += OnZoneInfoUpdatedAck;
         }
-
         #endregion Constructors
 
         #region Events
@@ -1046,6 +1046,58 @@ namespace ParkPlaces.Controls
                 UpdatePolygonLocalPosition(polygon);
                 Refresh();
             }
+        }
+
+        /// <summary>
+        /// Called on ZONEINFOUPDATED_ACK
+        /// </summary>
+        /// <param name="packet"></param>
+        private void OnZoneInfoUpdatedAck(ZoneInfoUpdatedAck packet)
+        {
+            if (packet.Added)
+            {
+                var deserializedZone = JsonConvert.DeserializeObject<PolyZone>(packet.Data);
+
+                var polygonPoints = deserializedZone.Geometry.Select(m => new PointLatLng(m.Lat, m.Lng)).ToList();
+                var polygonColor = ColorTranslator.FromHtml(deserializedZone.Color);
+
+                _polygons.Polygons.Add(new Polygon(polygonPoints, deserializedZone.Description)
+                {
+                    Tag = deserializedZone,
+                    IsHitTestVisible = true,
+                    Fill = new SolidBrush(Color.FromArgb(ZoneOpacity, polygonColor)),
+                    Stroke = new Pen(polygonColor) {Width = 2}
+                });
+            }
+            else
+            {
+                foreach (var polygon in _polygons.Polygons)
+                {
+                    if (!(polygon.Tag is PolyZone zone)) continue;
+                    if (int.Parse(zone.Id) != packet.ZoneId) continue;
+
+                    if (packet.Removed)
+                    {
+                        _polygons.Polygons.Remove(polygon);
+                        _dtoObject.Zones.Remove(zone);
+                    }
+                    else
+                    {
+                        var deserializedZone = JsonConvert.DeserializeObject<PolyZone>(packet.Data);
+                        polygon.Tag = deserializedZone;
+
+                        var polygonColor = ColorTranslator.FromHtml(deserializedZone.Color);
+                        polygon.Fill = new SolidBrush(Color.FromArgb(ZoneOpacity, polygonColor));
+                        polygon.Stroke = new Pen(polygonColor) {Width = 2};
+                    }
+
+                    UpdatePolygonLocalPosition(polygon);
+                    break;
+                }
+            }
+
+            Refresh();
+            UpdateVerticlesCount();
         }
 
         /// <summary>
