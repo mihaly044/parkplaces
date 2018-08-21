@@ -6,22 +6,22 @@ This is a free and open source application and takes tremendous amount of time t
  If this project has helped you, consider buying me a coffee:
  [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/vodoc)
 
-## Getting started
-
 ### Third party libraries
 A number of awesome third party libraries have helped the development of ParkPlaces:
 
- -  [WatsonTcp](https://github.com/jchristn/WatsonTcp) by [jchristn](https://github.com/jchristn) [![nuget](https://img.shields.io/nuget/v/WatsonTcp.svg)](https://www.nuget.org/packages/WatsonTcp/)
+ - [ParkPlaces.DotUtils](https://github.com/mihaly044/parkplaces/tree/v2/ParkPlaces.DotUtils) by [J-kit](https://github.com/J-kit)
+ - [WatsonTcp](https://github.com/jchristn/WatsonTcp) by [jchristn](https://github.com/jchristn) [![nuget](https://img.shields.io/nuget/v/WatsonTcp.svg)](https://www.nuget.org/packages/WatsonTcp/)
  - [protobuf-net](https://github.com/mgravell/protobuf-net) by [mgravell](https://github.com/mgravell) [![nuget](https://img.shields.io/nuget/v/protobuf-net.svg)](https://www.nuget.org/packages/GMap.NET.WindowsForms/)
  - [greatmaps](https://github.com/radioman/greatmaps) by [radioman](https://github.com/radioman) [![nuget](https://img.shields.io/nuget/v/GMAP.Net.WindowsForms.svg)](https://www.nuget.org/packages/GMap.NET.WindowsForms/)
  - MySql.Data [![nuget](https://img.shields.io/nuget/v/Mysql.Data.svg)](https://www.nuget.org/packages/MySql.Data/8.0.12)
- - [DotUtils](https://github.com/mihaly044/parkplaces/tree/v2/ParkPlaces.DotUtils) by [J-kit](https://github.com/J-kit)
+
+## Getting started
 
 ### Prequsities
 
  - .Net 4.6
  - Visual Studio 2017 Community or other 2017 editions
- - A MySQL database server - optional
+ - A MySQL database server
 
 ### Building the project
 The most straightforward way is to build the solution using Visual Studio 2017.
@@ -37,7 +37,7 @@ Navigate to \PPServer\bin\Release\ and set up the server configuration as follow
 
 Specify the port the server is going to listen on. Configuring an IP address is not necessary
 as the server will try to guess it automatically. If you are not specifying an IP address, remember
-to set **AutoConfig** to false.
+to set **AutoConfig** to true.
 ```xml
 ...
 <ServerConfiguration>
