@@ -60,9 +60,10 @@ namespace ParkPlaces.Net
             }
         }
 
-        public void ResetLoginAck()
+        public void ResetLoginAcks()
         {
             OnLoginAck = null;
+            OnLoginDuplicateAck = null;
         }
 
         public bool GetOfflineMode()

@@ -61,7 +61,7 @@ namespace ParkPlaces.Forms
         /// <param name="e"></param>
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            Client.Instance.ResetLoginAck();
+            Client.Instance.ResetLoginAcks();
             Client.Instance.OnLoginAck += OnLoginAck;
             Client.Instance.OnLoginDuplicateAck += OnLoginDuplicateAck;
             Client.Instance.SetOfflineMode(false);
@@ -121,8 +121,9 @@ namespace ParkPlaces.Forms
             User = new User(textBoxUserName.Text, 1) {GroupRole = GroupRole.Admin};
 
             DialogResult = DialogResult.OK;
-            Client.Instance.OnLoginAck -= OnLoginAck;
-            Client.Instance.OnLoginDuplicateAck -= OnLoginDuplicateAck;
+            
+            Client.Instance.ResetLoginAcks();
+
             Close();
         }
     }
