@@ -21,9 +21,6 @@ namespace ParkPlaces.Forms
             DialogResult = DialogResult.Cancel;
             CheckForIllegalCrossThreadCalls = false;
 
-            Client.Instance.OnLoginAck += OnLoginAck;
-            Client.Instance.OnLoginDuplicateAck += OnLoginDuplicateAck;
-
             Client.Instance.Disconnect();
         }
 
@@ -65,6 +62,8 @@ namespace ParkPlaces.Forms
         private void btnLogin_Click(object sender, EventArgs e)
         {
             Client.Instance.ResetLoginAck();
+            Client.Instance.OnLoginAck += OnLoginAck;
+            Client.Instance.OnLoginDuplicateAck += OnLoginDuplicateAck;
             Client.Instance.SetOfflineMode(false);
 
             if(!Client.Instance.IsConnected())
