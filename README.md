@@ -20,7 +20,7 @@ A number of awesome third party libraries have helped the development of ParkPla
 
 ### Prequsities
 
- - .Net 4.6
+ - .Net 4.6.1
  - Visual Studio 2017 Community or other 2017 editions
  - A MySQL database server
 
