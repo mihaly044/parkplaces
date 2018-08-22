@@ -725,7 +725,7 @@ namespace ParkPlaces.Controls
             {
                 if(p.Points.Count - 1 < 3)
                 {
-                    if(MessageBox.Show("A keletkező alakzat nyitott lesz, ezért az összes pontja el lesz távolítva. Folytatja?", "Figyelmeztetés", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    if(MessageBox.Show("The polygon you are going to create is going to be open and therefore removed. Continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
                         RemovePolygon(p);
                     }

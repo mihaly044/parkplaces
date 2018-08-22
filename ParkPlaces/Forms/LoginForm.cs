@@ -30,13 +30,13 @@ namespace ParkPlaces.Forms
 
             if (User == null)
             {
-                MessageBox.Show("Helytelen felhasználónév vagy jelszó.", "Hiba",
+                MessageBox.Show("Invalid username or password.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Client.Instance.Disconnect();
             }
             else if (!User.IsAuthenticated)
             {
-                MessageBox.Show("Nincs megfelelő jogosultsága az alkalmazás használatához.", "Error",
+                MessageBox.Show("You are not authorized to log in.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Client.Instance.Disconnect();
             }
@@ -49,7 +49,7 @@ namespace ParkPlaces.Forms
 
         private void OnLoginDuplicateAck()
         {
-            MessageBox.Show("Nem lehet belépni.\nValaki más már belépett ezzel a fiókkal.", "Hiba",
+            MessageBox.Show("Could not log in.\nThere is somebody already logged in with this account.", "Error",
                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             Client.Instance.Disconnect();
         }

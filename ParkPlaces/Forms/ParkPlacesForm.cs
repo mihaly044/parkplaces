@@ -34,12 +34,12 @@ namespace ParkPlaces.Forms
 
         private void MapOnStopWaiting()
         {
-            toolStripStatusLabel.Text = "Kész";
+            toolStripStatusLabel.Text = "Ready";
         }
 
         private void MapOnStartWaiting()
         {
-            toolStripStatusLabel.Text = "Feldolgozás ...";
+            toolStripStatusLabel.Text = "Processing ...";
         }
 
         private void OnUpdateChangedEventHandler(object sender, UpdateProcessChangedArgs updateProcessChangedArgs)
@@ -51,7 +51,7 @@ namespace ParkPlaces.Forms
                 toolStripProgressBar.Value = 0;
                 toolStripProgressBar.Minimum = 0;
                 toolStripProgressBar.Maximum = 100;
-                toolStripStatusLabel.Text = "Frissítés indítása";
+                toolStripStatusLabel.Text = "Starting update";
                 return;
             }
 
@@ -59,7 +59,7 @@ namespace ParkPlaces.Forms
             toolStripProgressBar.Value = updateProcessChangedArgs.CurrentChunks;
 
             toolStripStatusLabel.Text =
-                $"Letöltve {updateProcessChangedArgs.CurrentChunks} város a(z) {updateProcessChangedArgs.TotalChunks}-ből";
+                $"Downloaded {updateProcessChangedArgs.CurrentChunks} city of {updateProcessChangedArgs.TotalChunks}";
 
             if (updateProcessChangedArgs.TotalChunks != updateProcessChangedArgs.CurrentChunks) return;
 
@@ -68,13 +68,13 @@ namespace ParkPlaces.Forms
             toolStripProgressBar.Minimum = 0;
             toolStripProgressBar.Maximum = 100;
 
-            toolStripStatusLabel.Text = "Kész";
+            toolStripStatusLabel.Text = "Ready";
         }
 
         private void OnConnectionError(Exception e)
         {
             Invoke(new Action(() => {
-                MessageBox.Show("Hiba a szerverrel történő kommunikáció során.\nA program kilép.", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("There was an error while communicating with the server.\nThe application will close now.", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(e.HResult);
             }));
         }
@@ -116,7 +116,7 @@ namespace ParkPlaces.Forms
         private void Map_VerticlesChanged(VerticleChangedArg verticleChangedArg)
         {
             lblShapesCount.Text =
-                $"{verticleChangedArg.ShapesCount} alakzat és {verticleChangedArg.VerticlesCount} pont";
+                $"{verticleChangedArg.ShapesCount} polygons and {verticleChangedArg.VerticlesCount} vertexes";
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace ParkPlaces.Forms
         private void RemovePolygonButton_Click(object sender, EventArgs e)
         {
             if (Map.CurrentPolygon == null && !Map.IsDrawingPolygon)
-                MessageBox.Show("Nem választott ki zónát.", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No polygon selected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
                 Map.RemovePolygon(Map.CurrentPolygon);
         }
@@ -308,7 +308,7 @@ namespace ParkPlaces.Forms
                 return;
             }
 
-            Text += $" / Belépve mint {loginForm.User.UserName}, {loginForm.User.GroupRole} jogosultsággal /";
+            Text += $" / Logged in as {loginForm.User.UserName}, with {loginForm.User.GroupRole} rights /";
             _loggedInUser = loginForm.User;
 
             var offlineMode = Client.Instance.GetOfflineMode();
@@ -441,7 +441,7 @@ namespace ParkPlaces.Forms
             if (!Client.Instance.GetOfflineMode() && Map.IsWaiting())
             {
                 var result = MessageBox.Show(
-                    "Feldolgozatlan módosításai vannak. Biztosan kilép?", "Figyelmeztetés", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                    "There are still unsaved changes waiting to be processed. Are you sure want to exit?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 e.Cancel = result == DialogResult.No; 
             }
         }

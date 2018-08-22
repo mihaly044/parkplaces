@@ -65,9 +65,9 @@ namespace ParkPlaces.Forms
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 39);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(32, 13);
+            this.label2.Size = new System.Drawing.Size(34, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Szín:";
+            this.label2.Text = "Color:";
             // 
             // textBoxId
             // 
@@ -91,7 +91,7 @@ namespace ParkPlaces.Forms
             this.buttonSelectColor.Name = "buttonSelectColor";
             this.buttonSelectColor.Size = new System.Drawing.Size(75, 23);
             this.buttonSelectColor.TabIndex = 5;
-            this.buttonSelectColor.Text = "Kiválaszt";
+            this.buttonSelectColor.Text = "Select";
             this.buttonSelectColor.UseVisualStyleBackColor = true;
             this.buttonSelectColor.Click += new System.EventHandler(this.buttonSelectColor_Click);
             // 
@@ -100,9 +100,9 @@ namespace ParkPlaces.Forms
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 65);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(24, 13);
+            this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Díj:";
+            this.label3.Text = "Price:";
             // 
             // textBoxFee
             // 
@@ -116,9 +116,9 @@ namespace ParkPlaces.Forms
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 91);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(62, 13);
+            this.label4.Size = new System.Drawing.Size(49, 13);
             this.label4.TabIndex = 8;
-            this.label4.Text = "Szolgáltató:";
+            this.label4.Text = "Provider:";
             // 
             // textBoxServiceNa
             // 
@@ -132,9 +132,9 @@ namespace ParkPlaces.Forms
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(12, 117);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(56, 13);
+            this.label5.Size = new System.Drawing.Size(27, 13);
             this.label5.TabIndex = 10;
-            this.label5.Text = "Település:";
+            this.label5.Text = "City:";
             // 
             // comboBoxCities
             // 
@@ -151,9 +151,9 @@ namespace ParkPlaces.Forms
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(12, 144);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(69, 13);
+            this.label6.Size = new System.Drawing.Size(65, 13);
             this.label6.TabIndex = 12;
-            this.label6.Text = "Nyitva tartás:";
+            this.label6.Text = "Open hours:";
             // 
             // textBoxTimetable
             // 
@@ -167,9 +167,9 @@ namespace ParkPlaces.Forms
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(12, 171);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(74, 13);
+            this.label7.Size = new System.Drawing.Size(80, 13);
             this.label7.TabIndex = 14;
-            this.label7.Text = "Általános név:";
+            this.label7.Text = "Common name:";
             // 
             // textBoxCommonName
             // 
@@ -194,7 +194,7 @@ namespace ParkPlaces.Forms
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 17;
-            this.buttonCancel.Text = "Mégsem";
+            this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
@@ -225,7 +225,7 @@ namespace ParkPlaces.Forms
             this.Name = "EditZoneForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "Zóna szerkesztése";
+            this.Text = "Edit zone";
             this.Load += new System.EventHandler(this.EditZoneForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

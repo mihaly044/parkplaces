@@ -25,7 +25,7 @@ namespace ParkPlaces.Forms
             }
             else
             {
-                MessageBox.Show("Érvénytelen formátum.", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Invalid format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

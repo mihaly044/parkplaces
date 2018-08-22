@@ -71,7 +71,7 @@ namespace ParkPlaces.Forms
         {
             if (textBoxColor.Text == string.Empty)
             {
-                MessageBox.Show("A kiválasztott szín nem lehet üres.", "Hiba", MessageBoxButtons.OK,
+                MessageBox.Show("The specified color cannot be empty.", "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 return;
             }
@@ -80,7 +80,7 @@ namespace ParkPlaces.Forms
 
             if (!long.TryParse(textBoxFee.Text, out var fee))
             {
-                MessageBox.Show("A megadott díjszabás érvénytelen.", "Hiba", MessageBoxButtons.OK,
+                MessageBox.Show("The specified price is invalid.", "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 return;
             }
@@ -92,7 +92,7 @@ namespace ParkPlaces.Forms
 
             if (_zone.Telepules == string.Empty)
             {
-                MessageBox.Show("A városnév nem lehet üres", "Hiba", MessageBoxButtons.OK,
+                MessageBox.Show("The city attribute cannot be empty.", "Error", MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 return;
             }

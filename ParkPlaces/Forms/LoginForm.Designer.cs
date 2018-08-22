@@ -45,7 +45,7 @@
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(75, 23);
             this.btnLogin.TabIndex = 2;
-            this.btnLogin.Text = "Belépés";
+            this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
@@ -54,18 +54,18 @@
             this.lblUserName.AutoSize = true;
             this.lblUserName.Location = new System.Drawing.Point(152, 45);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(84, 13);
+            this.lblUserName.Size = new System.Drawing.Size(58, 13);
             this.lblUserName.TabIndex = 1;
-            this.lblUserName.Text = "Felhasználónév:";
+            this.lblUserName.Text = "Username:";
             // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
             this.lblPassword.Location = new System.Drawing.Point(152, 71);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(39, 13);
+            this.lblPassword.Size = new System.Drawing.Size(56, 13);
             this.lblPassword.TabIndex = 2;
-            this.lblPassword.Text = "Jelszó:";
+            this.lblPassword.Text = "Password:";
             // 
             // textBoxUserName
             // 
@@ -96,7 +96,7 @@
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 3;
-            this.btnExit.Text = "Kilépés";
+            this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
@@ -116,7 +116,7 @@
             this.btnOfflineMode.Name = "btnOfflineMode";
             this.btnOfflineMode.Size = new System.Drawing.Size(81, 23);
             this.btnOfflineMode.TabIndex = 7;
-            this.btnOfflineMode.Text = "Offline mód";
+            this.btnOfflineMode.Text = "Offline mode";
             this.btnOfflineMode.UseVisualStyleBackColor = true;
             this.btnOfflineMode.Click += new System.EventHandler(this.btnOfflineMode_Click);
             // 

@@ -231,30 +231,30 @@ namespace ParkPlaces.Forms
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "Fájl";
+            this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_53_62710;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.openToolStripMenuItem.Text = "Megnyitás JSON-ból";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Text = "Import from JSON";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Export_File_40053;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.saveToolStripMenuItem.Text = "Exportálás JSON-ba";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Text = "Export to JSON";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // forceUpdateToolStripMenuItem
             // 
             this.forceUpdateToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_update_64935;
             this.forceUpdateToolStripMenuItem.Name = "forceUpdateToolStripMenuItem";
-            this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.forceUpdateToolStripMenuItem.Text = "Frissítés kényszerítése";
+            this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.forceUpdateToolStripMenuItem.Text = "Force update";
             this.forceUpdateToolStripMenuItem.Click += new System.EventHandler(this.forceUpdateToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
@@ -266,24 +266,24 @@ namespace ParkPlaces.Forms
             // 
             this.closeCurrentSessionToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_cancel_48_10277;
             this.closeCurrentSessionToolStripMenuItem.Name = "closeCurrentSessionToolStripMenuItem";
-            this.closeCurrentSessionToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.closeCurrentSessionToolStripMenuItem.Text = "Munkamenet bezárása";
+            this.closeCurrentSessionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.closeCurrentSessionToolStripMenuItem.Text = "Close session";
             this.closeCurrentSessionToolStripMenuItem.Click += new System.EventHandler(this.closeCurrentSessionToolStripMenuItem_Click);
             // 
             // logoutToolStripMenuItem
             // 
             this.logoutToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_logout_63128;
             this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.logoutToolStripMenuItem.Text = "Kilépés";
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logoutToolStripMenuItem.Text = "Logout";
             this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_exit_6035;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
-            this.exitToolStripMenuItem.Text = "Kilépés a programból";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // adminToolStripMenuItem
@@ -298,8 +298,8 @@ namespace ParkPlaces.Forms
             // 
             this.manageUsersToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Users_85409;
             this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
-            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.manageUsersToolStripMenuItem.Text = "Felhasználók kezelése";
+            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.manageUsersToolStripMenuItem.Text = "Manage users";
             this.manageUsersToolStripMenuItem.Click += new System.EventHandler(this.manageUsersToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
@@ -307,15 +307,15 @@ namespace ParkPlaces.Forms
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
-            this.helpToolStripMenuItem.Text = "Segítség";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Information_27854;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.aboutToolStripMenuItem.Text = "Impresszum";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // toolStrip
@@ -328,7 +328,7 @@ namespace ParkPlaces.Forms
             this.saveButton});
             this.toolStrip.Location = new System.Drawing.Point(3, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(422, 25);
+            this.toolStrip.Size = new System.Drawing.Size(412, 25);
             this.toolStrip.TabIndex = 4;
             this.toolStrip.Text = "toolStrip";
             // 
@@ -337,8 +337,8 @@ namespace ParkPlaces.Forms
             this.drawPolygonButton.Image = global::ParkPlaces.Properties.Resources.if_draw_polygon_64148;
             this.drawPolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawPolygonButton.Name = "drawPolygonButton";
-            this.drawPolygonButton.Size = new System.Drawing.Size(102, 22);
-            this.drawPolygonButton.Text = "Zóna rajzolása";
+            this.drawPolygonButton.Size = new System.Drawing.Size(101, 22);
+            this.drawPolygonButton.Text = "Draw polygon";
             this.drawPolygonButton.Click += new System.EventHandler(this.drawPolygonButton_Click);
             // 
             // removePolygonButton
@@ -346,8 +346,8 @@ namespace ParkPlaces.Forms
             this.removePolygonButton.Image = global::ParkPlaces.Properties.Resources.if_f_cross_256_282471;
             this.removePolygonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.removePolygonButton.Name = "removePolygonButton";
-            this.removePolygonButton.Size = new System.Drawing.Size(92, 22);
-            this.removePolygonButton.Text = "Zóna törlése";
+            this.removePolygonButton.Size = new System.Drawing.Size(117, 22);
+            this.removePolygonButton.Text = "Remove polygon";
             this.removePolygonButton.Click += new System.EventHandler(this.RemovePolygonButton_Click);
             // 
             // gotoButton
@@ -358,21 +358,21 @@ namespace ParkPlaces.Forms
             this.gotoButton.Image = global::ParkPlaces.Properties.Resources.if_Rounded___High_Ultra_Colour02___Maps_2250024;
             this.gotoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.gotoButton.Name = "gotoButton";
-            this.gotoButton.Size = new System.Drawing.Size(101, 22);
-            this.gotoButton.Text = "Navigáció ...";
+            this.gotoButton.Size = new System.Drawing.Size(83, 22);
+            this.gotoButton.Text = "Navigate";
             // 
             // coordinateToolStripMenuItem
             // 
             this.coordinateToolStripMenuItem.Name = "coordinateToolStripMenuItem";
-            this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.coordinateToolStripMenuItem.Text = "Koordináta";
+            this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.coordinateToolStripMenuItem.Text = "Coordinates";
             this.coordinateToolStripMenuItem.Click += new System.EventHandler(this.coordinateToolStripMenuItem_Click);
             // 
             // addressToolStripMenuItem
             // 
             this.addressToolStripMenuItem.Name = "addressToolStripMenuItem";
-            this.addressToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.addressToolStripMenuItem.Text = "Cím";
+            this.addressToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addressToolStripMenuItem.Text = "Address";
             this.addressToolStripMenuItem.Click += new System.EventHandler(this.addressToolStripMenuItem_Click);
             // 
             // saveButton
@@ -381,8 +381,8 @@ namespace ParkPlaces.Forms
             this.saveButton.Image = ((System.Drawing.Image)(resources.GetObject("saveButton.Image")));
             this.saveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(115, 22);
-            this.saveButton.Text = "Mentés adatbázisba";
+            this.saveButton.Size = new System.Drawing.Size(99, 22);
+            this.saveButton.Text = "Save to database";
             this.saveButton.Click += new System.EventHandler(this.SaveButton_ClickAsync);
             // 
             // ParkPlacesForm

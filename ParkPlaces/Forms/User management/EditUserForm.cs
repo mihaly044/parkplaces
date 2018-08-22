@@ -50,7 +50,7 @@ namespace ParkPlaces.Forms
 
             if (_user == null)
             {
-                Text = "Új felhasználó";
+                Text = "New user";
             }
             Client.Instance.OnIsDuplicateUserAck += OnIsDuplicateUserAck;
         }

@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ParkPlaces")]
-[assembly: AssemblyDescription("A ParkPlaces szoftver közalkalmazottak, városvezetés számára készült teljes értékű szoftvercsomag. A megfelelő jogosultsággal rendelkező felhasználóknak lehetőséget biztosít parkolási zónák kijelölésére a térképen, a zónák és a hozzájuk tartozó adatok menedzselésére.")]
+[assembly: AssemblyDescription("ParkPlaces is an all-in-one solution for managing and storing geographical information about parking zones.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ParkPlaces")]

@@ -50,7 +50,7 @@
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 1;
-            this.cancelButton.Text = "Mégse";
+            this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
@@ -59,9 +59,9 @@
             this.longitudeLabel.AutoSize = true;
             this.longitudeLabel.Location = new System.Drawing.Point(13, 13);
             this.longitudeLabel.Name = "longitudeLabel";
-            this.longitudeLabel.Size = new System.Drawing.Size(29, 13);
+            this.longitudeLabel.Size = new System.Drawing.Size(48, 13);
             this.longitudeLabel.TabIndex = 2;
-            this.longitudeLabel.Text = "Cím:";
+            this.longitudeLabel.Text = "Address:";
             // 
             // addressTextBox
             // 
@@ -83,7 +83,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GotoAddressForm";
-            this.Text = "Cím megadása";
+            this.Text = "Specify address";
             this.ResumeLayout(false);
             this.PerformLayout();
 
