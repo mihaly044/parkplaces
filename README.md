@@ -10,9 +10,10 @@ This is a free and open source application and takes tremendous amount of time t
 A number of awesome third party libraries have helped the development of ParkPlaces:
 
  - [ParkPlaces.DotUtils](https://github.com/mihaly044/parkplaces/tree/v2/ParkPlaces.DotUtils) by [J-kit](https://github.com/J-kit)
+ - [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) by [JamesNK](https://github.com/JamesNK/) [![nuget](https://img.shields.io/nuget/v/Newtonsoft.Json.svg)](https://www.nuget.org/packages/Newtonsoft.Json/)
  - [WatsonTcp](https://github.com/jchristn/WatsonTcp) by [jchristn](https://github.com/jchristn) [![nuget](https://img.shields.io/nuget/v/WatsonTcp.svg)](https://www.nuget.org/packages/WatsonTcp/)
  - [protobuf-net](https://github.com/mgravell/protobuf-net) by [mgravell](https://github.com/mgravell) [![nuget](https://img.shields.io/nuget/v/protobuf-net.svg)](https://www.nuget.org/packages/GMap.NET.WindowsForms/)
- - [greatmaps](https://github.com/radioman/greatmaps) by [radioman](https://github.com/radioman) [![nuget](https://img.shields.io/nuget/v/GMAP.Net.WindowsForms.svg)](https://www.nuget.org/packages/GMap.NET.WindowsForms/)
+ - [GMap.NET.WindowsForms](https://github.com/radioman/greatmaps) by [radioman](https://github.com/radioman) [![nuget](https://img.shields.io/nuget/v/GMAP.Net.WindowsForms.svg)](https://www.nuget.org/packages/GMap.NET.WindowsForms/)
  - MySql.Data [![nuget](https://img.shields.io/nuget/v/Mysql.Data.svg)](https://www.nuget.org/packages/MySql.Data/8.0.12)
 
 ## Getting started
