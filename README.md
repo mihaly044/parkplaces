@@ -25,6 +25,10 @@ A number of awesome third party libraries have helped the development of ParkPla
  - A MySQL database server
 
 ### Building the project
+#### Using prebuilt binaries
+If you don't want to build everything yourself, you might grab the prebuilt release binaries from the [Releases](https://github.com/mihaly044/parkplaces/tree/v2/Releases/) folder.
+
+#### Building from sources
 The most straightforward way is to build the solution using Visual Studio 2017.
 Although there are a number of command line build tools available, building from
 the command line hasn't been tested with this project hence it's not recommended.
@@ -97,4 +101,3 @@ The ServerPort key can be left out. The default port number is **11000** unless 
 |Username|Password |
 |--|--|
 | admin | admin |
-
