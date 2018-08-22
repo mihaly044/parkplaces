@@ -1,6 +1,10 @@
-# ParkPlaces
+# ParkPlaces [![Build status](https://ci.appveyor.com/api/projects/status/w20s8o9fxb5aqcj7?svg=true)](https://ci.appveyor.com/project/mihaly044/parkplaces) 
+
 ParkPlaces is an all-in-one solution for managing and storing geographical information
 about parking zones.
+
+
+[![Build history](https://buildstats.info/appveyor/chart/mihaly044/parkplaces)](https://ci.appveyor.com/project/mihaly044/parkplaces/history)
 
 This is a free and open source application and takes tremendous amount of time to maintain.
  If this project has helped you, consider buying me a coffee:
