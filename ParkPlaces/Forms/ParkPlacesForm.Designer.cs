@@ -122,7 +122,7 @@ namespace ParkPlaces.Forms
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
             this.toolStripStatusLabel.Size = new System.Drawing.Size(30, 17);
-            this.toolStripStatusLabel.Text = "Kész";
+            this.toolStripStatusLabel.Text = "Ready";
             // 
             // SelectMapProviderButton
             // 
