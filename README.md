@@ -1,1 +1,1 @@
-## This repository is no longer being maintaned here on VSTS and has been moved to [https://github.com/mihaly044/parkplaces](https://github.com/mihaly044/parkplaces).
+## This branch (v1) is no longer being worked on. See [https://github.com/mihaly044/parkplaces/tree/v2](v2) for a more up to date version.
