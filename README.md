@@ -1,19 +1,25 @@
-# ParkPlaces
+# ParkPlaces [![Build status](https://ci.appveyor.com/api/projects/status/w20s8o9fxb5aqcj7?svg=true)](https://ci.appveyor.com/project/mihaly044/parkplaces) 
+
 ParkPlaces is an all-in-one solution for managing and storing geographical information
 about parking zones.
 
+
+[![Build history](https://buildstats.info/appveyor/chart/mihaly044/parkplaces)](https://ci.appveyor.com/project/mihaly044/parkplaces/history)
+
 This is a free and open source application and takes tremendous amount of time to maintain.
  If this project has helped you, consider buying me a coffee:
+ 
  [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/vodoc)
+ 
 
 ### Third party libraries
 A number of awesome third party libraries have helped the development of ParkPlaces:
 
  - [ParkPlaces.DotUtils](https://github.com/mihaly044/parkplaces/tree/v2/ParkPlaces.DotUtils) by [J-kit](https://github.com/J-kit)
- - [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) by [JamesNK](https://github.com/JamesNK/) [![nuget](https://img.shields.io/nuget/v/Newtonsoft.Json.svg)](https://www.nuget.org/packages/Newtonsoft.Json/)
- - [WatsonTcp](https://github.com/jchristn/WatsonTcp) by [jchristn](https://github.com/jchristn) [![nuget](https://img.shields.io/nuget/v/WatsonTcp.svg)](https://www.nuget.org/packages/WatsonTcp/)
- - [protobuf-net](https://github.com/mgravell/protobuf-net) by [mgravell](https://github.com/mgravell) [![nuget](https://img.shields.io/nuget/v/protobuf-net.svg)](https://www.nuget.org/packages/GMap.NET.WindowsForms/)
- - [GMap.NET.WindowsForms](https://github.com/radioman/greatmaps) by [radioman](https://github.com/radioman) [![nuget](https://img.shields.io/nuget/v/GMAP.Net.WindowsForms.svg)](https://www.nuget.org/packages/GMap.NET.WindowsForms/)
+ - [Newtonsoft.Json](https://github.com/JamesNK/Newtonsoft.Json) by [JamesNK](https://github.com/JamesNK/)
+ - [WatsonTcp](https://github.com/jchristn/WatsonTcp) by [jchristn](https://github.com/jchristn) 
+ - [protobuf-net](https://github.com/mgravell/protobuf-net) by [mgravell](https://github.com/mgravell)
+ - [GMap.NET.WindowsForms](https://github.com/radioman/greatmaps) by [radioman](https://github.com/radioman)
  - MySql.Data [![nuget](https://img.shields.io/nuget/v/Mysql.Data.svg)](https://www.nuget.org/packages/MySql.Data/8.0.12)
 
 ## Getting started
