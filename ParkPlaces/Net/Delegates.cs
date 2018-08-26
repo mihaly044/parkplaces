@@ -41,5 +41,8 @@ namespace ParkPlaces.Net
 
         public delegate void LoginDuplicateAck();
         public event LoginDuplicateAck OnLoginDuplicateAck;
+
+        public delegate void ShutdownAck(PPNetLib.Contracts.ShutdownAck ack);
+        public event ShutdownAck OnShutdownAck;
     }
 }

@@ -140,6 +140,10 @@ namespace ParkPlaces.Net
                         case Protocols.LOGINDUPLICATE_ACK:
                             OnLoginDuplicateAck?.Invoke();
                             break;
+                        case Protocols.SHUTDOWN_ACK:
+                            var shutdownAck = Serializer.Deserialize<PPNetLib.Contracts.ShutdownAck>(stream);
+                            OnShutdownAck?.Invoke(shutdownAck);
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }

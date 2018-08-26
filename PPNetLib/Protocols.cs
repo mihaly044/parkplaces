@@ -6,7 +6,7 @@ namespace PPNetLib
 {
     public static class Protocol
     {
-        public const int Version = 4;
+        public const int Version = 5;
     }
 
     [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -37,6 +37,8 @@ namespace PPNetLib
         ISDUPLICATEUSER_ACK,
         POINTUPDATED_ACK,
         ZONEINFOUPDATED_ACK,
-        LOGINDUPLICATE_ACK
+        LOGINDUPLICATE_ACK,
+        SHUTDOWN_ACK,
+        DISCONNECT_ACK
     };
 }

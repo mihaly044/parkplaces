@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PPServer
 {
@@ -8,7 +10,17 @@ namespace PPServer
         {
             var server = new Server();
             server.Listen();
-            while(true) Console.ReadLine();
+
+            while (true)
+            {
+                var input = Console.ReadLine();
+                switch (input)
+                {
+                    case "q":
+                        server.AnnounceShutdownAck(10);
+                    break;
+                }
+            }
         }
     }
 }

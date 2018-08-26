@@ -6,6 +6,7 @@ using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
 using ParkPlaces.Controls;
 using ParkPlaces.Net;
+using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
 // ReSharper disable MethodSupportsCancellation
 
@@ -28,8 +29,16 @@ namespace ParkPlaces.Forms
             
             IoHandler.Instance.OnUpdateChangedEventHandler += OnUpdateChangedEventHandler;
             Client.Instance.OnConnectionError += OnConnectionError;
+            Client.Instance.OnShutdownAck += OnShutdownAck;
             Map.OnStartWaiting += MapOnStartWaiting;
             Map.OnStopWaiting += MapOnStopWaiting;
+        }
+
+        private void OnShutdownAck(ShutdownAck packet)
+        {
+            var seconds = packet.Seconds;
+            MessageBox.Show($"The server is going to shut down in {seconds} seconds.", "Warning", MessageBoxButtons.OK,
+                MessageBoxIcon.Asterisk);
         }
 
         private void MapOnStopWaiting()

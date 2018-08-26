@@ -5,6 +5,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 using PPNetLib;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
@@ -259,6 +260,13 @@ namespace PPServer
                     Send(client, packet);
         }
 
+        public void SendToEveryone<T>(T packet)
+        {
+            var clients = _watsonTcpServer.ListClients();
+            foreach (var client in clients)
+                Send(client, packet);
+        }
+
         public void Send<T>(string ipPort, T packet)
         {
             var packetId = (int)((Packet)(object)packet).PacketId;
@@ -286,6 +294,23 @@ namespace PPServer
                 return _authUsers[ipPort].GroupRole >= min;
             }
             return false;
+        }
+
+        public async void AnnounceShutdownAck(int seconds, bool shutdown = true)
+        {
+            SendToEveryone(new ShutdownAck() { Seconds = seconds });
+            await Task.Delay(seconds * 1000);
+            if(shutdown)
+                Shutdown();
+        }
+
+        public void Shutdown()
+        {
+            var clients = _watsonTcpServer.ListClients();
+            foreach (var client in clients)
+                _watsonTcpServer.DisconnectClient(client);
+            _watsonTcpServer.Dispose();
+            Environment.Exit(0);
         }
     }
 }
