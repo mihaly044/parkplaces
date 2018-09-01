@@ -96,13 +96,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PPNetLib\PPNetLib.csproj">
-      <Project>{242eea4c-408f-4ca2-a383-d3ab5f7a0f79}</Project>
-      <Name>PPNetLib</Name>
-    </ProjectReference>
+    <Content Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="favicon.ico" />
+    <ProjectReference Include="..\PPNetLib\PPNetLib.csproj">
+      <Project>{485a0ecc-402b-4d48-8a2e-dd3d7ccf9dfd}</Project>
+      <Name>PPNetLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
