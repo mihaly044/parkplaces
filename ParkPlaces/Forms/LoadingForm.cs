@@ -7,6 +7,8 @@ using ParkPlaces.Net;
 using System.Collections.Generic;
 using System.Threading;
 using Newtonsoft.Json;
+using PPNetLib.Prototypes;
+
 // ReSharper disable RedundantCast
 
 // ReSharper disable ArrangeRedundantParentheses

@@ -208,7 +208,6 @@
       <DependentUpon>ParkPlacesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Map shapes\RectMarker.cs" />
-    <Compile Include="IO\Dto2Object.cs" />
     <Compile Include="Net\Client.cs" />
     <Compile Include="Net\Delegates.cs" />
     <Compile Include="Program.cs" />

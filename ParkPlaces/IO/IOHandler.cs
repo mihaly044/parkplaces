@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ParkPlaces.DotUtils.Net;
+using PPNetLib.Prototypes;
+
 // ReSharper disable FieldCanBeMadeReadOnly.Local
 // ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
 

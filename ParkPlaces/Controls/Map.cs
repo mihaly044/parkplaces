@@ -21,6 +21,7 @@ using PPNetLib.Contracts;
 using Newtonsoft.Json;
 using ParkPlaces.Extensions;
 using PPNetLib.Contracts.SynchroniseAcks;
+using PPNetLib.Prototypes;
 
 namespace ParkPlaces.Controls
 {

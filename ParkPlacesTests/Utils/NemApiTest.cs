@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ParkPlaces.DotUtils.Extensions;
 using ParkPlaces.DotUtils.Net;
 using ParkPlaces.IO;
+using PPNetLib.Prototypes;
 
 namespace ParkPlacesTests.Utils
 {

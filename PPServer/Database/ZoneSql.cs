@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using PPNetLib.Prototypes;
-using PPServer.LocalPrototypes;
 
 namespace PPServer.Database
 {

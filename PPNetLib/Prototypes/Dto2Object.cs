@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 //
 //    var data = Dto2Object.FromJson(jsonString);
 
-namespace PPServer.LocalPrototypes
+namespace PPNetLib.Prototypes
 {
     public partial class Dto2Object
     {

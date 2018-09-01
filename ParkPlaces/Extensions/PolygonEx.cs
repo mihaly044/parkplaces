@@ -1,9 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
-using ParkPlaces.IO;
+
 using ParkPlaces.Map_shapes;
 using ParkPlaces.Net;
 using PPNetLib.Contracts;
+using PPNetLib.Prototypes;
 
 namespace ParkPlaces.Extensions
 {

@@ -79,6 +79,10 @@
       <Project>{F2D858F7-B4A6-4F8C-8DB5-CB1A5D982762}</Project>
       <Name>ParkPlaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PPNetLib\PPNetLib.csproj">
+      <Project>{485A0ECC-402B-4D48-8A2E-DD3D7CCF9DFD}</Project>
+      <Name>PPNetLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

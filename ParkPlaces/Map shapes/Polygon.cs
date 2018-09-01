@@ -6,6 +6,7 @@ using GMap.NET;
 using GMap.NET.WindowsForms;
 using ParkPlaces.IO;
 using ParkPlaces.Utils;
+using PPNetLib.Prototypes;
 
 namespace ParkPlaces.Map_shapes
 {
