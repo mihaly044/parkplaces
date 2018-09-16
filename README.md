@@ -22,6 +22,9 @@ A number of awesome third party libraries have helped the development of ParkPla
  - [GMap.NET.WindowsForms](https://github.com/radioman/greatmaps) by [radioman](https://github.com/radioman)
  - MySql.Data [![nuget](https://img.shields.io/nuget/v/Mysql.Data.svg)](https://www.nuget.org/packages/MySql.Data/8.0.12)
 
+## New! PPServer on Linux
+PPServer also runs on Linux! Download the latest release from [here](https://github.com/mihaly044/ppserver-linux/releases/latest).
+
 ## Getting started
 
 ### Prequsities
@@ -32,7 +35,7 @@ A number of awesome third party libraries have helped the development of ParkPla
 
 ### Building the project
 #### Using prebuilt binaries
-If you don't want to build everything yourself, you might grab the prebuilt release binaries from the [Releases](https://github.com/mihaly044/parkplaces/tree/v2/Releases/) folder.
+If you don't want to build everything yourself, you might grab the prebuilt release binaries from [here](https://github.com/mihaly044/parkplaces/releases/latest).
 
 #### Building from sources
 The most straightforward way is to build the solution using Visual Studio 2017.
