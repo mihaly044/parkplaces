@@ -35,7 +35,7 @@ PPServer also runs on Linux! Download the latest release from [here](https://git
 
 ### Building the project
 #### Using prebuilt binaries
-If you don't want to build everything yourself, you might grab the prebuilt release binaries from the [Releases](https://github.com/mihaly044/parkplaces/tree/v2/Releases/) folder.
+If you don't want to build everything yourself, you might grab the prebuilt release binaries from [here](https://github.com/mihaly044/parkplaces/releases/latest).
 
 #### Building from sources
 The most straightforward way is to build the solution using Visual Studio 2017.
