@@ -127,9 +127,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WatsonTcp, Version=1.1.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WatsonTcp.1.1.6\lib\WatsonTcp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Map.cs">
@@ -285,6 +282,10 @@
     <ProjectReference Include="..\PPNetLib\PPNetLib.csproj">
       <Project>{485a0ecc-402b-4d48-8a2e-dd3d7ccf9dfd}</Project>
       <Name>PPNetLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\watsontcp-dotnetcore\watsontcp-dotnetcore.csproj">
+      <Project>{b3c59bc9-7188-420f-9f1f-7f9ded43fc2f}</Project>
+      <Name>watsontcp-dotnetcore</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -10,8 +10,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkPlaces.DotUtils", "ParkPlaces.DotUtils\ParkPlaces.DotUtils.csproj", "{51FEEF46-427A-4A07-81DF-AAF2904F8828}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPServer", "PPServer\PPServer.csproj", "{E010CBDA-D890-4729-899E-331EC7B6071B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B3C59BC9-7188-420F-9F1F-7F9DED43FC2F} = {B3C59BC9-7188-420F-9F1F-7F9DED43FC2F}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPNetLib", "PPNetLib\PPNetLib.csproj", "{485A0ECC-402B-4D48-8A2E-DD3D7CCF9DFD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "watsontcp-dotnetcore", "watsontcp-dotnetcore\watsontcp-dotnetcore.csproj", "{B3C59BC9-7188-420F-9F1F-7F9DED43FC2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +44,10 @@ Global
 		{485A0ECC-402B-4D48-8A2E-DD3D7CCF9DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{485A0ECC-402B-4D48-8A2E-DD3D7CCF9DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{485A0ECC-402B-4D48-8A2E-DD3D7CCF9DFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3C59BC9-7188-420F-9F1F-7F9DED43FC2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3C59BC9-7188-420F-9F1F-7F9DED43FC2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3C59BC9-7188-420F-9F1F-7F9DED43FC2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3C59BC9-7188-420F-9F1F-7F9DED43FC2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

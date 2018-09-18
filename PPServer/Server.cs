@@ -10,7 +10,7 @@ using PPNetLib;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
 using ProtoBuf;
-using WatsonTcp;
+using watsontcp_dotnetcore;
 
 namespace PPServer
 {

@@ -3,7 +3,7 @@ using ProtoBuf;
 using System;
 using System.Configuration;
 using System.IO;
-using WatsonTcp;
+using watsontcp_dotnetcore;
 using System.Diagnostics;
 
 namespace ParkPlaces.Net
