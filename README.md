@@ -38,6 +38,17 @@ PPServer also runs on Linux! Download the latest release from [here](https://git
 If you don't want to build everything yourself, you might grab the prebuilt release binaries from [here](https://github.com/mihaly044/parkplaces/releases/latest).
 
 #### Building from sources
+*Note*: The project contains a submodule called watsontcp-dotnetcore. 
+Before compiling, make sure you have cloned this repo using:
+˙˙˙bash
+git clone --recursive https://github.com/mihaly044/parkplaces.git
+˙˙˙
+or if you have not useed the --recursive switch, restore the submodule as follows:
+```bash
+git submodule init
+git submodule update
+```
+
 The most straightforward way is to build the solution using Visual Studio 2017.
 Although there are a number of command line build tools available, building from
 the command line hasn't been tested with this project hence it's not recommended.
