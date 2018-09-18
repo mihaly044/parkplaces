@@ -40,9 +40,9 @@ If you don't want to build everything yourself, you might grab the prebuilt rele
 #### Building from sources
 *Note*: The project contains a submodule called watsontcp-dotnetcore. 
 Before compiling, make sure you have cloned this repo using:
-˙˙˙bash
+```bash
 git clone --recursive https://github.com/mihaly044/parkplaces.git
-˙˙˙
+```
 or if you have not useed the --recursive switch, restore the submodule as follows:
 ```bash
 git submodule init
