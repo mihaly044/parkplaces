@@ -43,7 +43,7 @@ Before compiling, make sure you have cloned this repo using:
 ```bash
 git clone --recursive https://github.com/mihaly044/parkplaces.git
 ```
-or if you have not useed the --recursive switch, restore the submodule as follows:
+or if you have not used the --recursive switch, restore the submodule as follows:
 ```bash
 git submodule init
 git submodule update
