@@ -64,7 +64,7 @@ namespace PPServer
 
         public void Listen()
         {
-            Console.WriteLine("Server starting up");
+            Console.WriteLine("Server starting up, protocol version {0}", Protocol.Version);
 
 #if DEBUG
             _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, true);
