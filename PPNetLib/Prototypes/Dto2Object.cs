@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GMap.NET;
 using Newtonsoft.Json;
 
 // To parse this JSON data, add NuGet 'Newtonsoft.Json' then do:
@@ -93,15 +92,15 @@ namespace PPNetLib.Prototypes
             _internalPoint = new PointLatLng();
         }
 
-        public Geometry(PointLatLng input, int id)
+        public Geometry(double lat, double lng, int id)
         {
-            _internalPoint = input;
+            _internalPoint = new PointLatLng(lat, lng);
             Id = id;
         }
 
         public static Geometry FromLatLng(PointLatLng input)
         {
-            return new Geometry(input, 0);
+            return new Geometry(input.Lat, input.Lng, 0);
         }
     }
 
@@ -125,11 +124,6 @@ namespace PPNetLib.Prototypes
     public static class Serialize
     {
         public static string ToJson(this Dto2Object self) => JsonConvert.SerializeObject(self, Converter.Settings);
-
-        public static Geometry ToGeometry(this PointLatLng input, int id)
-        {
-            return new Geometry(input, id) { IsModified = true };
-        }
     }
 
     public static class Converter

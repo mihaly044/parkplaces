@@ -61,5 +61,10 @@ namespace ParkPlaces.Extensions
                 return int.Parse(zone.Id);
             return -1;
         }
+
+        public static Geometry ToGeometry(this GMap.NET.PointLatLng input, int id)
+        {
+            return new Geometry(input.Lat, input.Lng, id) { IsModified = true };
+        }
     }
 }

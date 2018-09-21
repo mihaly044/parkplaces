@@ -22,14 +22,11 @@ A number of awesome third party libraries have helped the development of ParkPla
  - [GMap.NET.WindowsForms](https://github.com/radioman/greatmaps) by [radioman](https://github.com/radioman)
  - MySql.Data [![nuget](https://img.shields.io/nuget/v/Mysql.Data.svg)](https://www.nuget.org/packages/MySql.Data/8.0.12)
 
-## New! PPServer on Linux
-PPServer also runs on Linux! Download the latest release from [here](https://github.com/mihaly044/ppserver-linux/releases/latest).
-
 ## Getting started
 
 ### Prequsities
 
- - .Net 4.6.1
+ - .NET 4.6.1, .NET core 2.1 and .NET standard 2.0
  - Visual Studio 2017 Community or other 2017 editions
  - A MySQL database server
 
@@ -37,28 +34,37 @@ PPServer also runs on Linux! Download the latest release from [here](https://git
 #### Using prebuilt binaries
 If you don't want to build everything yourself, you might grab the prebuilt release binaries from [here](https://github.com/mihaly044/parkplaces/releases/latest).
 
-#### Building from sources
-*Note*: The project contains a submodule called watsontcp-dotnetcore. 
-Before compiling, make sure you have cloned this repo using:
-```bash
-git clone --recursive https://github.com/mihaly044/parkplaces.git
-```
-or if you have not used the --recursive switch, restore the submodule as follows:
-```bash
-git submodule init
-git submodule update
-```
+#### Building from sources and targeting  specific platforms
+##### Building from Visual Studio 2017 (Windows only):
+Open `ParkPlaces.sln` in Visual Studio and build the project.
+The client files will be in the `ParkPlaces/bin/Release` folder and the server files will be under `PPServer/bin/Release`.
 
-The most straightforward way is to build the solution using Visual Studio 2017.
-Although there are a number of command line build tools available, building from
-the command line hasn't been tested with this project hence it's not recommended.
+##### Deploying the server
+To build the deployable binaries of PPServer, select  `Publish-win-x86` or `Publish-linux-x64` build configuration in Visual Studio and build the project.
+The deployable binaries will be in `PPServer\Deploy` folder.
+***Note***: Do **not** use binaries from  `PPServer\bin` for production deployments.
+
+##### Building from the CLI, Windows only (not recommended):
+```batch
+msbuild /p:WarningLevel=0 /p:Configuration=Release
+```
+or with deployable binaries:
+```batch
+msbuild /p:WarningLevel=0 /p:Configuration=Publish-win-x86
+```
+#### Building from Linux
+PPServer can also run on Linux thanks to .NET core 2.1.  To build the server navigate to `PPServer` and build with dotnet:
+```bash
+dotnet publish -c Release -r=linux-x64
+```
+The client is Windows only and cannot be built on Linux.
 
 ### Setting up the server
 You may skip this section if you plan to use the client without a server.
 **PPServer** is built to serve requests for the client and to manage the database.
 Navigate to \PPServer\bin\Release\ and set up the server configuration as follows:
 
-**PPServer.exe.config:**
+**PPServer.dll.config:**
 
 Specify the port the server is going to listen on. Configuring an IP address is not necessary
 as the server will try to guess it automatically. If you are not specifying an IP address, remember

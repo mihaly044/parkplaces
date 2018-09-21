@@ -17,7 +17,7 @@ namespace ParkPlaces.Map_shapes
         private double _area;
         // private Font _nameFont; //never used
 
-        public Polygon(List<PointLatLng> points, string description) : base(points, description)
+        public Polygon(List<GMap.NET.PointLatLng> points, string description) : base(points, description)
         {
             _areaNeedsUpdate = true;
         }

@@ -283,10 +283,6 @@
       <Project>{485a0ecc-402b-4d48-8a2e-dd3d7ccf9dfd}</Project>
       <Name>PPNetLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\watsontcp-dotnetcore\watsontcp-dotnetcore.csproj">
-      <Project>{b3c59bc9-7188-420f-9f1f-7f9ded43fc2f}</Project>
-      <Name>watsontcp-dotnetcore</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\if_lock_285646.png" />

@@ -40,7 +40,7 @@ namespace ParkPlaces.Controls
         /// Represents the initial center point of the map
         /// This remains the same even if the map gets dragged
         /// </summary>
-        private readonly PointLatLng _centerOfTheMap;
+        private readonly GMap.NET.PointLatLng _centerOfTheMap;
 
         /// <summary>
         /// Defines the stroke colour of map shapes in selected state
@@ -90,7 +90,7 @@ namespace ParkPlaces.Controls
         /// <summary>
         /// Used to get the previous mouse location on every OnMouseMove call
         /// </summary>
-        private PointLatLng _previousMouseLocation;
+        private GMap.NET.PointLatLng _previousMouseLocation;
 
         /// <summary>
         /// Used for waiting for server responses
@@ -152,7 +152,7 @@ namespace ParkPlaces.Controls
             deleteCacheDate = deleteCacheDate.AddDays(-10);
             Manager.PrimaryCache.DeleteOlderThan(deleteCacheDate, null);
 
-            _centerOfTheMap = new PointLatLng(47.49801, 19.03991);
+            _centerOfTheMap = new GMap.NET.PointLatLng(47.49801, 19.03991);
 
             drawPolygonCtxMenu.Renderer = _tsRenderer;
             polygonPointCtxMenu.Renderer = _tsRenderer;
@@ -392,7 +392,7 @@ namespace ParkPlaces.Controls
                         {
                             for (var i = 0; i < CurrentPolygon.Points.Count; i++)
                             {
-                                var pnew = new PointLatLng(
+                                var pnew = new GMap.NET.PointLatLng(
                                     CurrentPolygon.Points[i].Lat + _pointer.Position.Lat - _previousMouseLocation.Lat,
                                     CurrentPolygon.Points[i].Lng + _pointer.Position.Lng - _previousMouseLocation.Lng
                                 );
@@ -591,12 +591,12 @@ namespace ParkPlaces.Controls
         {
             if (_readOnly) return;
 
-            var points = new List<PointLatLng> { _pointer.Position };
+            var points = new List<GMap.NET.PointLatLng> { _pointer.Position };
             _currentDrawingPolygon = new Polygon(points, "New polygon") { IsHitTestVisible = true };
             _polygons.Polygons.Add(_currentDrawingPolygon);
 
             IsDrawingPolygon = true;
-            _currentNewRectMaker = new RectMarker(new PointLatLng(0, 0));
+            _currentNewRectMaker = new RectMarker(new GMap.NET.PointLatLng(0, 0));
             _topLayer.Markers.Add(_currentNewRectMaker);
         }
 
@@ -883,7 +883,7 @@ namespace ParkPlaces.Controls
             UnloadSession();
             foreach (var zone in _dtoObject.Zones)
             {
-                var polygonPoints = zone.Geometry.Select(m => new PointLatLng(m.Lat, m.Lng)).ToList();
+                var polygonPoints = zone.Geometry.Select(m => new GMap.NET.PointLatLng(m.Lat, m.Lng)).ToList();
                 var polygonColor = ColorTranslator.FromHtml(zone.Color);
 
                 _polygons.Polygons.Add(new Polygon(polygonPoints, zone.Description)
@@ -941,7 +941,7 @@ namespace ParkPlaces.Controls
         /// Sets the pointer to a given position
         /// </summary>
         /// <param name="pos"></param>
-        public void SetPointerPosition(PointLatLng pos)
+        public void SetPointerPosition(GMap.NET.PointLatLng pos)
         {
             _pointer.Position = pos;
         }
@@ -951,7 +951,7 @@ namespace ParkPlaces.Controls
         /// Drags the center of the map to a given position
         /// </summary>
         /// <param name="pos"></param>
-        public void SetMapPosition(PointLatLng pos)
+        public void SetMapPosition(GMap.NET.PointLatLng pos)
         {
             Position = pos;
         }
@@ -1025,7 +1025,7 @@ namespace ParkPlaces.Controls
 
                 if (packet.Added)
                 {
-                    var pointLatLng = new PointLatLng(packet.Lat, packet.Lng);
+                    var pointLatLng = new GMap.NET.PointLatLng(packet.Lat, packet.Lng);
                     polygon.Points.Insert(packet.Index, pointLatLng);
                     zone.Geometry.Insert(packet.Index, pointLatLng.ToGeometry(packet.PointId));
                 }
@@ -1037,7 +1037,7 @@ namespace ParkPlaces.Controls
                 else
                 {
                     var i = zone.Geometry.FindIndex(x => x.Id == packet.PointId);
-                    var pt = new PointLatLng(packet.Lat, packet.Lng);
+                    var pt = new GMap.NET.PointLatLng(packet.Lat, packet.Lng);
                     polygon.Points[i] = pt;
                     zone.Geometry[i] = pt.ToGeometry(packet.PointId);
                 }
@@ -1058,7 +1058,7 @@ namespace ParkPlaces.Controls
             {
                 var deserializedZone = JsonConvert.DeserializeObject<PolyZone>(packet.Data);
 
-                var polygonPoints = deserializedZone.Geometry.Select(m => new PointLatLng(m.Lat, m.Lng)).ToList();
+                var polygonPoints = deserializedZone.Geometry.Select(m => new GMap.NET.PointLatLng(m.Lat, m.Lng)).ToList();
                 var polygonColor = ColorTranslator.FromHtml(deserializedZone.Color);
 
                 _polygons.Polygons.Add(new Polygon(polygonPoints, deserializedZone.Description)
