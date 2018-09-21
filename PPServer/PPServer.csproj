@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>PPServer</RootNamespace>
+    <Configurations>Debug;Release;Publish-linux-x64;Publish-win-x86</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,5 +16,11 @@
   <ItemGroup>
     <ProjectReference Include="..\PPNetLib\PPNetLib.csproj" />
   </ItemGroup>
+
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Condition=" '$(Configuration)' == 'Publish-win-x86'" Command="dotnet publish -c Release --runtime win-x86 -o Deploy/win-x86" />
+    <Exec Condition=" '$(Configuration)' == 'Publish-linux-x64'" Command="dotnet publish -c Release --runtime linux-x64 -o Deploy/linux-x64" />
+  </Target>
 
 </Project>
