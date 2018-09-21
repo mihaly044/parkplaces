@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientMetadata.cs" />
     <Compile Include="Contracts\CityListAck.cs" />
     <Compile Include="Contracts\CityListReq.cs" />
     <Compile Include="Contracts\InsertPointAck.cs" />
@@ -88,6 +89,8 @@
     <Compile Include="Prototypes\City.cs" />
     <Compile Include="Prototypes\Dto2Object.cs" />
     <Compile Include="Prototypes\User.cs" />
+    <Compile Include="WatsonTcpClient.cs" />
+    <Compile Include="WatsonTcpServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
