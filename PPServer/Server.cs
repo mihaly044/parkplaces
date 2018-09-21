@@ -21,8 +21,9 @@ namespace PPServer
         private readonly Handler _handler;
         private WatsonTcpServer _watsonTcpServer;
         private readonly Dictionary<string, User> _authUsers;
+        private Http.Handler _httpHandler;
 
-        public Server()
+        public Server(bool useHTTP = true)
         {
             var configSect = ConfigurationManager.GetSection("ServerConfiguration") as NameValueCollection;
 
@@ -43,6 +44,12 @@ namespace PPServer
             _handler = new Handler(this);
             _authUsers = new Dictionary<string, User>();
             PrintAsciiArtLogo();
+
+            if(useHTTP)
+            {
+                _httpHandler = new Http.Handler();
+                _httpHandler.Handle();
+            }
         }
 
         private void PrintAsciiArtLogo()
@@ -64,7 +71,7 @@ namespace PPServer
 
         public void Listen()
         {
-            Console.WriteLine("Server starting up, protocol version {0}", Protocol.Version);
+            ConsoleKit.Message(ConsoleKit.MessageType.INFO, "PP TCP Server starting up, protocol version {0}\n", Protocol.Version);
 
 #if DEBUG
             _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, true);
@@ -72,19 +79,19 @@ namespace PPServer
             _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, false);
 #endif
 
-            Console.WriteLine($"Server listening on {_ip}:{_port}");
+            ConsoleKit.Message(ConsoleKit.MessageType.INFO, $"PP TCP server listening on {_ip}:{_port}\n");
         }
 
         private bool ClientConnected(string ipPort)
         {
-            Console.WriteLine("Client connected: " + ipPort);
+            ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Client connected: {0}\n", ipPort);
             return true;
         }
 
         private bool ClientDisconnected(string ipPort)
         {
             _authUsers.Remove(ipPort);
-            Console.WriteLine("Client disconnected: " + ipPort);
+            ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Client disconnected: {0}\n", ipPort);
             return true;
         }
 
@@ -106,7 +113,7 @@ namespace PPServer
                     stream.Read(bPacketId, 0, 4);
                     var packetId = (Protocols)BitConverter.ToInt32(bPacketId, 0);
 
-                    Console.WriteLine("Received PID {0} from {1}", Enum.GetName(typeof(Protocols), packetId), ipPort);
+                    ConsoleKit.Message(ConsoleKit.MessageType.INFO, "PID {0} received from {1}\n", Enum.GetName(typeof(Protocols), packetId), ipPort);
 
                     // ReSharper disable once SwitchStatementMissingSomeCases
                     switch (packetId)
@@ -231,14 +238,14 @@ namespace PPServer
 
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
-                            Console.WriteLine("Invalid message from {0}", ipPort);
+                            ConsoleKit.Message(ConsoleKit.MessageType.ERROR, "Invalid message from {0}\n", ipPort);
                             break;
                     }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message);
                 _watsonTcpServer.DisconnectClient(ipPort);
             }
 
@@ -283,7 +290,7 @@ namespace PPServer
                 var buffer = stream.ToArray();
 
                 _watsonTcpServer.Send(ipPort, buffer);
-                Console.WriteLine("PID {0} of {1} bytes sent to {2}", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
+                ConsoleKit.Message(ConsoleKit.MessageType.INFO, "PID {0} of {1} bytes sent to {2}\n", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
             }
         }
 
