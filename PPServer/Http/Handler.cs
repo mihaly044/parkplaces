@@ -7,15 +7,28 @@ using PPServer.Database;
 using PPNetLib.Prototypes;
 using Newtonsoft.Json;
 using MySql.Data.MySqlClient;
+using System.Configuration;
+using System.Collections.Specialized;
 
 namespace PPServer.Http
 {
     public class Handler
     {
         private HttpServer _httpServer;
+        private int _httpPort;
+        private const int HTTP_SERVER_PORT = 11001;
         
         public Handler()
         {
+            var configSect = ConfigurationManager.GetSection("ServerConfiguration") as NameValueCollection;
+            if(configSect != null)
+            {
+                _httpPort = int.Parse(configSect["HttpServerPort"]);
+            }
+            else
+            {
+                _httpPort = HTTP_SERVER_PORT;
+            }
         }
 
         public void Handle()
