@@ -423,7 +423,7 @@ namespace watsontcp_dotnetcore
 
                     int read = 0;
                     byte[] buffer;
-                    long bufferSize = 2048;
+                    long bufferSize = 4096;
                     if (bufferSize > bytesRemaining)
                     {
                         bufferSize = bytesRemaining;
@@ -651,7 +651,7 @@ namespace watsontcp_dotnetcore
 
                     int read = 0;
                     byte[] buffer;
-                    long bufferSize = 2048;
+                    long bufferSize = 4096;
                     if (bufferSize > bytesRemaining)
                     {
                         bufferSize = bytesRemaining;
