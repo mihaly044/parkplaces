@@ -42,11 +42,12 @@ namespace PPServer
 
         public void OnZoneListReq(string ipPort)
         {
-            Sql.Instance.LoadZones( (PolyZone zone) => {
+            foreach(var zone in Server.Dto.Zones)
+            {
                 var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
                 _server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized });
-                return true;
-            } );
+            }
+            ConsoleKit.Message(ConsoleKit.MessageType.WARNING, $"{Server.Dto.Zones.Count}");
         }
 
         public async void OnInsertZoneReqAsync(InsertZoneReq packet, string ipPort)
@@ -59,6 +60,9 @@ namespace PPServer
                 pointIds.Add(pointId);
                 return false;
             });
+
+            zone.Id = id.ToString();
+            Server.Dto.Zones.Add(zone);
 
             _server.Send(ipPort, new InsertZoneAck()
             {
@@ -78,6 +82,9 @@ namespace PPServer
         {
             Sql.Instance.RemoveZone(packet.ZoneId);
 
+            var zone = Server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+            Server.Dto.Zones.Remove(zone);
+
             _server.SendToEveryoneExcept(new ZoneInfoUpdatedAck()
             {
                 ZoneId = packet.ZoneId,
@@ -88,6 +95,9 @@ namespace PPServer
         public void OnRemovePointReq(RemovePointReq packet, string ipPort)
         {
             Sql.Instance.RemovePoint(packet.PointId, packet.Index, packet.ZoneId);
+
+            var zone = Server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+            zone.Geometry.Remove(zone.Geometry.First(g => g.Id == packet.PointId));
 
             _server.SendToEveryoneExcept(new PointUpdatedAck()
             {
@@ -103,6 +113,9 @@ namespace PPServer
             var id =  await Sql.Instance.InsertPointAsync(packet.ZoneId, packet.Lat, packet.Lng, packet.Index);
             _server.Send(ipPort, new InsertPointAck(){PointId = id});
 
+            var zone = Server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+            zone.Geometry.Insert(packet.Index, new Geometry(packet.Lat, packet.Lng, id));
+
             _server.SendToEveryoneExcept(new PointUpdatedAck()
             {
                 Added = true,
@@ -117,6 +130,11 @@ namespace PPServer
         public void OnUpdatePointReq(UpdatePointReq packet, string ipPort)
         {
             Sql.Instance.UpdatePoint(packet.PointId, packet.Lat, packet.Lng);
+
+            var zone = Server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+            var geometry = zone.Geometry.First(g => g.Id == packet.PointId);
+            geometry.Lat = packet.Lat;
+            geometry.Lng = packet.Lng;
 
             _server.SendToEveryoneExcept(new PointUpdatedAck()
             {

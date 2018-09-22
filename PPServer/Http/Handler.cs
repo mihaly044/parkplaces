@@ -75,25 +75,23 @@ namespace PPServer.Http
                 var zones = new List<string>();
 
                 var inBounds = false;
-                Sql.Instance.LoadZones((zone) =>
+                foreach(var zone in Server.Dto.Zones)
                 {
-                    foreach(var point in zone.Geometry)
+                    foreach (var point in zone.Geometry)
                     {
-                        if(InBounds(point.Lat, point.Lng, request.North, request.East, request.South, request.West))
+                        if (InBounds(point.Lat, point.Lng, request.North, request.East, request.South, request.West))
                         {
                             inBounds = true;
                             break;
                         }
                     }
 
-                    if(inBounds)
+                    if (inBounds)
                     {
                         zones.Add(JsonConvert.SerializeObject(zone, Converter.Settings));
                         inBounds = false;
                     }
-
-                    return false;
-                });
+                }
 
                 using (var writer = new StreamWriter(e.Response.OutputStream))
                 {

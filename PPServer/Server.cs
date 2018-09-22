@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using PPNetLib;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
+using PPServer.Database;
 using ProtoBuf;
 using watsontcp_dotnetcore.Tcp;
 
@@ -22,6 +23,7 @@ namespace PPServer
         private WatsonTcpServer _watsonTcpServer;
         private readonly Dictionary<string, User> _authUsers;
         private Http.Handler _httpHandler;
+        public static Dto2Object Dto;
 
         public Server(bool useHTTP = true)
         {
@@ -45,11 +47,32 @@ namespace PPServer
             _authUsers = new Dictionary<string, User>();
             PrintAsciiArtLogo();
 
-            if(useHTTP)
+            LoadData();
+
+            if (useHTTP)
             {
                 _httpHandler = new Http.Handler();
                 _httpHandler.Handle();
             }
+        }
+
+        private void LoadData()
+        {
+            Dto = new Dto2Object() {
+                Zones = new List<PolyZone>()
+            };
+
+            var count = Sql.Instance.GetZoneCount();
+            var current = 0;
+
+            Sql.Instance.LoadZones((zone) => {
+                Dto.Zones.Add(zone);
+                current++;
+
+                ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Loading {0}/{1} zones\t\r", current, count);
+                return true;
+            });
+            Console.Write("\n");
         }
 
         private void PrintAsciiArtLogo()
@@ -290,7 +313,7 @@ namespace PPServer
                 var buffer = stream.ToArray();
 
                 _watsonTcpServer.Send(ipPort, buffer);
-                ConsoleKit.Message(ConsoleKit.MessageType.INFO, "PID {0} of {1} bytes sent to {2}\n", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
+                //ConsoleKit.Message(ConsoleKit.MessageType.INFO, "PID {0} of {1} bytes sent to {2}\n", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
             }
         }
 
