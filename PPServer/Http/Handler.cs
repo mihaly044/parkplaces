@@ -67,7 +67,6 @@ namespace PPServer.Http
 
             try
             {
-                throw new Exception();
                 e.Response.Headers.Add("Content-type", "application/json");
 
                 var path = System.Web.HttpUtility.UrlDecode(e.Request.Path);
