@@ -67,6 +67,7 @@ namespace PPServer.Http
 
             try
             {
+                throw new Exception();
                 e.Response.Headers.Add("Content-type", "application/json");
 
                 var path = System.Web.HttpUtility.UrlDecode(e.Request.Path);
@@ -110,7 +111,7 @@ namespace PPServer.Http
                     ConsoleKit.Message(ConsoleKit.MessageType.WARNING, "Invalid HTTP request from {0}({1}), {2}\n",
                         e.Request.UserHostAddress, e.Request.UserHostName, e.Request.Path);
                     e.Response.StatusCode = 500;
-                    e.Response.Status = "Internal Server Error";
+                    e.Response.Status = "500 Internal Server Error";
                 }
             }
         }
