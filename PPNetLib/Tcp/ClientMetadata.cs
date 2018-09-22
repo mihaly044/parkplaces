@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
 
-namespace watsontcp_dotnetcore
+namespace watsontcp_dotnetcore.Tcp
 {
     public class ClientMetadata : IDisposable
     {

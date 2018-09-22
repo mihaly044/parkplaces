@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace watsontcp_dotnetcore
+namespace watsontcp_dotnetcore.Tcp
 {
     /// <summary>
     /// Watson TCP client.
