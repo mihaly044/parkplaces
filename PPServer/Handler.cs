@@ -5,7 +5,6 @@ using PPNetLib.Prototypes;
 using PPServer.Database;
 using Newtonsoft.Json;
 using PPNetLib.Contracts.SynchroniseAcks;
-using System.Threading;
 
 namespace PPServer
 {
@@ -46,7 +45,6 @@ namespace PPServer
             foreach(var zone in _server.Dto.Zones)
             {
                 var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
-                Thread.Sleep(10);
                 _server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized });
             }
         }
