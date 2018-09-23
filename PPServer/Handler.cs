@@ -47,7 +47,6 @@ namespace PPServer
                 var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
                 _server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized });
             }
-            ConsoleKit.Message(ConsoleKit.MessageType.WARNING, $"{Server.Dto.Zones.Count}");
         }
 
         public async void OnInsertZoneReqAsync(InsertZoneReq packet, string ipPort)
