@@ -165,6 +165,18 @@ namespace PPServer
             var zone = JsonConvert.DeserializeObject<PolyZone>(packet.Zone, Converter.Settings);
             Sql.Instance.UpdateZoneInfo(zone);
 
+            lock(_server.Dto.Zones)
+            {
+                var localDtoZone = _server.Dto.Zones.First(z => z.Zoneid == zone.Zoneid);
+                localDtoZone.Color = zone.Color;
+                localDtoZone.Description = zone.Description;
+                localDtoZone.Distance = zone.Distance;
+                localDtoZone.Fee = zone.Fee;
+                localDtoZone.ServiceNa = zone.ServiceNa;
+                localDtoZone.Telepules = zone.Telepules;
+                localDtoZone.Timetable = zone.Timetable;
+            }
+
             _server.SendToEveryoneExcept(new ZoneInfoUpdatedAck()
             {
                 ZoneId = int.Parse(zone.Id),
