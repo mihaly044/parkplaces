@@ -319,11 +319,16 @@ namespace PPServer
 
         private bool CheckPrivileges(string ipPort, GroupRole min)
         {
+            var ok = false;
             if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
             {
-                return _authUsers[ipPort].GroupRole >= min;
+                ok = _authUsers[ipPort].GroupRole >= min;
             }
-            return false;
+
+            if(!ok)
+                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, $"Wrong permissions: {ipPort}\n");
+
+            return ok;
         }
 
         public async void AnnounceShutdownAck(int seconds, bool shutdown = true)
