@@ -51,7 +51,7 @@ namespace PPServer
 
             if (useHTTP)
             {
-                _httpHandler = new Http.Handler();
+                _httpHandler = new Http.Handler(this);
                 _httpHandler.Handle();
             }
         }

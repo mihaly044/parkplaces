@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using PPServer.Database;
 using PPNetLib.Prototypes;
 using Newtonsoft.Json;
 using MySql.Data.MySqlClient;
@@ -16,9 +15,10 @@ namespace PPServer.Http
     {
         private HttpServer _httpServer;
         private int _httpPort;
+        private readonly Server _server;
         private const int HTTP_SERVER_PORT = 11001;
         
-        public Handler()
+        public Handler(Server server)
         {
             var configSect = ConfigurationManager.GetSection("ServerConfiguration") as NameValueCollection;
             if(configSect != null)
@@ -29,6 +29,7 @@ namespace PPServer.Http
             {
                 _httpPort = HTTP_SERVER_PORT;
             }
+            _server = server;
         }
 
         public void Handle()
@@ -75,7 +76,7 @@ namespace PPServer.Http
                 var zones = new List<string>();
 
                 var inBounds = false;
-                foreach(var zone in Server.Dto.Zones)
+                foreach(var zone in _server.Dto.Zones)
                 {
                     foreach (var point in zone.Geometry)
                     {
