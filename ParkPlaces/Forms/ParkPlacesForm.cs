@@ -84,7 +84,7 @@ namespace ParkPlaces.Forms
         private void OnConnectionError(Exception e)
         {
             Invoke(new Action(() => {
-                MessageBox.Show("There was an error while communicating with the server.\nThe application will close now.", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("There was an error while communicating with the server.\nThe application will close now.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(e.HResult);
             }));
         }
