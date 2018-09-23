@@ -42,7 +42,7 @@ namespace PPServer
 
         public void OnZoneListReq(string ipPort)
         {
-            foreach(var zone in Server.Dto.Zones)
+            foreach(var zone in _server.Dto.Zones)
             {
                 var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
                 _server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized });
@@ -61,7 +61,11 @@ namespace PPServer
             });
 
             zone.Id = id.ToString();
-            Server.Dto.Zones.Add(zone);
+
+            lock(_server.Dto.Zones)
+            {
+                _server.Dto.Zones.Add(zone);
+            }
 
             _server.Send(ipPort, new InsertZoneAck()
             {
@@ -81,8 +85,11 @@ namespace PPServer
         {
             Sql.Instance.RemoveZone(packet.ZoneId);
 
-            var zone = Server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
-            Server.Dto.Zones.Remove(zone);
+            lock(_server.Dto.Zones)
+            {
+                var zone = _server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+                _server.Dto.Zones.Remove(zone);
+            }
 
             _server.SendToEveryoneExcept(new ZoneInfoUpdatedAck()
             {
@@ -95,8 +102,11 @@ namespace PPServer
         {
             Sql.Instance.RemovePoint(packet.PointId, packet.Index, packet.ZoneId);
 
-            var zone = Server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
-            zone.Geometry.Remove(zone.Geometry.First(g => g.Id == packet.PointId));
+            lock(_server.Dto.Zones)
+            {
+                var zone = _server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+                zone.Geometry.Remove(zone.Geometry.First(g => g.Id == packet.PointId));
+            }
 
             _server.SendToEveryoneExcept(new PointUpdatedAck()
             {
@@ -112,8 +122,11 @@ namespace PPServer
             var id =  await Sql.Instance.InsertPointAsync(packet.ZoneId, packet.Lat, packet.Lng, packet.Index);
             _server.Send(ipPort, new InsertPointAck(){PointId = id});
 
-            var zone = Server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
-            zone.Geometry.Insert(packet.Index, new Geometry(packet.Lat, packet.Lng, id));
+            lock(_server.Dto.Zones)
+            {
+                var zone = _server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+                zone.Geometry.Insert(packet.Index, new Geometry(packet.Lat, packet.Lng, id));
+            }
 
             _server.SendToEveryoneExcept(new PointUpdatedAck()
             {
@@ -130,10 +143,13 @@ namespace PPServer
         {
             Sql.Instance.UpdatePoint(packet.PointId, packet.Lat, packet.Lng);
 
-            var zone = Server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
-            var geometry = zone.Geometry.First(g => g.Id == packet.PointId);
-            geometry.Lat = packet.Lat;
-            geometry.Lng = packet.Lng;
+            lock(_server.Dto.Zones)
+            {
+                var zone = _server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+                var geometry = zone.Geometry.First(g => g.Id == packet.PointId);
+                geometry.Lat = packet.Lat;
+                geometry.Lng = packet.Lng;
+            }
 
             _server.SendToEveryoneExcept(new PointUpdatedAck()
             {

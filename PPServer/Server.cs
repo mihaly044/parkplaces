@@ -23,7 +23,7 @@ namespace PPServer
         private WatsonTcpServer _watsonTcpServer;
         private readonly Dictionary<string, User> _authUsers;
         private Http.Handler _httpHandler;
-        public static Dto2Object Dto;
+        public Dto2Object Dto;
 
         public Server(bool useHTTP = true)
         {
@@ -147,8 +147,11 @@ namespace PPServer
 
                             if (user != null)
                             {
-                                if (!_authUsers.ContainsKey(ipPort))
-                                    _authUsers.Add(ipPort, user);
+                                lock(_authUsers)
+                                {
+                                    if (!_authUsers.ContainsKey(ipPort))
+                                        _authUsers.Add(ipPort, user);
+                                }
                             }
                             break;
 
@@ -319,9 +322,12 @@ namespace PPServer
 
         private bool CheckPrivileges(string ipPort, GroupRole min)
         {
-            if(_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
+            lock(_authUsers)
             {
-                return _authUsers[ipPort].GroupRole >= min;
+                if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
+                {
+                    return _authUsers[ipPort].GroupRole >= min;
+                }
             }
             return false;
         }
