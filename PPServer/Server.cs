@@ -147,11 +147,8 @@ namespace PPServer
 
                             if (user != null)
                             {
-                                lock(_authUsers)
-                                {
-                                    if (!_authUsers.ContainsKey(ipPort))
-                                        _authUsers.Add(ipPort, user);
-                                }
+                                if (!_authUsers.ContainsKey(ipPort))
+                                    _authUsers.Add(ipPort, user);
                             }
                             break;
 
@@ -322,12 +319,9 @@ namespace PPServer
 
         private bool CheckPrivileges(string ipPort, GroupRole min)
         {
-            lock(_authUsers)
+            if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
             {
-                if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
-                {
-                    return _authUsers[ipPort].GroupRole >= min;
-                }
+                return _authUsers[ipPort].GroupRole >= min;
             }
             return false;
         }
