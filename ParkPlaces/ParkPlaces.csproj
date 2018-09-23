@@ -188,8 +188,6 @@
     <Compile Include="Forms\User management\ManageUsersForm.Designer.cs">
       <DependentUpon>ManageUsersForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="IO\IOHandler.cs" />
-    <Compile Include="IO\UpdateProcessChanged.cs" />
     <Compile Include="Map shapes\Layer.cs" />
     <Compile Include="Map shapes\Polygon.cs" />
     <Compile Include="Forms\EditZoneForm.cs">
@@ -275,10 +273,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ParkPlaces.DotUtils\ParkPlaces.DotUtils.csproj">
-      <Project>{51feef46-427a-4a07-81df-aaf2904f8828}</Project>
-      <Name>ParkPlaces.DotUtils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PPNetLib\PPNetLib.csproj">
       <Project>{485a0ecc-402b-4d48-8a2e-dd3d7ccf9dfd}</Project>
       <Name>PPNetLib</Name>

@@ -120,7 +120,7 @@ namespace PPServer.Database
                 Debug.WriteLine($"Database error {error}");
                 Debugger.Break();
 #else
-                Console.WriteLine($"Database error {error}");
+                ConsoleKit.Message(ConsoleKit.MessageType.WARNING, "Database error {0}\n", error);
                 Debugger.Break();
 #endif
             }

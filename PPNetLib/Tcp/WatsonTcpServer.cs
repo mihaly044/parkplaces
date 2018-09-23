@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace watsontcp_dotnetcore
+namespace watsontcp_dotnetcore.Tcp
 {
     /// <summary>
     /// Watson TCP server.
@@ -586,7 +586,7 @@ namespace watsontcp_dotnetcore
 
                 int read = 0;
                 byte[] buffer;
-                long bufferSize = 2048;
+                long bufferSize = 4096;
                 if (bufferSize > bytesRemaining)
                 {
                     bufferSize = bytesRemaining;
@@ -819,7 +819,7 @@ namespace watsontcp_dotnetcore
 
                 int read = 0;
                 byte[] buffer;
-                long bufferSize = 2048;
+                long bufferSize = 4096;
                 if (bufferSize > bytesRemaining)
                 {
                     bufferSize = bytesRemaining;

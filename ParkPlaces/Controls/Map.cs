@@ -14,7 +14,6 @@ using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using ParkPlaces.Forms;
-using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
 using ParkPlaces.Net;
 using PPNetLib.Contracts;
@@ -842,8 +841,7 @@ namespace ParkPlaces.Controls
             };
 
             data.Zones.AddRange(_polygons.Polygons.Select(x => (PolyZone)x.Tag));
-
-            IoHandler.WriteDtoToJson(file, data);
+            File.WriteAllText(file, JsonConvert.SerializeObject(data));
         }
 
         /// <summary>
@@ -851,6 +849,7 @@ namespace ParkPlaces.Controls
         /// </summary>
         public async void LoadPolygons(bool forceUpdate = false, string file = "")
         {
+            /*
             _dtoObject?.Reset();
 
             if (file != string.Empty)
@@ -865,7 +864,8 @@ namespace ParkPlaces.Controls
                                 Dto2Object.FromJson(File.ReadAllText("data"));
             }
 
-            ConstructGui();
+            ConstructGui();*/
+            throw new NotImplementedException();
         }
 
         /// <summary>

@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 using PPNetLib;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
+using PPServer.Database;
 using ProtoBuf;
-using watsontcp_dotnetcore;
+using watsontcp_dotnetcore.Tcp;
 
 namespace PPServer
 {
@@ -21,8 +22,10 @@ namespace PPServer
         private readonly Handler _handler;
         private WatsonTcpServer _watsonTcpServer;
         private readonly Dictionary<string, User> _authUsers;
+        private Http.Handler _httpHandler;
+        public Dto2Object Dto;
 
-        public Server()
+        public Server(bool useHTTP = true)
         {
             var configSect = ConfigurationManager.GetSection("ServerConfiguration") as NameValueCollection;
 
@@ -43,6 +46,33 @@ namespace PPServer
             _handler = new Handler(this);
             _authUsers = new Dictionary<string, User>();
             PrintAsciiArtLogo();
+
+            LoadData();
+
+            if (useHTTP)
+            {
+                _httpHandler = new Http.Handler(this);
+                _httpHandler.Handle();
+            }
+        }
+
+        private void LoadData()
+        {
+            Dto = new Dto2Object() {
+                Zones = new List<PolyZone>()
+            };
+
+            var count = Sql.Instance.GetZoneCount();
+            var current = 0;
+
+            Sql.Instance.LoadZones((zone) => {
+                Dto.Zones.Add(zone);
+                current++;
+
+                ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Loading {0}/{1} zones\t\r", current, count);
+                return true;
+            });
+            Console.Write("\n");
         }
 
         private void PrintAsciiArtLogo()
@@ -64,7 +94,7 @@ namespace PPServer
 
         public void Listen()
         {
-            Console.WriteLine("Server starting up, protocol version {0}", Protocol.Version);
+            ConsoleKit.Message(ConsoleKit.MessageType.INFO, "PP TCP Server starting up, protocol version {0}\n", Protocol.Version);
 
 #if DEBUG
             _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, true);
@@ -72,19 +102,19 @@ namespace PPServer
             _watsonTcpServer = new WatsonTcpServer(_ip, _port, ClientConnected, ClientDisconnected, MessageReceived, false);
 #endif
 
-            Console.WriteLine($"Server listening on {_ip}:{_port}");
+            ConsoleKit.Message(ConsoleKit.MessageType.INFO, $"PP TCP server listening on {_ip}:{_port}\n");
         }
 
         private bool ClientConnected(string ipPort)
         {
-            Console.WriteLine("Client connected: " + ipPort);
+            ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Client connected: {0}\n", ipPort);
             return true;
         }
 
         private bool ClientDisconnected(string ipPort)
         {
             _authUsers.Remove(ipPort);
-            Console.WriteLine("Client disconnected: " + ipPort);
+            ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Client disconnected: {0}\n", ipPort);
             return true;
         }
 
@@ -106,7 +136,7 @@ namespace PPServer
                     stream.Read(bPacketId, 0, 4);
                     var packetId = (Protocols)BitConverter.ToInt32(bPacketId, 0);
 
-                    Console.WriteLine("Received PID {0} from {1}", Enum.GetName(typeof(Protocols), packetId), ipPort);
+                    ConsoleKit.Message(ConsoleKit.MessageType.INFO, "PID {0} received from {1}\n", Enum.GetName(typeof(Protocols), packetId), ipPort);
 
                     // ReSharper disable once SwitchStatementMissingSomeCases
                     switch (packetId)
@@ -117,8 +147,11 @@ namespace PPServer
 
                             if (user != null)
                             {
-                                if (!_authUsers.ContainsKey(ipPort))
-                                    _authUsers.Add(ipPort, user);
+                                lock(_authUsers)
+                                {
+                                    if (!_authUsers.ContainsKey(ipPort))
+                                        _authUsers.Add(ipPort, user);
+                                }
                             }
                             break;
 
@@ -231,14 +264,14 @@ namespace PPServer
 
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
-                            Console.WriteLine("Invalid message from {0}", ipPort);
+                            ConsoleKit.Message(ConsoleKit.MessageType.ERROR, "Invalid message from {0}\n", ipPort);
                             break;
                     }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message + "\n");
                 _watsonTcpServer.DisconnectClient(ipPort);
             }
 
@@ -252,7 +285,7 @@ namespace PPServer
             _watsonTcpServer.DisconnectClient(user.Key);
         }
 
-        public void SendToEveryoneExcept<T>(T packet, string except)
+        public void SendToEveryoneExcept<T>(T packet, string except) where T: Packet
         {
             var clients = _watsonTcpServer.ListClients();
             foreach(var client in clients)
@@ -260,16 +293,16 @@ namespace PPServer
                     Send(client, packet);
         }
 
-        public void SendToEveryone<T>(T packet)
+        public void SendToEveryone<T>(T packet) where T: Packet
         {
             var clients = _watsonTcpServer.ListClients();
             foreach (var client in clients)
                 Send(client, packet);
         }
 
-        public void Send<T>(string ipPort, T packet)
+        public void Send<T>(string ipPort, T packet) where T: Packet
         {
-            var packetId = (int)((Packet)(object)packet).PacketId;
+            var packetId = (int)packet.PacketId;
 
             using (var stream = new MemoryStream())
             {
@@ -283,15 +316,18 @@ namespace PPServer
                 var buffer = stream.ToArray();
 
                 _watsonTcpServer.Send(ipPort, buffer);
-                Console.WriteLine("PID {0} of {1} bytes sent to {2}", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
+                //ConsoleKit.Message(ConsoleKit.MessageType.INFO, "PID {0} of {1} bytes sent to {2}\n", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
             }
         }
 
         private bool CheckPrivileges(string ipPort, GroupRole min)
         {
-            if(_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
+            lock(_authUsers)
             {
-                return _authUsers[ipPort].GroupRole >= min;
+                if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
+                {
+                    return _authUsers[ipPort].GroupRole >= min;
+                }
             }
             return false;
         }

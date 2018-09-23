@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using GMap.NET.MapProviders;
-using ParkPlaces.IO;
 using ParkPlaces.Map_shapes;
 using ParkPlaces.Controls;
 using ParkPlaces.Net;
@@ -27,7 +26,7 @@ namespace ParkPlaces.Forms
             toolStrip.Renderer = tsRenderer;
             statusStrip.Renderer = tsRenderer;
             
-            IoHandler.Instance.OnUpdateChangedEventHandler += OnUpdateChangedEventHandler;
+            //IoHandler.Instance.OnUpdateChangedEventHandler += OnUpdateChangedEventHandler;
             Client.Instance.OnConnectionError += OnConnectionError;
             Client.Instance.OnShutdownAck += OnShutdownAck;
             Map.OnStartWaiting += MapOnStartWaiting;
@@ -51,6 +50,8 @@ namespace ParkPlaces.Forms
             toolStripStatusLabel.Text = "Processing ...";
         }
 
+        // TODO: Implement update on server side
+        /*
         private void OnUpdateChangedEventHandler(object sender, UpdateProcessChangedArgs updateProcessChangedArgs)
         {
             toolStripProgressBar.Visible = true;
@@ -78,12 +79,12 @@ namespace ParkPlaces.Forms
             toolStripProgressBar.Maximum = 100;
 
             toolStripStatusLabel.Text = "Ready";
-        }
+        }*/
 
         private void OnConnectionError(Exception e)
         {
             Invoke(new Action(() => {
-                MessageBox.Show("There was an error while communicating with the server.\nThe application will close now.", "Hiba", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("There was an error while communicating with the server.\nThe application will close now.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(e.HResult);
             }));
         }
