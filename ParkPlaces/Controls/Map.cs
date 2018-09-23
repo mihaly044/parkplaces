@@ -834,7 +834,6 @@ namespace ParkPlaces.Controls
         /// <param name="file"></param>
         public void SavePolygons(string file)
         {
-            /*
             var data = new Dto2Object()
             {
                 Type = "ZoneCollection",
@@ -842,9 +841,7 @@ namespace ParkPlaces.Controls
             };
 
             data.Zones.AddRange(_polygons.Polygons.Select(x => (PolyZone)x.Tag));
-
-            IoHandler.WriteDtoToJson(file, data);*/
-            throw new NotImplementedException();
+            File.WriteAllText(file, JsonConvert.SerializeObject(data));
         }
 
         /// <summary>
