@@ -956,9 +956,9 @@ namespace watsontcp_dotnetcore.Tcp
 
                 #endregion
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Log("*** MessageWrite " + client.IpPort + " disconnected due to exception");
+                Log("*** MessageWrite " + client.IpPort + " disconnected due to exception " + e.Message);
                 return false;
             }
         }
