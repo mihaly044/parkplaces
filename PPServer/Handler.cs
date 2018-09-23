@@ -87,7 +87,7 @@ namespace PPServer
 
             lock(_server.Dto.Zones)
             {
-                var zone = _server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+                var zone = _server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
                 _server.Dto.Zones.Remove(zone);
             }
 
@@ -104,7 +104,7 @@ namespace PPServer
 
             lock(_server.Dto.Zones)
             {
-                var zone = _server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+                var zone = _server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
                 zone.Geometry.Remove(zone.Geometry.First(g => g.Id == packet.PointId));
             }
 
@@ -124,7 +124,7 @@ namespace PPServer
 
             lock(_server.Dto.Zones)
             {
-                var zone = _server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+                var zone = _server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
                 zone.Geometry.Insert(packet.Index, new Geometry(packet.Lat, packet.Lng, id));
             }
 
@@ -145,7 +145,7 @@ namespace PPServer
 
             lock(_server.Dto.Zones)
             {
-                var zone = _server.Dto.Zones.First(z => z.Zoneid == packet.ZoneId.ToString());
+                var zone = _server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
                 var geometry = zone.Geometry.First(g => g.Id == packet.PointId);
                 geometry.Lat = packet.Lat;
                 geometry.Lng = packet.Lng;
