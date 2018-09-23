@@ -271,7 +271,7 @@ namespace PPServer
             }
             catch (Exception e)
             {
-                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message);
+                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message + "\n");
                 _watsonTcpServer.DisconnectClient(ipPort);
             }
 
@@ -285,7 +285,7 @@ namespace PPServer
             _watsonTcpServer.DisconnectClient(user.Key);
         }
 
-        public void SendToEveryoneExcept<T>(T packet, string except)
+        public void SendToEveryoneExcept<T>(T packet, string except) where T: Packet
         {
             var clients = _watsonTcpServer.ListClients();
             foreach(var client in clients)
@@ -293,16 +293,16 @@ namespace PPServer
                     Send(client, packet);
         }
 
-        public void SendToEveryone<T>(T packet)
+        public void SendToEveryone<T>(T packet) where T: Packet
         {
             var clients = _watsonTcpServer.ListClients();
             foreach (var client in clients)
                 Send(client, packet);
         }
 
-        public void Send<T>(string ipPort, T packet)
+        public void Send<T>(string ipPort, T packet) where T: Packet
         {
-            var packetId = (int)((Packet)(object)packet).PacketId;
+            var packetId = (int)packet.PacketId;
 
             using (var stream = new MemoryStream())
             {

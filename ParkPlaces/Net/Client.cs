@@ -168,12 +168,12 @@ namespace ParkPlaces.Net
             return false;
         }
 
-        public bool Send<T>(T packet)
+        public bool Send<T>(T packet) where T: Packet
         {
             if (_offlineMode)
                 return false;
 
-            var packetId = (int)((Packet)(object)packet).PacketId;
+            var packetId = (int)packet.PacketId;
 
             using (var stream = new MemoryStream())
             {
