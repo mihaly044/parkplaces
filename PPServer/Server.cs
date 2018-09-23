@@ -147,8 +147,11 @@ namespace PPServer
 
                             if (user != null)
                             {
-                                if (!_authUsers.ContainsKey(ipPort))
-                                    _authUsers.Add(ipPort, user);
+                                lock(_authUsers)
+                                {
+                                    if (!_authUsers.ContainsKey(ipPort))
+                                        _authUsers.Add(ipPort, user);
+                                }
                             }
                             break;
 
@@ -319,16 +322,14 @@ namespace PPServer
 
         private bool CheckPrivileges(string ipPort, GroupRole min)
         {
-            var ok = false;
-            if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
+            lock(_authUsers)
             {
-                ok = _authUsers[ipPort].GroupRole >= min;
+                if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
+                {
+                    return _authUsers[ipPort].GroupRole >= min;
+                }
             }
-
-            if(!ok)
-                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, $"Wrong permissions: {ipPort}\n");
-
-            return ok;
+            return false;
         }
 
         public async void AnnounceShutdownAck(int seconds, bool shutdown = true)
