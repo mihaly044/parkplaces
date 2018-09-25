@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
@@ -17,7 +18,7 @@ namespace PPServer
             _server = s;
         }
 
-        public User OnLoginReq(LoginReq packet, string ipPort, Dictionary<string, User> users)
+        public User OnLoginReq(LoginReq packet, string ipPort, ConcurrentDictionary<string, User> users)
         {
             if (users.FirstOrDefault(u => u.Value.UserName == packet.Username).Value != null)
             {
@@ -42,10 +43,13 @@ namespace PPServer
 
         public void OnZoneListReq(string ipPort)
         {
-            foreach(var zone in _server.Dto.Zones)
+            lock(_server.Dto.Zones)
             {
-                var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
-                _server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized });
+                foreach (var zone in _server.Dto.Zones)
+                {
+                    var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
+                    _server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized });
+                }
             }
         }
 
