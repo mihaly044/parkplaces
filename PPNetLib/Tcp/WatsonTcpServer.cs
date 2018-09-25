@@ -371,12 +371,10 @@ namespace watsontcp_dotnetcore.Tcp
         {
             if (client.TcpClient.Connected)
             {
-                bool part1 = client.TcpClient.Client.Poll(1000, SelectMode.SelectRead);
-                bool part2 = (client.TcpClient.Client.Available == 0);
-                if (part1 && part2)
-                    return false;
-                else
+                if (client.TcpClient.Client.Poll(1000, SelectMode.SelectRead) && client.TcpClient.Client.Available == 0)
                     return true;
+                else
+                    return false;
             }
             else
             {
