@@ -89,9 +89,9 @@ namespace ParkPlaces.Forms
                 progressBar.Value = (int)((double)_currentProgress / _zoneCount * 100);
 
                 // De-serialize data and add to collection
-                ack.Zone.ForEach(z => _dto.Zones.Add(JsonConvert.DeserializeObject<PolyZone>(z, Converter.Settings)));
-
-                _currentProgress += ack.Zone.Count;
+                var zone = ack.Zone;
+                _dto.Zones.Add(JsonConvert.DeserializeObject<PolyZone>(zone, Converter.Settings));
+                _currentProgress++;
 
                 if (_currentProgress >= _zoneCount)
                 {

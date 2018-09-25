@@ -1,5 +1,4 @@
 ﻿using ProtoBuf;
-using System.Collections.Generic;
 
 namespace PPNetLib.Contracts
 {
@@ -7,7 +6,7 @@ namespace PPNetLib.Contracts
     public class ZoneListAck : Packet
     {
         [ProtoMember(1)]
-        public List<string> Zone { get; set; } // JSON serialized zone
+        public string Zone { get; set; } // JSON serialized zone
 
         public ZoneListAck()
         {
