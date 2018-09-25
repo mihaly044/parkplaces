@@ -162,7 +162,7 @@ namespace PPServer
                         case Protocols.ZONELIST_REQ:
                             if (!CheckPrivileges(ipPort, GroupRole.Guest))
                                 goto default;
-                            _handler.OnZoneListReq(ipPort);
+                            _handler.OnZoneListReqAsync(ipPort);
                             break;
 
                         case Protocols.INSERTZONE_REQ:
@@ -297,7 +297,7 @@ namespace PPServer
                 Send(client, packet);
         }
 
-        public bool Send<T>(string ipPort, T packet) where T: Packet
+        public async Task<bool> Send<T>(string ipPort, T packet) where T: Packet
         {
             var packetId = (int)packet.PacketId;
 
@@ -312,7 +312,7 @@ namespace PPServer
 
                 var buffer = stream.ToArray();
 
-                return _watsonTcpServer.Send(ipPort, buffer);
+                return await _watsonTcpServer.SendAsync(ipPort, buffer);
                 //ConsoleKit.Message(ConsoleKit.MessageType.INFO, "PID {0} of {1} bytes sent to {2}\n", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
             }
         }
