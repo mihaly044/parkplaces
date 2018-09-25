@@ -145,7 +145,7 @@ namespace ParkPlaces.Net
                             OnShutdownAck?.Invoke(shutdownAck);
                             break;
                     }
-                    //Debug.WriteLine("Received PID {0}", packetId);
+                    Debug.WriteLine("Received PID {0}", packetId);
                 }
             }
             catch (Exception e)
