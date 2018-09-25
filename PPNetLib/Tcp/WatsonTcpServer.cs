@@ -1,3 +1,4 @@
+using PPNetLib;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -421,8 +422,9 @@ namespace watsontcp_dotnetcore.Tcp
                             Task<bool> unawaited = Task.Run(() => _MessageReceived(client.IpPort, data));
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        ConsoleKit.Message(ConsoleKit.MessageType.ERROR, ex.Message + "\n" + ex.StackTrace + "\n");
                         break;
                     }
                 }
