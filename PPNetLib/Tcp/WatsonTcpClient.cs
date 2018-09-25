@@ -260,8 +260,10 @@ namespace watsontcp_dotnetcore.Tcp
                         await Task.Delay(30);
                         continue;
                     }
-
-                    Task<bool> unawaited = Task.Run(() => _MessageReceived(data));
+                    else
+                    {
+                        Task<bool> unawaited = Task.Run(() => _MessageReceived(data));
+                    }
 
                     #endregion
                 }
