@@ -1,3 +1,4 @@
+using PPNetLib;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -370,22 +371,10 @@ namespace watsontcp_dotnetcore.Tcp
         {
             if (client.TcpClient.Connected)
             {
-                if ((client.TcpClient.Client.Poll(0, SelectMode.SelectWrite)) && (!client.TcpClient.Client.Poll(0, SelectMode.SelectError)))
-                {
-                    byte[] buffer = new byte[1];
-                    if (client.TcpClient.Client.Receive(buffer, SocketFlags.Peek) == 0)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
+                if (!(client.TcpClient.Client.Poll(1000, SelectMode.SelectRead) && client.TcpClient.Client.Available == 0))
+                    return true;
                 else
-                {
                     return false;
-                }
             }
             else
             {
@@ -421,8 +410,9 @@ namespace watsontcp_dotnetcore.Tcp
                             Task<bool> unawaited = Task.Run(() => _MessageReceived(client.IpPort, data));
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        ConsoleKit.Message(ConsoleKit.MessageType.ERROR, ex.Message + "\n" + ex.StackTrace + "\n");
                         break;
                     }
                 }
@@ -586,7 +576,7 @@ namespace watsontcp_dotnetcore.Tcp
 
                 int read = 0;
                 byte[] buffer;
-                long bufferSize = 4096;
+                long bufferSize = 8192;
                 if (bufferSize > bytesRemaining)
                 {
                     bufferSize = bytesRemaining;
@@ -819,7 +809,7 @@ namespace watsontcp_dotnetcore.Tcp
 
                 int read = 0;
                 byte[] buffer;
-                long bufferSize = 4096;
+                long bufferSize = 8192;
                 if (bufferSize > bytesRemaining)
                 {
                     bufferSize = bytesRemaining;

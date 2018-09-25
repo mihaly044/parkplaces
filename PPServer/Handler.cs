@@ -5,6 +5,8 @@ using PPNetLib.Prototypes;
 using PPServer.Database;
 using Newtonsoft.Json;
 using PPNetLib.Contracts.SynchroniseAcks;
+using System.Threading;
+using PPNetLib;
 
 namespace PPServer
 {
@@ -44,8 +46,15 @@ namespace PPServer
         {
             foreach(var zone in _server.Dto.Zones)
             {
+                // TODO: Find out why sending fails when a client reconnects
                 var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
-                _server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized });
+                //ConsoleKit.Message(ConsoleKit.MessageType.DEBUG, "Now sending zone id {0}\n", zone.Id);
+                //Thread.Sleep(1);
+                if(!_server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized }))
+                {
+                    ConsoleKit.Message(ConsoleKit.MessageType.ERROR, "Connection lost ...\n", zone.Id);
+                    break;
+                }
             }
         }
 
