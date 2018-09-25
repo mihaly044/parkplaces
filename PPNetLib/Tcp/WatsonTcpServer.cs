@@ -371,7 +371,7 @@ namespace watsontcp_dotnetcore.Tcp
         {
             if (client.TcpClient.Connected)
             {
-                if (client.TcpClient.Client.Poll(1000, SelectMode.SelectRead) && client.TcpClient.Client.Available == 0)
+                if (!(client.TcpClient.Client.Poll(1000, SelectMode.SelectRead) && client.TcpClient.Client.Available == 0))
                     return true;
                 else
                     return false;
