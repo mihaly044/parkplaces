@@ -297,7 +297,7 @@ namespace PPServer
                 Send(client, packet);
         }
 
-        public void Send<T>(string ipPort, T packet) where T: Packet
+        public bool Send<T>(string ipPort, T packet) where T: Packet
         {
             var packetId = (int)packet.PacketId;
 
@@ -312,7 +312,7 @@ namespace PPServer
 
                 var buffer = stream.ToArray();
 
-                _watsonTcpServer.Send(ipPort, buffer);
+                return _watsonTcpServer.Send(ipPort, buffer);
                 //ConsoleKit.Message(ConsoleKit.MessageType.INFO, "PID {0} of {1} bytes sent to {2}\n", Enum.GetName(typeof(Protocols), packetId), buffer.Length, ipPort);
             }
         }
