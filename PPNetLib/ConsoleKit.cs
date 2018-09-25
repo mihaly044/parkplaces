@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace PPServer
+namespace PPNetLib
 {
     public static class ConsoleKit
     {
