@@ -42,10 +42,16 @@ namespace PPServer
 
         public void OnZoneListReq(string ipPort)
         {
-            foreach(var zone in _server.Dto.Zones)
+            var zones = new List<string>();
+
+            for(var i = 0; i < _server.Dto.Zones.Count; i++)
             {
-                var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
-                _server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized });
+                zones.Add(JsonConvert.SerializeObject(_server.Dto.Zones[i], Converter.Settings));
+                if ( (i > 0) && (i % 5 == 0 || i == _server.Dto.Zones.Count % 5 - i))
+                {
+                    _server.Send(ipPort, new ZoneListAck() { Zone = zones });
+                    zones.Clear();
+                }
             }
         }
 
