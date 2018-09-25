@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Collections.Concurrent;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -22,7 +21,7 @@ namespace PPServer
         private readonly int _port;
         private readonly Handler _handler;
         private WatsonTcpServer _watsonTcpServer;
-        private readonly ConcurrentDictionary<string, User> _authUsers;
+        private readonly Dictionary<string, User> _authUsers;
         private Http.Handler _httpHandler;
         public Dto2Object Dto;
 
@@ -45,7 +44,7 @@ namespace PPServer
 
             _port = int.Parse(configSect["Port"]);
             _handler = new Handler(this);
-            _authUsers = new ConcurrentDictionary<string, User>();
+            _authUsers = new Dictionary<string, User>();
             PrintAsciiArtLogo();
 
             LoadData();
@@ -114,16 +113,9 @@ namespace PPServer
 
         private bool ClientDisconnected(string ipPort)
         {
-            if(_authUsers.TryRemove(ipPort, out var unused))
-            {
-                ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Client disconnected: {0}\n", ipPort);
-                return true;
-            }
-            else
-            {
-                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, $"Uh..oh.. something went wrong in _authUsers.TryRemove()\n");
-                return false;
-            }
+            _authUsers.Remove(ipPort);
+            ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Client disconnected: {0}\n", ipPort);
+            return true;
         }
 
         private bool MessageReceived(string ipPort, byte[] data)
@@ -156,10 +148,7 @@ namespace PPServer
                             if (user != null)
                             {
                                 if (!_authUsers.ContainsKey(ipPort))
-                                {
-                                    if (!_authUsers.TryAdd(ipPort, user))
-                                        throw new Exception("Could not add auth user");
-                                }
+                                    _authUsers.Add(ipPort, user);
                             }
                             break;
 
