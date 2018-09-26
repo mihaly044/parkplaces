@@ -37,7 +37,7 @@ namespace PPServer.Database
                             {
                                 GroupRole = groupRole,
                                 IsAuthenticated = groupRole > GroupRole.Guest,
-                                CreatorId = (int)reader["creatorid"]
+                                CreatorId = int.Parse(reader["creatorid"].ToString())
                             };
                         }
                     }
