@@ -346,6 +346,17 @@ namespace PPServer
             return ok;
         }
 
+        private bool IsMonitor(string ipPort)
+        {
+            var ok = false;
+            if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
+            {
+                ok = _authUsers[ipPort].Monitor;
+            }
+
+            return ok;
+        }
+
         public async void AnnounceShutdownAck(int seconds, bool shutdown = true)
         {
             SendToEveryone(new ShutdownAck() { Seconds = seconds });
@@ -365,7 +376,6 @@ namespace PPServer
 
         private void BroadcastMonitorAck(string message)
         {
-            
             if (_watsonTcpServer != null)
             {
                 foreach (var type in _messageTypes)
@@ -385,7 +395,7 @@ namespace PPServer
                 var clients = _watsonTcpServer.ListClients();
                 foreach (var client in clients)
                 {
-                    if (CheckPrivileges(client, GroupRole.Admin))
+                    if (IsMonitor(client))
                     {
                         Send(client, new ServerMonitorAck() { Output = message });
                     }

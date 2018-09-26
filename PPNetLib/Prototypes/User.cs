@@ -79,6 +79,9 @@ namespace PPNetLib.Prototypes
         [ProtoMember(7)]
         public string Password { get; set; }
 
+        [ProtoIgnore]
+        public bool Monitor { get; set; }
+
         public override string ToString()
         {
             return $"{UserName} ({GroupRole})";

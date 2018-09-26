@@ -29,6 +29,7 @@ namespace PPServer
             {
                 var ack = new LoginAck();
                 var user = Sql.Instance.AuthenticateUser(packet.Username, packet.Password);
+                user.Monitor = packet.Monitor;
                 ack.User = user;
                 _server.Send(ipPort, ack);
                 return user;
