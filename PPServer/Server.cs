@@ -286,9 +286,8 @@ namespace PPServer
             }
             catch (Exception e)
             {
-                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message + "\n");
+                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message + "\n" + e.StackTrace + "\n");
                 _watsonTcpServer.DisconnectClient(ipPort);
-                throw;
             }
 
             return true;
