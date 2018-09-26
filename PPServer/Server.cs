@@ -368,7 +368,7 @@ namespace PPServer
             
             if (_watsonTcpServer != null)
             {
-                foreach (var type in enums)
+                foreach (var type in _messageTypes)
                 {
                     if(message.IndexOf($"[{type}]") == 0)
                     {
