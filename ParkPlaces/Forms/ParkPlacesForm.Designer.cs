@@ -64,6 +64,7 @@ namespace ParkPlaces.Forms
             this.coordinateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveButton = new System.Windows.Forms.ToolStripButton();
+            this.monitorServerMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -121,7 +122,7 @@ namespace ParkPlaces.Forms
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(30, 17);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel.Text = "Ready";
             // 
             // SelectMapProviderButton
@@ -237,7 +238,7 @@ namespace ParkPlaces.Forms
             // 
             this.openToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_53_62710;
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.openToolStripMenuItem.Text = "Import from JSON";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -245,7 +246,7 @@ namespace ParkPlaces.Forms
             // 
             this.saveToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Export_File_40053;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.saveToolStripMenuItem.Text = "Export to JSON";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -253,20 +254,20 @@ namespace ParkPlaces.Forms
             // 
             this.forceUpdateToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_update_64935;
             this.forceUpdateToolStripMenuItem.Name = "forceUpdateToolStripMenuItem";
-            this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.forceUpdateToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.forceUpdateToolStripMenuItem.Text = "Force update";
             this.forceUpdateToolStripMenuItem.Click += new System.EventHandler(this.forceUpdateToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(190, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(167, 6);
             // 
             // closeCurrentSessionToolStripMenuItem
             // 
             this.closeCurrentSessionToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_cancel_48_10277;
             this.closeCurrentSessionToolStripMenuItem.Name = "closeCurrentSessionToolStripMenuItem";
-            this.closeCurrentSessionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.closeCurrentSessionToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.closeCurrentSessionToolStripMenuItem.Text = "Close session";
             this.closeCurrentSessionToolStripMenuItem.Click += new System.EventHandler(this.closeCurrentSessionToolStripMenuItem_Click);
             // 
@@ -274,7 +275,7 @@ namespace ParkPlaces.Forms
             // 
             this.logoutToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_logout_63128;
             this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.logoutToolStripMenuItem.Text = "Logout";
             this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
             // 
@@ -282,14 +283,15 @@ namespace ParkPlaces.Forms
             // 
             this.exitToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_exit_6035;
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // adminToolStripMenuItem
             // 
             this.adminToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.manageUsersToolStripMenuItem});
+            this.manageUsersToolStripMenuItem,
+            this.monitorServerMessagesToolStripMenuItem});
             this.adminToolStripMenuItem.Name = "adminToolStripMenuItem";
             this.adminToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.adminToolStripMenuItem.Text = "Admin";
@@ -298,7 +300,7 @@ namespace ParkPlaces.Forms
             // 
             this.manageUsersToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Users_85409;
             this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
-            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.manageUsersToolStripMenuItem.Text = "Manage users";
             this.manageUsersToolStripMenuItem.Click += new System.EventHandler(this.manageUsersToolStripMenuItem_Click);
             // 
@@ -314,7 +316,7 @@ namespace ParkPlaces.Forms
             // 
             this.aboutToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Information_27854;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -364,14 +366,14 @@ namespace ParkPlaces.Forms
             // coordinateToolStripMenuItem
             // 
             this.coordinateToolStripMenuItem.Name = "coordinateToolStripMenuItem";
-            this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.coordinateToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.coordinateToolStripMenuItem.Text = "Coordinates";
             this.coordinateToolStripMenuItem.Click += new System.EventHandler(this.coordinateToolStripMenuItem_Click);
             // 
             // addressToolStripMenuItem
             // 
             this.addressToolStripMenuItem.Name = "addressToolStripMenuItem";
-            this.addressToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addressToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.addressToolStripMenuItem.Text = "Address";
             this.addressToolStripMenuItem.Click += new System.EventHandler(this.addressToolStripMenuItem_Click);
             // 
@@ -384,6 +386,13 @@ namespace ParkPlaces.Forms
             this.saveButton.Size = new System.Drawing.Size(99, 22);
             this.saveButton.Text = "Save to database";
             this.saveButton.Click += new System.EventHandler(this.SaveButton_ClickAsync);
+            // 
+            // monitorServerMessagesToolStripMenuItem
+            // 
+            this.monitorServerMessagesToolStripMenuItem.Name = "monitorServerMessagesToolStripMenuItem";
+            this.monitorServerMessagesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.monitorServerMessagesToolStripMenuItem.Text = "Monitor server messages";
+            this.monitorServerMessagesToolStripMenuItem.Click += new System.EventHandler(this.monitorServerMessagesToolStripMenuItem_Click);
             // 
             // ParkPlacesForm
             // 
@@ -447,6 +456,7 @@ namespace ParkPlaces.Forms
         private ToolStripButton saveButton;
         private ToolStripMenuItem adminToolStripMenuItem;
         private ToolStripMenuItem manageUsersToolStripMenuItem;
+        private ToolStripMenuItem monitorServerMessagesToolStripMenuItem;
     }
 }
 

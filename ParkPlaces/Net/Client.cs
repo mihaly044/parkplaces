@@ -149,6 +149,10 @@ namespace ParkPlaces.Net
                             var shutdownAck = Serializer.Deserialize<PPNetLib.Contracts.ShutdownAck>(stream);
                             OnShutdownAck?.Invoke(shutdownAck);
                             break;
+                        case Protocols.SERVERMONITOR_ACK:
+                            var serverMonitorAck = Serializer.Deserialize<PPNetLib.Contracts.ServerMonitorAck>(stream);
+                            OnServerMonitorAck?.Invoke(serverMonitorAck);
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }

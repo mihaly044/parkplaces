@@ -44,5 +44,8 @@ namespace ParkPlaces.Net
 
         public delegate void ShutdownAck(PPNetLib.Contracts.ShutdownAck ack);
         public event ShutdownAck OnShutdownAck;
+
+        public delegate void ServerMonitorAck(PPNetLib.Contracts.ServerMonitorAck ack);
+        public event ServerMonitorAck OnServerMonitorAck;
     }
 }

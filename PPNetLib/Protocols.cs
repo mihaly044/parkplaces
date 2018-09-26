@@ -39,6 +39,7 @@ namespace PPNetLib
         ZONEINFOUPDATED_ACK,
         LOGINDUPLICATE_ACK,
         SHUTDOWN_ACK,
-        DISCONNECT_ACK
+        DISCONNECT_ACK,
+        SERVERMONITOR_ACK
     };
 }

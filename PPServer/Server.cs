@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -25,8 +26,11 @@ namespace PPServer
         private Http.Handler _httpHandler;
         public Dto2Object Dto;
 
-        public Server(bool useHTTP = true)
+        public Server(ConsoleWriter writer, bool useHTTP = true)
         {
+            writer.WriteLineEvent += Writer_WriteLineEvent;
+            writer.WriteEvent += Writer_WriteEvent;
+
             var configSect = ConfigurationManager.GetSection("ServerConfiguration") as NameValueCollection;
 
             // ReSharper disable once PossibleNullReferenceException
@@ -54,6 +58,16 @@ namespace PPServer
                 _httpHandler = new Http.Handler(this);
                 _httpHandler.Handle();
             }
+        }
+
+        private void Writer_WriteEvent(object sender, ConsoleWriterEventArgs e)
+        {
+            BroadcastMonitorAck(e.Value);
+        }
+
+        private void Writer_WriteLineEvent(object sender, ConsoleWriterEventArgs e)
+        {
+            BroadcastMonitorAck(e.Value);
         }
 
         private void LoadData()
@@ -346,6 +360,18 @@ namespace PPServer
                 _watsonTcpServer.DisconnectClient(client);
             _watsonTcpServer.Dispose();
             Environment.Exit(0);
+        }
+
+        private void BroadcastMonitorAck(string message)
+        {
+            var clients = _watsonTcpServer.ListClients();
+            foreach (var client in clients)
+            {
+                if(CheckPrivileges(client, GroupRole.Admin))
+                {
+                    Send(client, new ServerMonitorAck() { Output = message });
+                }
+            }
         }
     }
 }
