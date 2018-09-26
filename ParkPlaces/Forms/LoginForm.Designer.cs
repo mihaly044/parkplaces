@@ -36,6 +36,8 @@
             this.btnExit = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnOfflineMode = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblServer = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,7 +54,7 @@
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(152, 45);
+            this.lblUserName.Location = new System.Drawing.Point(152, 27);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(58, 13);
             this.lblUserName.TabIndex = 1;
@@ -61,7 +63,7 @@
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(152, 71);
+            this.lblPassword.Location = new System.Drawing.Point(152, 53);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(56, 13);
             this.lblPassword.TabIndex = 2;
@@ -71,7 +73,7 @@
             // 
             this.textBoxUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBoxUserName.ForeColor = System.Drawing.Color.Blue;
-            this.textBoxUserName.Location = new System.Drawing.Point(242, 42);
+            this.textBoxUserName.Location = new System.Drawing.Point(242, 24);
             this.textBoxUserName.Name = "textBoxUserName";
             this.textBoxUserName.Size = new System.Drawing.Size(224, 20);
             this.textBoxUserName.TabIndex = 0;
@@ -82,7 +84,7 @@
             // 
             this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBoxPassword.ForeColor = System.Drawing.Color.Blue;
-            this.textBoxPassword.Location = new System.Drawing.Point(242, 68);
+            this.textBoxPassword.Location = new System.Drawing.Point(242, 50);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '•';
             this.textBoxPassword.Size = new System.Drawing.Size(224, 20);
@@ -120,12 +122,34 @@
             this.btnOfflineMode.UseVisualStyleBackColor = true;
             this.btnOfflineMode.Click += new System.EventHandler(this.btnOfflineMode_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(152, 79);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(76, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Default server:";
+            // 
+            // lblServer
+            // 
+            this.lblServer.AutoSize = true;
+            this.lblServer.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblServer.ForeColor = System.Drawing.Color.Blue;
+            this.lblServer.Location = new System.Drawing.Point(239, 79);
+            this.lblServer.Name = "lblServer";
+            this.lblServer.Size = new System.Drawing.Size(30, 13);
+            this.lblServer.TabIndex = 9;
+            this.lblServer.Text = "N/A";
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(478, 150);
+            this.Controls.Add(this.lblServer);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnOfflineMode);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnExit);
@@ -157,5 +181,7 @@
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnOfflineMode;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblServer;
     }
 }

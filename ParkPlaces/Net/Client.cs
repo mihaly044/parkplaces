@@ -25,6 +25,11 @@ namespace ParkPlaces.Net
             _serverPort = int.TryParse(ConfigurationManager.AppSettings["ServerPort"], out var port) ? port : 11000;
         }
 
+        public string GetServerAddress()
+        {
+            return _serverIp;
+        }
+
         public void Connect(bool throwsException=false)
         {
             try

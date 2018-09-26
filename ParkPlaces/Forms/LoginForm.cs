@@ -22,6 +22,7 @@ namespace ParkPlaces.Forms
             CheckForIllegalCrossThreadCalls = false;
 
             Client.Instance.Disconnect();
+            lblServer.Text = Client.Instance.GetServerAddress();
         }
 
         private void OnLoginAck(LoginAck ack)
