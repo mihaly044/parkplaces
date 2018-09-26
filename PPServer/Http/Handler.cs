@@ -17,7 +17,7 @@ namespace PPServer.Http
         private HttpServer _httpServer;
         private int _httpPort;
         private readonly Server _server;
-        private const int HTTP_SERVER_PORT = 11001;
+        private const int HTTP_SERVER_PORT = 8080;
         
         public Handler(Server server)
         {
@@ -36,7 +36,7 @@ namespace PPServer.Http
         public void Handle()
         {
             _httpServer = new HttpServer();
-            _httpServer.EndPoint = new IPEndPoint(IPAddress.Any, 11001);
+            _httpServer.EndPoint = new IPEndPoint(IPAddress.Any, _httpPort);
             _httpServer.RequestReceived += _httpServer_RequestReceived;
             _httpServer.Start();
             ConsoleKit.Message(ConsoleKit.MessageType.INFO, "HTTP server listening on {0}:{1}\n", 
