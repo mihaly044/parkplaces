@@ -21,7 +21,7 @@ namespace PPServer
 
         public User OnLoginReq(LoginReq packet, string ipPort, Dictionary<string, User> users)
         {
-            if (users.FirstOrDefault(u => u.Value.UserName == packet.Username).Value != null || packet.Monitor)
+            if(users.FirstOrDefault(u => u.Value.UserName == packet.Username).Value != null && !packet.Monitor)
             {
                 _server.Send(ipPort, new LoginDuplicateAck());
             }
