@@ -362,18 +362,15 @@ namespace PPServer
 
         private void BroadcastMonitorAck(string message)
         {
-            var enums = Enum.GetValues(typeof(ConsoleKit.MessageType));
             if (_watsonTcpServer != null)
             {
-                foreach (var type in enums)
+                if (message.IndexOf('\n') == 0)
                 {
-                    if(message.IndexOf($"[{type}]") == 0)
-                    {
-                        return;
-                    }
+                    _messageHeap = message;
+                    return;
                 }
 
-                if(_messageHeap != string.Empty)
+                if (_messageHeap != string.Empty)
                 {
                     message = _messageHeap + message;
                     _messageHeap = "";
