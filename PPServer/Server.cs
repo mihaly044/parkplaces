@@ -364,12 +364,15 @@ namespace PPServer
 
         private void BroadcastMonitorAck(string message)
         {
-            var clients = _watsonTcpServer.ListClients();
-            foreach (var client in clients)
+            if(_watsonTcpServer != null)
             {
-                if(CheckPrivileges(client, GroupRole.Admin))
+                var clients = _watsonTcpServer.ListClients();
+                foreach (var client in clients)
                 {
-                    Send(client, new ServerMonitorAck() { Output = message });
+                    if (CheckPrivileges(client, GroupRole.Admin))
+                    {
+                        Send(client, new ServerMonitorAck() { Output = message });
+                    }
                 }
             }
         }

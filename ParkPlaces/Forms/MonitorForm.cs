@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ParkPlaces.Net;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,18 @@ namespace ParkPlaces.Forms
         public MonitorForm()
         {
             InitializeComponent();
+
+            Client.Instance.OnServerMonitorAck += OnServerMonitorAck;
+        }
+
+        ~MonitorForm()
+        {
+            Client.Instance.OnServerMonitorAck -= OnServerMonitorAck;
+        }
+
+        private void OnServerMonitorAck(PPNetLib.Contracts.ServerMonitorAck ack)
+        {
+            textBox1.Text += ack.Output;
         }
 
         private void textBox1_MouseClick(object sender, MouseEventArgs e)
