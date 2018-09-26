@@ -339,9 +339,6 @@ namespace PPServer
                 ok = _authUsers[ipPort].GroupRole >= min;
             }
 
-            if(!ok)
-                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, $"Wrong permissions: {ipPort}\n");
-
             return ok;
         }
 

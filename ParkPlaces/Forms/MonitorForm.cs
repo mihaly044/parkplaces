@@ -27,13 +27,18 @@ namespace ParkPlaces.Forms
 
         private void OnServerMonitorAck(PPNetLib.Contracts.ServerMonitorAck ack)
         {
-            textBox1.Text += ack.Output;
+            listView1.Items.Add(new ListViewItem( new string[]{ $"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}", ack.Output } ));
         }
 
-        private void textBox1_MouseClick(object sender, MouseEventArgs e)
+        private void listView1_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
-                contextMenuStrip1.Show(textBox1, e.X, e.Y);
+                contextMenuStrip1.Show(listView1, e.X, e.Y);
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            listView1.Items.Clear();
         }
     }
 }

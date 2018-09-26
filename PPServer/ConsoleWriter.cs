@@ -16,18 +16,25 @@ namespace PPServer
 
     public class ConsoleWriter : TextWriter
     {
+        private TextWriter _writer;
+
+        public ConsoleWriter()
+        {
+            _writer = Console.Out;
+        }
+
         public override Encoding Encoding { get { return Encoding.UTF8; } }
 
         public override void Write(string value)
         {
             if (WriteEvent != null) WriteEvent(this, new ConsoleWriterEventArgs(value));
-            base.Write(value);
+            _writer.Write(value);
         }
 
         public override void WriteLine(string value)
         {
             if (WriteLineEvent != null) WriteLineEvent(this, new ConsoleWriterEventArgs(value));
-            base.WriteLine(value);
+            _writer.WriteLine(value);
         }
 
         public event EventHandler<ConsoleWriterEventArgs> WriteEvent;
