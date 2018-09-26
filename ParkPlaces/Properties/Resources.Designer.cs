@@ -61,40 +61,6 @@ namespace ParkPlaces.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {
-        ///    &quot;type&quot;: &quot;ZoneCollection&quot;,
-        ///    &quot;zones&quot;: [
-        ///    {
-        ///      &quot;color&quot;: &quot;#EC1C24&quot;,
-        ///      &quot;distance&quot;: 0,
-        ///      &quot;geometry&quot;: [
-        ///        {
-        ///          &quot;lat&quot;: &quot;47.10508&quot;,
-        ///          &quot;long&quot;: &quot;17.56595&quot;
-        ///        },
-        ///        {
-        ///          &quot;lat&quot;: &quot;47.10496&quot;,
-        ///          &quot;long&quot;: &quot;17.56536&quot;
-        ///        },
-        ///        {
-        ///          &quot;lat&quot;: &quot;47.10486&quot;,
-        ///          &quot;long&quot;: &quot;17.56470&quot;
-        ///        },
-        ///        {
-        ///          &quot;lat&quot;: &quot;47.10484&quot;,
-        ///          &quot;long&quot;: &quot;17.56299&quot;
-        ///        },
-        ///        {
-        ///          &quot;lat&quot;: &quot;47.10476&quot;,
-        ///          &quot;l [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string data {
-            get {
-                return ResourceManager.GetString("data", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap icon {
@@ -241,28 +207,6 @@ namespace ParkPlaces.Properties {
             get {
                 object obj = ResourceManager.GetObject("logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to SET FOREIGN_KEY_CHECKS=0;
-        ///SET SQL_MODE = &quot;NO_AUTO_VALUE_ON_ZERO&quot;;
-        ///SET time_zone = &quot;+00:00&quot;;
-        ///
-        ////*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-        ////*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-        ////*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-        ////*!40101 SET NAMES utf8 */;
-        ///
-        ///CREATE DATABASE IF NOT EXISTS `parkplaces` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-        ///USE `parkplaces`;
-        ///
-        ///CREATE TABLE IF NOT EXISTS `cities` (
-        ///`id` int(11) NOT NULL [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string parkplaces {
-            get {
-                return ResourceManager.GetString("parkplaces", resourceCulture);
             }
         }
     }
