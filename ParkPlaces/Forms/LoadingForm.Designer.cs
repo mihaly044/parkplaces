@@ -33,15 +33,11 @@ namespace ParkPlaces.Forms
         {
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.progressBar = new ParkPlaces.Controls.ProgressBarEx();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // progressBar
             // 
-            this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.progressBar.ForeColor = System.Drawing.Color.Green;
             this.progressBar.Location = new System.Drawing.Point(2, 235);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(475, 10);
@@ -72,7 +68,7 @@ namespace ParkPlaces.Forms
 
         #endregion
 
-        private ProgressBarEx progressBar;
+        private ProgressBar progressBar;
         private System.Windows.Forms.Timer timer1;
     }
 }

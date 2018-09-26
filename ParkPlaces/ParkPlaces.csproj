@@ -135,12 +135,6 @@
     <Compile Include="Controls\Map.Designer.cs">
       <DependentUpon>Map.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ProgressbarEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ProgressbarEx.Designer.cs">
-      <DependentUpon>ProgressbarEx.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\TSRenderer.cs" />
     <Compile Include="Controls\VerticleChangedArg.cs" />
     <Compile Include="Extensions\Generic.cs" />
