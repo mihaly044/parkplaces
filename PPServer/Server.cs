@@ -389,7 +389,7 @@ namespace PPServer
                 if(_messageHeap != string.Empty)
                 {
                     message = _messageHeap + message;
-                    _messageHeap = "";
+                    _messageHeap = string.Empty;
                 }
 
                 var clients = _watsonTcpServer.ListClients();
