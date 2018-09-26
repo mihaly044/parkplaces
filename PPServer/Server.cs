@@ -26,6 +26,7 @@ namespace PPServer
         private Http.Handler _httpHandler;
         public Dto2Object Dto;
         private string _messageHeap;
+        private Array _messageTypes;
 
         public Server(ConsoleWriter writer, bool useHTTP = true)
         {
@@ -59,6 +60,8 @@ namespace PPServer
                 _httpHandler = new Http.Handler(this);
                 _httpHandler.Handle();
             }
+
+            _messageTypes = Enum.GetValues(typeof(ConsoleKit.MessageType));
         }
 
         private void Writer_WriteEvent(object sender, ConsoleWriterEventArgs e)
@@ -362,12 +365,12 @@ namespace PPServer
 
         private void BroadcastMonitorAck(string message)
         {
-            var enums = Enum.GetValues(typeof(ConsoleKit.MessageType));
+            
             if (_watsonTcpServer != null)
             {
                 foreach (var type in enums)
                 {
-                    if(message.IndexOf($"[{type}] ") == 0)
+                    if(message.IndexOf($"[{type}]") == 0)
                     {
                         return;
                     }
