@@ -37,7 +37,7 @@ namespace PPServer.Database
                             {
                                 GroupRole = groupRole,
                                 IsAuthenticated = groupRole > GroupRole.Guest,
-                                CreatorId = int.Parse(reader["creatorid"].ToString())
+                                CreatorId = (int)reader["creatorid"]
                             };
                         }
                     }
@@ -56,7 +56,7 @@ namespace PPServer.Database
             var usersList = new List<User>();
 
             using (var cmd = new MySqlCommand("SELECT * FROM users")
-                { Connection = GetConnection() })
+            { Connection = GetConnection() })
             {
                 var rd = await cmd.ExecuteReaderAsync();
                 while (await rd.ReadAsync())
@@ -64,7 +64,8 @@ namespace PPServer.Database
                     usersList.Add(new User(rd["username"].ToString(), (int)rd["id"])
                     {
                         UserName = rd["username"].ToString(),
-                        GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), rd["groupid"].ToString())
+                        GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), rd["groupid"].ToString()),
+                        CreatorId = (int)rd["creatorid"]
                     });
                 }
             }
@@ -79,7 +80,7 @@ namespace PPServer.Database
         public async void RemoveUser(int userId)
         {
             using (var cmd = new MySqlCommand("DELETE FROM users WHERE id = @id")
-                { Connection = GetConnection() })
+            { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@id", userId);
                 await cmd.ExecuteNonQueryAsync();
@@ -108,7 +109,7 @@ namespace PPServer.Database
         public void UpdateUser(User user)
         {
             using (var cmd = new MySqlCommand("UPDATE users SET username = @username, groupid = @groupid, creatorid = @creatorid WHERE id = @id")
-                { Connection = GetConnection() })
+            { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@username", user.UserName);
                 cmd.Parameters.AddWithValue("@id", user.Id);
@@ -121,7 +122,7 @@ namespace PPServer.Database
             if (user.Password != null)
             {
                 using (var cmd = new MySqlCommand("UPDATE users SET password = @password WHERE id = @id")
-                    { Connection = GetConnection() })
+                { Connection = GetConnection() })
                 {
                     cmd.Parameters.AddWithValue("@password", Crypter.Blowfish.Crypt(user.Password));
                     cmd.Parameters.AddWithValue("@id", user.Id);
@@ -138,7 +139,7 @@ namespace PPServer.Database
         private User GetUserData(int id)
         {
             using (var cmd = new MySqlCommand("SELECT * FROM users WHERE id = @id")
-                { Connection = GetConnection() })
+            { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@id", id);
                 using (var reader = cmd.ExecuteReader())
@@ -179,7 +180,7 @@ namespace PPServer.Database
         public void InsertUser(User user, int creatorId)
         {
             using (var cmd = new MySqlCommand("INSERT INTO users (username, password, groupid, creatorid) VALUES (@username, @password, @groupid, @creatorid)")
-                { Connection = GetConnection() })
+            { Connection = GetConnection() })
             {
                 cmd.Parameters.AddWithValue("@username", user.UserName);
                 cmd.Parameters.AddWithValue("@password", Crypter.Blowfish.Crypt(user.Password));
