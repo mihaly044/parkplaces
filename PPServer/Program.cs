@@ -7,7 +7,7 @@ namespace PPServer
        static void Main(string[] args)
        {
             var writer = new ConsoleWriter();
-            //Console.SetOut(writer);
+            Console.SetOut(writer);
 
             var server = new Server(writer);
             server.Listen();
