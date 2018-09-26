@@ -47,5 +47,8 @@ namespace PPNetClient
 
         public delegate void ServerMonitorAck(PPNetLib.Contracts.ServerMonitorAck ack);
         public event ServerMonitorAck OnServerMonitorAck;
+
+        public delegate void OnlineUsersAck(PPNetLib.Contracts.SynchroniseAcks.OnlineUsersAck ack);
+        public event OnlineUsersAck OnOnlineUsersAck;
     }
 }

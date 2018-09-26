@@ -13,6 +13,7 @@ using PPNetLib.Prototypes;
 using PPServer.Database;
 using ProtoBuf;
 using PPNetLib.Tcp;
+using PPNetLib.Contracts.SynchroniseAcks;
 
 namespace PPServer
 {
@@ -133,6 +134,7 @@ namespace PPServer
         {
             _authUsers.Remove(ipPort);
             ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Client disconnected: {0}\n", ipPort);
+            BroadcastOnlineUsersAck();
             return true;
         }
 
@@ -167,6 +169,8 @@ namespace PPServer
                             {
                                 if (!_authUsers.ContainsKey(ipPort))
                                     _authUsers.Add(ipPort, user);
+
+                                BroadcastOnlineUsersAck();
                             }
                             break;
 
@@ -277,6 +281,13 @@ namespace PPServer
                             _handler.IsDuplicateUserReq(isDuplicateUserReq, ipPort);
                             break;
 
+                        case Protocols.ONLINEUSERS_REQ:
+                            if(!IsMonitor(ipPort))
+                                goto default;
+
+                            _handler.OnOnlineUsersReq(ipPort);
+                            break;
+
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
                             ConsoleKit.Message(ConsoleKit.MessageType.ERROR, "Invalid message from {0}\n", ipPort);
@@ -357,6 +368,16 @@ namespace PPServer
             return ok;
         }
 
+        public List<string> GetClients()
+        {
+            return _watsonTcpServer.ListClients();
+        }
+
+        public List<User> GetAuthUsers()
+        {
+            return _authUsers.Values.ToList();
+        }
+
         public async void AnnounceShutdownAck(int seconds, bool shutdown = true)
         {
             SendToEveryone(new ShutdownAck() { Seconds = seconds });
@@ -399,6 +420,18 @@ namespace PPServer
                     {
                         Send(client, new ServerMonitorAck() { Output = message });
                     }
+                }
+            }
+        }
+
+        private void BroadcastOnlineUsersAck()
+        {
+            var clients = _watsonTcpServer.ListClients();
+            foreach (var client in clients)
+            {
+                if (IsMonitor(client))
+                {
+                    Send(client, new OnlineUsersAck() { OnlineUsersList = GetAuthUsers() });
                 }
             }
         }

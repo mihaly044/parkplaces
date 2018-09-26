@@ -79,8 +79,11 @@ namespace PPNetLib.Prototypes
         [ProtoMember(7)]
         public string Password { get; set; }
 
-        [ProtoIgnore]
+        [ProtoMember(7)]
         public bool Monitor { get; set; }
+
+        [ProtoMember(8)]
+        public string IpPort { get; set; }
 
         public override string ToString()
         {

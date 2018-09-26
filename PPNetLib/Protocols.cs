@@ -40,6 +40,8 @@ namespace PPNetLib
         LOGINDUPLICATE_ACK,
         SHUTDOWN_ACK,
         DISCONNECT_ACK,
-        SERVERMONITOR_ACK
+        SERVERMONITOR_ACK,
+        ONLINEUSERS_REQ,
+        ONLINEUSERS_ACK
     };
 }

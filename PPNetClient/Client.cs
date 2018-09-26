@@ -157,6 +157,10 @@ namespace PPNetClient
                             var serverMonitorAck = Serializer.Deserialize<PPNetLib.Contracts.ServerMonitorAck>(stream);
                             OnServerMonitorAck?.Invoke(serverMonitorAck);
                             break;
+                        case Protocols.ONLINEUSERS_ACK:
+                            var onlineUsersAck = Serializer.Deserialize<PPNetLib.Contracts.SynchroniseAcks.OnlineUsersAck>(stream);
+                            OnOnlineUsersAck?.Invoke(onlineUsersAck);
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }

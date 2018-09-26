@@ -33,6 +33,7 @@ namespace PPServer
                 if(user != null)
                 {
                     user.Monitor = packet.Monitor;
+                    user.IpPort = ipPort;
                 }
 
                 ack.User = user;
@@ -238,6 +239,11 @@ namespace PPServer
             var user = packet.User;
             var isDuplicateUser = Sql.Instance.IsDuplicateUser(user);
             _server.Send(ipPort, new IsDuplicateUserAck(){ IsDuplicateUser = isDuplicateUser });
+        }
+
+        public void OnOnlineUsersReq(string ipPort)
+        {
+            _server.Send(ipPort, new OnlineUsersAck(){ OnlineUsersList = _server.GetAuthUsers()});
         }
     }
 }
