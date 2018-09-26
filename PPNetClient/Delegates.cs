@@ -2,7 +2,7 @@
 
 #pragma warning disable 67
 
-namespace ParkPlaces.Net
+namespace PPNetClient
 {
     public partial class Client
     {

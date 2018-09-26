@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using PPNetLib.Contracts;
-using ParkPlaces.Net;
+using PPNetClient;
 using System.Collections.Generic;
 using System.Threading;
 using Newtonsoft.Json;

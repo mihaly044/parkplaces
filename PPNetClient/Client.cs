@@ -1,12 +1,11 @@
 ﻿using PPNetLib;
 using ProtoBuf;
 using System;
-using System.Configuration;
 using System.IO;
 using watsontcp_dotnetcore.Tcp;
 using System.Diagnostics;
 
-namespace ParkPlaces.Net
+namespace PPNetClient
 {
     public partial class Client
     {
@@ -14,15 +13,24 @@ namespace ParkPlaces.Net
         public static Client Instance => _instance ?? (_instance = new Client());
 
         private WatsonTcpClient _watsonTcpClient;
-        private readonly string _serverIp;
-        private readonly int _serverPort;
+        private string _serverIp;
+        private int _serverPort;
         private bool _offlineMode;
         private bool _forceDisconnect;
 
         public Client()
         {
-            _serverIp = ConfigurationManager.AppSettings["ServerIP"];
-            _serverPort = int.TryParse(ConfigurationManager.AppSettings["ServerPort"], out var port) ? port : 11000;
+           
+        }
+
+        public void SetIp(string serverIp)
+        {
+            _serverIp = serverIp;
+        }
+
+        public void SetPort(int serverPort)
+        {
+            _serverPort = serverPort;
         }
 
         public string GetServerAddress()

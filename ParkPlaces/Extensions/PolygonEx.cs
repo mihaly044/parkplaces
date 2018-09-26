@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 
 using ParkPlaces.Map_shapes;
-using ParkPlaces.Net;
+using PPNetClient;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
 

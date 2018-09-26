@@ -4,9 +4,10 @@ using System.Windows.Forms;
 using GMap.NET.MapProviders;
 using ParkPlaces.Map_shapes;
 using ParkPlaces.Controls;
-using ParkPlaces.Net;
+using PPNetClient;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
+using System.Configuration;
 // ReSharper disable MethodSupportsCancellation
 
 namespace ParkPlaces.Forms
@@ -29,6 +30,9 @@ namespace ParkPlaces.Forms
             //IoHandler.Instance.OnUpdateChangedEventHandler += OnUpdateChangedEventHandler;
             Client.Instance.OnConnectionError += OnConnectionError;
             Client.Instance.OnShutdownAck += OnShutdownAck;
+            Client.Instance.SetIp(ConfigurationManager.AppSettings["ServerIP"]);
+            Client.Instance.SetPort(int.TryParse(ConfigurationManager.AppSettings["ServerPort"], out var port) ? port : 11000);
+
             Map.OnStartWaiting += MapOnStartWaiting;
             Map.OnStopWaiting += MapOnStopWaiting;
         }

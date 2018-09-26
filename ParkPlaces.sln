@@ -7,11 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkPlaces", "ParkPlaces\Pa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkPlacesTests", "ParkPlacesTests\ParkPlacesTests.csproj", "{3470BFB7-0EE3-4E2D-8165-AA65821166CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParkPlaces.DotUtils", "ParkPlaces.DotUtils\ParkPlaces.DotUtils.csproj", "{51FEEF46-427A-4A07-81DF-AAF2904F8828}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParkPlaces.DotUtils", "ParkPlaces.DotUtils\ParkPlaces.DotUtils.csproj", "{51FEEF46-427A-4A07-81DF-AAF2904F8828}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPNetLib", "PPNetLib\PPNetLib.csproj", "{485A0ECC-402B-4D48-8A2E-DD3D7CCF9DFD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPServer", "PPServer\PPServer.csproj", "{6028E6C4-76A8-41CB-AD37-2C0E2D05D655}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPAdmin", "PPAdmin\PPAdmin.csproj", "{139C96BB-FDD7-4EE9-A8E6-6ABF5F54BC0F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PPNetClient", "PPNetClient\PPNetClient.csproj", "{644CE5C0-0EE2-4AF4-987A-228E990E5096}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,22 @@ Global
 		{6028E6C4-76A8-41CB-AD37-2C0E2D05D655}.Publish-win-x86|Any CPU.Build.0 = Publish-win-x86|Any CPU
 		{6028E6C4-76A8-41CB-AD37-2C0E2D05D655}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6028E6C4-76A8-41CB-AD37-2C0E2D05D655}.Release|Any CPU.Build.0 = Release|Any CPU
+		{139C96BB-FDD7-4EE9-A8E6-6ABF5F54BC0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{139C96BB-FDD7-4EE9-A8E6-6ABF5F54BC0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{139C96BB-FDD7-4EE9-A8E6-6ABF5F54BC0F}.Publish-linux-x64|Any CPU.ActiveCfg = Release|Any CPU
+		{139C96BB-FDD7-4EE9-A8E6-6ABF5F54BC0F}.Publish-linux-x64|Any CPU.Build.0 = Release|Any CPU
+		{139C96BB-FDD7-4EE9-A8E6-6ABF5F54BC0F}.Publish-win-x86|Any CPU.ActiveCfg = Release|Any CPU
+		{139C96BB-FDD7-4EE9-A8E6-6ABF5F54BC0F}.Publish-win-x86|Any CPU.Build.0 = Release|Any CPU
+		{139C96BB-FDD7-4EE9-A8E6-6ABF5F54BC0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{139C96BB-FDD7-4EE9-A8E6-6ABF5F54BC0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{644CE5C0-0EE2-4AF4-987A-228E990E5096}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{644CE5C0-0EE2-4AF4-987A-228E990E5096}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{644CE5C0-0EE2-4AF4-987A-228E990E5096}.Publish-linux-x64|Any CPU.ActiveCfg = Debug|Any CPU
+		{644CE5C0-0EE2-4AF4-987A-228E990E5096}.Publish-linux-x64|Any CPU.Build.0 = Debug|Any CPU
+		{644CE5C0-0EE2-4AF4-987A-228E990E5096}.Publish-win-x86|Any CPU.ActiveCfg = Debug|Any CPU
+		{644CE5C0-0EE2-4AF4-987A-228E990E5096}.Publish-win-x86|Any CPU.Build.0 = Debug|Any CPU
+		{644CE5C0-0EE2-4AF4-987A-228E990E5096}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{644CE5C0-0EE2-4AF4-987A-228E990E5096}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
