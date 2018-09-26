@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 namespace PPNetLib.Extensions
 {
@@ -8,7 +6,7 @@ namespace PPNetLib.Extensions
     {
         public static byte ComputeAdditionChecksum(this byte[] data)
         {
-            long longSum = data.Sum(x => (long)x);
+            var longSum = data.Sum(x => (long)x);
             return unchecked((byte)longSum);
         }
     }

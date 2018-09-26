@@ -64,7 +64,6 @@ namespace ParkPlaces.Forms
             this.coordinateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveButton = new System.Windows.Forms.ToolStripButton();
-            this.monitorServerMessagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -290,8 +289,7 @@ namespace ParkPlaces.Forms
             // adminToolStripMenuItem
             // 
             this.adminToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.manageUsersToolStripMenuItem,
-            this.monitorServerMessagesToolStripMenuItem});
+            this.manageUsersToolStripMenuItem});
             this.adminToolStripMenuItem.Name = "adminToolStripMenuItem";
             this.adminToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.adminToolStripMenuItem.Text = "Admin";
@@ -300,7 +298,7 @@ namespace ParkPlaces.Forms
             // 
             this.manageUsersToolStripMenuItem.Image = global::ParkPlaces.Properties.Resources.if_Users_85409;
             this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
-            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.manageUsersToolStripMenuItem.Text = "Manage users";
             this.manageUsersToolStripMenuItem.Click += new System.EventHandler(this.manageUsersToolStripMenuItem_Click);
             // 
@@ -387,13 +385,6 @@ namespace ParkPlaces.Forms
             this.saveButton.Text = "Save to database";
             this.saveButton.Click += new System.EventHandler(this.SaveButton_ClickAsync);
             // 
-            // monitorServerMessagesToolStripMenuItem
-            // 
-            this.monitorServerMessagesToolStripMenuItem.Name = "monitorServerMessagesToolStripMenuItem";
-            this.monitorServerMessagesToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.monitorServerMessagesToolStripMenuItem.Text = "Monitor server messages";
-            this.monitorServerMessagesToolStripMenuItem.Click += new System.EventHandler(this.monitorServerMessagesToolStripMenuItem_Click);
-            // 
             // ParkPlacesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -456,7 +447,6 @@ namespace ParkPlaces.Forms
         private ToolStripButton saveButton;
         private ToolStripMenuItem adminToolStripMenuItem;
         private ToolStripMenuItem manageUsersToolStripMenuItem;
-        private ToolStripMenuItem monitorServerMessagesToolStripMenuItem;
     }
 }
 

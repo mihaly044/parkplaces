@@ -459,10 +459,5 @@ namespace ParkPlaces.Forms
                 e.Cancel = result == DialogResult.No; 
             }
         }
-
-        private void monitorServerMessagesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new MonitorForm().Show();
-        }
     }
 }

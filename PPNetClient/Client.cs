@@ -2,8 +2,9 @@
 using ProtoBuf;
 using System;
 using System.IO;
-using watsontcp_dotnetcore.Tcp;
+using PPNetLib.Tcp;
 using System.Diagnostics;
+using PPNetLib.Tcp;
 
 namespace PPNetClient
 {
@@ -17,11 +18,6 @@ namespace PPNetClient
         private int _serverPort;
         private bool _offlineMode;
         private bool _forceDisconnect;
-
-        public Client()
-        {
-           
-        }
 
         public void SetIp(string serverIp)
         {

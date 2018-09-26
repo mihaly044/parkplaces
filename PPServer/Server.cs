@@ -12,7 +12,7 @@ using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
 using PPServer.Database;
 using ProtoBuf;
-using watsontcp_dotnetcore.Tcp;
+using PPNetLib.Tcp;
 
 namespace PPServer
 {
@@ -26,9 +26,9 @@ namespace PPServer
         private Http.Handler _httpHandler;
         public Dto2Object Dto;
         private string _messageHeap;
-        private Array _messageTypes;
+        private readonly Array _messageTypes;
 
-        public Server(ConsoleWriter writer, bool useHTTP = true)
+        public Server(ConsoleWriter writer, bool useHttp = true)
         {
             writer.WriteLineEvent += Writer_WriteLineEvent;
             writer.WriteEvent += Writer_WriteEvent;
@@ -55,7 +55,7 @@ namespace PPServer
 
             LoadData();
 
-            if (useHTTP)
+            if (useHttp)
             {
                 _httpHandler = new Http.Handler(this);
                 _httpHandler.Handle();
