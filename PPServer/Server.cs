@@ -25,6 +25,7 @@ namespace PPServer
         private readonly Dictionary<string, User> _authUsers;
         private Http.Handler _httpHandler;
         public Dto2Object Dto;
+        private string _messageHeap;
 
         public Server(ConsoleWriter writer, bool useHTTP = true)
         {
@@ -361,8 +362,23 @@ namespace PPServer
 
         private void BroadcastMonitorAck(string message)
         {
-            if(_watsonTcpServer != null)
+            var enums = Enum.GetValues(typeof(ConsoleKit.MessageType));
+            if (_watsonTcpServer != null)
             {
+                foreach (var type in enums)
+                {
+                    if(message.IndexOf($"[{type}]") == 0)
+                    {
+                        return;
+                    }
+                }
+
+                if(_messageHeap != string.Empty)
+                {
+                    message = _messageHeap + message;
+                    _messageHeap = "";
+                }
+
                 var clients = _watsonTcpServer.ListClients();
                 foreach (var client in clients)
                 {
