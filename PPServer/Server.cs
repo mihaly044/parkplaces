@@ -367,7 +367,7 @@ namespace PPServer
             {
                 foreach (var type in enums)
                 {
-                    if(message.IndexOf($"[{type}]") == 0)
+                    if(message.IndexOf($"[{type}] ") == 0)
                     {
                         return;
                     }
