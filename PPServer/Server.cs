@@ -326,6 +326,11 @@ namespace PPServer
                 Send(client, packet);
         }
 
+        public bool Send<T>(User user, T packet) where T: Packet
+        {
+            return Send(user.IpPort, packet);
+        }
+
         public bool Send<T>(string ipPort, T packet) where T: Packet
         {
             var packetId = (int)packet.PacketId;
