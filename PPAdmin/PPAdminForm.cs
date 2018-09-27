@@ -14,11 +14,12 @@ namespace PPAdmin
         {
             InitializeComponent();
             Client.Instance.OnServerMonitorAck += OnServerMonitorAck;
+            Client.Instance.OnConnectionError += OnConnectionError;
         }
 
-        ~PpAdminForm()
+        private void OnConnectionError(Exception e)
         {
-            Client.Instance.OnServerMonitorAck -= OnServerMonitorAck;
+            Logout();
         }
 
         private void OnServerMonitorAck(ServerMonitorAck ack)
@@ -46,6 +47,8 @@ namespace PPAdmin
                 Application.Exit();
                 return;
             }
+
+            _loggedInUser = loginForm.User;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -60,6 +63,17 @@ namespace PPAdmin
             UpdateMessagesCountLabel();
         }
 
+        private void CloseAllForms()
+        {
+            var fc = Application.OpenForms;
+            if (fc.Count > 1)
+                for (var i = fc.Count; i > 1; i--)
+                {
+                    var selectedForm = Application.OpenForms[i - 1];
+                    selectedForm.Close();
+                }
+        }
+
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Hide();
@@ -69,6 +83,7 @@ namespace PPAdmin
 
         private void Logout()
         {
+            CloseAllForms();
             Client.Instance.Disconnect();
         }
 
