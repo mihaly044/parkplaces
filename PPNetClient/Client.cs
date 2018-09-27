@@ -160,6 +160,9 @@ namespace PPNetClient
                             var onlineUsersAck = Serializer.Deserialize<PPNetLib.Contracts.Monitor.OnlineUsersAck>(stream);
                             OnOnlineUsersAck?.Invoke(onlineUsersAck);
                             break;
+                        case Protocols.ABORTSESSION_ACK:
+                            OnConnectionError?.Invoke(new Exception("Session aborted"));
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }

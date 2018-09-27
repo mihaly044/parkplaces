@@ -329,6 +329,7 @@ namespace PPServer
 
         public void DisconnectUser(string ipPort)
         {
+            Send(ipPort, new AbortSessionAck());
             _watsonTcpServer.DisconnectClient(ipPort);
         }
 
