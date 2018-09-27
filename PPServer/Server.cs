@@ -146,13 +146,14 @@ namespace PPServer
         {
             if (data == null || data.Length <= 0) return false;
 
-            var possibleBannedUser = _bannedIps.FirstOrDefault(ip => ip.IpPort == ipPort);
+            var ipOnly = ipPort.Split(':')[0];
+            var possibleBannedUser = _bannedIps.FirstOrDefault(ip => ip.IpPort == ipOnly);
             if(possibleBannedUser != null)
             {
                 if (possibleBannedUser.HasExpired())
                     _bannedIps.Remove(possibleBannedUser);
                 else if (possibleBannedUser.Tries >= 10)
-                    throw new Exception($"Refused to communicate with {ipPort}.");
+                    throw new Exception($"Refused to communicate with {ipOnly}.");
             } 
 
             try
@@ -200,7 +201,7 @@ namespace PPServer
                             }
                             else
                             {
-                                _bannedIps.Add(new PossibleBannedIp(ipPort));
+                                _bannedIps.Add(new PossibleBannedIp(ipOnly));
                             }
                             break;
 
