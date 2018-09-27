@@ -39,8 +39,6 @@
             this.clearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onlineUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.suspendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resumeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
@@ -124,9 +122,7 @@
             // serverToolStripMenuItem
             // 
             this.serverToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.onlineUsersToolStripMenuItem,
-            this.suspendToolStripMenuItem,
-            this.resumeToolStripMenuItem});
+            this.onlineUsersToolStripMenuItem});
             this.serverToolStripMenuItem.Name = "serverToolStripMenuItem";
             this.serverToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.serverToolStripMenuItem.Text = "Server";
@@ -137,19 +133,6 @@
             this.onlineUsersToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.onlineUsersToolStripMenuItem.Text = "Online users";
             this.onlineUsersToolStripMenuItem.Click += new System.EventHandler(this.onlineUsersToolStripMenuItem_Click);
-            // 
-            // suspendToolStripMenuItem
-            // 
-            this.suspendToolStripMenuItem.Name = "suspendToolStripMenuItem";
-            this.suspendToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.suspendToolStripMenuItem.Text = "Suspend";
-            // 
-            // resumeToolStripMenuItem
-            // 
-            this.resumeToolStripMenuItem.Enabled = false;
-            this.resumeToolStripMenuItem.Name = "resumeToolStripMenuItem";
-            this.resumeToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.resumeToolStripMenuItem.Text = "Resume";
             // 
             // statusStrip1
             // 
@@ -201,8 +184,6 @@
         private System.Windows.Forms.ToolStripMenuItem logoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem serverToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem onlineUsersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem suspendToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem resumeToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
