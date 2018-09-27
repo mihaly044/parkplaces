@@ -284,7 +284,6 @@ namespace PPServer
                         case Protocols.ONLINEUSERS_REQ:
                             if(!IsMonitor(ipPort))
                                 goto default;
-
                             _handler.OnOnlineUsersReq(ipPort);
                             break;
 
