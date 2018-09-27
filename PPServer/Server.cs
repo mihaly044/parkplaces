@@ -24,11 +24,13 @@ namespace PPServer
         private readonly string _ip;
         private readonly int _port;
         private readonly Handler _handler;
+        private readonly Array _messageTypes;
+        private readonly List<PossibleBannedIp> _bannedIps;
+
         private WatsonTcpServer _watsonTcpServer;
         private readonly Dictionary<string, User> _authUsers;
         private Http.Handler _httpHandler;
-        private string _messageHeap;
-        private readonly Array _messageTypes;
+        private string _messageHeap;  
 
         public Server(ConsoleWriter writer, bool useHttp = true)
         {
@@ -53,6 +55,7 @@ namespace PPServer
             _port = int.Parse(configSect["Port"]);
             _handler = new Handler(this);
             _authUsers = new Dictionary<string, User>();
+            _bannedIps = new List<PossibleBannedIp>();
             PrintAsciiArtLogo();
 
             LoadData();
@@ -143,6 +146,15 @@ namespace PPServer
         {
             if (data == null || data.Length <= 0) return false;
 
+            var possibleBannedUser = _bannedIps.FirstOrDefault(ip => ip.IpPort == ipPort);
+            if(possibleBannedUser != null)
+            {
+                if (possibleBannedUser.HasExpired())
+                    _bannedIps.Remove(possibleBannedUser);
+                else if (possibleBannedUser.Tries >= 10)
+                    throw new Exception($"Refused to communicate with {ipPort}.");
+            } 
+
             try
             {
                 using (var stream = new MemoryStream(data))
@@ -181,6 +193,14 @@ namespace PPServer
                                     _authUsers.Add(ipPort, user);
 
                                 BroadcastOnlineUsersAck();
+                            }
+                            else if(possibleBannedUser != null)
+                            {
+                                possibleBannedUser.Try();
+                            }
+                            else
+                            {
+                                _bannedIps.Add(new PossibleBannedIp(ipPort))
                             }
                             break;
 
