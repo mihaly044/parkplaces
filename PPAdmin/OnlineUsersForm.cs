@@ -2,8 +2,7 @@
 using PPNetLib.Prototypes;
 using System;
 using System.Windows.Forms;
-using PPNetLib.Contracts;
-using PPNetLib.Contracts.SynchroniseAcks;
+using PPNetLib.Contracts.Monitor;
 
 namespace PPAdmin
 {
@@ -34,6 +33,22 @@ namespace PPAdmin
                     client.Monitor ? "Yes" : "No"
                 }));
             }
+        }
+
+        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (listView1.FocusedItem.Bounds.Contains(e.Location))
+                {
+                    contextMenuStrip1.Show(listView1, e.X, e.Y);
+                }
+            }
+        }
+
+        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var ipPort = listView1.FocusedItem.SubItems[1];
         }
     }
 }
