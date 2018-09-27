@@ -90,7 +90,7 @@ namespace PPAdmin
 
         private void onlineUsersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new OnlineUsersForm().Show();
+            new OnlineUsersForm().ShowDialog();
         }
 
         private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
