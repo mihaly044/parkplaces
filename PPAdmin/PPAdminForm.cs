@@ -97,5 +97,10 @@ namespace PPAdmin
         {
             new ManageUsersForm(_loggedInUser).ShowDialog(this);
         }
+
+        private void bannedUsersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new BannedIPsForm().ShowDialog(this);
+        }
     }
 }

@@ -163,6 +163,10 @@ namespace PPNetClient
                         case Protocols.ABORTSESSION_ACK:
                             OnConnectionError?.Invoke(new Exception("Session aborted"));
                             break;
+                        case Protocols.LISTBANNEDIPS_ACK:
+                            var listBannedIps = Serializer.Deserialize<PPNetLib.Contracts.Monitor.ListBannedIpsAck>(stream);
+                            OnListBannedIpsAck?.Invoke(listBannedIps);
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }

@@ -50,5 +50,8 @@ namespace PPNetClient
 
         public delegate void OnlineUsersAck(PPNetLib.Contracts.Monitor.OnlineUsersAck ack);
         public event OnlineUsersAck OnOnlineUsersAck;
+
+        public delegate void ListBannedIpsAck(PPNetLib.Contracts.Monitor.ListBannedIpsAck ack);
+        public event ListBannedIpsAck OnListBannedIpsAck;
     }
 }

@@ -58,6 +58,12 @@
     <Compile Include="LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="User management\BannedIPsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="User management\BannedIPsForm.Designer.cs">
+      <DependentUpon>BannedIPsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="User management\OnlineUsersForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,9 @@
     </Compile>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="User management\BannedIPsForm.resx">
+      <DependentUpon>BannedIPsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="User management\OnlineUsersForm.resx">
       <DependentUpon>OnlineUsersForm.cs</DependentUpon>

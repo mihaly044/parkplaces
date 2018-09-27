@@ -39,9 +39,10 @@
             this.clearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onlineUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manageUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.manageUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bannedUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -116,7 +117,7 @@
             // clearLogToolStripMenuItem
             // 
             this.clearLogToolStripMenuItem.Name = "clearLogToolStripMenuItem";
-            this.clearLogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.clearLogToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.clearLogToolStripMenuItem.Text = "Clear log";
             this.clearLogToolStripMenuItem.Click += new System.EventHandler(this.clearLogToolStripMenuItem_Click);
             // 
@@ -124,6 +125,7 @@
             // 
             this.serverToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.onlineUsersToolStripMenuItem,
+            this.bannedUsersToolStripMenuItem,
             this.manageUsersToolStripMenuItem});
             this.serverToolStripMenuItem.Name = "serverToolStripMenuItem";
             this.serverToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
@@ -135,6 +137,13 @@
             this.onlineUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.onlineUsersToolStripMenuItem.Text = "Online users";
             this.onlineUsersToolStripMenuItem.Click += new System.EventHandler(this.onlineUsersToolStripMenuItem_Click);
+            // 
+            // manageUsersToolStripMenuItem
+            // 
+            this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
+            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.manageUsersToolStripMenuItem.Text = "Manage users";
+            this.manageUsersToolStripMenuItem.Click += new System.EventHandler(this.manageUsersToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -152,12 +161,12 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(99, 17);
             this.toolStripStatusLabel1.Text = "Message count: 0";
             // 
-            // manageUsersToolStripMenuItem
+            // bannedUsersToolStripMenuItem
             // 
-            this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
-            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.manageUsersToolStripMenuItem.Text = "Manage users";
-            this.manageUsersToolStripMenuItem.Click += new System.EventHandler(this.manageUsersToolStripMenuItem_Click);
+            this.bannedUsersToolStripMenuItem.Name = "bannedUsersToolStripMenuItem";
+            this.bannedUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bannedUsersToolStripMenuItem.Text = "Banned users";
+            this.bannedUsersToolStripMenuItem.Click += new System.EventHandler(this.bannedUsersToolStripMenuItem_Click);
             // 
             // PpAdminForm
             // 
@@ -196,6 +205,7 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem manageUsersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bannedUsersToolStripMenuItem;
     }
 }
 
