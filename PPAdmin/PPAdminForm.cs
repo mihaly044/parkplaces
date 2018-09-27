@@ -21,6 +21,13 @@ namespace PPAdmin
         private void OnServerMonitorAck(ServerMonitorAck ack)
         {
             listView1.Items.Add(new ListViewItem(new string[] { $"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}", ack.Output }));
+            listView1.Items[listView1.Items.Count - 1].EnsureVisible();
+            UpdateMessagesCountLabel();
+        }
+
+        private void UpdateMessagesCountLabel()
+        {
+            toolStripStatusLabel1.Text = $"Message count: {listView1.Items.Count}";
         }
 
         private void PPAdminForm_Load(object sender, EventArgs e)
@@ -46,6 +53,7 @@ namespace PPAdmin
 
         private void clearLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            UpdateMessagesCountLabel();
             listView1.Items.Clear();
         }
 
