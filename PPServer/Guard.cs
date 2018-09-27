@@ -171,7 +171,7 @@ namespace PPServer
         public void UnbanIp(string ipAddress)
         {
             var ip = _bannedIps.FirstOrDefault(x => x.IpPort.Split(':')[0] == ipAddress);
-            if (ip == null)
+            if (ip != null)
                 _bannedIps.Remove(ip);
         }
     }
