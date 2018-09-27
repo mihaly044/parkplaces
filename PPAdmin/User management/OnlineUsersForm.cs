@@ -51,5 +51,11 @@ namespace PPAdmin
             var ipPort = listView1.FocusedItem.SubItems[1];
             Client.Instance.Send(new DisconnectUserReq() { IpPort = ipPort.Text });
         }
+
+        private void banToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var ipPort = listView1.FocusedItem.SubItems[1];
+            Client.Instance.Send(new BanIpAddressReq() { IpAddress = ipPort.Text });
+        }
     }
 }
