@@ -149,8 +149,8 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(115, 17);
-            this.toolStripStatusLabel1.Text = "Message count: N/A";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(99, 17);
+            this.toolStripStatusLabel1.Text = "Message count: 0";
             // 
             // updateDataToolStripMenuItem
             // 

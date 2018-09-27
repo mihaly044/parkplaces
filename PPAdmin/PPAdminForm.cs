@@ -56,8 +56,8 @@ namespace PPAdmin
 
         private void clearLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdateMessagesCountLabel();
             listView1.Items.Clear();
+            UpdateMessagesCountLabel();
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
