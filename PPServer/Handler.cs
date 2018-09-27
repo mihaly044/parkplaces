@@ -259,5 +259,10 @@ namespace PPServer
             var bannedIps = _server.Guard.GetBannedIps();
             _server.Send(user, new ListBannedIpsAck() { BannedIps = bannedIps });
         }
+
+        public void OnUnbanIPAddressReq(UnbanIPAddressReq packet)
+        {
+            _server.Guard.UnbanIp(packet.IpAddress.Split(':')[0]);
+        }
     }
 }

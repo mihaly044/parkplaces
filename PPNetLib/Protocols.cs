@@ -46,6 +46,7 @@ namespace PPNetLib
         ABORTSESSION_ACK,
         BANIPADDRESS_REQ,
         LISTBANNEDIPS_REQ,
-        LISTBANNEDIPS_ACK
+        LISTBANNEDIPS_ACK,
+        UNBANIPADDRESS_REQ
     };
 }

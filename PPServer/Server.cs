@@ -332,6 +332,14 @@ namespace PPServer
                             _handler.OnListBannedIPsReq(user);
                             break;
 
+                        case Protocols.UNBANIPADDRESS_REQ:
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
+                                goto default;
+
+                            var unbanIpAddressReq = Serializer.Deserialize<UnbanIPAddressReq>(stream);
+                            _handler.OnUnbanIPAddressReq(unbanIpAddressReq);
+                            break;
+
                         default:
                             Guard.TryCheck(ipOnly);
                             _watsonTcpServer.DisconnectClient(ipPort);

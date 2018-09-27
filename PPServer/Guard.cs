@@ -155,9 +155,24 @@ namespace PPServer
                 return false;
         }
 
+        /// <summary>
+        /// Returns a list of the banned IPs
+        /// </summary>
+        /// <returns></returns>
         public List<PossibleBannedIp> GetBannedIps()
         {
             return _bannedIps.Where(ip => ip.Tries > _maxTries).ToList();
+        }
+
+        /// <summary>
+        /// Unban an IP address
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        public void UnbanIp(string ipAddress)
+        {
+            var ip = _bannedIps.FirstOrDefault(x => x.IpPort.Split(':')[0] == ipAddress);
+            if (ip == null)
+                _bannedIps.Remove(ip);
         }
     }
 }
