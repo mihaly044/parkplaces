@@ -327,6 +327,16 @@ namespace PPServer
                             break;
 
                         default:
+
+                            if (possibleBannedUser != null)
+                            {
+                                possibleBannedUser.Try();
+                            }
+                            else
+                            {
+                                _bannedIps.Add(new PossibleBannedIp(ipOnly));
+                            }
+
                             _watsonTcpServer.DisconnectClient(ipPort);
                             ConsoleKit.Message(ConsoleKit.MessageType.ERROR, "Invalid message from {0}\n", ipPort);
                             break;
