@@ -153,7 +153,7 @@ namespace PPServer
 
                 if(Guard.IsBanned(ipOnly) && !Guard.CheckExpired(ipOnly))
                 {
-                    throw new Exception($"Refused to communicate with {ipOnly}.");
+                    throw new Exception($"Refused to communicate with {ipOnly}. Ip banned!");
                 }
 
                 using (var stream = new MemoryStream(data))
@@ -322,14 +322,13 @@ namespace PPServer
                         default:
                             Guard.TryCheck(ipOnly);
                             _watsonTcpServer.DisconnectClient(ipPort);
-                            ConsoleKit.Message(ConsoleKit.MessageType.ERROR, "Invalid message from {0}\n", ipPort);
-                            break;
+                            throw new Exception("Invalid message from {0}\n");
                     }
                 }
             }
             catch (Exception e)
             {
-                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message + " " + e.StackTrace + "\n");
+                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message + "\n" + e.StackTrace + "\n");
                 _watsonTcpServer.DisconnectClient(ipPort);
             }
 
