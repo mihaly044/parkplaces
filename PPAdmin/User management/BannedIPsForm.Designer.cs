@@ -75,12 +75,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.unbanToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(110, 26);
             // 
             // unbanToolStripMenuItem
             // 
             this.unbanToolStripMenuItem.Name = "unbanToolStripMenuItem";
-            this.unbanToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.unbanToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
             this.unbanToolStripMenuItem.Text = "Unban";
             this.unbanToolStripMenuItem.Click += new System.EventHandler(this.unbanToolStripMenuItem_Click);
             // 
@@ -90,7 +90,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(470, 237);
             this.Controls.Add(this.listView1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "BannedIPsForm";
             this.ShowIcon = false;
             this.Text = "Banned IPs";

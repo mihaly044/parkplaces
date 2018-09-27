@@ -22,7 +22,7 @@ namespace PPAdmin
             Client.Instance.Send(new ListBannedIpsReq());
         }
 
-        private void OnListBannedIpsAck(ListBannedIpsReq ack)
+        private void OnListBannedIpsAck(ListBannedIpsAck ack)
         {
             listView1.Items.Clear();
             foreach (var ip in ack.BannedIps)
@@ -51,6 +51,7 @@ namespace PPAdmin
         {
             var ipAddress = listView1.FocusedItem.SubItems[1];
             Client.Instance.Send(new UnbanIPAddressReq() { IpAddress = ipAddress.Text });
+            Client.Instance.Send(new ListBannedIpsReq());
         }
     }
 }
