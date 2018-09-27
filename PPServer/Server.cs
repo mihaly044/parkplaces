@@ -13,7 +13,7 @@ using PPNetLib.Prototypes;
 using PPServer.Database;
 using ProtoBuf;
 using PPNetLib.Tcp;
-using PPNetLib.Contracts.SynchroniseAcks;
+using PPNetLib.Contracts.Monitor;
 
 namespace PPServer
 {

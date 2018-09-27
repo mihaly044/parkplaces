@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using PPNetLib.Tcp;
 using System.Diagnostics;
-using PPNetLib.Tcp;
 
 namespace PPNetClient
 {
@@ -158,7 +157,7 @@ namespace PPNetClient
                             OnServerMonitorAck?.Invoke(serverMonitorAck);
                             break;
                         case Protocols.ONLINEUSERS_ACK:
-                            var onlineUsersAck = Serializer.Deserialize<PPNetLib.Contracts.SynchroniseAcks.OnlineUsersAck>(stream);
+                            var onlineUsersAck = Serializer.Deserialize<PPNetLib.Contracts.Monitor.OnlineUsersAck>(stream);
                             OnOnlineUsersAck?.Invoke(onlineUsersAck);
                             break;
                     }

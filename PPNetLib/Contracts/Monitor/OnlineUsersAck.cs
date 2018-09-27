@@ -2,7 +2,7 @@
 using PPNetLib.Prototypes;
 using ProtoBuf;
 
-namespace PPNetLib.Contracts.SynchroniseAcks
+namespace PPNetLib.Contracts.Monitor
 {
     [ProtoContract]
     public class OnlineUsersAck: Packet
