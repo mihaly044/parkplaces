@@ -327,7 +327,6 @@ namespace ParkPlaces.Forms
 
             var offlineMode = Client.Instance.GetOfflineMode();
 
-            adminToolStripMenuItem.Enabled = loginForm.User.GroupRole >= GroupRole.Admin && !offlineMode;
             Map.SetReadOnly(loginForm.User.GroupRole < GroupRole.Editor);
             Map.SetPositionByKeywords("Szeged");
 
@@ -406,16 +405,6 @@ namespace ParkPlaces.Forms
             };
 
             await Task.Run(() => { Sql.Instance.ExportToMySql(dto, progress); });*/
-        }
-
-        /// <summary>
-        /// Shows the users management window
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new ManageUsersForm(_loggedInUser).ShowDialog(this);
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using PPNetClient;
 using PPNetLib.Contracts;
 
-namespace ParkPlaces.Forms
+namespace PPAdmin
 {
     public partial class ManageUsersForm : Form
     {

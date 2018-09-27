@@ -76,5 +76,10 @@ namespace PPAdmin
         {
             new OnlineUsersForm().Show();
         }
+
+        private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new ManageUsersForm(_loggedInUser).ShowDialog(this);
+        }
     }
 }
