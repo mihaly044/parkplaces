@@ -146,18 +146,18 @@ namespace PPServer
         {
             if (data == null || data.Length <= 0) return false;
 
-            var ipOnly = ipPort.Split(':')[0];
-            var possibleBannedUser = _bannedIps.FirstOrDefault(ip => ip.IpPort == ipOnly);
-            if(possibleBannedUser != null)
-            {
-                if (possibleBannedUser.HasExpired())
-                    _bannedIps.Remove(possibleBannedUser);
-                else if (possibleBannedUser.Tries >= 10)
-                    throw new Exception($"Refused to communicate with {ipOnly}.");
-            } 
-
             try
             {
+                var ipOnly = ipPort.Split(':')[0];
+                var possibleBannedUser = _bannedIps.FirstOrDefault(ip => ip.IpPort == ipOnly);
+                if (possibleBannedUser != null)
+                {
+                    if (possibleBannedUser.HasExpired())
+                        _bannedIps.Remove(possibleBannedUser);
+                    else if (possibleBannedUser.Tries >= 10)
+                        throw new Exception($"Refused to communicate with {ipOnly}.");
+                }
+
                 using (var stream = new MemoryStream(data))
                 {
                     var bProtocolVersion = new byte[4];
