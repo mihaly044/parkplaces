@@ -300,7 +300,7 @@ namespace PPServer
                                 goto default;
 
                             var isDuplicateUserReq = Serializer.Deserialize<IsDuplicateUserReq>(stream);
-                            _handler.IsDuplicateUserReq(isDuplicateUserReq, user);
+                            _handler.OnIsDuplicateUserReq(isDuplicateUserReq, user);
                             break;
 
                         case Protocols.ONLINEUSERS_REQ:

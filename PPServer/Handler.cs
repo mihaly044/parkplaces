@@ -227,7 +227,7 @@ namespace PPServer
                 _server.DisconnectUser(user.Id);
         }
 
-        public void IsDuplicateUserReq(IsDuplicateUserReq packet, User u)
+        public void OnIsDuplicateUserReq(IsDuplicateUserReq packet, User u)
         {
             var user = packet.User;
             var isDuplicateUser = Sql.Instance.IsDuplicateUser(user);
