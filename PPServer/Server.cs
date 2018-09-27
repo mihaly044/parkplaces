@@ -19,13 +19,14 @@ namespace PPServer
 {
     public class Server
     {
+        public Dto2Object Dto;
+
         private readonly string _ip;
         private readonly int _port;
         private readonly Handler _handler;
         private WatsonTcpServer _watsonTcpServer;
         private readonly Dictionary<string, User> _authUsers;
         private Http.Handler _httpHandler;
-        public Dto2Object Dto;
         private string _messageHeap;
         private readonly Array _messageTypes;
 
