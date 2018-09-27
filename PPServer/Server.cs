@@ -200,7 +200,7 @@ namespace PPServer
                             }
                             else
                             {
-                                _bannedIps.Add(new PossibleBannedIp(ipPort))
+                                _bannedIps.Add(new PossibleBannedIp(ipPort));
                             }
                             break;
 
