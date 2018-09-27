@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace PPServer
+namespace PPNetLib.Prototypes
 {
     public class PossibleBannedIp
     {
         public string IpPort { get; set; }
-        public int Tries { get; private set; }
+        public int Tries { get; set; }
         public DateTime Date { get; private set; }
 
         public PossibleBannedIp(string ipPort = "")

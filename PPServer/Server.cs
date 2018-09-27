@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using PPNetLib;
@@ -317,6 +315,21 @@ namespace PPServer
 
                             var disconnectUserReq = Serializer.Deserialize<DisconnectUserReq>(stream);
                             _handler.OnDisconnectUserReq(disconnectUserReq);
+                            break;
+
+                        case Protocols.BANIPADDRESS_REQ:
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
+                                goto default;
+
+                            var banIpAddressReq = Serializer.Deserialize<BanIpAddressReq>(stream);
+                            _handler.OnBanIPAddressReq(banIpAddressReq);
+                            break;
+
+                        case Protocols.LISTBANNEDIPS_REQ:
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
+                                goto default;
+
+                            _handler.OnListBannedIPsReq(user);
                             break;
 
                         default:

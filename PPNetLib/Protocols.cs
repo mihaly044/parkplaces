@@ -43,6 +43,9 @@ namespace PPNetLib
         ONLINEUSERS_REQ,
         ONLINEUSERS_ACK,
         DISCONNECTUSER_REQ,
-        ABORTSESSION_ACK
+        ABORTSESSION_ACK,
+        BANIPADDRESS_REQ,
+        LISTBANNEDIPS_REQ,
+        LISTBANNEDIPS_ACK
     };
 }

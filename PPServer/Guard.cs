@@ -1,8 +1,6 @@
 ﻿using PPNetLib.Prototypes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PPServer
 {
@@ -127,6 +125,17 @@ namespace PPServer
         }
 
         /// <summary>
+        /// Ban an IP address manually
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        public void BanIp(string ipAddress)
+        {
+            var ip = _bannedIps.FirstOrDefault(x => x.IpPort.Split(':')[0] == ipAddress);
+            if(ip == null)
+                _bannedIps.Add(new PossibleBannedIp(ipAddress));
+        }
+
+        /// <summary>
         /// Check if a banned user's IP ban has expired and unban if necessary
         /// </summary>
         /// <param name="u"></param>
@@ -144,6 +153,11 @@ namespace PPServer
             }
             else
                 return false;
+        }
+
+        public List<PossibleBannedIp> GetBannedIps()
+        {
+            return _bannedIps.Where(ip => ip.Tries > _maxTries).ToList();
         }
     }
 }
