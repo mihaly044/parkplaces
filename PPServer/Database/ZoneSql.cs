@@ -14,10 +14,13 @@ namespace PPServer.Database
         /// <returns>The count of rows in the zones table</returns>
         public int GetZoneCount()
         {
-            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM zones") { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                var count = cmd.ExecuteScalar();
-                return int.Parse(count.ToString());
+                using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM zones") { Connection = connection })
+                {
+                    var count = cmd.ExecuteScalar();
+                    return int.Parse(count.ToString());
+                }
             }
         }
 
@@ -29,41 +32,44 @@ namespace PPServer.Database
         {
             const string strCmd = "SELECT * FROM zones INNER JOIN cities ON cities.id = zones.cityid";
 
-            using (var cmd = new MySqlCommand(strCmd)
-            { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                var geometryConnection = GetConnection();
-
-                var rd = cmd.ExecuteReader();
-                while (rd.Read())
+                using (var cmd = new MySqlCommand(strCmd) { Connection = connection })
                 {
-                    var zone = new PolyZone()
+                    using (var geometryConnection = GetConnection())
                     {
-                        Geometry = new List<Geometry>(),
-                        Id = rd["id"].ToString(),
-                        Color = rd["color"].ToString(),
-                        Description = rd["description"].ToString(),
-                        ServiceNa = rd["service_na"].ToString(),
-                        Timetable = rd["timetable"].ToString(),
-                        Fee = long.Parse(rd["fee"].ToString()),
-                        Zoneid = rd["common_name"].ToString(),
-                        Telepules = rd["city"].ToString()
-                    };
-
-                    using (var cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]} ORDER BY polyindex") { Connection = geometryConnection })
-                    {
-                        var rd1 = cmd1.ExecuteReader();
-                        while (rd1.Read())
+                        var rd = cmd.ExecuteReader();
+                        while (rd.Read())
                         {
-                            zone.Geometry.Add(new Geometry((int)rd1["id"]) { Lat = (double)rd1["lat"], Lng = (double)rd1["lng"], IsModified = false });
-                        }
-                        rd1.Close();
-                    }
+                            var zone = new PolyZone()
+                            {
+                                Geometry = new List<Geometry>(),
+                                Id = rd["id"].ToString(),
+                                Color = rd["color"].ToString(),
+                                Description = rd["description"].ToString(),
+                                ServiceNa = rd["service_na"].ToString(),
+                                Timetable = rd["timetable"].ToString(),
+                                Fee = long.Parse(rd["fee"].ToString()),
+                                Zoneid = rd["common_name"].ToString(),
+                                Telepules = rd["city"].ToString()
+                            };
 
-                    callback(zone);
+                            using (var cmd1 = new MySqlCommand($"SELECT * FROM geometry WHERE zoneid = {rd["id"]} ORDER BY polyindex") { Connection = geometryConnection })
+                            {
+                                var rd1 = cmd1.ExecuteReader();
+                                while (rd1.Read())
+                                {
+                                    zone.Geometry.Add(new Geometry((int)rd1["id"]) { Lat = (double)rd1["lat"], Lng = (double)rd1["lng"], IsModified = false });
+                                }
+                                rd1.Close();
+                            }
+
+                            callback(zone);
+                        }
+                        geometryConnection.Close();
+                        rd.Close();
+                    }
                 }
-                geometryConnection.Close();
-                rd.Close();
             }
         }
 
@@ -74,72 +80,76 @@ namespace PPServer.Database
         /// <param name="geometryCallback">Used to return new point Ids</param>
         public async Task<int> InsertZone(PolyZone zone, Func<int, bool> geometryCallback)
         {
-            using (var cmd = new MySqlCommand(
-                    "INSERT INTO zones (cityid, color, fee, service_na, description, timetable, common_name) VALUES" +
-                    "(@cityid, @color, @fee, @service_na, @description, @timetable, @common_name)")
-            { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddRange(new[]
+                using (var cmd = new MySqlCommand(
+                   "INSERT INTO zones (cityid, color, fee, service_na, description, timetable, common_name) VALUES" +
+                   "(@cityid, @color, @fee, @service_na, @description, @timetable, @common_name)")
+                { Connection = connection })
                 {
+                    cmd.Parameters.AddRange(new[]
+                    {
                     new MySqlParameter("@cityid", MySqlDbType.String), new MySqlParameter("@color", MySqlDbType.String),
                     new MySqlParameter("@fee", MySqlDbType.String), new MySqlParameter("@service_na", MySqlDbType.String),
                     new MySqlParameter("@description", MySqlDbType.String), new MySqlParameter("@timetable", MySqlDbType.String),
                     new MySqlParameter("@common_name", MySqlDbType.String)
                 });
 
-                var city = City.FromString(zone.Telepules);
-                cmd.Parameters[0].Value = !IsDuplicateCity(city) ? InsertCity(city) : GetCityId(city);
-                cmd.Parameters[1].Value = zone.Color;
-                cmd.Parameters[2].Value = zone.Fee;
-                cmd.Parameters[3].Value = zone.ServiceNa;
-                cmd.Parameters[4].Value = zone.Description;
-                cmd.Parameters[5].Value = zone.Timetable;
-                cmd.Parameters[6].Value = zone.Zoneid;
+                    var city = City.FromString(zone.Telepules);
+                    cmd.Parameters[0].Value = !IsDuplicateCity(city) ? InsertCity(city) : GetCityId(city);
+                    cmd.Parameters[1].Value = zone.Color;
+                    cmd.Parameters[2].Value = zone.Fee;
+                    cmd.Parameters[3].Value = zone.ServiceNa;
+                    cmd.Parameters[4].Value = zone.Description;
+                    cmd.Parameters[5].Value = zone.Timetable;
+                    cmd.Parameters[6].Value = zone.Zoneid;
 
-                await cmd.ExecuteNonQueryAsync();
-                var zoneId = cmd.LastInsertedId;
+                    await cmd.ExecuteNonQueryAsync();
+                    var zoneId = cmd.LastInsertedId;
 
-                var polyIndex = 0;
-                var lastId = 0L;
-                foreach (var geometry in zone.Geometry)
-                {
-                    if (lastId != zoneId)
+                    var polyIndex = 0;
+                    var lastId = 0L;
+                    foreach (var geometry in zone.Geometry)
                     {
-                        polyIndex = 0;
-                        lastId = zoneId;
-                    }
-
-                    using (var cmd1 =
-                        new MySqlCommand(
-                                "INSERT INTO geometry (zoneid, lat, lng, polyindex) VALUES (@zoneid, @lat, @lng, @polyIndex)")
-                        { Connection = GetConnection() })
-                    {
-                        cmd1.Parameters.AddRange(new[]
+                        if (lastId != zoneId)
                         {
-                            new MySqlParameter("@zoneid", MySqlDbType.String),
-                            new MySqlParameter("@lat", MySqlDbType.Double),
-                            new MySqlParameter("@lng", MySqlDbType.Double),
-                            new MySqlParameter("@polyIndex", polyIndex)
-                        });
+                            polyIndex = 0;
+                            lastId = zoneId;
+                        }
 
-                        cmd1.Parameters[0].Value = zoneId;
-                        cmd1.Parameters[1].Value = geometry.Lat;
-                        cmd1.Parameters[2].Value = geometry.Lng;
-                        await cmd1.ExecuteNonQueryAsync();
+                        using (var connection1 = GetConnection())
+                        {
+                            using (var cmd1 =
+                            new MySqlCommand(
+                                    "INSERT INTO geometry (zoneid, lat, lng, polyindex) VALUES (@zoneid, @lat, @lng, @polyIndex)") { Connection = connection1 })
+                            {
+                                cmd1.Parameters.AddRange(new[]
+                                {
+                                    new MySqlParameter("@zoneid", MySqlDbType.String),
+                                    new MySqlParameter("@lat", MySqlDbType.Double),
+                                    new MySqlParameter("@lng", MySqlDbType.Double),
+                                    new MySqlParameter("@polyIndex", polyIndex)
+                                });
 
-                        var id = (int) cmd1.LastInsertedId;
-                        // Send back the inserted points' IDs
-                        geometryCallback(id);
-                        geometry.Id = id;
+                                cmd1.Parameters[0].Value = zoneId;
+                                cmd1.Parameters[1].Value = geometry.Lat;
+                                cmd1.Parameters[2].Value = geometry.Lng;
+                                await cmd1.ExecuteNonQueryAsync();
 
-                        cmd1.Connection.Close();
+                                var id = (int)cmd1.LastInsertedId;
+                                // Send back the inserted points' IDs
+                                geometryCallback(id);
+                                geometry.Id = id;
+
+                                cmd1.Connection.Close();
+                            }
+                        }
+                        polyIndex++;
                     }
-                    polyIndex++;
-                }
-                cmd.Connection.Close();
 
-                zone.Id = zoneId.ToString();
-                return (int)zoneId;
+                    zone.Id = zoneId.ToString();
+                    return (int)zoneId;
+                }
             }
         }
 
@@ -149,18 +159,19 @@ namespace PPServer.Database
         /// <param name="zoneId">The zone to be removed</param>
         public async void RemoveZone(int zoneId)
         {
-            using (var cmd = new MySqlCommand("DELETE FROM zones WHERE id = @id") { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@id", zoneId);
-                await cmd.ExecuteNonQueryAsync();
-                cmd.Connection.Close();
-            }
+                using (var cmd = new MySqlCommand("DELETE FROM zones WHERE id = @id") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@id", zoneId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
 
-            using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE zoneid = @id") { Connection = GetConnection() })
-            {
-                cmd.Parameters.AddWithValue("@id", zoneId);
-                await cmd.ExecuteNonQueryAsync();
-                cmd.Connection.Close();
+                using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE zoneid = @id") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@id", zoneId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
         }
 
@@ -170,13 +181,15 @@ namespace PPServer.Database
         /// <param name="zone"></param>
         public async void UpdateZoneInfo(PolyZone zone)
         {
-            using (var cmd = new MySqlCommand(
-                    @"UPDATE zones SET cityid = @cityid, color = @color, fee = @fee, timetable = @timetable, common_name = @common_name, service_na = @service_na WHERE id = @id")
-                { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-
-                cmd.Parameters.AddRange(new[]
+                using (var cmd = new MySqlCommand(
+                   @"UPDATE zones SET cityid = @cityid, color = @color, fee = @fee, timetable = @timetable, common_name = @common_name, service_na = @service_na WHERE id = @id")
+                { Connection = connection })
                 {
+
+                    cmd.Parameters.AddRange(new[]
+                    {
                     new MySqlParameter("@cityid", MySqlDbType.String),
                     new MySqlParameter("@color", MySqlDbType.String),
                     new MySqlParameter("@fee", MySqlDbType.String),
@@ -188,19 +201,19 @@ namespace PPServer.Database
                 });
 
 
-                var city = City.FromString(zone.Telepules);
-                cmd.Parameters[0].Value = !IsDuplicateCity(city) ? InsertCity(city) : GetCityId(city);
+                    var city = City.FromString(zone.Telepules);
+                    cmd.Parameters[0].Value = !IsDuplicateCity(city) ? InsertCity(city) : GetCityId(city);
 
-                cmd.Parameters[1].Value = zone.Color;
-                cmd.Parameters[2].Value = zone.Fee;
-                cmd.Parameters[3].Value = zone.ServiceNa;
-                cmd.Parameters[4].Value = zone.Description;
-                cmd.Parameters[5].Value = zone.Timetable;
-                cmd.Parameters[6].Value = zone.Zoneid;
-                cmd.Parameters[7].Value = zone.Id;
+                    cmd.Parameters[1].Value = zone.Color;
+                    cmd.Parameters[2].Value = zone.Fee;
+                    cmd.Parameters[3].Value = zone.ServiceNa;
+                    cmd.Parameters[4].Value = zone.Description;
+                    cmd.Parameters[5].Value = zone.Timetable;
+                    cmd.Parameters[6].Value = zone.Zoneid;
+                    cmd.Parameters[7].Value = zone.Id;
 
-                await cmd.ExecuteNonQueryAsync();
-                cmd.Connection.Close();
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
         }
 
@@ -212,23 +225,23 @@ namespace PPServer.Database
         /// <param name="zoneId">Id of the zone that the point is in</param>
         public async void RemovePoint(int pointId, int polyIndex, int zoneId)
         {
-            using (var cmd =
-                new MySqlCommand("UPDATE geometry SET polyindex = polyindex - 1 WHERE polyindex > @polyIndex AND zoneid = @zoneId")
-                    { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@polyindex", polyIndex);
-                cmd.Parameters.AddWithValue("@zoneId", zoneId);
-                await cmd.ExecuteNonQueryAsync();
-                cmd.Connection.Close();
-            }
+                using (var cmd = new MySqlCommand("UPDATE geometry SET polyindex = polyindex - 1 WHERE polyindex > @polyIndex AND zoneid = @zoneId")
+                { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@polyindex", polyIndex);
+                    cmd.Parameters.AddWithValue("@zoneId", zoneId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
 
-            using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE id = @id AND zoneid = @zoneId")
-                { Connection = GetConnection() })
-            {
-                cmd.Parameters.AddWithValue("@id", pointId);
-                cmd.Parameters.AddWithValue("@zoneId", zoneId);
-                await cmd.ExecuteNonQueryAsync();
-                cmd.Connection.Close();
+                using (var cmd = new MySqlCommand("DELETE FROM geometry WHERE id = @id AND zoneid = @zoneId")
+                { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@id", pointId);
+                    cmd.Parameters.AddWithValue("@zoneId", zoneId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
         }
 
@@ -242,30 +255,28 @@ namespace PPServer.Database
         /// <returns></returns>
         public async Task<int> InsertPointAsync(int zoneId, double lat, double lng, int polyIndex)
         {
-            using (var cmd = 
-                new MySqlCommand("UPDATE geometry SET polyindex = polyindex + 1 WHERE polyindex >= @polyIndex AND zoneid = @zoneId")
-                { Connection = GetConnection()})
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@polyindex", polyIndex);
-                cmd.Parameters.AddWithValue("@zoneId", zoneId);
-                await cmd.ExecuteNonQueryAsync();
-                cmd.Connection.Close();
-            }
+                using (var cmd =
+                new MySqlCommand("UPDATE geometry SET polyindex = polyindex + 1 WHERE polyindex >= @polyIndex AND zoneid = @zoneId") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@polyindex", polyIndex);
+                    cmd.Parameters.AddWithValue("@zoneId", zoneId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
 
-            using (var cmd =
-                new MySqlCommand(
-                        "INSERT INTO geometry (zoneid, lat, lng, polyIndex) VALUES (@zoneId, @lat, @lng, @polyIndex)")
-                { Connection = GetConnection() })
-            {
-                cmd.Parameters.AddWithValue("@lat", lat);
-                cmd.Parameters.AddWithValue("@lng", lng);
-                cmd.Parameters.AddWithValue("@zoneId", zoneId);
-                cmd.Parameters.AddWithValue("@polyIndex", polyIndex);
+                using (var cmd =
+                    new MySqlCommand( "INSERT INTO geometry (zoneid, lat, lng, polyIndex) VALUES (@zoneId, @lat, @lng, @polyIndex)") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@lat", lat);
+                    cmd.Parameters.AddWithValue("@lng", lng);
+                    cmd.Parameters.AddWithValue("@zoneId", zoneId);
+                    cmd.Parameters.AddWithValue("@polyIndex", polyIndex);
 
-                await cmd.ExecuteNonQueryAsync();
-                cmd.Connection.Close();
+                    await cmd.ExecuteNonQueryAsync();
 
-                return (int)cmd.LastInsertedId;
+                    return (int)cmd.LastInsertedId;
+                }
             }
         }
 
@@ -277,14 +288,15 @@ namespace PPServer.Database
         /// <param name="lng"></param>
         public async void UpdatePoint(int id, double lat, double lng)
         {
-            using (var cmd = new MySqlCommand("UPDATE geometry SET lat = @lat, lng = @lng WHERE id = @id")
-                { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@lat", lat);
-                cmd.Parameters.AddWithValue("@lng", lng);
-                cmd.Parameters.AddWithValue("@id", id);
-                await cmd.ExecuteNonQueryAsync();
-                cmd.Connection.Close();
+                using (var cmd = new MySqlCommand("UPDATE geometry SET lat = @lat, lng = @lng WHERE id = @id") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@lat", lat);
+                    cmd.Parameters.AddWithValue("@lng", lng);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
         }
     }
