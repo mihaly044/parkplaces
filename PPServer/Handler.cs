@@ -36,27 +36,19 @@ namespace PPServer
             return user;
         }
 
-        public User OnLoginReq(LoginReq packet, string ipPort, Dictionary<string, User> users)
+        public User OnLoginReq(LoginReq packet, string ipPort)
         {
-            if(users.FirstOrDefault(u => u.Value.UserName == packet.Username && u.Value.Monitor != packet.Monitor).Value != null)
-            {
-                _server.Send(ipPort, new LoginDuplicateAck());
-            }
-            else
-            {
-                var ack = new LoginAck();
-                var user = Sql.Instance.AuthenticateUser(packet.Username, packet.Password);
-                
-                if(user != null)
-                {
-                    user.IpPort = ipPort;
-                }
+            var ack = new LoginAck();
+            var user = Sql.Instance.AuthenticateUser(packet.Username, packet.Password);
 
-                ack.User = user;
-                _server.Send(ipPort, ack);
-                return user;
+            if (user != null)
+            {
+                user.IpPort = ipPort;
             }
-            return null;
+
+            ack.User = user;
+            _server.Send(ipPort, ack);
+            return user;
         }
 
         public void OnZoneCountReq(string ipPort)
@@ -81,7 +73,7 @@ namespace PPServer
             }
         }
 
-        public async void OnInsertZoneReqAsync(InsertZoneReq packet, string ipPort)
+        public async void OnInsertZoneReqAsync(InsertZoneReq packet, User user)
         {
             var zone = JsonConvert.DeserializeObject<PolyZone> (packet.Zone, Converter.Settings);
             var pointIds = new List<int>();
@@ -99,7 +91,7 @@ namespace PPServer
                 _server.Dto.Zones.Add(zone);
             }
 
-            _server.Send(ipPort, new InsertZoneAck()
+            _server.Send(user, new InsertZoneAck()
             {
                 ZoneId = id,
                 PointIds = pointIds
@@ -110,10 +102,10 @@ namespace PPServer
                 ZoneId = id,
                 Added = true,
                 Data = JsonConvert.SerializeObject(zone, Converter.Settings)
-            }, ipPort);
+            }, user.IpPort);
         }
 
-        public void OnRemoveZoneReq(RemoveZoneReq packet, string ipPort)
+        public void OnRemoveZoneReq(RemoveZoneReq packet, User user)
         {
             Sql.Instance.RemoveZone(packet.ZoneId);
 
@@ -127,10 +119,10 @@ namespace PPServer
             {
                 ZoneId = packet.ZoneId,
                 Removed = true,
-            }, ipPort);
+            }, user.IpPort);
         }
 
-        public void OnRemovePointReq(RemovePointReq packet, string ipPort)
+        public void OnRemovePointReq(RemovePointReq packet, User user)
         {
             Sql.Instance.RemovePoint(packet.PointId, packet.Index, packet.ZoneId);
 
@@ -146,13 +138,13 @@ namespace PPServer
                 ZoneId = packet.ZoneId,
                 PointId = packet.PointId,
                 Index = packet.Index
-            }, ipPort);
+            }, user.IpPort);
         }
 
-        public async void OnInsertPointReqAsync(InsertPointReq packet, string ipPort)
+        public async void OnInsertPointReqAsync(InsertPointReq packet, User user)
         {
             var id =  await Sql.Instance.InsertPointAsync(packet.ZoneId, packet.Lat, packet.Lng, packet.Index);
-            _server.Send(ipPort, new InsertPointAck(){PointId = id});
+            _server.Send(user, new InsertPointAck(){PointId = id});
 
             lock(_server.Dto.Zones)
             {
@@ -168,10 +160,10 @@ namespace PPServer
                 Lng = packet.Lng,
                 ZoneId = packet.ZoneId,
                 Index = packet.Index
-            }, ipPort);
+            }, user.IpPort);
         }
 
-        public void OnUpdatePointReq(UpdatePointReq packet, string ipPort)
+        public void OnUpdatePointReq(UpdatePointReq packet, User user)
         {
             Sql.Instance.UpdatePoint(packet.PointId, packet.Lat, packet.Lng);
 
@@ -189,10 +181,10 @@ namespace PPServer
                 Lat = packet.Lat,
                 Lng = packet.Lng,
                 ZoneId = packet.ZoneId
-            }, ipPort);
+            }, user.IpPort);
         }
 
-        public void OnUpdateZoneReq(UpdateZoneReq packet, string ipPort)
+        public void OnUpdateZoneReq(UpdateZoneReq packet, User user)
         {
             var zone = JsonConvert.DeserializeObject<PolyZone>(packet.Zone, Converter.Settings);
             Sql.Instance.UpdateZoneInfo(zone);
@@ -213,19 +205,19 @@ namespace PPServer
             {
                 ZoneId = int.Parse(zone.Id),
                 Data = JsonConvert.SerializeObject(zone, Converter.Settings)
-            }, ipPort);
+            }, user.IpPort);
         }
 
-        public async void OnCityListReqAsync(string ipPort)
+        public async void OnCityListReqAsync(User user)
         {
             var cities = await Sql.Instance.LoadCities();
-            _server.Send(ipPort, new CityListAck(){ Cities = cities });
+            _server.Send(user, new CityListAck(){ Cities = cities });
         }
 
-        public async void OnUserListReqAsync(string ipPort)
+        public async void OnUserListReqAsync(User user)
         {
             var users = await Sql.Instance.LoadUsers();
-            _server.Send(ipPort, new UserListAck(){ Users = users });
+            _server.Send(user, new UserListAck(){ Users = users });
         }
 
         public void OnInsertUserReq(InsertUserReq packet)
@@ -250,19 +242,19 @@ namespace PPServer
                 _server.DisconnectUser(user.Id);
         }
 
-        public void IsDuplicateUserReq(IsDuplicateUserReq packet, string ipPort)
+        public void IsDuplicateUserReq(IsDuplicateUserReq packet, User u)
         {
             var user = packet.User;
             var isDuplicateUser = Sql.Instance.IsDuplicateUser(user);
-            _server.Send(ipPort, new IsDuplicateUserAck(){ IsDuplicateUser = isDuplicateUser });
+            _server.Send(u, new IsDuplicateUserAck(){ IsDuplicateUser = isDuplicateUser });
         }
 
-        public void OnOnlineUsersReq(string ipPort)
+        public void OnOnlineUsersReq(User user)
         {
-            _server.Send(ipPort, new OnlineUsersAck(){ OnlineUsersList = _server.GetAuthUsers()});
+            _server.Send(user, new OnlineUsersAck(){ OnlineUsersList = _server.Guard.GetAuthUsers()});
         }
 
-        public void OnDisconnectUserReq(DisconnectUserReq packet, string ipPort)
+        public void OnDisconnectUserReq(DisconnectUserReq packet)
         {
             _server.DisconnectUser(packet.IpPort);
         }
