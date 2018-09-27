@@ -20,6 +20,22 @@ namespace PPServer
             _server = s;
         }
 
+        public User OnMonitorLoginReq(LoginReq packet, string ipPort)
+        {
+            var ack = new LoginAck();
+            var user = Sql.Instance.AuthenticateUser(packet.Username, packet.Password);
+
+            if (user != null)
+            {
+                user.IpPort = ipPort;
+                user.Monitor = packet.Monitor;
+            }
+
+            ack.User = user;
+            _server.Send(ipPort, ack);
+            return user;
+        }
+
         public User OnLoginReq(LoginReq packet, string ipPort, Dictionary<string, User> users)
         {
             if(users.FirstOrDefault(u => u.Value.UserName == packet.Username && u.Value.Monitor != packet.Monitor).Value != null)
@@ -33,7 +49,6 @@ namespace PPServer
                 
                 if(user != null)
                 {
-                    user.Monitor = packet.Monitor;
                     user.IpPort = ipPort;
                 }
 

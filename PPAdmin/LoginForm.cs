@@ -55,7 +55,7 @@ namespace PPAdmin
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Client.Instance.Disconnect();
             }
-            else if (!User.IsAuthenticated)
+            else if (User.GroupRole < GroupRole.Admin)
             {
                 MessageBox.Show("You are not authorized to log in.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);

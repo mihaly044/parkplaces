@@ -163,7 +163,16 @@ namespace PPServer
                     {
                         case Protocols.LOGIN_REQ:
                             var loginReq = Serializer.Deserialize<LoginReq>(stream);
-                            var user = _handler.OnLoginReq(loginReq, ipPort, _authUsers);
+                            User user;
+
+                            if(loginReq.Monitor)
+                            {
+                                user = _handler.OnMonitorLoginReq(loginReq, ipPort);
+                            }
+                            else
+                            {
+                                user = _handler.OnLoginReq(loginReq, ipPort, _authUsers);
+                            }
 
                             if (user != null)
                             {
@@ -377,7 +386,7 @@ namespace PPServer
         private bool IsMonitor(string ipPort)
         {
             var ok = false;
-            if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
+            if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null && _authUsers[ipPort].GroupRole >= GroupRole.Admin)
             {
                 ok = _authUsers[ipPort].Monitor;
             }

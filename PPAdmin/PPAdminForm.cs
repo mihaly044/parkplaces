@@ -1,5 +1,6 @@
 ﻿using PPNetClient;
 using PPNetLib.Contracts.Monitor;
+using PPNetLib.Prototypes;
 using System;
 using System.Windows.Forms;
 
@@ -7,6 +8,8 @@ namespace PPAdmin
 {
     public partial class PpAdminForm : Form
     {
+        private User _loggedInUser;
+
         public PpAdminForm()
         {
             InitializeComponent();
