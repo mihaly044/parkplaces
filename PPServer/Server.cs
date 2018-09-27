@@ -154,7 +154,7 @@ namespace PPServer
                 {
                     if (possibleBannedUser.HasExpired())
                         _bannedIps.Remove(possibleBannedUser);
-                    else if (possibleBannedUser.Tries >= 10)
+                    else if (possibleBannedUser.Tries >= 3)
                         throw new Exception($"Refused to communicate with {ipOnly}.");
                 }
 
