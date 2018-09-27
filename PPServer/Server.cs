@@ -343,13 +343,12 @@ namespace PPServer
                         default:
                             Guard.TryCheck(ipOnly);
                             _watsonTcpServer.DisconnectClient(ipPort);
-                            throw new Exception("Invalid message from {0}\n");
+                            break;
                     }
                 }
             }
             catch (Exception e)
             {
-                throw;
                 ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message + "\n" + e.StackTrace + "\n");
                 _watsonTcpServer.DisconnectClient(ipPort);
             }
