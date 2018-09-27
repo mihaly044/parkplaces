@@ -19,10 +19,10 @@ namespace PPAdmin
             InitializeComponent();
 
             Client.Instance.OnListBannedIpsAck += OnListBannedIpsAck; 
-            Client.Instance.Send(new ListBannedIpsAck());
+            Client.Instance.Send(new ListBannedIpsReq());
         }
 
-        private void OnListBannedIpsAck(ListBannedIpsAck ack)
+        private void OnListBannedIpsAck(ListBannedIpsReq ack)
         {
             listView1.Items.Clear();
             foreach (var ip in ack.BannedIps)
