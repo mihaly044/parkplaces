@@ -16,6 +16,11 @@ namespace PPNetLib.Prototypes
         [ProtoMember(3)]
         public DateTime Date { get; set; }
 
+        public PossibleBannedIp()
+        {
+            
+        }
+
         public PossibleBannedIp(string ipPort = "")
         {
             Date = DateTime.Now;
