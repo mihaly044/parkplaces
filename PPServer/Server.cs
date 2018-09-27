@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -11,7 +12,8 @@ using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
 using PPServer.Database;
 using ProtoBuf;
-using watsontcp_dotnetcore.Tcp;
+using PPNetLib.Tcp;
+using PPNetLib.Contracts.Monitor;
 
 namespace PPServer
 {
@@ -24,9 +26,14 @@ namespace PPServer
         private readonly Dictionary<string, User> _authUsers;
         private Http.Handler _httpHandler;
         public Dto2Object Dto;
+        private string _messageHeap;
+        private readonly Array _messageTypes;
 
-        public Server(bool useHTTP = true)
+        public Server(ConsoleWriter writer, bool useHttp = true)
         {
+            writer.WriteLineEvent += Writer_WriteLineEvent;
+            writer.WriteEvent += Writer_WriteEvent;
+
             var configSect = ConfigurationManager.GetSection("ServerConfiguration") as NameValueCollection;
 
             // ReSharper disable once PossibleNullReferenceException
@@ -49,11 +56,23 @@ namespace PPServer
 
             LoadData();
 
-            if (useHTTP)
+            if (useHttp)
             {
                 _httpHandler = new Http.Handler(this);
                 _httpHandler.Handle();
             }
+
+            _messageTypes = Enum.GetValues(typeof(ConsoleKit.MessageType));
+        }
+
+        private void Writer_WriteEvent(object sender, ConsoleWriterEventArgs e)
+        {
+            BroadcastMonitorAck(e.Value);
+        }
+
+        private void Writer_WriteLineEvent(object sender, ConsoleWriterEventArgs e)
+        {
+            BroadcastMonitorAck(e.Value);
         }
 
         private void LoadData()
@@ -115,6 +134,7 @@ namespace PPServer
         {
             _authUsers.Remove(ipPort);
             ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Client disconnected: {0}\n", ipPort);
+            BroadcastOnlineUsersAck();
             return true;
         }
 
@@ -149,6 +169,8 @@ namespace PPServer
                             {
                                 if (!_authUsers.ContainsKey(ipPort))
                                     _authUsers.Add(ipPort, user);
+
+                                BroadcastOnlineUsersAck();
                             }
                             break;
 
@@ -259,6 +281,20 @@ namespace PPServer
                             _handler.IsDuplicateUserReq(isDuplicateUserReq, ipPort);
                             break;
 
+                        case Protocols.ONLINEUSERS_REQ:
+                            if(!IsMonitor(ipPort))
+                                goto default;
+                            _handler.OnOnlineUsersReq(ipPort);
+                            break;
+
+                        case Protocols.DISCONNECTUSER_REQ:
+                            if (!IsMonitor(ipPort))
+                                goto default;
+
+                            var disconnectUserReq = Serializer.Deserialize<DisconnectUserReq>(stream);
+                            _handler.OnDisconnectUserReq(disconnectUserReq, ipPort);
+                            break;
+
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
                             ConsoleKit.Message(ConsoleKit.MessageType.ERROR, "Invalid message from {0}\n", ipPort);
@@ -268,7 +304,7 @@ namespace PPServer
             }
             catch (Exception e)
             {
-                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message + "\n");
+                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, e.Message + "\n" + e.StackTrace + "\n");
                 _watsonTcpServer.DisconnectClient(ipPort);
             }
 
@@ -280,6 +316,11 @@ namespace PPServer
             var user = _authUsers.FirstOrDefault(u => u.Value.Id == userId);
             if(user.Key != null)
             _watsonTcpServer.DisconnectClient(user.Key);
+        }
+
+        public void DisconnectUser(string ipPort)
+        {
+            _watsonTcpServer.DisconnectClient(ipPort);
         }
 
         public void SendToEveryoneExcept<T>(T packet, string except) where T: Packet
@@ -295,6 +336,11 @@ namespace PPServer
             var clients = _watsonTcpServer.ListClients();
             foreach (var client in clients)
                 Send(client, packet);
+        }
+
+        public bool Send<T>(User user, T packet) where T: Packet
+        {
+            return Send(user.IpPort, packet);
         }
 
         public bool Send<T>(string ipPort, T packet) where T: Packet
@@ -325,10 +371,28 @@ namespace PPServer
                 ok = _authUsers[ipPort].GroupRole >= min;
             }
 
-            if(!ok)
-                ConsoleKit.Message(ConsoleKit.MessageType.ERROR, $"Wrong permissions: {ipPort}\n");
+            return ok;
+        }
+
+        private bool IsMonitor(string ipPort)
+        {
+            var ok = false;
+            if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
+            {
+                ok = _authUsers[ipPort].Monitor;
+            }
 
             return ok;
+        }
+
+        public List<string> GetClients()
+        {
+            return _watsonTcpServer.ListClients();
+        }
+
+        public List<User> GetAuthUsers()
+        {
+            return _authUsers.Values.ToList();
         }
 
         public async void AnnounceShutdownAck(int seconds, bool shutdown = true)
@@ -346,6 +410,47 @@ namespace PPServer
                 _watsonTcpServer.DisconnectClient(client);
             _watsonTcpServer.Dispose();
             Environment.Exit(0);
+        }
+
+        private void BroadcastMonitorAck(string message)
+        {
+            if (_watsonTcpServer != null)
+            {
+                foreach (var type in _messageTypes)
+                {
+                    if(message.IndexOf($"[{type}]") == 0)
+                    {
+                        return;
+                    }
+                }
+
+                if(_messageHeap != string.Empty)
+                {
+                    message = _messageHeap + message;
+                    _messageHeap = string.Empty;
+                }
+
+                var clients = _watsonTcpServer.ListClients();
+                foreach (var client in clients)
+                {
+                    if (IsMonitor(client))
+                    {
+                        Send(client, new ServerMonitorAck() { Output = message });
+                    }
+                }
+            }
+        }
+
+        private void BroadcastOnlineUsersAck()
+        {
+            var clients = _watsonTcpServer.ListClients();
+            foreach (var client in clients)
+            {
+                if (IsMonitor(client))
+                {
+                    Send(client, new OnlineUsersAck() { OnlineUsersList = GetAuthUsers() });
+                }
+            }
         }
     }
 }

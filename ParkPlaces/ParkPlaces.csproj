@@ -197,8 +197,6 @@
       <DependentUpon>ParkPlacesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Map shapes\RectMarker.cs" />
-    <Compile Include="Net\Client.cs" />
-    <Compile Include="Net\Delegates.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -266,6 +264,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PPNetClient\PPNetClient.csproj">
+      <Project>{644ce5c0-0ee2-4af4-987a-228e990e5096}</Project>
+      <Name>PPNetClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PPNetLib\PPNetLib.csproj">
       <Project>{485a0ecc-402b-4d48-8a2e-dd3d7ccf9dfd}</Project>
       <Name>PPNetLib</Name>

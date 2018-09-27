@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PPNetLib.Prototypes;
-using ParkPlaces.Net;
+using PPNetClient;
 using PPNetLib.Contracts;
 
 namespace ParkPlaces.Forms

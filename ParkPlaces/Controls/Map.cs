@@ -15,7 +15,7 @@ using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using ParkPlaces.Forms;
 using ParkPlaces.Map_shapes;
-using ParkPlaces.Net;
+using PPNetClient;
 using PPNetLib.Contracts;
 using Newtonsoft.Json;
 using ParkPlaces.Extensions;

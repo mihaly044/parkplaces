@@ -21,24 +21,27 @@ namespace PPServer.Database
             if (username == string.Empty || password == string.Empty)
                 return null;
 
-            using (var cmd = new MySqlCommand("SELECT * FROM users WHERE username = @username ")
-            { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@username", username);
-
-                using (var reader = cmd.ExecuteReader())
+                using (var cmd = new MySqlCommand("SELECT * FROM users WHERE username = @username ")
+                { Connection = connection })
                 {
-                    if (reader.Read() && reader.HasRows)
+                    cmd.Parameters.AddWithValue("@username", username);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        if (Crypter.CheckPassword(password, reader["password"].ToString()))
+                        if (reader.Read() && reader.HasRows)
                         {
-                            var groupRole = (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString());
-                            return new User(reader["UserName"].ToString(), (int)reader["id"])
+                            if (Crypter.CheckPassword(password, reader["password"].ToString()))
                             {
-                                GroupRole = groupRole,
-                                IsAuthenticated = groupRole > GroupRole.Guest,
-                                CreatorId = (int)reader["creatorid"]
-                            };
+                                var groupRole = (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString());
+                                return new User(reader["UserName"].ToString(), (int)reader["id"])
+                                {
+                                    GroupRole = groupRole,
+                                    IsAuthenticated = groupRole > GroupRole.Guest,
+                                    CreatorId = (int)reader["creatorid"]
+                                };
+                            }
                         }
                     }
                 }
@@ -53,24 +56,26 @@ namespace PPServer.Database
         /// <returns>A list consisting of User type objects</returns>
         public async Task<List<User>> LoadUsers()
         {
-            var usersList = new List<User>();
-
-            using (var cmd = new MySqlCommand("SELECT * FROM users")
-            { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                var rd = await cmd.ExecuteReaderAsync();
-                while (await rd.ReadAsync())
-                {
-                    usersList.Add(new User(rd["username"].ToString(), (int)rd["id"])
-                    {
-                        UserName = rd["username"].ToString(),
-                        GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), rd["groupid"].ToString()),
-                        CreatorId = (int)rd["creatorid"]
-                    });
-                }
-            }
+                var usersList = new List<User>();
 
-            return usersList;
+                using (var cmd = new MySqlCommand("SELECT * FROM users") { Connection = connection })
+                {
+                    var rd = await cmd.ExecuteReaderAsync();
+                    while (await rd.ReadAsync())
+                    {
+                        usersList.Add(new User(rd["username"].ToString(), (int)rd["id"])
+                        {
+                            UserName = rd["username"].ToString(),
+                            GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), rd["groupid"].ToString()),
+                            CreatorId = (int)rd["creatorid"]
+                        });
+                    }
+                }
+
+                return usersList;
+            }
         }
 
         /// <summary>
@@ -79,11 +84,13 @@ namespace PPServer.Database
         /// <param name="userId">The user to be removed</param>
         public async void RemoveUser(int userId)
         {
-            using (var cmd = new MySqlCommand("DELETE FROM users WHERE id = @id")
-            { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@id", userId);
-                await cmd.ExecuteNonQueryAsync();
+                using (var cmd = new MySqlCommand("DELETE FROM users WHERE id = @id") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@id", userId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
         }
 
@@ -94,11 +101,14 @@ namespace PPServer.Database
         /// <returns></returns>
         public bool IsDuplicateUser(User u)
         {
-            using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM users WHERE username = @username AND id <> @id") { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@username", u.UserName);
-                cmd.Parameters.AddWithValue("@id", u.Id);
-                return int.Parse(cmd.ExecuteScalar().ToString()) > 0;
+                using (var cmd = new MySqlCommand("SELECT COUNT(*) FROM users WHERE username = @username AND id <> @id") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@username", u.UserName);
+                    cmd.Parameters.AddWithValue("@id", u.Id);
+                    return int.Parse(cmd.ExecuteScalar().ToString()) > 0;
+                }
             }
         }
 
@@ -108,25 +118,28 @@ namespace PPServer.Database
         /// <param name="user"></param>
         public void UpdateUser(User user)
         {
-            using (var cmd = new MySqlCommand("UPDATE users SET username = @username, groupid = @groupid, creatorid = @creatorid WHERE id = @id")
-            { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@username", user.UserName);
-                cmd.Parameters.AddWithValue("@id", user.Id);
-                cmd.Parameters.AddWithValue("@groupid", user.GroupRole);
-                cmd.Parameters.AddWithValue("@creatorid", user.CreatorId);
-
-                cmd.ExecuteNonQuery();
-            }
-
-            if (user.Password != null)
-            {
-                using (var cmd = new MySqlCommand("UPDATE users SET password = @password WHERE id = @id")
-                { Connection = GetConnection() })
+                using (var cmd = new MySqlCommand("UPDATE users SET username = @username, groupid = @groupid, creatorid = @creatorid WHERE id = @id")
+                { Connection = connection })
                 {
-                    cmd.Parameters.AddWithValue("@password", Crypter.Blowfish.Crypt(user.Password));
+                    cmd.Parameters.AddWithValue("@username", user.UserName);
                     cmd.Parameters.AddWithValue("@id", user.Id);
+                    cmd.Parameters.AddWithValue("@groupid", user.GroupRole);
+                    cmd.Parameters.AddWithValue("@creatorid", user.CreatorId);
+
                     cmd.ExecuteNonQuery();
+                }
+
+                if (user.Password != null)
+                {
+                    using (var cmd = new MySqlCommand("UPDATE users SET password = @password WHERE id = @id")
+                    { Connection = connection })
+                    {
+                        cmd.Parameters.AddWithValue("@password", Crypter.Blowfish.Crypt(user.Password));
+                        cmd.Parameters.AddWithValue("@id", user.Id);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -138,19 +151,21 @@ namespace PPServer.Database
         /// <returns></returns>
         private User GetUserData(int id)
         {
-            using (var cmd = new MySqlCommand("SELECT * FROM users WHERE id = @id")
-            { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@id", id);
-                using (var reader = cmd.ExecuteReader())
+                using (var cmd = new MySqlCommand("SELECT * FROM users WHERE id = @id") { Connection = connection })
                 {
-                    if (reader.Read() && reader.HasRows)
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        return new User(reader["username"].ToString(), (int)reader["id"])
+                        if (reader.Read() && reader.HasRows)
                         {
-                            GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString()),
-                            CreatorId = (int)reader["creatorid"]
-                        };
+                            return new User(reader["username"].ToString(), (int)reader["id"])
+                            {
+                                GroupRole = (GroupRole)Enum.Parse(typeof(GroupRole), reader["groupid"].ToString()),
+                                CreatorId = (int)reader["creatorid"]
+                            };
+                        }
                     }
                 }
             }
@@ -179,14 +194,17 @@ namespace PPServer.Database
         /// <param name="creatorId"></param>
         public void InsertUser(User user, int creatorId)
         {
-            using (var cmd = new MySqlCommand("INSERT INTO users (username, password, groupid, creatorid) VALUES (@username, @password, @groupid, @creatorid)")
-            { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@username", user.UserName);
-                cmd.Parameters.AddWithValue("@password", Crypter.Blowfish.Crypt(user.Password));
-                cmd.Parameters.AddWithValue("@groupid", user.GroupRole);
-                cmd.Parameters.AddWithValue("@creatorid", creatorId);
-                cmd.ExecuteNonQuery();
+                using (var cmd = new MySqlCommand("INSERT INTO users (username, password, groupid, creatorid) VALUES (@username, @password, @groupid, @creatorid)")
+                { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@username", user.UserName);
+                    cmd.Parameters.AddWithValue("@password", Crypter.Blowfish.Crypt(user.Password));
+                    cmd.Parameters.AddWithValue("@groupid", user.GroupRole);
+                    cmd.Parameters.AddWithValue("@creatorid", creatorId);
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
     }

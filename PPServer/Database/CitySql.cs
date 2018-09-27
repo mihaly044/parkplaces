@@ -16,17 +16,20 @@ namespace PPServer.Database
         {
             var cityList = new List<City>();
 
-            using (var cmd = new MySqlCommand("SELECT * FROM cities")
-                {Connection = GetConnection()})
+            using (var connection = GetConnection())
             {
-                var rd = await cmd.ExecuteReaderAsync();
-                while (await rd.ReadAsync())
+                using (var cmd = new MySqlCommand("SELECT * FROM cities") { Connection = connection })
                 {
-                    cityList.Add(new City((int) rd["id"])
+                    var rd = await cmd.ExecuteReaderAsync();
+                    while (await rd.ReadAsync())
                     {
-                        Name = rd["city"].ToString()
-                    });
+                        cityList.Add(new City((int)rd["id"])
+                        {
+                            Name = rd["city"].ToString()
+                        });
+                    }
                 }
+
             }
 
             return cityList;
@@ -39,11 +42,14 @@ namespace PPServer.Database
         /// <returns></returns>
         public bool IsDuplicateCity(City city)
         {
-            using (var cmd =
-                new MySqlCommand("SELECT COUNT(*) FROM cities WHERE city = @city") {Connection = GetConnection()})
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@city", city.Name);
-                return int.Parse(cmd.ExecuteScalar().ToString()) > 0;
+                using (var cmd =
+                new MySqlCommand("SELECT COUNT(*) FROM cities WHERE city = @city") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@city", city.Name);
+                    return int.Parse(cmd.ExecuteScalar().ToString()) > 0;
+                }
             }
         }
 
@@ -54,12 +60,14 @@ namespace PPServer.Database
         /// <returns>The id of the newly inserted city</returns>
         public int InsertCity(City city)
         {
-            using (var cmd = new MySqlCommand("INSERT INTO cities (city) VALUES (@city)")
-                {Connection = GetConnection()})
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@city", city.Name);
-                cmd.ExecuteNonQuery();
-                return (int) cmd.LastInsertedId;
+                using (var cmd = new MySqlCommand("INSERT INTO cities (city) VALUES (@city)") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@city", city.Name);
+                    cmd.ExecuteNonQuery();
+                    return (int)cmd.LastInsertedId;
+                }
             }
         }
 
@@ -71,11 +79,13 @@ namespace PPServer.Database
         {
             if (city == null) return;
 
-            using (var cmd = new MySqlCommand("DELETE FROM cities WHERE id = @id")
-                {Connection = GetConnection()})
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@id", city.Id);
-                await cmd.ExecuteNonQueryAsync();
+                using (var cmd = new MySqlCommand("DELETE FROM cities WHERE id = @id") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@id", city.Id);
+                    await cmd.ExecuteNonQueryAsync();
+                }
             }
         }
 
@@ -85,16 +95,14 @@ namespace PPServer.Database
         /// <param name="city"></param>
         public void UpdateCity(City city)
         {
-            using (var cmd =
-                new MySqlCommand(
-                    "UPDATE city SET city = @city WHERE id = @id")
-                {
-                    Connection = GetConnection()
-                })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@city", city);
+                using (var cmd = new MySqlCommand("UPDATE city SET city = @city WHERE id = @id") { Connection = connection })
+                {
+                    cmd.Parameters.AddWithValue("@city", city);
 
-                cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
@@ -105,32 +113,36 @@ namespace PPServer.Database
         /// <returns></returns>
         public City GetCityData(int id)
         {
-            using (var cmd = new MySqlCommand("SELECT * FROM city WHERE id = @id")
-                {Connection = GetConnection()})
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@id", id);
-                using (var reader = cmd.ExecuteReader())
+                using (var cmd = new MySqlCommand("SELECT * FROM city WHERE id = @id") { Connection = connection })
                 {
-                    if (reader.Read() && reader.HasRows)
+                    cmd.Parameters.AddWithValue("@id", id);
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        return City.FromString(reader["city"].ToString(), id);
+                        if (reader.Read() && reader.HasRows)
+                        {
+                            return City.FromString(reader["city"].ToString(), id);
+                        }
                     }
                 }
             }
-            return null;
+                return null;
         }
 
         public int GetCityId(City city)
         {
-            using (var cmd = new MySqlCommand("SELECT * FROM cities WHERE city = @city")
-                { Connection = GetConnection() })
+            using (var connection = GetConnection())
             {
-                cmd.Parameters.AddWithValue("@city", city.Name);
-                using (var reader = cmd.ExecuteReader())
+                using (var cmd = new MySqlCommand("SELECT * FROM cities WHERE city = @city") { Connection = connection })
                 {
-                    if (reader.Read() && reader.HasRows)
+                    cmd.Parameters.AddWithValue("@city", city.Name);
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        return (int) reader["id"];
+                        if (reader.Read() && reader.HasRows)
+                        {
+                            return (int)reader["id"];
+                        }
                     }
                 }
             }

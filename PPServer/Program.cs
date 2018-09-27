@@ -6,17 +6,10 @@ namespace PPServer
     {
        static void Main(string[] args)
        {
-            Server server;
+            var writer = new ConsoleWriter();
+            Console.SetOut(writer);
 
-            if (args.Length > 0 && args[0].Contains("nohttp"))
-            {
-                server = new Server(false);
-            }
-            else
-            {
-                server = new Server();
-            }
-
+            var server = new Server(writer);
             server.Listen();
 
             while (true)

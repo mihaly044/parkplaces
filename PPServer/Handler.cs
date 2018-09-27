@@ -5,8 +5,9 @@ using PPNetLib.Prototypes;
 using PPServer.Database;
 using Newtonsoft.Json;
 using PPNetLib.Contracts.SynchroniseAcks;
-using System.Threading;
+using PPNetLib.Contracts.Monitor;
 using PPNetLib;
+using System;
 
 namespace PPServer
 {
@@ -21,7 +22,7 @@ namespace PPServer
 
         public User OnLoginReq(LoginReq packet, string ipPort, Dictionary<string, User> users)
         {
-            if (users.FirstOrDefault(u => u.Value.UserName == packet.Username).Value != null)
+            if(users.FirstOrDefault(u => u.Value.UserName == packet.Username && u.Value.Monitor != packet.Monitor).Value != null)
             {
                 _server.Send(ipPort, new LoginDuplicateAck());
             }
@@ -29,6 +30,13 @@ namespace PPServer
             {
                 var ack = new LoginAck();
                 var user = Sql.Instance.AuthenticateUser(packet.Username, packet.Password);
+                
+                if(user != null)
+                {
+                    user.Monitor = packet.Monitor;
+                    user.IpPort = ipPort;
+                }
+
                 ack.User = user;
                 _server.Send(ipPort, ack);
                 return user;
@@ -232,6 +240,16 @@ namespace PPServer
             var user = packet.User;
             var isDuplicateUser = Sql.Instance.IsDuplicateUser(user);
             _server.Send(ipPort, new IsDuplicateUserAck(){ IsDuplicateUser = isDuplicateUser });
+        }
+
+        public void OnOnlineUsersReq(string ipPort)
+        {
+            _server.Send(ipPort, new OnlineUsersAck(){ OnlineUsersList = _server.GetAuthUsers()});
+        }
+
+        public void OnDisconnectUserReq(DisconnectUserReq packet, string ipPort)
+        {
+            _server.DisconnectUser(packet.IpPort);
         }
     }
 }

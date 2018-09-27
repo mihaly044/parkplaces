@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Windows.Forms;
-using ParkPlaces.Net;
+using PPNetClient;
 using PPNetLib.Contracts;
 using PPNetLib.Prototypes;
 

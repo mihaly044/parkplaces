@@ -1,12 +1,11 @@
 ﻿using PPNetLib;
 using ProtoBuf;
 using System;
-using System.Configuration;
 using System.IO;
-using watsontcp_dotnetcore.Tcp;
+using PPNetLib.Tcp;
 using System.Diagnostics;
 
-namespace ParkPlaces.Net
+namespace PPNetClient
 {
     public partial class Client
     {
@@ -14,15 +13,19 @@ namespace ParkPlaces.Net
         public static Client Instance => _instance ?? (_instance = new Client());
 
         private WatsonTcpClient _watsonTcpClient;
-        private readonly string _serverIp;
-        private readonly int _serverPort;
+        private string _serverIp;
+        private int _serverPort;
         private bool _offlineMode;
         private bool _forceDisconnect;
 
-        public Client()
+        public void SetIp(string serverIp)
         {
-            _serverIp = ConfigurationManager.AppSettings["ServerIP"];
-            _serverPort = int.TryParse(ConfigurationManager.AppSettings["ServerPort"], out var port) ? port : 11000;
+            _serverIp = serverIp;
+        }
+
+        public void SetPort(int serverPort)
+        {
+            _serverPort = serverPort;
         }
 
         public string GetServerAddress()
@@ -148,6 +151,14 @@ namespace ParkPlaces.Net
                         case Protocols.SHUTDOWN_ACK:
                             var shutdownAck = Serializer.Deserialize<PPNetLib.Contracts.ShutdownAck>(stream);
                             OnShutdownAck?.Invoke(shutdownAck);
+                            break;
+                        case Protocols.SERVERMONITOR_ACK:
+                            var serverMonitorAck = Serializer.Deserialize<PPNetLib.Contracts.Monitor.ServerMonitorAck>(stream);
+                            OnServerMonitorAck?.Invoke(serverMonitorAck);
+                            break;
+                        case Protocols.ONLINEUSERS_ACK:
+                            var onlineUsersAck = Serializer.Deserialize<PPNetLib.Contracts.Monitor.OnlineUsersAck>(stream);
+                            OnOnlineUsersAck?.Invoke(onlineUsersAck);
                             break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
