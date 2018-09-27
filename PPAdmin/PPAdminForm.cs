@@ -19,7 +19,8 @@ namespace PPAdmin
 
         private void OnConnectionError(Exception e)
         {
-            Logout();
+            MessageBox.Show("Connection error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Application.Exit();
         }
 
         private void OnServerMonitorAck(ServerMonitorAck ack)
