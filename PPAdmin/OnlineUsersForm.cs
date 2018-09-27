@@ -49,6 +49,7 @@ namespace PPAdmin
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var ipPort = listView1.FocusedItem.SubItems[1];
+            Client.Instance.Send(new DisconnectUserReq() { IpPort = ipPort.Text });
         }
     }
 }

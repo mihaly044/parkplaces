@@ -249,7 +249,7 @@ namespace PPServer
 
         public void OnDisconnectUserReq(DisconnectUserReq packet, string ipPort)
         {
-            _server.DisconnectUser(ipPort);
+            _server.DisconnectUser(packet.IpPort);
         }
     }
 }
