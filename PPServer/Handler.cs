@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using PPNetLib.Contracts.SynchroniseAcks;
 using PPNetLib.Contracts.Monitor;
 using PPNetLib;
+using System;
 
 namespace PPServer
 {
@@ -244,6 +245,11 @@ namespace PPServer
         public void OnOnlineUsersReq(string ipPort)
         {
             _server.Send(ipPort, new OnlineUsersAck(){ OnlineUsersList = _server.GetAuthUsers()});
+        }
+
+        public void OnDisconnectUserReq(DisconnectUserReq packet, string ipPort)
+        {
+            _server.DisconnectUser(ipPort);
         }
     }
 }

@@ -287,6 +287,14 @@ namespace PPServer
                             _handler.OnOnlineUsersReq(ipPort);
                             break;
 
+                        case Protocols.DISCONNECTUSER_REQ:
+                            if (!IsMonitor(ipPort))
+                                goto default;
+
+                            var disconnectUserReq = Serializer.Deserialize<DisconnectUserReq>(stream);
+                            _handler.OnDisconnectUserReq(disconnectUserReq, ipPort);
+                            break;
+
                         default:
                             _watsonTcpServer.DisconnectClient(ipPort);
                             ConsoleKit.Message(ConsoleKit.MessageType.ERROR, "Invalid message from {0}\n", ipPort);
@@ -308,6 +316,11 @@ namespace PPServer
             var user = _authUsers.FirstOrDefault(u => u.Value.Id == userId);
             if(user.Key != null)
             _watsonTcpServer.DisconnectClient(user.Key);
+        }
+
+        public void DisconnectUser(string ipPort)
+        {
+            _watsonTcpServer.DisconnectClient(ipPort);
         }
 
         public void SendToEveryoneExcept<T>(T packet, string except) where T: Packet

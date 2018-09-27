@@ -42,6 +42,7 @@ namespace PPNetLib
         DISCONNECT_ACK,
         SERVERMONITOR_ACK,
         ONLINEUSERS_REQ,
-        ONLINEUSERS_ACK
+        ONLINEUSERS_ACK,
+        DISCONNECTUSER_REQ
     };
 }
