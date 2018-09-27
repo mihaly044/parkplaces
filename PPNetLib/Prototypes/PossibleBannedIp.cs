@@ -1,12 +1,20 @@
 ﻿using System;
+using ProtoBuf;
 
 namespace PPNetLib.Prototypes
 {
+    [ProtoContract]
     public class PossibleBannedIp
     {
+
+        [ProtoMember(1)]
         public string IpPort { get; set; }
+
+        [ProtoMember(2)]
         public int Tries { get; set; }
-        public DateTime Date { get; private set; }
+
+        [ProtoMember(3)]
+        public DateTime Date { get; set; }
 
         public PossibleBannedIp(string ipPort = "")
         {
