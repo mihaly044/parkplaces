@@ -1,5 +1,5 @@
 ﻿using PPNetClient;
-using PPNetLib.Contracts;
+using PPNetLib.Contracts.Monitor;
 using System;
 using System.Windows.Forms;
 

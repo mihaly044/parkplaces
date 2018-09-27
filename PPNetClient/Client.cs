@@ -153,7 +153,7 @@ namespace PPNetClient
                             OnShutdownAck?.Invoke(shutdownAck);
                             break;
                         case Protocols.SERVERMONITOR_ACK:
-                            var serverMonitorAck = Serializer.Deserialize<PPNetLib.Contracts.ServerMonitorAck>(stream);
+                            var serverMonitorAck = Serializer.Deserialize<PPNetLib.Contracts.Monitor.ServerMonitorAck>(stream);
                             OnServerMonitorAck?.Invoke(serverMonitorAck);
                             break;
                         case Protocols.ONLINEUSERS_ACK:

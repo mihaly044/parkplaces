@@ -45,7 +45,7 @@ namespace PPNetClient
         public delegate void ShutdownAck(PPNetLib.Contracts.ShutdownAck ack);
         public event ShutdownAck OnShutdownAck;
 
-        public delegate void ServerMonitorAck(PPNetLib.Contracts.ServerMonitorAck ack);
+        public delegate void ServerMonitorAck(PPNetLib.Contracts.Monitor.ServerMonitorAck ack);
         public event ServerMonitorAck OnServerMonitorAck;
 
         public delegate void OnlineUsersAck(PPNetLib.Contracts.Monitor.OnlineUsersAck ack);

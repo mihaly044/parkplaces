@@ -1,6 +1,6 @@
 ﻿using ProtoBuf;
 
-namespace PPNetLib.Contracts
+namespace PPNetLib.Contracts.Monitor
 {
     [ProtoContract]
     public class ServerMonitorAck: Packet
