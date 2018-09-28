@@ -277,16 +277,19 @@ namespace PPServer
         {
             var response = "";
             Parser.Default.ParseArguments<Echo, KickUser, BanIp>(packet.Command)
-                .WithParsed<Echo>(o => {
+                .WithParsed<Echo>(o =>
+                {
                     response = o.Text;
                     _server.Send(user, new CommandAck() { Response = response });
                 })
-                .WithParsed<KickUser>(o => {
+                .WithParsed<KickUser>(o =>
+                {
                     var kickUser = _server.Guard.GetAuthUserByName(o.UserName);
                     _server.Guard.RemoveAuthUser(kickUser);
                     _server.DisconnectUser(kickUser.Id);
                 })
-                .WithParsed<BanIp>(o => {
+                .WithParsed<BanIp>(o =>
+                {
                     _server.Guard.BanIp(o.IPAddress);
                     var toKick = _server.Guard.GetAuthUser(o.IPAddress);
                     if (toKick != null)
