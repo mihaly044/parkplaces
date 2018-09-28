@@ -12,6 +12,8 @@ namespace PPServer
             Console.SetOut(writer);
             var server = new Server(writer);
 
+            System.Threading.Thread.Sleep(10);
+
             Parser.Default.ParseArguments<ServerOptions>(args)
                 .WithParsed<ServerOptions>(o=> {
                     if(o.LimitZones > 0)
