@@ -1,46 +1,73 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace PPNetLib.Tcp
 {
     public class Encrypter
     {
-        private readonly byte[] _salt = new byte[] { 0x26, 0xdc, 0xff, 0x00, 0xad, 0xed, 0x7a, 0xee, 0xc5, 0xfe, 0x07, 0xaf, 0x4d, 0x08, 0x22, 0x3c };
+        private readonly byte[] _salt = new byte[] { 0x61, 0x2d, 0x46, 0x62,
+                                                     0x60, 0x08, 0xe4, 0x49,
+                                                     0x38, 0x21, 0x31, 0xb9,
+                                                     0xa1, 0x7b, 0x05, 0x0c
+                                                    };
         private readonly string _password;
+
+        private byte[] _key;
+        private byte[] _iv;
 
         public Encrypter(string password)
         {
-            _password = password;
+            SetPassword(password);
         }
 
-        public byte[] Encrypt(byte[] plain)
+        public void SetPassword(string password)
         {
-            MemoryStream memoryStream;
-            CryptoStream cryptoStream;
-            Rijndael rijndael = Rijndael.Create();
-            Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(_password, _salt);
-            rijndael.Key = pdb.GetBytes(32);
-            rijndael.IV = pdb.GetBytes(16);
-            memoryStream = new MemoryStream();
-            cryptoStream = new CryptoStream(memoryStream, rijndael.CreateEncryptor(), CryptoStreamMode.Write);
-            cryptoStream.Write(plain, 0, plain.Length);
-            cryptoStream.Close();
-            return memoryStream.ToArray();
+            using (var pdb = new Rfc2898DeriveBytes(password, _salt))
+            {
+                _key = pdb.GetBytes(32);
+                _iv = pdb.GetBytes(16);
+            }
         }
 
-        public byte[] Decrypt(byte[] cipher)
+        public byte[] Encrypt(IEnumerable<byte> plain)
         {
-            MemoryStream memoryStream;
-            CryptoStream cryptoStream;
-            Rijndael rijndael = Rijndael.Create();
-            Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(_password, _salt);
-            rijndael.Key = pdb.GetBytes(32);
-            rijndael.IV = pdb.GetBytes(16);
-            memoryStream = new MemoryStream();
-            cryptoStream = new CryptoStream(memoryStream, rijndael.CreateDecryptor(), CryptoStreamMode.Write);
-            cryptoStream.Write(cipher, 0, cipher.Length);
-            cryptoStream.Close();
-            return memoryStream.ToArray();
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var rijndael = Rijndael.Create())
+                {
+                    rijndael.Key = _key;
+                    rijndael.IV = _iv;
+                    using (var cryptoStream = new CryptoStream(memoryStream, rijndael.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        foreach (var b in plain)
+                            cryptoStream.WriteByte(b);
+
+                        cryptoStream.Close();
+                        return memoryStream.ToArray();
+                    }
+                }
+            }
+        }
+
+        public byte[] Decrypt(IEnumerable<byte> cipher)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var rijndael = Rijndael.Create())
+                {
+                    rijndael.Key = _key;
+                    rijndael.IV = _iv;
+                    using (var cryptoStream = new CryptoStream(memoryStream, rijndael.CreateDecryptor(), CryptoStreamMode.Write))
+                    {
+                        foreach (var b in cipher)
+                            cryptoStream.WriteByte(b);
+
+                        cryptoStream.Close();
+                        return memoryStream.ToArray();
+                    }
+                }
+            }
         }
     }
 }
