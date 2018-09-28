@@ -170,18 +170,6 @@
     <Compile Include="Forms\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\User management\EditUserForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\User management\EditUserForm.Designer.cs">
-      <DependentUpon>EditUserForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\User management\ManageUsersForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\User management\ManageUsersForm.Designer.cs">
-      <DependentUpon>ManageUsersForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Map shapes\Layer.cs" />
     <Compile Include="Map shapes\Polygon.cs" />
     <Compile Include="Forms\EditZoneForm.cs">
@@ -226,12 +214,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\User management\EditUserForm.resx">
-      <DependentUpon>EditUserForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\User management\ManageUsersForm.resx">
-      <DependentUpon>ManageUsersForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ParkPlacesForm.resx">
       <DependentUpon>ParkPlacesForm.cs</DependentUpon>

@@ -1,4 +1,4 @@
-﻿namespace ParkPlaces.Forms
+﻿namespace PPAdmin
 {
     partial class ManageUsersForm
     {

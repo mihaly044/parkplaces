@@ -1,5 +1,6 @@
 ﻿using PPNetClient;
 using PPNetLib.Contracts.Monitor;
+using PPNetLib.Prototypes;
 using System;
 using System.Windows.Forms;
 
@@ -7,15 +8,19 @@ namespace PPAdmin
 {
     public partial class PpAdminForm : Form
     {
+        private User _loggedInUser;
+
         public PpAdminForm()
         {
             InitializeComponent();
             Client.Instance.OnServerMonitorAck += OnServerMonitorAck;
+            Client.Instance.OnConnectionError += OnConnectionError;
         }
 
-        ~PpAdminForm()
+        private void OnConnectionError(Exception e)
         {
-            Client.Instance.OnServerMonitorAck -= OnServerMonitorAck;
+            MessageBox.Show("Connection error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Application.Exit();
         }
 
         private void OnServerMonitorAck(ServerMonitorAck ack)
@@ -43,6 +48,9 @@ namespace PPAdmin
                 Application.Exit();
                 return;
             }
+
+            Show();
+            _loggedInUser = loginForm.User;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -53,8 +61,19 @@ namespace PPAdmin
 
         private void clearLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UpdateMessagesCountLabel();
             listView1.Items.Clear();
+            UpdateMessagesCountLabel();
+        }
+
+        private void CloseAllForms()
+        {
+            var fc = Application.OpenForms;
+            if (fc.Count > 1)
+                for (var i = fc.Count; i > 1; i--)
+                {
+                    var selectedForm = Application.OpenForms[i - 1];
+                    selectedForm.Close();
+                }
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -66,12 +85,23 @@ namespace PPAdmin
 
         private void Logout()
         {
+            CloseAllForms();
             Client.Instance.Disconnect();
         }
 
         private void onlineUsersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new OnlineUsersForm().Show();
+            new OnlineUsersForm().ShowDialog();
+        }
+
+        private void manageUsersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new ManageUsersForm(_loggedInUser).ShowDialog(this);
+        }
+
+        private void bannedUsersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new BannedIPsForm().ShowDialog(this);
         }
     }
 }

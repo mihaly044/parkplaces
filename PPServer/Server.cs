@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using PPNetLib;
@@ -19,15 +17,17 @@ namespace PPServer
 {
     public class Server
     {
+        public Dto2Object Dto;
+        public readonly Guard Guard;
+
         private readonly string _ip;
         private readonly int _port;
         private readonly Handler _handler;
-        private WatsonTcpServer _watsonTcpServer;
-        private readonly Dictionary<string, User> _authUsers;
-        private Http.Handler _httpHandler;
-        public Dto2Object Dto;
-        private string _messageHeap;
         private readonly Array _messageTypes;
+
+        private WatsonTcpServer _watsonTcpServer;
+        private Http.Handler _httpHandler;
+        private string _messageHeap;  
 
         public Server(ConsoleWriter writer, bool useHttp = true)
         {
@@ -51,7 +51,7 @@ namespace PPServer
 
             _port = int.Parse(configSect["Port"]);
             _handler = new Handler(this);
-            _authUsers = new Dictionary<string, User>();
+            Guard = new Guard(this, 5);
             PrintAsciiArtLogo();
 
             LoadData();
@@ -132,7 +132,9 @@ namespace PPServer
 
         private bool ClientDisconnected(string ipPort)
         {
-            _authUsers.Remove(ipPort);
+            var user = Guard.GetAuthUser(ipPort);
+            Guard.RemoveAuthUser(user);
+
             ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Client disconnected: {0}\n", ipPort);
             BroadcastOnlineUsersAck();
             return true;
@@ -144,6 +146,14 @@ namespace PPServer
 
             try
             {
+                var ipOnly = ipPort.Split(':')[0];
+                var user = Guard.GetAuthUser(ipPort);
+
+                if(Guard.IsBanned(ipOnly) && !Guard.CheckExpired(ipOnly))
+                {
+                    throw new Exception($"Refused to process requests from {ipOnly}. Ip banned!");
+                }
+
                 using (var stream = new MemoryStream(data))
                 {
                     var bProtocolVersion = new byte[4];
@@ -163,94 +173,106 @@ namespace PPServer
                     {
                         case Protocols.LOGIN_REQ:
                             var loginReq = Serializer.Deserialize<LoginReq>(stream);
-                            var user = _handler.OnLoginReq(loginReq, ipPort, _authUsers);
+                            User loginUser;
 
-                            if (user != null)
+                            if(user != null)
                             {
-                                if (!_authUsers.ContainsKey(ipPort))
-                                    _authUsers.Add(ipPort, user);
-
-                                BroadcastOnlineUsersAck();
+                                Send(ipPort, new LoginDuplicateAck());
                             }
+                            else
+                            {
+                                loginUser = _handler.OnLoginReq(loginReq, ipPort);
+
+                                if (loginUser != null)
+                                {
+                                    Guard.AddAuthUser(loginUser);
+                                    BroadcastOnlineUsersAck();
+                                }
+                                else
+                                {
+                                    Guard.TryCheck(ipOnly);
+                                }
+                            }
+                            
                             break;
 
                         case Protocols.ZONECOUNT_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Guest))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Guest))
                                 goto default;
 
                             _handler.OnZoneCountReq(ipPort);
                             break;
 
                         case Protocols.ZONELIST_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Guest))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Guest))
                                 goto default;
                             _handler.OnZoneListReq(ipPort);
                             break;
 
                         case Protocols.INSERTZONE_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Editor))
                                 goto default;
 
                             var insertZoneReq = Serializer.Deserialize<InsertZoneReq>(stream);
-                            _handler.OnInsertZoneReqAsync(insertZoneReq, ipPort);
+                            _handler.OnInsertZoneReqAsync(insertZoneReq, user);
                             break;
 
                        case Protocols.REMOVEZONE_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Editor))
                                 goto default;
 
                             var removeZoneReq = Serializer.Deserialize<RemoveZoneReq>(stream);
-                            _handler.OnRemoveZoneReq(removeZoneReq, ipPort);
+                            _handler.OnRemoveZoneReq(removeZoneReq, user);
                             break;
 
                         case Protocols.UPDATEZONE_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Editor))
                                 goto default;
 
                             var updateZoneReq = Serializer.Deserialize<UpdateZoneReq>(stream);
-                            _handler.OnUpdateZoneReq(updateZoneReq, ipPort);
+                            _handler.OnUpdateZoneReq(updateZoneReq, user);
                             break;
 
                         case Protocols.REMOVEPOINT_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Editor))
                                 goto default;
 
                             var removePointReq = Serializer.Deserialize<RemovePointReq>(stream);
-                            _handler.OnRemovePointReq(removePointReq, ipPort);
+                            _handler.OnRemovePointReq(removePointReq, user);
                             break;
 
                         case Protocols.INSERTPOINT_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Editor))
                                 goto default;
 
                             var insertPointReq = Serializer.Deserialize<InsertPointReq>(stream);
-                            _handler.OnInsertPointReqAsync(insertPointReq, ipPort);
+                            _handler.OnInsertPointReqAsync(insertPointReq, user);
                             break;
 
                         case Protocols.UPDATEPOINT_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Editor))
                                 goto default;
 
                             var updatePointReq = Serializer.Deserialize<UpdatePointReq>(stream);
-                            _handler.OnUpdatePointReq(updatePointReq, ipPort);
+                            _handler.OnUpdatePointReq(updatePointReq, user);
                             break;
 
                         case Protocols.CITYLIST_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Editor))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Editor))
                                 goto default;
 
-                            _handler.OnCityListReqAsync(ipPort);
+                            _handler.OnCityListReqAsync(user);
                             break;
 
                         case Protocols.USERLIST_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Admin))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
                                 goto default;
 
-                            _handler.OnUserListReqAsync(ipPort);
+                            _handler.OnUserListReqAsync(user);
                             break;
 
                         case Protocols.INSERTUSER_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Admin))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
                                 goto default;
 
                             var insertUserReq = Serializer.Deserialize<InsertUserReq>(stream);
@@ -258,7 +280,7 @@ namespace PPServer
                             break;
 
                         case Protocols.REMOVEUSER_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Admin))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
                                 goto default;
 
                             var removeUserReq = Serializer.Deserialize<RemoveUserReq>(stream);
@@ -266,7 +288,7 @@ namespace PPServer
                             break;
 
                         case Protocols.UPDATEUSER_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Admin))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
                                 goto default;
 
                             var updateUserReq = Serializer.Deserialize<UpdateUserReq>(stream);
@@ -274,30 +296,53 @@ namespace PPServer
                             break;
 
                         case Protocols.ISDUPLICATEUSER_REQ:
-                            if (!CheckPrivileges(ipPort, GroupRole.Admin))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
                                 goto default;
 
                             var isDuplicateUserReq = Serializer.Deserialize<IsDuplicateUserReq>(stream);
-                            _handler.IsDuplicateUserReq(isDuplicateUserReq, ipPort);
+                            _handler.OnIsDuplicateUserReq(isDuplicateUserReq, user);
                             break;
 
                         case Protocols.ONLINEUSERS_REQ:
-                            if(!IsMonitor(ipPort))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
                                 goto default;
-                            _handler.OnOnlineUsersReq(ipPort);
+                            _handler.OnOnlineUsersReq(user);
                             break;
 
                         case Protocols.DISCONNECTUSER_REQ:
-                            if (!IsMonitor(ipPort))
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
                                 goto default;
 
                             var disconnectUserReq = Serializer.Deserialize<DisconnectUserReq>(stream);
-                            _handler.OnDisconnectUserReq(disconnectUserReq, ipPort);
+                            _handler.OnDisconnectUserReq(disconnectUserReq);
+                            break;
+
+                        case Protocols.BANIPADDRESS_REQ:
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
+                                goto default;
+
+                            var banIpAddressReq = Serializer.Deserialize<BanIpAddressReq>(stream);
+                            _handler.OnBanIPAddressReq(banIpAddressReq);
+                            break;
+
+                        case Protocols.LISTBANNEDIPS_REQ:
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
+                                goto default;
+
+                            _handler.OnListBannedIPsReq(user);
+                            break;
+
+                        case Protocols.UNBANIPADDRESS_REQ:
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
+                                goto default;
+
+                            var unbanIpAddressReq = Serializer.Deserialize<UnbanIPAddressReq>(stream);
+                            _handler.OnUnbanIPAddressReq(unbanIpAddressReq);
                             break;
 
                         default:
+                            Guard.TryCheck(ipOnly);
                             _watsonTcpServer.DisconnectClient(ipPort);
-                            ConsoleKit.Message(ConsoleKit.MessageType.ERROR, "Invalid message from {0}\n", ipPort);
                             break;
                     }
                 }
@@ -313,14 +358,25 @@ namespace PPServer
 
         public void DisconnectUser(int userId)
         {
-            var user = _authUsers.FirstOrDefault(u => u.Value.Id == userId);
-            if(user.Key != null)
-            _watsonTcpServer.DisconnectClient(user.Key);
+            var user = Guard.GetAuthUser(userId);
+            if(user != null)
+            {
+                Send(user.IpPort, new AbortSessionAck());
+                Guard.RemoveAuthUser(user);
+                _watsonTcpServer.DisconnectClient(user.IpPort);
+            }
+            
         }
 
         public void DisconnectUser(string ipPort)
         {
-            _watsonTcpServer.DisconnectClient(ipPort);
+            var user = Guard.GetAuthUser(ipPort);
+            if (user != null)
+            {
+                Send(user.IpPort, new AbortSessionAck());
+                Guard.RemoveAuthUser(user);
+                _watsonTcpServer.DisconnectClient(user.IpPort);
+            }
         }
 
         public void SendToEveryoneExcept<T>(T packet, string except) where T: Packet
@@ -363,36 +419,9 @@ namespace PPServer
             }
         }
 
-        private bool CheckPrivileges(string ipPort, GroupRole min)
-        {
-            var ok = false;
-            if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
-            {
-                ok = _authUsers[ipPort].GroupRole >= min;
-            }
-
-            return ok;
-        }
-
-        private bool IsMonitor(string ipPort)
-        {
-            var ok = false;
-            if (_authUsers.ContainsKey(ipPort) && _authUsers[ipPort] != null)
-            {
-                ok = _authUsers[ipPort].Monitor;
-            }
-
-            return ok;
-        }
-
         public List<string> GetClients()
         {
             return _watsonTcpServer.ListClients();
-        }
-
-        public List<User> GetAuthUsers()
-        {
-            return _authUsers.Values.ToList();
         }
 
         public async void AnnounceShutdownAck(int seconds, bool shutdown = true)
@@ -430,12 +459,12 @@ namespace PPServer
                     _messageHeap = string.Empty;
                 }
 
-                var clients = _watsonTcpServer.ListClients();
-                foreach (var client in clients)
+                var users = Guard.GetAuthUsers();
+                foreach (var user in users)
                 {
-                    if (IsMonitor(client))
+                    if (user.Monitor && _watsonTcpServer.IsClientConnected(user.IpPort))
                     {
-                        Send(client, new ServerMonitorAck() { Output = message });
+                        Send(user, new ServerMonitorAck() { Output = message });
                     }
                 }
             }
@@ -443,12 +472,12 @@ namespace PPServer
 
         private void BroadcastOnlineUsersAck()
         {
-            var clients = _watsonTcpServer.ListClients();
-            foreach (var client in clients)
+            var users = Guard.GetAuthUsers();
+            foreach (var user in users)
             {
-                if (IsMonitor(client))
+                if (user.Monitor && _watsonTcpServer.IsClientConnected(user.IpPort))
                 {
-                    Send(client, new OnlineUsersAck() { OnlineUsersList = GetAuthUsers() });
+                    Send(user, new OnlineUsersAck() { OnlineUsersList = users });
                 }
             }
         }

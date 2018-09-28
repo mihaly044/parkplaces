@@ -55,7 +55,7 @@ namespace PPAdmin
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 Client.Instance.Disconnect();
             }
-            else if (!User.IsAuthenticated)
+            else if (User.GroupRole < GroupRole.Admin)
             {
                 MessageBox.Show("You are not authorized to log in.", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -66,6 +66,12 @@ namespace PPAdmin
                 DialogResult = DialogResult.OK;
                 Close();
             }
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                buttonLogin.PerformClick();
         }
     }
 }
