@@ -276,7 +276,7 @@ namespace PPServer
         public void OnCommandReq(CommandReq packet, User user)
         {
             var response = "";
-            Parser.Default.ParseArguments<Echo, KickUser, BanIp, UnbanIp>(packet.Command)
+            Parser.Default.ParseArguments<Echo, KickUser, BanIp, UnbanIp, Get>(packet.Command)
                 .WithParsed<Echo>(o =>
                 {
                     response = o.Text;
@@ -295,6 +295,27 @@ namespace PPServer
                 .WithParsed<UnbanIp>(o =>
                 {
                     _server.Guard.UnbanIp(o.IPAddress);
+                })
+                .WithParsed<Get>(o =>
+                {
+                    var get = "";
+                    if(o.OnlineUsers)
+                    {
+                        var users = _server.Guard.GetAuthUsers();
+                        get = $"Online: {users.Count}[{string.Join(", ", users)}]";
+                    } else if(o.ZoneCount)
+                    {
+                        get = "Zone count: " + _server.Dto.Zones.Count.ToString();
+                    }
+                    else if(o.MemUsage)
+                    {
+                        get = $"Total memory usage is {GC.GetTotalMemory(true) / 1024} MB";
+                    }
+                    else
+                    {
+                        get = "Unknown value requested";
+                    }
+                    _server.Send(user, new CommandAck() { Response = get });
                 })
                 .WithNotParsed ((errs) => {
                     _server.Send(user, new CommandAck() { Response = errs.ToString() });

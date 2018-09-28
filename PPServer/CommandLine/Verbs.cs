@@ -32,4 +32,17 @@ namespace PPServer.CommandLine
         [Option('i', "ipaddress", Required = true, HelpText = "The IP to be banned")]
         public string IPAddress { get; set; }
     }
+
+    [Verb("get", HelpText = "Get information about the server and data stored")]
+    public class Get
+    {
+        [Option('o', "online-users", Required = false, HelpText = "Return a list of online users")]
+        public bool OnlineUsers { get; set; }
+
+        [Option('z', "zone-count", Required = false, HelpText = "Return the count of all zones")]
+        public bool ZoneCount { get; set; }
+
+        [Option('m', "memusage", Required = false, HelpText = "Return the current memory usage of the server")]
+        public bool MemUsage { get; set; }
+    }
 }
