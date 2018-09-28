@@ -290,9 +290,7 @@ namespace PPServer
                 .WithParsed<BanIp>(o =>
                 {
                     _server.Guard.BanIp(o.IPAddress);
-                    var toKick = _server.Guard.GetAuthUser(o.IPAddress);
-                    if (toKick != null)
-                        _server.DisconnectUser(toKick.Id);
+                    _server.DisconnectUser(o.IPAddress);
                 }).WithNotParsed ((errs) => {
                     _server.Send(user, new CommandAck() { Response = errs.ToString() });
                 }); ;
