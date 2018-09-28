@@ -285,8 +285,7 @@ namespace PPServer
                 .WithParsed<KickUser>(o =>
                 {
                     var kickUser = _server.Guard.GetAuthUserByName(o.UserName);
-                    _server.Guard.RemoveAuthUser(kickUser);
-                    _server.DisconnectUser(kickUser.Id);
+                    _server.DisconnectUser(kickUser.IpPort);
                 })
                 .WithParsed<BanIp>(o =>
                 {
