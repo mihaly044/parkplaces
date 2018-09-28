@@ -276,7 +276,7 @@ namespace PPServer
         public void OnCommandReq(CommandReq packet, User user)
         {
             var response = "";
-            Parser.Default.ParseArguments<Echo, KickUser, BanIp, UnbanIp, Get>(packet.Command)
+            Parser.Default.ParseArguments<Echo, KickUser, BanIp, UnbanIp, Get, ShutDown>(packet.Command)
                 .WithParsed<Echo>(o =>
                 {
                     response = o.Text;
