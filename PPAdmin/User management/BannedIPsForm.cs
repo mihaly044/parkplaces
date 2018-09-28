@@ -27,7 +27,8 @@ namespace PPAdmin
             listView1.Items.Clear();
             foreach (var ip in ack.BannedIps)
             {
-                var expires = DateTime.Now + (DateTime.Now - ip.Date);
+
+                var expires = DateTime.Now.AddMinutes((DateTime.Now - ip.Date).TotalMinutes);
                 listView1.Items.Add(new ListViewItem(new string[] {
                     ip.IpPort,
                     ip.Date.ToLongDateString() + " " + ip.Date.ToLongTimeString(),
@@ -49,7 +50,7 @@ namespace PPAdmin
 
         private void unbanToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var ipAddress = listView1.FocusedItem.SubItems[1];
+            var ipAddress = listView1.FocusedItem.SubItems[0];
             Client.Instance.Send(new UnbanIPAddressReq() { IpAddress = ipAddress.Text });
             Client.Instance.Send(new ListBannedIpsReq());
         }
