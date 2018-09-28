@@ -61,6 +61,15 @@ namespace PPServer
         }
 
         /// <summary>
+        /// Find an user based on its userId
+        /// </summary>
+        /// <param name="ipPort"></param>
+        public User GetAuthUserByName(string userName)
+        {
+            return _authUsers.FirstOrDefault(u => u.UserName == userName);
+        }
+
+        /// <summary>
         /// Return auth users collection
         /// </summary>
         /// <returns></returns>
@@ -110,7 +119,7 @@ namespace PPServer
             }
             else
             {
-                _bannedIps.Add(new PossibleBannedIp(ipAddress));
+                _bannedIps.Add(new PossibleBannedIp(ipAddress.Split(':')[0]));
             }
         }
 
@@ -122,7 +131,7 @@ namespace PPServer
         {
             var ip = _bannedIps.FirstOrDefault(x => x.IpPort.Split(':')[0] == ipAddress);
             if(ip == null)
-                _bannedIps.Add(new PossibleBannedIp(ipAddress));
+                _bannedIps.Add(new PossibleBannedIp(ipAddress.Split(':')[0]));
         }
 
         /// <summary>
