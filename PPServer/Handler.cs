@@ -309,7 +309,7 @@ namespace PPServer
                     }
                     else if(o.MemUsage)
                     {
-                        get = $"Total memory usage is {GC.GetTotalMemory(true) / 1024} MB";
+                        get = $"Total memory usage is {GC.GetTotalMemory(true) / 1024 / 1024} MB";
                     }
                     else
                     {
