@@ -27,7 +27,8 @@ namespace PPServer
 
         private WatsonTcpServer _watsonTcpServer;
         private Http.Handler _httpHandler;
-        private string _messageHeap;  
+        private string _messageHeap;
+        private int _maxZones;
 
         public Server(ConsoleWriter writer, bool useHttp = true)
         {
@@ -52,6 +53,7 @@ namespace PPServer
             _port = int.Parse(configSect["Port"]);
             _handler = new Handler(this);
             Guard = new Guard(this, 5);
+            _maxZones = 0;
             PrintAsciiArtLogo();
 
             LoadData();
@@ -63,6 +65,11 @@ namespace PPServer
             }
 
             _messageTypes = Enum.GetValues(typeof(ConsoleKit.MessageType));
+        }
+
+        public void LimitZones(int limitZones)
+        {
+            _maxZones = limitZones;
         }
 
         private void Writer_WriteEvent(object sender, ConsoleWriterEventArgs e)
@@ -81,7 +88,12 @@ namespace PPServer
                 Zones = new List<PolyZone>()
             };
 
-            var count = Sql.Instance.GetZoneCount();
+            var count = 0;
+            if (_maxZones > 0)
+                count = _maxZones;
+            else
+                Sql.Instance.GetZoneCount();
+
             var current = 0;
 
             Sql.Instance.LoadZones((zone) => {
@@ -90,7 +102,7 @@ namespace PPServer
 
                 ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Loading {0}/{1} zones\t\r", current, count);
                 return true;
-            });
+            }, _maxZones);
             Console.Write("\n");
         }
 

@@ -1,10 +1,13 @@
 ﻿using CommandLine;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PPServer.CommandLine
 {
+    public class ServerOptions
+    {
+        [Option('l', "limit-zones", Required = false, HelpText = "Limit the count of zones loaded for debug purposes")]
+        public int LimitZones { get; set; }
+    }
+
     [Verb("echo", HelpText = "Echo a text back to the client")]
     public class Echo
     {

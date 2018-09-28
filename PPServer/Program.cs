@@ -1,4 +1,6 @@
 ﻿using System;
+using CommandLine;
+using PPServer.CommandLine;
 
 namespace PPServer
 {
@@ -8,10 +10,15 @@ namespace PPServer
        {
             var writer = new ConsoleWriter();
             Console.SetOut(writer);
-
             var server = new Server(writer);
-            server.Listen();
 
+            Parser.Default.ParseArguments<ServerOptions>(args)
+                .WithParsed<ServerOptions>(o=> {
+                    if(o.LimitZones > 0)
+                        server.LimitZones(o.LimitZones);
+                });
+
+            server.Listen();
             while (true)
             {
                 var input = Console.ReadLine();
