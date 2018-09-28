@@ -119,7 +119,9 @@ namespace PPServer
             }
             else
             {
-                _bannedIps.Add(new PossibleBannedIp(ipAddress.Split(':')[0]));
+                var banned = new PossibleBannedIp(ipAddress.Split(':')[0]);
+                banned.Tries = _maxTries + 1;
+                _bannedIps.Add(banned);
             }
         }
 
