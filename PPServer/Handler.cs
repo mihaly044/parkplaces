@@ -40,8 +40,15 @@ namespace PPServer
 
         public void OnZoneCountReq(string ipPort)
         {
-            var count = Sql.Instance.GetZoneCount();
-            _server.Send(ipPort, new ZoneCountAck() { ZoneCount = count });
+            if(_server.MaxZones > 0)
+            {
+                _server.Send(ipPort, new ZoneCountAck() { ZoneCount = MaxZones });
+            }
+            else
+            {
+                var count = Sql.Instance.GetZoneCount();
+                _server.Send(ipPort, new ZoneCountAck() { ZoneCount = count });
+            }
         }
 
         public void OnZoneListReq(string ipPort)

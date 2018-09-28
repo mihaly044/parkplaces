@@ -18,6 +18,7 @@ namespace PPServer
     public class Server
     {
         public Dto2Object Dto;
+        public int MaxZones;
         public readonly Guard Guard;
 
         private readonly string _ip;
@@ -29,7 +30,6 @@ namespace PPServer
         private Http.Handler _httpHandler;
         private ConsoleWriter _writer;
         private string _messageHeap;
-        private int _maxZones;
 
         public Server()
         {
@@ -52,7 +52,7 @@ namespace PPServer
             _handler = new Handler(this);
             Guard = new Guard(this, 5);
 
-            _maxZones = 0;
+            MaxZones = 0;
 
             PrintAsciiArtLogo();
             _messageTypes = Enum.GetValues(typeof(ConsoleKit.MessageType));
@@ -75,8 +75,8 @@ namespace PPServer
             };
 
             int count = 0;
-            if (_maxZones > 0)
-                count = _maxZones;
+            if (MaxZones > 0)
+                count = MaxZones;
             else
                 count = Sql.Instance.GetZoneCount();
 
@@ -497,7 +497,7 @@ namespace PPServer
 
         public void LimitZones(int count)
         {
-            _maxZones = count;
+            MaxZones = count;
         }
 
         public void SetWriter(ConsoleWriter writer)
