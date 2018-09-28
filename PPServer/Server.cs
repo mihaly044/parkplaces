@@ -151,7 +151,7 @@ namespace PPServer
 
                 if(Guard.IsBanned(ipOnly) && !Guard.CheckExpired(ipOnly))
                 {
-                    throw new Exception($"Refused to communicate with {ipOnly}. Ip banned!");
+                    throw new Exception($"Refused to process requests from {ipOnly}. Ip banned!");
                 }
 
                 using (var stream = new MemoryStream(data))
