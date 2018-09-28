@@ -276,7 +276,7 @@ namespace PPServer
         public void OnCommandReq(CommandReq packet, User user)
         {
             var response = "";
-            Parser.Default.ParseArguments<Echo, KickUser, BanIp>(packet.Command)
+            Parser.Default.ParseArguments<Echo, KickUser, BanIp, UnbanIp>(packet.Command)
                 .WithParsed<Echo>(o =>
                 {
                     response = o.Text;
@@ -291,7 +291,12 @@ namespace PPServer
                 {
                     _server.Guard.BanIp(o.IPAddress);
                     _server.DisconnectUser(o.IPAddress);
-                }).WithNotParsed ((errs) => {
+                })
+                .WithParsed<UnbanIp>(o =>
+                {
+                    _server.Guard.UnbanIp(o.IPAddress);
+                })
+                .WithNotParsed ((errs) => {
                     _server.Send(user, new CommandAck() { Response = errs.ToString() });
                 }); ;
         }

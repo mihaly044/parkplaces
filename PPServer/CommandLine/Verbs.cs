@@ -25,4 +25,11 @@ namespace PPServer.CommandLine
         [Option('i', "ipaddress", Required = true, HelpText = "The IP to be banned")]
         public string IPAddress { get; set; }
     }
+
+    [Verb("unbanip", HelpText = "Unban an IP from accessing the server")]
+    public class UnbanIp
+    {
+        [Option('i', "ipaddress", Required = true, HelpText = "The IP to be banned")]
+        public string IPAddress { get; set; }
+    }
 }
