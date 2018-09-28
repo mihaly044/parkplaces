@@ -42,7 +42,7 @@ namespace PPServer
         {
             if(_server.MaxZones > 0)
             {
-                _server.Send(ipPort, new ZoneCountAck() { ZoneCount = MaxZones });
+                _server.Send(ipPort, new ZoneCountAck() { ZoneCount = _server.MaxZones });
             }
             else
             {
