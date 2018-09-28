@@ -334,7 +334,7 @@ namespace PPServer
                 })
                 .WithNotParsed ((errs) => {
                     _server.Send(user, new CommandAck() { Response = errs.ToString() });
-                }); ;
+                });
         }
     }
 }
