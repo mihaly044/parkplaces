@@ -447,8 +447,10 @@ namespace PPServer
             {
                 foreach (var type in _messageTypes)
                 {
-                    if(message.IndexOf($"[{type}]") == 0)
+                    var messageType = $"[{type}]";
+                    if (message.IndexOf(messageType) == 0)
                     {
+                        _messageHeap = messageType;
                         return;
                     }
                 }
