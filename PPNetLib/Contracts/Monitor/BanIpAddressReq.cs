@@ -2,6 +2,7 @@
 
 namespace PPNetLib.Contracts.Monitor
 {
+    [ProtoContract]
     public class BanIpAddressReq: Packet
     {
         [ProtoMember(1)]
