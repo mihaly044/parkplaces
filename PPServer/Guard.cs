@@ -84,16 +84,6 @@ namespace PPServer
         }
 
         /// <summary>
-        /// Finds user in the auth users collection based on its IP
-        /// </summary>
-        /// <param name="ipPort"></param>
-        /// <returns></returns>
-        public User IP2User(string ipPort)
-        {
-            return _authUsers.FirstOrDefault(user => user.IpPort == ipPort);
-        }
-
-        /// <summary>
         /// Check if an user has been banned
         /// </summary>
         /// <param name="u">The user to check</param>

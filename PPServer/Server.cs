@@ -132,7 +132,7 @@ namespace PPServer
 
         private bool ClientDisconnected(string ipPort)
         {
-            var user = Guard.IP2User(ipPort);
+            var user = Guard.GetAuthUser(ipPort);
             Guard.RemoveAuthUser(user);
 
             ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Client disconnected: {0}\n", ipPort);
@@ -147,7 +147,7 @@ namespace PPServer
             try
             {
                 var ipOnly = ipPort.Split(':')[0];
-                var user = Guard.IP2User(ipPort);
+                var user = Guard.GetAuthUser(ipPort);
 
                 if(Guard.IsBanned(ipOnly) && !Guard.CheckExpired(ipOnly))
                 {
@@ -362,6 +362,7 @@ namespace PPServer
             if(user != null)
             {
                 Send(user.IpPort, new AbortSessionAck());
+                Guard.RemoveAuthUser(user);
                 _watsonTcpServer.DisconnectClient(user.IpPort);
             }
             
@@ -369,8 +370,13 @@ namespace PPServer
 
         public void DisconnectUser(string ipPort)
         {
-            Send(ipPort, new AbortSessionAck());
-            _watsonTcpServer.DisconnectClient(ipPort);
+            var user = Guard.GetAuthUser(ipPort);
+            if (user != null)
+            {
+                Send(user.IpPort, new AbortSessionAck());
+                Guard.RemoveAuthUser(user);
+                _watsonTcpServer.DisconnectClient(user.IpPort);
+            }
         }
 
         public void SendToEveryoneExcept<T>(T packet, string except) where T: Packet
@@ -456,7 +462,7 @@ namespace PPServer
                 var users = Guard.GetAuthUsers();
                 foreach (var user in users)
                 {
-                    if (user.Monitor)
+                    if (user.Monitor && _watsonTcpServer.IsClientConnected(user.IpPort))
                     {
                         Send(user, new ServerMonitorAck() { Output = message });
                     }
@@ -469,7 +475,7 @@ namespace PPServer
             var users = Guard.GetAuthUsers();
             foreach (var user in users)
             {
-                if (user.Monitor)
+                if (user.Monitor && _watsonTcpServer.IsClientConnected(user.IpPort))
                 {
                     Send(user, new OnlineUsersAck() { OnlineUsersList = users });
                 }
