@@ -28,15 +28,14 @@ namespace PPServer.Database
         /// Load polygon data from the database
         /// </summary>
         /// <returns>Data transfer object that holds the data</returns>
-        public void LoadZones(Func<PolyZone, bool> callback, int limit)
+        public void LoadZones(Func<PolyZone, bool> callback)
         {
-            const string strCmd = "SELECT * FROM zones INNER JOIN cities ON cities.id = zones.cityid LIMIT @limit";
+            const string strCmd = "SELECT * FROM zones INNER JOIN cities ON cities.id = zones.cityid";
 
             using (var connection = GetConnection())
             {
                 using (var cmd = new MySqlCommand(strCmd) { Connection = connection })
                 {
-                    cmd.Parameters.AddWithValue("@limit", limit);
                     using (var geometryConnection = GetConnection())
                     {
                         var rd = cmd.ExecuteReader();
