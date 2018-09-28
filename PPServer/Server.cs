@@ -92,7 +92,7 @@ namespace PPServer
             if (_maxZones > 0)
                 count = _maxZones;
             else
-                Sql.Instance.GetZoneCount();
+                count = Sql.Instance.GetZoneCount();
 
             var current = 0;
 
