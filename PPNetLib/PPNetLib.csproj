@@ -9,4 +9,10 @@
     <PackageReference Include="protobuf-net" Version="2.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="keyfile.ppsk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

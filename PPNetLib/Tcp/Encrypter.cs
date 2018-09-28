@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using PPNetLib.Prototypes;
+using ProtoBuf;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 
@@ -6,26 +8,21 @@ namespace PPNetLib.Tcp
 {
     public class Encrypter
     {
-        private readonly byte[] _salt = new byte[] { 0x61, 0x2d, 0x46, 0x62,
-                                                     0x60, 0x08, 0xe4, 0x49,
-                                                     0x38, 0x21, 0x31, 0xb9,
-                                                     0xa1, 0x7b, 0x05, 0x0c
-                                                    };
 
-        private byte[] _key;
-        private byte[] _iv;
+        private readonly byte[] _key;
+        private readonly byte[] _iv;
 
-        public Encrypter(string password)
+        public Encrypter(string keyfile = "keyfile.ppsk")
         {
-            SetPassword(password);
-        }
-
-        public void SetPassword(string password)
-        {
-            using (var pdb = new Rfc2898DeriveBytes(password, _salt))
+            var data = File.ReadAllBytes(keyfile);
+            using (var stream = new MemoryStream(data))
             {
-                _key = pdb.GetBytes(32);
-                _iv = pdb.GetBytes(16);
+                var secret = Serializer.Deserialize<EncryptionKey>(stream);
+                using (var pdb = new Rfc2898DeriveBytes(secret.Password, secret.Salt))
+                {
+                    _key = pdb.GetBytes(32);
+                    _iv = pdb.GetBytes(16);
+                }
             }
         }
 
