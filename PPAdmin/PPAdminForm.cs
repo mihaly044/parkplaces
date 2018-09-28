@@ -49,6 +49,7 @@ namespace PPAdmin
                 return;
             }
 
+            Show();
             _loggedInUser = loginForm.User;
         }
 
