@@ -1,7 +1,9 @@
 ﻿using PPNetClient;
+using PPNetLib;
 using PPNetLib.Contracts.Monitor;
 using PPNetLib.Prototypes;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PPAdmin
@@ -9,12 +11,15 @@ namespace PPAdmin
     public partial class PpAdminForm : Form
     {
         private User _loggedInUser;
+        private readonly Array _messageTypes;
 
         public PpAdminForm()
         {
             InitializeComponent();
             Client.Instance.OnServerMonitorAck += OnServerMonitorAck;
             Client.Instance.OnConnectionError += OnConnectionError;
+
+            _messageTypes = Enum.GetValues(typeof(ConsoleKit.MessageType));
         }
 
         private void OnConnectionError(Exception e)
@@ -25,7 +30,37 @@ namespace PPAdmin
 
         private void OnServerMonitorAck(ServerMonitorAck ack)
         {
-            listView1.Items.Add(new ListViewItem(new string[] { $"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}", ack.Output }));
+            var item = new ListViewItem(new string[] { $"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}", ack.Output });
+
+            foreach (var type in _messageTypes)
+            {
+                var messageType = $"[{type}]";
+                if (ack.Output.IndexOf(messageType) == 0)
+                {
+                    switch(type)
+                    {
+                        case ConsoleKit.MessageType.ERROR:
+                            item.BackColor = Color.Red;
+                            item.ForeColor = Color.Yellow;
+                        break;
+
+                        case ConsoleKit.MessageType.WARNING:
+                            item.BackColor = Color.DarkOrange;
+                            item.ForeColor = Color.Red;
+                            break;
+
+                        case ConsoleKit.MessageType.DEBUG:
+                            item.BackColor = Color.Cyan;
+                        break;
+
+                        case ConsoleKit.MessageType.INFO:
+                            item.BackColor = Color.LightBlue;
+                        break;
+                    }
+                }
+            }
+
+                    listView1.Items.Add(item);
             listView1.Items[listView1.Items.Count - 1].EnsureVisible();
             UpdateMessagesCountLabel();
         }
