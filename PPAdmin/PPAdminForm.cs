@@ -172,7 +172,8 @@ namespace PPAdmin
         {
             if(e.KeyCode == Keys.Enter)
             {
-                Client.Instance.Send(new CommandReq { Command = txtCmd.Text.Substring(0, 4096).Split(' ') });
+                var command = txtCmd.Text.Substring(cmdSign.Length).Split(' ');
+                Client.Instance.Send(new CommandReq { Command = command });
                 txtCmd.Text = cmdSign;
             }
             else
