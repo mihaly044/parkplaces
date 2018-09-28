@@ -11,7 +11,6 @@ namespace PPNetLib.Tcp
                                                      0x38, 0x21, 0x31, 0xb9,
                                                      0xa1, 0x7b, 0x05, 0x0c
                                                     };
-        private readonly string _password;
 
         private byte[] _key;
         private byte[] _iv;
