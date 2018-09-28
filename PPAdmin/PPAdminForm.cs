@@ -3,6 +3,7 @@ using PPNetLib;
 using PPNetLib.Contracts.Monitor;
 using PPNetLib.Prototypes;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -14,6 +15,9 @@ namespace PPAdmin
         private readonly Array _messageTypes;
         private const string cmdSign = "command > ";
 
+        private readonly IList<string> _commandHistory;
+        private int _commandIndex;
+
         public PpAdminForm()
         {
             InitializeComponent();
@@ -23,6 +27,8 @@ namespace PPAdmin
 
             _messageTypes = Enum.GetValues(typeof(ConsoleKit.MessageType));
             txtCmd.Text = cmdSign;
+            _commandIndex = 0;
+            _commandHistory = new List<string>();
         }
 
         private void OnCommandAck(CommandAck ack)
@@ -168,17 +174,55 @@ namespace PPAdmin
                 txtCmd.SelectionStart = cmdSign.Length;
         }
 
+        private string GetLastCommand(bool down)
+        {
+            if (_commandHistory.Count == 0)
+                return string.Empty;
+
+            if (!down && Math.Abs(_commandIndex) < _commandHistory.Count)
+            {
+                _commandIndex--;
+                return _commandHistory[_commandHistory.Count + _commandIndex];
+            }
+            else if (down && _commandIndex < _commandHistory.Count && _commandIndex < -1)
+            {
+                _commandIndex++;
+                return _commandHistory[_commandHistory.Count - Math.Abs(_commandIndex)];
+            }
+            return string.Empty;
+        }
+
         private void txtCmd_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            switch (e.KeyCode)
             {
-                Client.Instance.Send(new CommandReq {Command = txtCmd.Text.Substring(cmdSign.Length).Split(' ')});
-                txtCmd.Text = cmdSign;
+                case Keys.Enter:
+                    var command = txtCmd.Text.Substring(cmdSign.Length);
+                    _commandHistory.Add(command);
+                    _commandIndex = 0;
+                    Client.Instance.Send(new CommandReq { Command = command.Split(' ') });
+                    txtCmd.Text = cmdSign;
+                    break;
+
+                case Keys.Up:
+                    e.Handled = true;
+                    var lastCommand = GetLastCommand(false);
+                    if (lastCommand != string.Empty)
+                        txtCmd.Text = cmdSign + lastCommand;
+                    break;
+
+                case Keys.Down:
+                    e.Handled = true;
+                    var lastCommand1 = GetLastCommand(true);
+                    if (lastCommand1 != string.Empty)
+                        txtCmd.Text = cmdSign + lastCommand1;
+                    break;
+
+                default:
+                    ProtectCaret();
+                    break;
             }
-            else
-            {
-                ProtectCaret();
-            }
+          
         }
     }
 }
