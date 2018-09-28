@@ -12,14 +12,22 @@ namespace PPAdmin
     {
         private User _loggedInUser;
         private readonly Array _messageTypes;
+        private const string cmdSign = "command > ";
 
         public PpAdminForm()
         {
             InitializeComponent();
             Client.Instance.OnServerMonitorAck += OnServerMonitorAck;
             Client.Instance.OnConnectionError += OnConnectionError;
+            Client.Instance.OnCommandAck += OnCommandAck;
 
             _messageTypes = Enum.GetValues(typeof(ConsoleKit.MessageType));
+            txtCmd.Text = cmdSign;
+        }
+
+        private void OnCommandAck(CommandAck ack)
+        {
+            listView1.Items.Add(new ListViewItem(new string[] { $"{DateTime.Now.ToShortDateString()} {DateTime.Now.ToShortTimeString()}", ack.Response }));
         }
 
         private void OnConnectionError(Exception e)
@@ -137,6 +145,40 @@ namespace PPAdmin
         private void bannedUsersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new BannedIPsForm().ShowDialog(this);
+        }
+
+        private void txtCmd_TextChanged(object sender, EventArgs e)
+        {
+            ProtectCaret();
+        }
+
+        private void txtCmd_MouseClick(object sender, MouseEventArgs e)
+        {
+            ProtectCaret();
+        }
+
+        private void ProtectCaret()
+        {
+            if (txtCmd.Text.IndexOf(cmdSign) != 0)
+            {
+                txtCmd.Text = cmdSign;
+            }
+
+            if (txtCmd.SelectionStart <= cmdSign.Length)
+                txtCmd.SelectionStart = cmdSign.Length;
+        }
+
+        private void txtCmd_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                Client.Instance.Send(new CommandReq { Command = txtCmd.Text.Substring(0, 4096).Split(' ') });
+                txtCmd.Text = cmdSign;
+            }
+            else
+            {
+                ProtectCaret();
+            }
         }
     }
 }

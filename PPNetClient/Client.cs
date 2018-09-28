@@ -167,6 +167,10 @@ namespace PPNetClient
                             var listBannedIps = Serializer.Deserialize<PPNetLib.Contracts.Monitor.ListBannedIpsAck>(stream);
                             OnListBannedIpsAck?.Invoke(listBannedIps);
                             break;
+                        case Protocols.COMMAND_ACK:
+                            var commandAck = Serializer.Deserialize<PPNetLib.Contracts.Monitor.CommandAck>(stream);
+                            OnCommandAck?.Invoke(commandAck);
+                            break;
                     }
                     Debug.WriteLine("Received PID {0}", packetId);
                 }

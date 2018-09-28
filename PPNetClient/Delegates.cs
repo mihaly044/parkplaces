@@ -53,5 +53,8 @@ namespace PPNetClient
 
         public delegate void ListBannedIpsAck(PPNetLib.Contracts.Monitor.ListBannedIpsAck ack);
         public event ListBannedIpsAck OnListBannedIpsAck;
+
+        public delegate void CommandAck(PPNetLib.Contracts.Monitor.CommandAck ack);
+        public event CommandAck OnCommandAck;
     }
 }

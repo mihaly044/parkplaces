@@ -7,7 +7,9 @@ using Newtonsoft.Json;
 using PPNetLib.Contracts.SynchroniseAcks;
 using PPNetLib.Contracts.Monitor;
 using PPNetLib;
+using CommandLine;
 using System;
+using PPServer.CommandLine;
 
 namespace PPServer
 {
@@ -269,6 +271,16 @@ namespace PPServer
 
             var bannedIps = _server.Guard.GetBannedIps();
             _server.Send(user, new ListBannedIpsAck() { BannedIps = bannedIps });
+        }
+
+        public void OnCommandReq(CommandReq packet, User user)
+        {
+            var response = "";
+            Parser.Default.ParseArguments<Echo>(packet.Command)
+                .WithParsed<Echo>(o => {
+                    response = o.Text;
+                    _server.Send(user, new CommandAck() { Response = response });
+                });
         }
     }
 }

@@ -47,6 +47,8 @@ namespace PPNetLib
         BANIPADDRESS_REQ,
         LISTBANNEDIPS_REQ,
         LISTBANNEDIPS_ACK,
-        UNBANIPADDRESS_REQ
+        UNBANIPADDRESS_REQ,
+        COMMAND_REQ,
+        COMMAND_ACK
     };
 }
