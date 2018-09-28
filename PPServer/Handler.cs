@@ -244,7 +244,7 @@ namespace PPServer
             _server.DisconnectUser(packet.IpPort);
         }
 
-        public void OnBanIPAddressReq(BanIpAddressReq packet)
+        public void OnBanIPAddressReq(BanIpAddressReq packet, User u)
         {
             _server.Guard.BanIp(packet.IpAddress.Split(':')[0]);
             var user = _server.Guard.GetAuthUser(packet.IpAddress);
@@ -252,6 +252,9 @@ namespace PPServer
             {
                 _server.DisconnectUser(packet.IpAddress);
             }
+
+            var bannedIps = _server.Guard.GetBannedIps();
+            _server.Send(u, new ListBannedIpsAck() { BannedIps = bannedIps });
         }
 
         public void OnListBannedIPsReq(User user)
@@ -260,9 +263,12 @@ namespace PPServer
             _server.Send(user, new ListBannedIpsAck() { BannedIps = bannedIps });
         }
 
-        public void OnUnbanIPAddressReq(UnbanIPAddressReq packet)
+        public void OnUnbanIPAddressReq(UnbanIPAddressReq packet, User user)
         {
             _server.Guard.UnbanIp(packet.IpAddress.Split(':')[0]);
+
+            var bannedIps = _server.Guard.GetBannedIps();
+            _server.Send(user, new ListBannedIpsAck() { BannedIps = bannedIps });
         }
     }
 }

@@ -322,7 +322,7 @@ namespace PPServer
                                 goto default;
 
                             var banIpAddressReq = Serializer.Deserialize<BanIpAddressReq>(stream);
-                            _handler.OnBanIPAddressReq(banIpAddressReq);
+                            _handler.OnBanIPAddressReq(banIpAddressReq, user);
                             break;
 
                         case Protocols.LISTBANNEDIPS_REQ:
@@ -337,7 +337,7 @@ namespace PPServer
                                 goto default;
 
                             var unbanIpAddressReq = Serializer.Deserialize<UnbanIPAddressReq>(stream);
-                            _handler.OnUnbanIPAddressReq(unbanIpAddressReq);
+                            _handler.OnUnbanIPAddressReq(unbanIpAddressReq, user);
                             break;
 
                         default:
