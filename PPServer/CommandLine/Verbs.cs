@@ -33,6 +33,13 @@ namespace PPServer.CommandLine
         public string IPAddress { get; set; }
     }
 
+    [Verb("shutdown", HelpText = "Unban an IP from accessing the server")]
+    public class Shutdown
+    {
+        [Option('s', "seconds", Required = false, HelpText = "Shuts down the application within S seconds.")]
+        public int Seconds { get; set; }
+    }
+
     [Verb("get", HelpText = "Get information about the server and data stored")]
     public class Get
     {

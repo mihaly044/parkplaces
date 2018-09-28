@@ -299,15 +299,15 @@ namespace PPServer
                 .WithParsed<Get>(o =>
                 {
                     var get = "";
-                    if(o.OnlineUsers)
+                    if (o.OnlineUsers)
                     {
                         var users = _server.Guard.GetAuthUsers();
                         get = $"Online: {users.Count}[{string.Join(", ", users)}]";
-                    } else if(o.ZoneCount)
+                    } else if (o.ZoneCount)
                     {
                         get = "Zone count: " + _server.Dto.Zones.Count.ToString();
                     }
-                    else if(o.MemUsage)
+                    else if (o.MemUsage)
                     {
                         get = $"Total memory usage is {GC.GetTotalMemory(true) / 1024 / 1024} MB";
                     }
@@ -316,6 +316,14 @@ namespace PPServer
                         get = "Unknown value requested";
                     }
                     _server.Send(user, new CommandAck() { Response = get });
+                })
+                .WithParsed<Shutdown>(o =>
+                {
+                    if (o.Seconds > 0)
+                        _server.AnnounceShutdownAck(o.Seconds);
+                    else
+                        _server.Shutdown();
+                   
                 })
                 .WithNotParsed ((errs) => {
                     _server.Send(user, new CommandAck() { Response = errs.ToString() });
