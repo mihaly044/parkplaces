@@ -91,7 +91,7 @@ namespace PPNetLib.Tcp
             _ClientConnected = clientConnected;
             _ClientDisconnected = clientDisconnected;
             _MessageReceived = messageReceived ?? throw new ArgumentNullException(nameof(_MessageReceived));
-            _Encrypter = new Encrypter("password");
+            _Encrypter = new Encrypter("keyfile.ppsk");
 
             _Debug = debug;
 
