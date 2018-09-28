@@ -60,7 +60,7 @@ namespace PPAdmin
                 }
             }
 
-                    listView1.Items.Add(item);
+            listView1.Items.Add(item);
             listView1.Items[listView1.Items.Count - 1].EnsureVisible();
             UpdateMessagesCountLabel();
         }
