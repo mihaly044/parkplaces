@@ -293,7 +293,9 @@ namespace PPServer
                     var toKick = _server.Guard.GetAuthUser(o.IPAddress);
                     if (toKick != null)
                         _server.DisconnectUser(toKick.Id);
-                });
+                }).WithNotParsed ((errs) => {
+                    _server.Send(user, new CommandAck() { Response = errs.ToString() });
+                }); ;
         }
     }
 }
