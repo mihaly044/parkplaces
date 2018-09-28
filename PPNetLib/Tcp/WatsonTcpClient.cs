@@ -31,6 +31,7 @@ namespace PPNetLib.Tcp
         private Func<byte[], bool> _MessageReceived = null;
         private Func<bool> _ServerConnected = null;
         private Func<bool> _ServerDisconnected = null;
+        private Encrypter _Encrypter;
 
         private readonly SemaphoreSlim _SendLock;
         private CancellationTokenSource _TokenSource;
@@ -73,6 +74,7 @@ namespace PPNetLib.Tcp
             _ServerConnected = serverConnected;
             _ServerDisconnected = serverDisconnected;
             _MessageReceived = messageReceived ?? throw new ArgumentNullException(nameof(messageReceived));
+            _Encrypter = new Encrypter("password");
 
             _Debug = debug;
 
@@ -729,7 +731,7 @@ namespace PPNetLib.Tcp
 
                 #endregion
 
-                return contentBytes;
+                return _Encrypter.Decrypt(contentBytes);
             }
             catch (Exception)
             {
@@ -760,6 +762,8 @@ namespace PPNetLib.Tcp
                 string header = "";
                 byte[] headerBytes;
                 byte[] message;
+
+                data = _Encrypter.Encrypt(data);
 
                 if (data == null || data.Length < 1)
                 {

@@ -38,6 +38,7 @@ namespace PPNetLib.Tcp
         private Func<string, bool> _ClientConnected = null;
         private Func<string, bool> _ClientDisconnected = null;
         private Func<string, byte[], bool> _MessageReceived = null;
+        private Encrypter _Encrypter;
 
         #endregion
 
@@ -90,6 +91,7 @@ namespace PPNetLib.Tcp
             _ClientConnected = clientConnected;
             _ClientDisconnected = clientDisconnected;
             _MessageReceived = messageReceived ?? throw new ArgumentNullException(nameof(_MessageReceived));
+            _Encrypter = new Encrypter("password");
 
             _Debug = debug;
 
@@ -890,7 +892,7 @@ namespace PPNetLib.Tcp
                 Log("*** MessageReadAsync " + client.IpPort + " no content read");
                 return null;
             }
-
+            
             if (contentBytes.Length != contentLength)
             {
                 Log("*** MessageReadAsync " + client.IpPort + " content length " + contentBytes.Length + " bytes does not match header value " + contentLength + ", discarding");
@@ -899,7 +901,7 @@ namespace PPNetLib.Tcp
 
             #endregion
 
-            return contentBytes;
+            return _Encrypter.Decrypt(contentBytes);
         }
 
         private bool MessageWrite(ClientMetadata client, byte[] data)
@@ -911,6 +913,8 @@ namespace PPNetLib.Tcp
                 string header = "";
                 byte[] headerBytes;
                 byte[] message;
+
+                data = _Encrypter.Encrypt(data);
 
                 if (data == null || data.Length < 1)
                 {
