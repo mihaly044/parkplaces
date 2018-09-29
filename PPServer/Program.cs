@@ -8,13 +8,16 @@ namespace PPServer
     {
        static void Main(string[] args)
        {
+            // Setting up the server
             var server = new Server();
+
+            // Redirect console output
             var writer = new ConsoleWriter();
             Console.SetOut(writer);
             server.SetWriter(writer);
 
+            // Parse command line arguments
             var useHttp = true;
-
             Parser.Default.ParseArguments<ServerOptions>(args)
                 .WithParsed<ServerOptions>(o => {
                     if (o.LimitZones > 0)
@@ -27,9 +30,12 @@ namespace PPServer
             if(useHttp)
                 server.SetupHttpServer();
 
+            // Start the server
             server.Listen();
             server.LoadData();
 
+            // Accept basic commands
+            // TODO: implement more commants
             while (true)
             {
                 var input = Console.ReadLine();
