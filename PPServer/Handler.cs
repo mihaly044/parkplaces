@@ -55,10 +55,7 @@ namespace PPServer
         {
             foreach(var zone in _server.Dto.Zones)
             {
-                // TODO: Find out why sending fails when a client reconnects
                 var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
-                //ConsoleKit.Message(ConsoleKit.MessageType.DEBUG, "Now sending zone id {0}\n", zone.Id);
-                //Thread.Sleep(1);
                 if(!_server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized }))
                 {
                     ConsoleKit.Message(ConsoleKit.MessageType.ERROR, "Connection lost ...\n", zone.Id);
