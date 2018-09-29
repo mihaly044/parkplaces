@@ -54,7 +54,6 @@ namespace PPServer
 
             MaxZones = 0;
 
-            PrintAsciiArtLogo();
             _messageTypes = Enum.GetValues(typeof(ConsoleKit.MessageType));
         }
 
@@ -95,23 +94,6 @@ namespace PPServer
         {
             _httpHandler = new Http.Handler(this);
             _httpHandler.Handle();
-        }
-
-        private void PrintAsciiArtLogo()
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(
-                @"
-8888888b.  8888888b.   .d8888b.                                             
-888   Y88b 888   Y88b d88P  Y88b                                            
-888    888 888    888 Y88b.                                                 
-888   d88P 888   d88P  ""Y888b.    .d88b.  888d888 888  888  .d88b.  888d888 
-8888888P""  8888888P""      ""Y88b. d8P  Y8b 888P""   888  888 d8P  Y8b 888P""   
-888        888              ""888 88888888 888     Y88  88P 88888888 888     
-888        888        Y88b  d88P Y8b.     888      Y8bd8P  Y8b.     888     
-888        888         ""Y8888P""   ""Y8888  888       Y88P    ""Y8888  888
-");
-            Console.ResetColor();
         }
 
         public void Listen()
