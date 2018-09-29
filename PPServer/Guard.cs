@@ -6,9 +6,25 @@ namespace PPServer
 {
     public class Guard
     {
+        /// <summary>
+        /// Contains a list of currently logged in users
+        /// </summary>
         private readonly List<User> _authUsers;
+
+        /// <summary>
+        /// Collection of banned IPs
+        /// may contain already expired bans
+        /// </summary>
         private readonly List<PossibleBannedIp> _bannedIps;
+
+        /// <summary>
+        /// Parent server object
+        /// </summary>
         private readonly Server _server;
+
+        /// <summary>
+        /// The maximum number of tries before an IP gets banned
+        /// </summary>
         private readonly int _maxTries;
 
         /// <summary>
