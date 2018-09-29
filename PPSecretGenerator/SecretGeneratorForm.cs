@@ -108,7 +108,7 @@ namespace PPSecretGenerator
         private void txtSalt_KeyPress(object sender, KeyPressEventArgs e)
         {
             var temp = "012345679ABCDEF";
-            if (temp.IndexOf(e.KeyChar) == -1)
+            if (temp.IndexOf(e.KeyChar) == -1 && e.KeyChar != '\b' )
             {
                 e.Handled = true;
             }
