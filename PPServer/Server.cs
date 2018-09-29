@@ -18,6 +18,7 @@ namespace PPServer
     public class Server
     {
         public Dto2Object Dto;
+        public int MaxZones;
         public readonly Guard Guard;
 
         private readonly string _ip;
@@ -27,13 +28,11 @@ namespace PPServer
 
         private WatsonTcpServer _watsonTcpServer;
         private Http.Handler _httpHandler;
-        private string _messageHeap;  
+        private ConsoleWriter _writer;
+        private string _messageHeap;
 
-        public Server(ConsoleWriter writer, bool useHttp = true)
+        public Server()
         {
-            writer.WriteLineEvent += Writer_WriteLineEvent;
-            writer.WriteEvent += Writer_WriteEvent;
-
             var configSect = ConfigurationManager.GetSection("ServerConfiguration") as NameValueCollection;
 
             // ReSharper disable once PossibleNullReferenceException
@@ -52,16 +51,10 @@ namespace PPServer
             _port = int.Parse(configSect["Port"]);
             _handler = new Handler(this);
             Guard = new Guard(this, 5);
+
+            MaxZones = 0;
+
             PrintAsciiArtLogo();
-
-            LoadData();
-
-            if (useHttp)
-            {
-                _httpHandler = new Http.Handler(this);
-                _httpHandler.Handle();
-            }
-
             _messageTypes = Enum.GetValues(typeof(ConsoleKit.MessageType));
         }
 
@@ -75,23 +68,33 @@ namespace PPServer
             BroadcastMonitorAck(e.Value);
         }
 
-        private void LoadData()
+        public void LoadData()
         {
             Dto = new Dto2Object() {
                 Zones = new List<PolyZone>()
             };
 
-            var count = Sql.Instance.GetZoneCount();
-            var current = 0;
+            int count = 0;
+            if (MaxZones > 0)
+                count = MaxZones;
+            else
+                count = Sql.Instance.GetZoneCount();
 
+            var current = 0;
             Sql.Instance.LoadZones((zone) => {
                 Dto.Zones.Add(zone);
                 current++;
 
                 ConsoleKit.Message(ConsoleKit.MessageType.INFO, "Loading {0}/{1} zones\t\r", current, count);
                 return true;
-            });
+            }, count);
             Console.Write("\n");
+        }
+
+        public void SetupHttpServer()
+        {
+            _httpHandler = new Http.Handler(this);
+            _httpHandler.Handle();
         }
 
         private void PrintAsciiArtLogo()
@@ -322,7 +325,7 @@ namespace PPServer
                                 goto default;
 
                             var banIpAddressReq = Serializer.Deserialize<BanIpAddressReq>(stream);
-                            _handler.OnBanIPAddressReq(banIpAddressReq);
+                            _handler.OnBanIPAddressReq(banIpAddressReq, user);
                             break;
 
                         case Protocols.LISTBANNEDIPS_REQ:
@@ -337,7 +340,15 @@ namespace PPServer
                                 goto default;
 
                             var unbanIpAddressReq = Serializer.Deserialize<UnbanIPAddressReq>(stream);
-                            _handler.OnUnbanIPAddressReq(unbanIpAddressReq);
+                            _handler.OnUnbanIPAddressReq(unbanIpAddressReq, user);
+                            break;
+
+                        case Protocols.COMMAND_REQ:
+                            if (!Guard.CheckPrivileges(user, GroupRole.Admin))
+                                goto default;
+
+                            var commandReq = Serializer.Deserialize<CommandReq>(stream);
+                            _handler.OnCommandReq(commandReq, user);
                             break;
 
                         default:
@@ -447,8 +458,10 @@ namespace PPServer
             {
                 foreach (var type in _messageTypes)
                 {
-                    if(message.IndexOf($"[{type}]") == 0)
+                    var messageType = $"[{type}]";
+                    if (message.IndexOf(messageType) == 0)
                     {
+                        _messageHeap = messageType;
                         return;
                     }
                 }
@@ -480,6 +493,24 @@ namespace PPServer
                     Send(user, new OnlineUsersAck() { OnlineUsersList = users });
                 }
             }
+        }
+
+        public void LimitZones(int count)
+        {
+            MaxZones = count;
+        }
+
+        public void SetWriter(ConsoleWriter writer)
+        {
+            if(_writer != null)
+            {
+                _writer.Dispose();
+                _writer = null;
+            }
+
+            writer.WriteLineEvent += Writer_WriteLineEvent;
+            writer.WriteEvent += Writer_WriteEvent;
+            _writer = writer;
         }
     }
 }

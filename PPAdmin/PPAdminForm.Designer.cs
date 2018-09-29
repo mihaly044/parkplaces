@@ -39,24 +39,27 @@
             this.clearLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.onlineUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bannedUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.bannedUsersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtCmd = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(0, 24);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(800, 426);
+            this.listView1.Size = new System.Drawing.Size(800, 401);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -134,14 +137,21 @@
             // onlineUsersToolStripMenuItem
             // 
             this.onlineUsersToolStripMenuItem.Name = "onlineUsersToolStripMenuItem";
-            this.onlineUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.onlineUsersToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.onlineUsersToolStripMenuItem.Text = "Online users";
             this.onlineUsersToolStripMenuItem.Click += new System.EventHandler(this.onlineUsersToolStripMenuItem_Click);
+            // 
+            // bannedUsersToolStripMenuItem
+            // 
+            this.bannedUsersToolStripMenuItem.Name = "bannedUsersToolStripMenuItem";
+            this.bannedUsersToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.bannedUsersToolStripMenuItem.Text = "Banned users";
+            this.bannedUsersToolStripMenuItem.Click += new System.EventHandler(this.bannedUsersToolStripMenuItem_Click);
             // 
             // manageUsersToolStripMenuItem
             // 
             this.manageUsersToolStripMenuItem.Name = "manageUsersToolStripMenuItem";
-            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.manageUsersToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.manageUsersToolStripMenuItem.Text = "Manage users";
             this.manageUsersToolStripMenuItem.Click += new System.EventHandler(this.manageUsersToolStripMenuItem_Click);
             // 
@@ -149,7 +159,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 443);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(800, 22);
             this.statusStrip1.TabIndex = 5;
@@ -161,18 +171,26 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(99, 17);
             this.toolStripStatusLabel1.Text = "Message count: 0";
             // 
-            // bannedUsersToolStripMenuItem
+            // txtCmd
             // 
-            this.bannedUsersToolStripMenuItem.Name = "bannedUsersToolStripMenuItem";
-            this.bannedUsersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.bannedUsersToolStripMenuItem.Text = "Banned users";
-            this.bannedUsersToolStripMenuItem.Click += new System.EventHandler(this.bannedUsersToolStripMenuItem_Click);
+            this.txtCmd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCmd.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCmd.ForeColor = System.Drawing.Color.Blue;
+            this.txtCmd.Location = new System.Drawing.Point(0, 424);
+            this.txtCmd.Name = "txtCmd";
+            this.txtCmd.Size = new System.Drawing.Size(800, 20);
+            this.txtCmd.TabIndex = 6;
+            this.txtCmd.MouseClick += new System.Windows.Forms.MouseEventHandler(this.txtCmd_MouseClick);
+            this.txtCmd.TextChanged += new System.EventHandler(this.txtCmd_TextChanged);
+            this.txtCmd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCmd_KeyDown);
             // 
             // PpAdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 465);
+            this.Controls.Add(this.txtCmd);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.menuStrip1);
@@ -206,6 +224,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem manageUsersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bannedUsersToolStripMenuItem;
+        private System.Windows.Forms.TextBox txtCmd;
     }
 }
 

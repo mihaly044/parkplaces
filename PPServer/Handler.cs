@@ -7,7 +7,9 @@ using Newtonsoft.Json;
 using PPNetLib.Contracts.SynchroniseAcks;
 using PPNetLib.Contracts.Monitor;
 using PPNetLib;
+using CommandLine;
 using System;
+using PPServer.CommandLine;
 
 namespace PPServer
 {
@@ -38,8 +40,15 @@ namespace PPServer
 
         public void OnZoneCountReq(string ipPort)
         {
-            var count = Sql.Instance.GetZoneCount();
-            _server.Send(ipPort, new ZoneCountAck() { ZoneCount = count });
+            if(_server.MaxZones > 0)
+            {
+                _server.Send(ipPort, new ZoneCountAck() { ZoneCount = _server.MaxZones });
+            }
+            else
+            {
+                var count = Sql.Instance.GetZoneCount();
+                _server.Send(ipPort, new ZoneCountAck() { ZoneCount = count });
+            }
         }
 
         public void OnZoneListReq(string ipPort)
@@ -244,7 +253,7 @@ namespace PPServer
             _server.DisconnectUser(packet.IpPort);
         }
 
-        public void OnBanIPAddressReq(BanIpAddressReq packet)
+        public void OnBanIPAddressReq(BanIpAddressReq packet, User u)
         {
             _server.Guard.BanIp(packet.IpAddress.Split(':')[0]);
             var user = _server.Guard.GetAuthUser(packet.IpAddress);
@@ -252,6 +261,9 @@ namespace PPServer
             {
                 _server.DisconnectUser(packet.IpAddress);
             }
+
+            var bannedIps = _server.Guard.GetBannedIps();
+            _server.Send(u, new ListBannedIpsAck() { BannedIps = bannedIps });
         }
 
         public void OnListBannedIPsReq(User user)
@@ -260,9 +272,69 @@ namespace PPServer
             _server.Send(user, new ListBannedIpsAck() { BannedIps = bannedIps });
         }
 
-        public void OnUnbanIPAddressReq(UnbanIPAddressReq packet)
+        public void OnUnbanIPAddressReq(UnbanIPAddressReq packet, User user)
         {
             _server.Guard.UnbanIp(packet.IpAddress.Split(':')[0]);
+
+            var bannedIps = _server.Guard.GetBannedIps();
+            _server.Send(user, new ListBannedIpsAck() { BannedIps = bannedIps });
+        }
+
+        public void OnCommandReq(CommandReq packet, User user)
+        {
+            var response = "";
+            Parser.Default.ParseArguments<Echo, KickUser, BanIp, UnbanIp, Get, Shutdown>(packet.Command)
+                .WithParsed<Echo>(o =>
+                {
+                    response = o.Text;
+                    _server.Send(user, new CommandAck() { Response = response });
+                })
+                .WithParsed<KickUser>(o =>
+                {
+                    var kickUser = _server.Guard.GetAuthUserByName(o.UserName);
+                    _server.DisconnectUser(kickUser.IpPort);
+                })
+                .WithParsed<BanIp>(o =>
+                {
+                    _server.Guard.BanIp(o.IPAddress);
+                    _server.DisconnectUser(o.IPAddress);
+                })
+                .WithParsed<UnbanIp>(o =>
+                {
+                    _server.Guard.UnbanIp(o.IPAddress);
+                })
+                .WithParsed<Get>(o =>
+                {
+                    var get = "";
+                    if (o.OnlineUsers)
+                    {
+                        var users = _server.Guard.GetAuthUsers();
+                        get = $"Online: {users.Count}[{string.Join(", ", users)}]";
+                    } else if (o.ZoneCount)
+                    {
+                        get = "Zone count: " + _server.Dto.Zones.Count.ToString();
+                    }
+                    else if (o.MemUsage)
+                    {
+                        get = $"Total memory usage is {GC.GetTotalMemory(true) / 1024 / 1024} MB";
+                    }
+                    else
+                    {
+                        get = "Unknown value requested";
+                    }
+                    _server.Send(user, new CommandAck() { Response = get });
+                })
+                .WithParsed<Shutdown>(o =>
+                {
+                    if (o.Seconds > 0)
+                        _server.AnnounceShutdownAck(o.Seconds);
+                    else
+                        _server.Shutdown();
+                   
+                })
+                .WithNotParsed ((errs) => {
+                    _server.Send(user, new CommandAck() { Response = errs.ToString() });
+                });
         }
     }
 }

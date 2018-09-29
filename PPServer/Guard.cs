@@ -61,6 +61,15 @@ namespace PPServer
         }
 
         /// <summary>
+        /// Find an user based on its userId
+        /// </summary>
+        /// <param name="ipPort"></param>
+        public User GetAuthUserByName(string userName)
+        {
+            return _authUsers.FirstOrDefault(u => u.UserName == userName);
+        }
+
+        /// <summary>
         /// Return auth users collection
         /// </summary>
         /// <returns></returns>
@@ -110,7 +119,7 @@ namespace PPServer
             }
             else
             {
-                _bannedIps.Add(new PossibleBannedIp(ipAddress));
+                _bannedIps.Add(new PossibleBannedIp(ipAddress.Split(':')[0]));
             }
         }
 
@@ -120,9 +129,18 @@ namespace PPServer
         /// <param name="ipAddress"></param>
         public void BanIp(string ipAddress)
         {
+            ipAddress = ipAddress.Split(':')[0];
+
             var ip = _bannedIps.FirstOrDefault(x => x.IpPort.Split(':')[0] == ipAddress);
             if(ip == null)
-                _bannedIps.Add(new PossibleBannedIp(ipAddress));
+            {
+                ip = new PossibleBannedIp(ipAddress)
+                {
+                    Tries = _maxTries + 1
+                };
+
+                _bannedIps.Add(ip);
+            }
         }
 
         /// <summary>
@@ -160,6 +178,8 @@ namespace PPServer
         /// <param name="ipAddress"></param>
         public void UnbanIp(string ipAddress)
         {
+            ipAddress = ipAddress.Split(':')[0];
+
             var ip = _bannedIps.FirstOrDefault(x => x.IpPort.Split(':')[0] == ipAddress);
             if (ip != null)
                 _bannedIps.Remove(ip);
