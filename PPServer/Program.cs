@@ -44,7 +44,7 @@ namespace PPServer
 
         public static async void RunHttp()
         {
-            var server = new WebServer("https://parkplaces.pw:1100", RoutingStrategy.Regex);
+            var server = new WebServer("https://parkplaces.pw:11001", RoutingStrategy.Regex);
             server.RegisterModule(new WebApiModule());
             server.Module<WebApiModule>().RegisterController<DtoController>();
 
