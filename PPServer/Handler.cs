@@ -53,7 +53,7 @@ namespace PPServer
 
         public void OnZoneListReq(string ipPort)
         {
-            foreach(var zone in _server.Dto.Zones)
+            foreach(var zone in Server.Dto.Zones)
             {
                 var zoneSerialized = JsonConvert.SerializeObject(zone, Converter.Settings);
                 if(!_server.Send(ipPort, new ZoneListAck() { Zone = zoneSerialized }))
@@ -77,9 +77,9 @@ namespace PPServer
 
             zone.Id = id.ToString();
 
-            lock(_server.Dto.Zones)
+            lock(Server.Dto.Zones)
             {
-                _server.Dto.Zones.Add(zone);
+                Server.Dto.Zones.Add(zone);
             }
 
             _server.Send(user, new InsertZoneAck()
@@ -100,10 +100,10 @@ namespace PPServer
         {
             Sql.Instance.RemoveZone(packet.ZoneId);
 
-            lock(_server.Dto.Zones)
+            lock(Server.Dto.Zones)
             {
-                var zone = _server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
-                _server.Dto.Zones.Remove(zone);
+                var zone = Server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
+                Server.Dto.Zones.Remove(zone);
             }
 
             _server.SendToEveryoneExcept(new ZoneInfoUpdatedAck()
@@ -117,9 +117,9 @@ namespace PPServer
         {
             Sql.Instance.RemovePoint(packet.PointId, packet.Index, packet.ZoneId);
 
-            lock(_server.Dto.Zones)
+            lock(Server.Dto.Zones)
             {
-                var zone = _server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
+                var zone = Server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
                 zone.Geometry.Remove(zone.Geometry.First(g => g.Id == packet.PointId));
             }
 
@@ -137,9 +137,9 @@ namespace PPServer
             var id =  await Sql.Instance.InsertPointAsync(packet.ZoneId, packet.Lat, packet.Lng, packet.Index);
             _server.Send(user, new InsertPointAck(){PointId = id});
 
-            lock(_server.Dto.Zones)
+            lock(Server.Dto.Zones)
             {
-                var zone = _server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
+                var zone = Server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
                 zone.Geometry.Insert(packet.Index, new Geometry(packet.Lat, packet.Lng, id));
             }
 
@@ -158,9 +158,9 @@ namespace PPServer
         {
             Sql.Instance.UpdatePoint(packet.PointId, packet.Lat, packet.Lng);
 
-            lock(_server.Dto.Zones)
+            lock(Server.Dto.Zones)
             {
-                var zone = _server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
+                var zone = Server.Dto.Zones.First(z => z.Id == packet.ZoneId.ToString());
                 var geometry = zone.Geometry.First(g => g.Id == packet.PointId);
                 geometry.Lat = packet.Lat;
                 geometry.Lng = packet.Lng;
@@ -180,9 +180,9 @@ namespace PPServer
             var zone = JsonConvert.DeserializeObject<PolyZone>(packet.Zone, Converter.Settings);
             Sql.Instance.UpdateZoneInfo(zone);
 
-            lock(_server.Dto.Zones)
+            lock(Server.Dto.Zones)
             {
-                var localDtoZone = _server.Dto.Zones.First(z => z.Zoneid == zone.Zoneid);
+                var localDtoZone = Server.Dto.Zones.First(z => z.Zoneid == zone.Zoneid);
                 localDtoZone.Color = zone.Color;
                 localDtoZone.Description = zone.Description;
                 localDtoZone.Distance = zone.Distance;
@@ -309,7 +309,7 @@ namespace PPServer
                         get = $"Online: {users.Count}[{string.Join(", ", users)}]";
                     } else if (o.ZoneCount)
                     {
-                        get = "Zone count: " + _server.Dto.Zones.Count.ToString();
+                        get = "Zone count: " + Server.Dto.Zones.Count.ToString();
                     }
                     else if (o.MemUsage)
                     {

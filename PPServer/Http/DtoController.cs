@@ -1,38 +1,19 @@
-﻿using NHttp;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using Unosquare.Labs.EmbedIO;
+using Unosquare.Labs.EmbedIO.Constants;
+using Unosquare.Labs.EmbedIO.Modules;
+using System.Net.Http;
 using System.Net;
-using PPNetLib.Prototypes;
+using System.Collections.Generic;
 using Newtonsoft.Json;
-using MySql.Data.MySqlClient;
-using System.Configuration;
-using System.Collections.Specialized;
-using PPNetLib;
+using PPNetLib.Prototypes;
 
 namespace PPServer.Http
 {
-    public class Handler
+    class DtoController : WebApiController
     {
-        private HttpServer _httpServer;
-        private readonly int _httpPort;
-        private readonly Server _server;
-        private const int HttpServerPort = 8080;
-        
-        public Handler(Server server)
+        public DtoController() : base()
         {
-            var configSect = ConfigurationManager.GetSection("ServerConfiguration") as NameValueCollection;
-            _httpPort = configSect != null ? int.Parse(configSect["HttpServerPort"]) : HttpServerPort;
-            _server = server;
-        }
-
-        public void Handle()
-        {
-            _httpServer = new HttpServer {EndPoint = new IPEndPoint(IPAddress.Any, _httpPort)};
-            _httpServer.RequestReceived += _httpServer_RequestReceived;
-            _httpServer.Start();
-            ConsoleKit.Message(ConsoleKit.MessageType.INFO, "HTTP server listening on {0}:{1}\n", 
-                _httpServer.EndPoint.Address, _httpServer.EndPoint.Port);
         }
 
         private bool InBounds(double pointLat, double pointLong, double boundsNElat, double boundsNElong, double boundsSWlat, double boundsSWlong)
@@ -42,7 +23,7 @@ namespace PPServer.Http
 
             bool inLong = false, inLat = false;
 
-            if(boundsNElong < boundsSWlong)
+            if (boundsNElong < boundsSWlong)
             {
                 inLong = eastBound || westBound;
             }
@@ -55,9 +36,7 @@ namespace PPServer.Http
             return inLat && inLong;
         }
 
-        private void _httpServer_RequestReceived(object sender, HttpRequestEventArgs e)
-        {
-            e.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+        /*e.Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
             try
             {
@@ -105,6 +84,34 @@ namespace PPServer.Http
                     e.Response.Status = "500 Internal Server Error";
                 }
             }
+        }*/
+
+        [WebApiHandler(HttpVerbs.Get, "/api/Hello/{north}/{east}/{south}/{west}")]
+        public bool GetHello(WebServer server , HttpListenerContext context, double north, double east, double south, double west)
+        {
+            var zones = new List<string>();
+
+            var inBounds = false;
+            foreach (var zone in Server.Dto.Zones)
+            {
+                foreach (var point in zone.Geometry)
+                {
+                    if (InBounds(point.Lat, point.Lng, north, east, south, west))
+                    {
+                        inBounds = true;
+                        break;
+                    }
+                }
+
+                if (inBounds)
+                {
+                    zones.Add(JsonConvert.SerializeObject(zone, Converter.Settings));
+                    inBounds = false;
+                }
+            }
+
+            context.JsonResponse(JsonConvert.SerializeObject(zones));
+            return true;
         }
     }
 }

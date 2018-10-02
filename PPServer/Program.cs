@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CommandLine;
 using PPServer.CommandLine;
+using PPServer.Http;
+using Unosquare.Labs.EmbedIO;
+using Unosquare.Labs.EmbedIO.Constants;
+using Unosquare.Labs.EmbedIO.Modules;
 
 namespace PPServer
 {
@@ -27,25 +32,23 @@ namespace PPServer
                         useHttp = false;
                 });
 
-            if(useHttp)
-                server.SetupHttpServer();
+            if (useHttp)
+                RunHttp();
 
             // Start the server
             server.Listen();
             server.LoadData();
 
-            // Accept basic commands
-            // TODO: implement more commants
-            while (true)
-            {
-                var input = Console.ReadLine();
-                switch (input)
-                {
-                    case "q":
-                        server.AnnounceShutdownAck(10);
-                    break;
-                }
-            }
-       }
+            
+        }
+
+        public static async void RunHttp()
+        {
+            var server = new WebServer("https://parkplaces.pw:1100", RoutingStrategy.Regex);
+            server.RegisterModule(new WebApiModule());
+            server.Module<WebApiModule>().RegisterController<DtoController>();
+
+            await Task.Run( () => server.RunAsync());
+        }
     }
 }
