@@ -33,7 +33,7 @@ namespace PPServer
                 });
 
             if (useHttp)
-                RunHttp();
+                server.SetupHttpServer();
 
             // Start the server
             server.Listen();
