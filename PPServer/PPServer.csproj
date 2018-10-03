@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.3.0" />
     <PackageReference Include="CryptSharpOfficial" Version="2.1.0" />
-    <PackageReference Include="EmbedIO" Version="1.16.1" />
     <PackageReference Include="MySql.Data" Version="8.0.12" />
     <PackageReference Include="NHttp" Version="0.1.9" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
