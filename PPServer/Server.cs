@@ -21,7 +21,7 @@ namespace PPServer
         /// Local data transfer object
         /// that holds all the zones
         /// </summary>
-        public Dto2Object Dto;
+        public static Dto2Object Dto;
 
         /// <summary>
         /// The maximum number of zones to be

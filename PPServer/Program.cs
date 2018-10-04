@@ -27,25 +27,12 @@ namespace PPServer
                         useHttp = false;
                 });
 
-            if(useHttp)
+            if (useHttp)
                 server.SetupHttpServer();
 
             // Start the server
             server.Listen();
             server.LoadData();
-
-            // Accept basic commands
-            // TODO: implement more commants
-            while (true)
-            {
-                var input = Console.ReadLine();
-                switch (input)
-                {
-                    case "q":
-                        server.AnnounceShutdownAck(10);
-                    break;
-                }
-            }
-       }
+        }
     }
 }

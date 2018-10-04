@@ -28,7 +28,7 @@ namespace PPServer.Http
 
         public void Handle()
         {
-            _httpServer = new HttpServer {EndPoint = new IPEndPoint(IPAddress.Any, _httpPort)};
+            _httpServer = new HttpServer {EndPoint = new IPEndPoint(IPAddress.Loopback, _httpPort)};
             _httpServer.RequestReceived += _httpServer_RequestReceived;
             _httpServer.Start();
             ConsoleKit.Message(ConsoleKit.MessageType.INFO, "HTTP server listening on {0}:{1}\n", 
@@ -69,7 +69,7 @@ namespace PPServer.Http
                 var zones = new List<string>();
 
                 var inBounds = false;
-                foreach(var zone in _server.Dto.Zones)
+                foreach(var zone in Server.Dto.Zones)
                 {
                     foreach (var point in zone.Geometry)
                     {
