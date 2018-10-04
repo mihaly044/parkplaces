@@ -182,7 +182,7 @@ namespace PPServer
 
             lock(Server.Dto.Zones)
             {
-                var localDtoZone = Server.Dto.Zones.First(z => z.Zoneid == zone.Zoneid);
+                var localDtoZone = Server.Dto.Zones.First(z => z.Id == zone.Zoneid);
                 localDtoZone.Color = zone.Color;
                 localDtoZone.Description = zone.Description;
                 localDtoZone.Distance = zone.Distance;
